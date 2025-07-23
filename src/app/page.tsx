@@ -8,7 +8,7 @@ import { useLanguage } from "@/components/language-provider";
 
 const FeatureCard = ({ icon, name }: { icon: string, name: string }) => {
   return (
-    <div className="flex flex-col justify-center items-center p-2 border border-border rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 cursor-pointer transition-colors w-full h-20">
+    <div className="flex flex-col justify-center items-center p-2 border border-border rounded-lg bg-accent text-accent-foreground hover:bg-accent/90 cursor-pointer transition-colors w-full h-20">
       <span className="text-xl">{icon}</span>
       <span className="mt-1 text-xs text-center font-medium">{name}</span>
     </div>
@@ -132,11 +132,10 @@ export default function Home() {
         <div className="mt-8 grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-4">
           {tools.map((tool) => {
             const card = <FeatureCard icon={tool.icon} name={tool.name} />;
-            const uniqueKey = `${tool.name}-${tool.icon}`;
             if (tool.href) {
-                return <Link key={uniqueKey} href={tool.href}>{card}</Link>
+                return <Link key={`${tool.name}-${tool.icon}`} href={tool.href}>{card}</Link>
             }
-            return <div key={uniqueKey}>{card}</div>;
+            return <div key={`${tool.name}-${tool.icon}`}>{card}</div>;
           })}
         </div>
       </section>
