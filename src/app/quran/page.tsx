@@ -10,8 +10,17 @@ import {
 import { Card, CardContent } from "@/components/ui/card"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 import { Terminal } from "lucide-react"
-import { useEffect, useState } from "react"
+import { useEffect, useState, useMemo } from "react"
 
 interface Surah {
   number: number
@@ -51,7 +60,9 @@ interface SurahDetail extends Surah {
   edition: Edition
 }
 
-const SurahDetailContent = ({ surahNumber }: { surahNumber: number }) => {
+type LanguageEdition = "en.sahih" | "de.aburida" | "am.sadiq"
+
+const SurahDetailContent = ({ surahNumber, languageEdition }: { surahNumber: number, languageEdition: LanguageEdition }) => {
   const [detail, setDetail] = useState<{ arabic: SurahDetail, translation: SurahDetail, transliteration: SurahDetail } | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -62,11 +73,14 @@ const SurahDetailContent = ({ surahNumber }: { surahNumber: number }) => {
       setLoading(true)
       setError(null)
       try {
-        const response = await fetch(`https://api.alquran.cloud/v1/surah/${surahNumber}/editions/quran-uthmani,en.sahih,en.transliteration`)
+        const response = await fetch(`https://api.alquran.cloud/v1/surah/${surahNumber}/editions/quran-uthmani,${languageEdition},en.transliteration`)
         if (!response.ok) {
           throw new Error('Failed to fetch surah details');
         }
         const data = await response.json()
+        if (data.code !== 200 || !data.data || data.data.length < 3) {
+            throw new Error('Invalid data received from API');
+        }
 
         setDetail({
             arabic: data.data[0],
@@ -80,7 +94,7 @@ const SurahDetailContent = ({ surahNumber }: { surahNumber: number }) => {
       }
     }
     fetchSurahDetail()
-  }, [surahNumber])
+  }, [surahNumber, languageEdition])
 
   if (loading) {
     return (
@@ -128,6 +142,9 @@ export default function QuranPage() {
   const [surahs, setSurahs] = useState<Surah[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [filter, setFilter] = useState("")
+  const [language, setLanguage] = useState<LanguageEdition>("en.sahih")
+  const [openSurah, setOpenSurah] = useState<string | undefined>(undefined);
 
   useEffect(() => {
     async function fetchSurahs() {
@@ -148,13 +165,48 @@ export default function QuranPage() {
     fetchSurahs()
   }, [])
 
+  const filteredSurahs = useMemo(() => {
+    if (!filter) return surahs;
+    return surahs.filter(surah => 
+      surah.englishName.toLowerCase().includes(filter.toLowerCase()) ||
+      surah.name.toLowerCase().includes(filter.toLowerCase()) ||
+      surah.number.toString().includes(filter)
+    );
+  }, [surahs, filter]);
+
   return (
-    <div className="space-y-8 flex-grow">
+    <div className="space-y-8 flex-grow flex flex-col p-4 sm:p-6 lg:p-8">
       <header>
         <h1 className="text-3xl font-bold tracking-tight text-primary">The Holy Quran</h1>
         <p className="text-muted-foreground mt-2">Browse, read, and reflect upon the words of Allah.</p>
       </header>
         
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <Label htmlFor="search">Search Surah</Label>
+          <Input 
+            id="search"
+            placeholder="e.g. Al-Fatihah, 1"
+            value={filter}
+            onChange={e => setFilter(e.target.value)}
+            className="mt-1"
+          />
+        </div>
+        <div>
+          <Label htmlFor="language">Translation Language</Label>
+          <Select value={language} onValueChange={(value) => setLanguage(value as LanguageEdition)}>
+              <SelectTrigger id="language" className="mt-1">
+                  <SelectValue placeholder="Select Language" />
+              </SelectTrigger>
+              <SelectContent>
+                  <SelectItem value="en.sahih">English</SelectItem>
+                  <SelectItem value="de.aburida">German</SelectItem>
+                  <SelectItem value="am.sadiq">Amharic</SelectItem>
+              </SelectContent>
+          </Select>
+        </div>
+      </div>
+
       {error && (
         <Alert variant="destructive">
             <Terminal className="h-4 w-4" />
@@ -165,9 +217,9 @@ export default function QuranPage() {
 
       <Card className="flex-grow">
         <CardContent className="p-0">
-          <Accordion type="single" collapsible className="w-full">
+          <Accordion type="single" collapsible className="w-full" value={openSurah} onValueChange={setOpenSurah}>
             {loading ? (
-                [...Array(5)].map((_, i) => (
+                [...Array(10)].map((_, i) => (
                     <div key={i} className="flex items-center gap-4 px-6 py-4 border-b">
                         <Skeleton className="h-10 w-10 rounded-full" />
                         <div className="space-y-2">
@@ -177,19 +229,21 @@ export default function QuranPage() {
                     </div>
                 ))
             ) : (
-                surahs.map((surah) => (
+                filteredSurahs.map((surah) => (
                 <AccordionItem value={`item-${surah.number}`} key={surah.number}>
                     <AccordionTrigger className="px-6 py-4 text-lg hover:no-underline">
                     <div className="flex items-center gap-4">
                         <span className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-primary font-bold">{surah.number}</span>
                         <div>
                         <p className="font-semibold text-left">{surah.name}</p>
-                        <p className="text-sm text-muted-foreground text-left">{surah.englishName}</p>
+                        <p className="text-sm text-muted-foreground text-left">{surah.englishName} ({surah.englishNameTranslation})</p>
                         </div>
                     </div>
                     </AccordionTrigger>
                     <AccordionContent>
-                        <SurahDetailContent surahNumber={surah.number} />
+                        {openSurah === `item-${surah.number}` && (
+                          <SurahDetailContent surahNumber={surah.number} languageEdition={language} />
+                        )}
                     </AccordionContent>
                 </AccordionItem>
                 ))
