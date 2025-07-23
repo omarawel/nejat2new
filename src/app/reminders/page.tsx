@@ -9,13 +9,15 @@ import { useLanguage } from '@/components/language-provider';
 import { useToast } from '@/hooks/use-toast';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
+import { Input } from '@/components/ui/input';
 
 const content = {
     de: {
         title: "Islamische Erinnerungen",
         description: "Abonniere gezielte Erinnerungen, um deinen Glauben im Alltag zu stärken. (Feature in Entwicklung)",
-        toastEnabled: "Erinnerungen aktiviert!",
-        toastDisabled: "Erinnerungen deaktiviert.",
+        toastEnabled: "Erinnerung aktiviert!",
+        toastDisabled: "Erinnerung deaktiviert.",
+        setTime: "Uhrzeit festlegen",
         reminders: [
             {
                 key: "verse_of_day",
@@ -70,8 +72,9 @@ const content = {
     en: {
         title: "Islamic Reminders",
         description: "Subscribe to specific reminders to strengthen your faith in daily life. (Feature in development)",
-        toastEnabled: "Reminders enabled!",
-        toastDisabled: "Reminders disabled.",
+        toastEnabled: "Reminder enabled!",
+        toastDisabled: "Reminder disabled.",
+        setTime: "Set time",
          reminders: [
             {
                 key: "verse_of_day",
@@ -125,20 +128,36 @@ const content = {
     }
 };
 
+type Subscription = {
+    enabled: boolean;
+    time: string;
+};
+
 export default function RemindersPage() {
     const { language } = useLanguage();
     const c = content[language] || content.de;
     const { toast } = useToast();
 
-    const [subscriptions, setSubscriptions] = useState<Record<string, boolean>>({});
+    const [subscriptions, setSubscriptions] = useState<Record<string, Subscription>>({});
 
     const handleSubscriptionChange = (key: string, checked: boolean) => {
         // In a real app, you would handle Push API logic here.
-        setSubscriptions(prev => ({...prev, [key]: checked}));
+        setSubscriptions(prev => ({
+            ...prev, 
+            [key]: { enabled: checked, time: prev[key]?.time || '09:00' }
+        }));
+        
         toast({
             title: checked ? c.toastEnabled : c.toastDisabled,
             description: c.reminders.find(r => r.key === key)?.title,
         })
+    }
+    
+    const handleTimeChange = (key: string, time: string) => {
+        setSubscriptions(prev => ({
+            ...prev,
+            [key]: { ...prev[key], time }
+        }));
     }
 
     return (
@@ -154,10 +173,11 @@ export default function RemindersPage() {
             <div className="max-w-2xl mx-auto grid grid-cols-1 gap-6">
                 {c.reminders.map((reminder) => {
                     const Icon = reminder.icon;
+                    const isEnabled = !!subscriptions[reminder.key]?.enabled;
                     return (
                         <Card key={reminder.key}>
-                            <CardContent className="p-4 flex items-center justify-between">
-                                <div className="flex items-start gap-4">
+                            <CardContent className="p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                                <div className="flex items-start gap-4 flex-grow">
                                      <Icon className="h-6 w-6 text-primary flex-shrink-0 mt-1" />
                                     <div>
                                         <Label htmlFor={reminder.key} className="text-lg font-semibold cursor-pointer">
@@ -166,12 +186,22 @@ export default function RemindersPage() {
                                         <p className="text-sm text-muted-foreground">{reminder.description}</p>
                                     </div>
                                 </div>
-                                <Switch
-                                    id={reminder.key}
-                                    checked={!!subscriptions[reminder.key]}
-                                    onCheckedChange={(checked) => handleSubscriptionChange(reminder.key, checked)}
-                                    aria-label={`Toggle ${reminder.title} reminders`}
-                                />
+                                <div className="flex items-center gap-4 self-end sm:self-center">
+                                    <Input 
+                                        type="time"
+                                        className="w-32"
+                                        aria-label={c.setTime}
+                                        disabled={!isEnabled}
+                                        value={subscriptions[reminder.key]?.time || '09:00'}
+                                        onChange={(e) => handleTimeChange(reminder.key, e.target.value)}
+                                    />
+                                    <Switch
+                                        id={reminder.key}
+                                        checked={isEnabled}
+                                        onCheckedChange={(checked) => handleSubscriptionChange(reminder.key, checked)}
+                                        aria-label={`Toggle ${reminder.title} reminders`}
+                                    />
+                                </div>
                             </CardContent>
                         </Card>
                     )
