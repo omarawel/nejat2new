@@ -8,11 +8,13 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Download, Mail, Wand2, ArrowLeft } from 'lucide-react';
+import { Download, Mail, Wand2, ArrowLeft, Loader2 } from 'lucide-react';
 import { useLanguage } from '@/components/language-provider';
 import { toPng } from 'html-to-image';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
+import { generateGreetingCard } from '@/ai/flows/generate-greeting-card';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
 const themes = {
     'emerald': { bg: 'bg-emerald-800', text: 'text-white', border: 'border-emerald-600', pattern: 'bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-emerald-700 to-emerald-800' },
@@ -59,7 +61,13 @@ const content = {
         rose: "Rose",
         night: "Nacht",
         preview: "Vorschau",
-        download: "Karte herunterladen"
+        download: "Karte herunterladen",
+        aiSectionTitle: "Mit KI gestalten",
+        aiPromptLabel: "Zusätzliche Wünsche für KI",
+        aiPromptPlaceholder: "z.B. 'Eine elegante Karte mit goldenen Laternen' oder 'Ein fröhlicher Text für Kinder'",
+        aiGenerate: "Mit KI erstellen",
+        aiGenerating: "Wird erstellt...",
+        aiError: "Fehler bei der KI-Generierung. Bitte versuche es erneut."
     },
     en: {
         title: "Greeting Card Generator",
@@ -80,7 +88,13 @@ const content = {
         rose: "Rose",
         night: "Night",
         preview: "Preview",
-        download: "Download Card"
+        download: "Download Card",
+        aiSectionTitle: "Design with AI",
+        aiPromptLabel: "Additional wishes for AI",
+        aiPromptPlaceholder: "e.g. 'An elegant card with golden lanterns' or 'A cheerful text for children'",
+        aiGenerate: "Create with AI",
+        aiGenerating: "Creating...",
+        aiError: "AI generation failed. Please try again."
     }
 }
 
@@ -94,10 +108,15 @@ export default function GreetingCardPage() {
     const [fromName, setFromName] = useState('');
     const [theme, setTheme] = useState<ThemeKey>('emerald');
 
+    const [aiPrompt, setAiPrompt] = useState('');
+    const [generatedImage, setGeneratedImage] = useState<string | null>(null);
+    const [isGenerating, setIsGenerating] = useState(false);
+    const [aiError, setAiError] = useState<string | null>(null);
+
     const handleDownload = () => {
         if (cardRef.current === null) return;
 
-        toPng(cardRef.current, { cacheBust: true })
+        toPng(cardRef.current, { cacheBust: true, pixelRatio: 2 })
             .then((dataUrl) => {
                 const link = document.createElement('a');
                 link.download = `greeting-card-${occasion}.png`;
@@ -109,8 +128,29 @@ export default function GreetingCardPage() {
             });
     };
     
+    const handleAiGenerate = async () => {
+        setIsGenerating(true);
+        setAiError(null);
+        try {
+            const result = await generateGreetingCard({ occasion, customPrompt: aiPrompt });
+            setCustomMessage(result.message);
+            setGeneratedImage(result.imageUrl);
+        } catch (error) {
+            console.error(error);
+            setAiError(c.aiError);
+        } finally {
+            setIsGenerating(false);
+        }
+    }
+
     const message = customMessage || greetings[language][occasion];
     const selectedTheme = themes[theme];
+
+    const cardStyle = generatedImage ? { backgroundImage: `url(${generatedImage})` } : {};
+    const cardClasses = generatedImage
+        ? 'bg-cover bg-center'
+        : cn(selectedTheme.bg, selectedTheme.pattern);
+
 
     return (
         <div className="container mx-auto px-4 py-8">
@@ -167,7 +207,7 @@ export default function GreetingCardPage() {
                         </div>
                          <div>
                             <Label htmlFor="theme">{c.theme}</Label>
-                            <Select value={theme} onValueChange={(v) => setTheme(v as ThemeKey)}>
+                            <Select value={theme} onValueChange={(v) => setTheme(v as ThemeKey)} disabled={!!generatedImage}>
                                 <SelectTrigger id="theme">
                                     <SelectValue />
                                 </SelectTrigger>
@@ -180,6 +220,27 @@ export default function GreetingCardPage() {
                                 </SelectContent>
                             </Select>
                         </div>
+                        
+                        <div className="pt-4 border-t">
+                            <h3 className="text-lg font-semibold mb-2">{c.aiSectionTitle}</h3>
+                            <div className="space-y-4">
+                                <div>
+                                    <Label htmlFor="ai-prompt">{c.aiPromptLabel}</Label>
+                                    <Textarea id="ai-prompt" value={aiPrompt} onChange={(e) => setAiPrompt(e.target.value)} placeholder={c.aiPromptPlaceholder} />
+                                </div>
+                                <Button onClick={handleAiGenerate} disabled={isGenerating} className="w-full">
+                                    {isGenerating ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Wand2 className="mr-2 h-4 w-4" />}
+                                    {isGenerating ? c.aiGenerating : c.aiGenerate}
+                                </Button>
+                                {aiError && (
+                                    <Alert variant="destructive">
+                                        <AlertTitle>Error</AlertTitle>
+                                        <AlertDescription>{aiError}</AlertDescription>
+                                    </Alert>
+                                )}
+                            </div>
+                        </div>
+
                     </CardContent>
                 </Card>
                 
@@ -187,23 +248,25 @@ export default function GreetingCardPage() {
                     <Card>
                         <CardHeader><CardTitle>{c.preview}</CardTitle></CardHeader>
                         <CardContent>
-                            <div
+                             <div
                                 ref={cardRef}
+                                style={cardStyle}
                                 className={cn(
                                     "aspect-[16/9] w-full rounded-lg p-8 flex flex-col justify-center items-center text-center shadow-lg relative overflow-hidden",
-                                    selectedTheme.bg, selectedTheme.text
+                                    cardClasses
                                 )}
                             >
-                                <div className={cn("absolute inset-0 z-0", selectedTheme.pattern)}></div>
-                                <div className="z-10">
-                                    <p className="text-3xl font-quranic mb-4">بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْمِ</p>
-                                    <p className="text-xl leading-relaxed">{message}</p>
-                                    {fromName && <p className="mt-6 text-lg font-semibold">{c.from} {fromName}</p>}
+                                {!generatedImage && <div className={cn("absolute inset-0 z-0", selectedTheme.pattern)}></div>}
+                                
+                                <div className={cn("z-10 p-4 rounded-md", generatedImage ? "bg-black/50" : "")}>
+                                    <p className={cn("text-3xl font-quranic mb-4", selectedTheme.text)}>بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْمِ</p>
+                                    <p className={cn("text-xl leading-relaxed", selectedTheme.text)}>{message}</p>
+                                    {fromName && <p className={cn("mt-6 text-lg font-semibold", selectedTheme.text)}>{c.from} {fromName}</p>}
                                 </div>
                             </div>
                         </CardContent>
                     </Card>
-                     <Button onClick={handleDownload} className="w-full" size="lg">
+                     <Button onClick={handleDownload} className="w-full" size="lg" disabled={isGenerating}>
                         <Download className="mr-2 h-5 w-5" />
                         {c.download}
                     </Button>
