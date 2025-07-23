@@ -96,7 +96,7 @@ export function AppHeader() {
           </DropdownMenu>
         ) : (
           <>
-            <Button variant="ghost" asChild className="hidden sm:inline-flex">
+            <Button variant="ghost" asChild>
                 <Link href="/login">
                     <LogIn />
                     Anmelden
