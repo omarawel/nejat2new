@@ -36,7 +36,7 @@ const content = {
             {
                 name: "Pro",
                 key: "pro",
-                priceId: "price_1RltRjGXWEMb96gVd8d9fL6j", // Your Stripe Price ID
+                priceId: "price_1RmJ3rGXWEMb96gVBYrwf9DD", // Your Stripe Price ID
                 price: "4,99€",
                 description: "Ideal für Wissbegierige, die mit 30 KI-Anfragen/Monat das volle Potenzial der App ausschöpfen wollen.",
                 features: [
@@ -103,7 +103,7 @@ const content = {
             {
                 name: "Pro",
                 key: "pro",
-                priceId: "price_1RltRjGXWEMb96gVd8d9fL6j", // Your Stripe Price ID
+                priceId: "price_1RmJ3rGXWEMb96gVBYrwf9DD", // Your Stripe Price ID
                 price: "€4.99",
                 description: "Ideal for eager learners who want to unlock the full potential of the app with 30 AI requests/month.",
                 features: [
