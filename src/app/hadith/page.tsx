@@ -57,7 +57,7 @@ export default function HadithPage() {
       setLoading(true)
       setError(null)
       try {
-        const apiKey = process.env.NEXT_PUBLIC_HADITH_API_KEY;
+        const apiKey = "$2y$10$CyPRMBPY6e9ijyeQ6pvZgT8wmb5ptObUWWDEoJhKbXRDXfkUwJW";
         if (!apiKey) {
             throw new Error('Hadith API key is missing. Please add NEXT_PUBLIC_HADITH_API_KEY to your environment variables.');
         }
