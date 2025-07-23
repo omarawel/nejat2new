@@ -26,6 +26,8 @@ const content = {
             ],
             buttonText: "Jetzt auf Kindle lesen",
             link: "https://lesen.amazon.de/kp/kshare?asin=B0F195Y5MY&id=ks6jizhuxvh3xhy2fuvlsjprmi",
+            googlePlayButtonText: "Jetzt auf Google Play lesen",
+            googlePlayLink: "https://play.google.com/store/books/details/Omar_Awel_Die_Strahlen_des_Islam?id=jqJNEQAAQBAJ",
             image: "https://dl.dropboxusercontent.com/scl/fi/fwwpjh0x0cqllcocnj3as/IMG_20250717_094009_277.jpg?rlkey=4l9ep5b9el2ri2xuajmo7dqe8&dl=0"
         },
         englishBook: {
@@ -40,9 +42,9 @@ const content = {
                 "Spiritual concepts like Tawakkul and Sabr",
                 "The character of the Prophet Muhammad (ﷺ)"
             ],
-            buttonText: "Read on Kindle",
+            buttonText: "Auf Kindle lesen (Englisch)",
             link: "https://lesen.amazon.de/kp/kshare?asin=B0F1HDQZQ7&id=bd54wv7j75bj5jqer3wa5bv7xu",
-            googlePlayButtonText: "Read on Google Play",
+            googlePlayButtonText: "Auf Google Play lesen (Englisch)",
             googlePlayLink: "https://play.google.com/store/books/details/Omar_Awel_The_Rays_Of_Islam?id=wNhPEQAAQBAJ",
             image: "https://dl.dropboxusercontent.com/scl/fi/l7itt143gcy7dtusvrelq/IMG_20250717_094013_874.jpg?rlkey=dpp2528r5jyo7n83d1abga1gg&dl=0"
         }
@@ -51,7 +53,7 @@ const content = {
         pageTitle: "The Rays Of Islam",
         pageDescription: "Discover the comprehensive guides to Islam by Omar Awel.",
          germanBook: {
-            title: "Die Strahlen Des Islam",
+            title: "Die Strahlen Des Islam (German Edition)",
             author: "by Omar Awel",
             description: "'The Rays of Islam' is a comprehensive guide that illuminates the fundamental teachings and profound beauty of Islam. It is aimed at both Muslims seeking to deepen their knowledge and non-Muslims looking for a clear and authentic understanding of the religion.",
             topicsTitle: "Topics covered include:",
@@ -64,6 +66,8 @@ const content = {
             ],
             buttonText: "Read on Kindle (German)",
             link: "https://lesen.amazon.de/kp/kshare?asin=B0F195Y5MY&id=ks6jizhuxvh3xhy2fuvlsjprmi",
+            googlePlayButtonText: "Read on Google Play (German)",
+            googlePlayLink: "https://play.google.com/store/books/details/Omar_Awel_Die_Strahlen_des_Islam?id=jqJNEQAAQBAJ",
             image: "https://dl.dropboxusercontent.com/scl/fi/fwwpjh0x0cqllcocnj3as/IMG_20250717_094009_277.jpg?rlkey=4l9ep5b9el2ri2xuajmo7dqe8&dl=0"
         },
         englishBook: {
