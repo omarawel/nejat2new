@@ -2,189 +2,106 @@
 "use client"
 
 import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion"
-import { Card, CardContent } from "@/components/ui/card"
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardFooter
+} from "@/components/ui/card"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Terminal } from "lucide-react"
-import { useEffect, useState, useMemo } from "react"
-
-interface Collection {
-  name: string;
-  hasBooks: boolean;
-  hasChapters: boolean;
-  collection: {
-      name: string;
-      title: string;
-      totalHadith: number;
-  }[];
-}
-
-interface Book {
-    book: {
-        id: number;
-        bookName: string;
-        writerName: string;
-        aboutWriter: string;
-        writerDeath: string;
-    }[];
-    id: {
-        collection: string;
-        book: string;
-    };
-    bookNumber: string;
-    bookName: string;
-    numberOfhadith: number;
-    hadith: Hadith[];
-}
+import { Button } from "@/components/ui/button"
+import { Terminal, ChevronLeft, ChevronRight } from "lucide-react"
+import { useEffect, useState } from "react"
 
 interface Hadith {
-  chapterId: string;
-  chapterTitle: string;
-  urn: number;
+  id: number;
   hadithNumber: string;
   englishNarrator: string;
-  hadithText: string;
-  similar: any[];
+  hadithEnglish: string;
+  hadithUrdu: string;
+  hadithArabic: string;
+  chapter: {
+    chapterNumber: string;
+    chapterEnglish: string;
+    chapterUrdu: string;
+    chapterArabic: string;
+  };
+  book: {
+    bookName: string;
+    writerName: string;
+  };
 }
 
-
-const CollectionDetailContent = ({ collectionName }: { collectionName: string }) => {
-  const [books, setBooks] = useState<Book[]>([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
-  const [openBook, setOpenBook] = useState<string | undefined>(undefined);
-
-  useEffect(() => {
-    async function fetchCollectionBooks() {
-      if (!collectionName) return
-      setLoading(true)
-      setError(null)
-      try {
-        const apiKey = process.env.NEXT_PUBLIC_SUNNAH_API_KEY;
-        if (!apiKey) {
-            throw new Error('Sunnah.com API key is missing. Please add it to your environment variables.');
-        }
-
-        const response = await fetch(`https://api.sunnah.com/v1/collections/${collectionName}/books`, {
-            headers: { 'X-API-Key': apiKey }
-        })
-        if (!response.ok) {
-          throw new Error('Failed to fetch collection books');
-        }
-        const data = await response.json()
-        setBooks(data.data)
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'An unknown error occurred')
-      } finally {
-        setLoading(false)
-      }
-    }
-    fetchCollectionBooks()
-  }, [collectionName])
-
-  if (loading) {
-    return (
-      <div className="divide-y divide-border">
-          {[...Array(5)].map((_, i) => (
-              <div key={i} className="px-6 py-4 space-y-3">
-                  <Skeleton className="h-6 w-full" />
-              </div>
-          ))}
-      </div>
-    )
-  }
-
-  if (error) {
-    return (
-        <div className="px-6 py-4">
-            <Alert variant="destructive">
-                <Terminal className="h-4 w-4" />
-                <AlertTitle>Error</AlertTitle>
-                <AlertDescription>{error}</AlertDescription>
-            </Alert>
-        </div>
-    )
-  }
-  
-  if (!books) return null
-
-  return (
-    <div className="divide-y divide-border">
-      <Accordion type="single" collapsible className="w-full" value={openBook} onValueChange={setOpenBook}>
-      {books.map((book) => (
-        <AccordionItem value={`book-${book.bookNumber}`} key={book.bookNumber}>
-            <AccordionTrigger className="px-6 py-4 text-lg hover:no-underline">
-              <div className="flex items-center gap-4">
-                  <span className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-primary font-bold">{book.bookNumber}</span>
-                  <div>
-                    <p className="font-semibold text-left">{book.bookName}</p>
-                    <p className="text-sm text-muted-foreground text-left">{book.numberOfhadith} Hadiths</p>
-                  </div>
-              </div>
-            </AccordionTrigger>
-            <AccordionContent>
-                {/* Here you could fetch and display hadiths for the specific book */}
-                <div className="px-6 py-4 text-muted-foreground">
-                    Hadith listing for this book is not yet implemented.
-                </div>
-            </AccordionContent>
-        </AccordionItem>
-      ))}
-      </Accordion>
-    </div>
-  )
+interface HadithApiResponse {
+    hadiths: {
+        data: Hadith[];
+        next_page_url: string | null;
+        prev_page_url: string | null;
+        from: number;
+        to: number;
+        total: number;
+    };
 }
 
 export default function HadithPage() {
-  const [collections, setCollections] = useState<any[]>([])
+  const [hadiths, setHadiths] = useState<Hadith[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
-  const [filter, setFilter] = useState("")
-  const [openCollection, setOpenCollection] = useState<string | undefined>(undefined);
-
+  const [currentPageUrl, setCurrentPageUrl] = useState<string>('https://hadithapi.com/api/hadiths')
+  const [paginationInfo, setPaginationInfo] = useState<{next: string | null, prev: string | null, from: number, to: number, total: number} | null>(null)
+  
   useEffect(() => {
-    async function fetchCollections() {
+    async function fetchHadiths() {
       setLoading(true)
+      setError(null)
       try {
-        const apiKey = process.env.NEXT_PUBLIC_SUNNAH_API_KEY;
+        const apiKey = process.env.NEXT_PUBLIC_HADITH_API_KEY;
         if (!apiKey) {
-            throw new Error('Sunnah.com API key is missing. Please add NEXT_PUBLIC_SUNNAH_API_KEY to your environment variables.');
+            throw new Error('Hadith API key is missing. Please add NEXT_PUBLIC_HADITH_API_KEY to your environment variables.');
         }
 
-        const response = await fetch('https://api.sunnah.com/v1/collections', {
-            headers: { 'X-API-Key': apiKey }
-        })
+        const url = new URL(currentPageUrl);
+        url.searchParams.append('apiKey', apiKey);
+
+        const response = await fetch(url.toString())
+
         if (!response.ok) {
              if (response.status === 401) {
-                throw new Error("Invalid Sunnah.com API key. Please check your environment variables.");
+                throw new Error("Invalid Hadith API key. Please check your environment variables.");
             }
-            throw new Error("Failed to fetch Hadith collections. Please try again later.")
+            throw new Error("Failed to fetch Hadiths. Please try again later.")
         }
-        const data = await response.json()
-        setCollections(data.data)
+        const data: HadithApiResponse = await response.json()
+        setHadiths(data.hadiths.data)
+        setPaginationInfo({
+            next: data.hadiths.next_page_url,
+            prev: data.hadiths.prev_page_url,
+            from: data.hadiths.from,
+            to: data.hadiths.to,
+            total: data.hadiths.total,
+        })
       } catch (err) {
         setError(err instanceof Error ? err.message : 'An unknown error occurred')
       } finally {
         setLoading(false)
       }
     }
-    fetchCollections()
-  }, [])
+    fetchHadiths()
+  }, [currentPageUrl])
+  
+  const handleNextPage = () => {
+    if (paginationInfo?.next) {
+        setCurrentPageUrl(paginationInfo.next);
+    }
+  }
 
-  const filteredCollections = useMemo(() => {
-    if (!filter) return collections;
-    return collections.filter(collection => 
-      collection.title.toLowerCase().includes(filter.toLowerCase()) ||
-      collection.name.toLowerCase().includes(filter.toLowerCase())
-    );
-  }, [collections, filter]);
+  const handlePrevPage = () => {
+    if (paginationInfo?.prev) {
+        setCurrentPageUrl(paginationInfo.prev);
+    }
+  }
 
   return (
     <div className="space-y-8 flex-grow flex flex-col p-4 sm:p-6 lg:p-8">
@@ -193,61 +110,64 @@ export default function HadithPage() {
         <p className="text-muted-foreground mt-2">Guidance from the life and sayings of the Prophet Muhammad (ﷺ).</p>
       </header>
 
-      <div className="pt-4">
-          <Label htmlFor="search-collection">Filter Collections</Label>
-          <Input 
-            id="search-collection"
-            placeholder="e.g. Bukhari, Muslim"
-            value={filter}
-            onChange={e => setFilter(e.target.value)}
-            className="mt-1"
-          />
-      </div>
-
       {error && (
         <Alert variant="destructive">
             <Terminal className="h-4 w-4" />
-            <AlertTitle>Error Loading Collections</AlertTitle>
+            <AlertTitle>Error Loading Hadiths</AlertTitle>
             <AlertDescription>{error}</AlertDescription>
         </Alert>
       )}
 
-      <Card className="flex-grow">
-        <CardContent className="p-0">
-          <Accordion type="single" collapsible className="w-full" value={openCollection} onValueChange={setOpenCollection}>
-            {loading ? (
-                [...Array(6)].map((_, i) => (
-                    <div key={i} className="flex items-center gap-4 px-6 py-4 border-b">
-                        <Skeleton className="h-10 w-24 rounded-md" />
+      {loading ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[...Array(6)].map((_, i) => (
+                <Card key={i}>
+                    <CardHeader>
+                        <Skeleton className="h-5 w-3/4" />
+                        <Skeleton className="h-4 w-1/2" />
+                    </CardHeader>
+                    <CardContent>
                         <div className="space-y-2">
-                           <Skeleton className="h-4 w-48" />
-                           <Skeleton className="h-3 w-32" />
+                           <Skeleton className="h-4 w-full" />
+                           <Skeleton className="h-4 w-full" />
+                           <Skeleton className="h-4 w-5/6" />
                         </div>
+                    </CardContent>
+                </Card>
+            ))}
+        </div>
+      ) : (
+        <>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {hadiths.map((hadith) => (
+                    <Card key={hadith.id} className="flex flex-col">
+                        <CardHeader>
+                            <CardTitle>Hadith {hadith.hadithNumber}</CardTitle>
+                            <CardDescription>From the book of {hadith.book.bookName}</CardDescription>
+                        </CardHeader>
+                        <CardContent className="flex-grow">
+                            <p className="text-foreground/90">{hadith.hadithEnglish}</p>
+                        </CardContent>
+                    </Card>
+                ))}
+            </div>
+            {paginationInfo && (
+                <div className="flex items-center justify-between pt-4">
+                    <p className="text-sm text-muted-foreground">
+                        Showing {paginationInfo.from} to {paginationInfo.to} of {paginationInfo.total} hadiths
+                    </p>
+                    <div className="flex gap-2">
+                        <Button variant="outline" size="icon" onClick={handlePrevPage} disabled={!paginationInfo.prev}>
+                            <ChevronLeft />
+                        </Button>
+                        <Button variant="outline" size="icon" onClick={handleNextPage} disabled={!paginationInfo.next}>
+                            <ChevronRight />
+                        </Button>
                     </div>
-                ))
-            ) : (
-                filteredCollections.map((collection) => (
-                <AccordionItem value={`item-${collection.name}`} key={collection.name}>
-                    <AccordionTrigger className="px-6 py-4 text-lg hover:no-underline">
-                    <div className="flex items-center gap-4">
-                        <span className="flex h-10 items-center justify-center rounded-md bg-primary/10 text-primary font-bold px-4">{collection.name}</span>
-                        <div>
-                          <p className="font-semibold text-left">{collection.title}</p>
-                          <p className="text-sm text-muted-foreground text-left">{collection.totalHadith} Hadiths</p>
-                        </div>
-                    </div>
-                    </AccordionTrigger>
-                    <AccordionContent>
-                        {openCollection === `item-${collection.name}` && (
-                          <CollectionDetailContent collectionName={collection.name} />
-                        )}
-                    </AccordionContent>
-                </AccordionItem>
-                ))
+                </div>
             )}
-          </Accordion>
-        </CardContent>
-      </Card>
+        </>
+      )}
     </div>
   );
 }
