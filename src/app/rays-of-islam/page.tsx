@@ -51,7 +51,7 @@ export default function RaysOfIslamPage() {
             <CardHeader className="items-center text-center">
                  <div className="mb-4">
                     <Image 
-                        src="https://i.ibb.co/18r6JGr/IMG-20250717-094009-277.jpg"
+                        src="https://dl.dropboxusercontent.com/scl/fi/fwwpjh0x0cqllcocnj3as/IMG_20250717_094009_277.jpg?rlkey=4l9ep5b9el2ri2xuajmo7dqe8&dl=0"
                         alt="Book cover for The Rays Of Islam"
                         width={200}
                         height={300}
