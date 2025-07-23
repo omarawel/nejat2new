@@ -22,6 +22,7 @@ const content = {
         plans: [
             {
                 name: "Unterstützer",
+                key: "supporter",
                 price: "2,99€",
                 description: "Für Nutzer, die werbefrei lernen und grundlegende KI-Tools mit bis zu 15 Anfragen/Monat nutzen möchten.",
                 features: [
@@ -33,6 +34,7 @@ const content = {
             },
             {
                 name: "Pro",
+                key: "pro",
                 price: "4,99€",
                 description: "Ideal für Wissbegierige, die mit 30 KI-Anfragen/Monat das volle Potenzial der App ausschöpfen wollen.",
                 features: [
@@ -45,6 +47,7 @@ const content = {
             },
             {
                 name: "Patron",
+                key: "patron",
                 price: "9,99€",
                 description: "Für diejenigen, die mit 75 KI-Anfragen/Monat maßgeblich zum Wachstum der Plattform beitragen möchten.",
                 features: [
@@ -83,6 +86,7 @@ const content = {
         plans: [
             {
                 name: "Supporter",
+                key: "supporter",
                 price: "€2.99",
                 description: "For users who want an ad-free experience and basic AI tools with up to 15 requests/month.",
                 features: [
@@ -94,6 +98,7 @@ const content = {
             },
             {
                 name: "Pro",
+                key: "pro",
                 price: "€4.99",
                 description: "Ideal for eager learners who want to unlock the full potential of the app with 30 AI requests/month.",
                 features: [
@@ -106,6 +111,7 @@ const content = {
             },
             {
                 name: "Patron",
+                key: "patron",
                 price: "€9.99",
                 description: "For those who want to significantly contribute to the platform's growth with 75 AI requests/month.",
                 features: [
@@ -195,10 +201,13 @@ export default function SubscribePage() {
                         </CardContent>
                         <CardFooter>
                             <Button 
+                                asChild
                                 className="w-full"
                                 variant={plan.recommended ? 'default' : 'outline'}
                             >
-                                {c.choosePlan}
+                                <Link href={`/checkout?plan=${plan.key}`}>
+                                    {c.choosePlan}
+                                </Link>
                             </Button>
                         </CardFooter>
                     </Card>
@@ -253,4 +262,3 @@ export default function SubscribePage() {
     </div>
   );
 }
-
