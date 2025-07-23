@@ -1,7 +1,7 @@
 "use client"
 
 import { ThemeToggle } from "@/components/theme-toggle"
-import { UserNav } from "@/components/layout/user-nav"
+import { LanguageToggle } from "@/components/language-toggle"
 import { Logo } from "../icons"
 import Link from "next/link"
 import { Button } from "../ui/button"
@@ -21,6 +21,7 @@ export function AppHeader() {
         <Button asChild>
             <Link href="/signup">Konto erstellen</Link>
         </Button>
+        <LanguageToggle />
         <ThemeToggle />
       </div>
     </header>

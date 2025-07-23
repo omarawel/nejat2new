@@ -1,6 +1,7 @@
 import type {Metadata} from 'next';
 import './globals.css';
 import { ThemeProvider } from '@/components/theme-provider';
+import { LanguageProvider } from '@/components/language-provider';
 import { AppHeader } from '@/components/layout/header';
 import { Toaster } from '@/components/ui/toaster';
 
@@ -15,7 +16,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="de" suppressHydrationWarning>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
@@ -23,13 +24,15 @@ export default function RootLayout({
       </head>
       <body className="font-body antialiased">
         <ThemeProvider>
-          <div className="flex flex-col min-h-screen">
-            <AppHeader />
-            <main className="flex-grow flex">
-                {children}
-            </main>
-          </div>
-          <Toaster />
+          <LanguageProvider>
+            <div className="flex flex-col min-h-screen">
+              <AppHeader />
+              <main className="flex-grow flex">
+                  {children}
+              </main>
+            </div>
+            <Toaster />
+          </LanguageProvider>
         </ThemeProvider>
       </body>
     </html>
