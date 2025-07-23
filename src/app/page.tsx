@@ -126,7 +126,7 @@ export default function Home() {
         <p className="mt-2 text-md sm:text-lg text-muted-foreground">{c.sectionDescription}</p>
         <div className="mt-8 grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-4">
           {tools.map((tool, index) => (
-            <div key={index} className="flex flex-col justify-center items-center p-4 border border-border rounded-lg bg-card hover:bg-accent cursor-pointer transition-colors aspect-square">
+            <div key={index} className="flex flex-col justify-center items-center p-4 border border-border rounded-lg bg-card hover:bg-accent cursor-pointer transition-colors w-full h-32">
               <span className="text-3xl">{tool.icon}</span>
               <span className="mt-2 text-sm text-center font-medium">{tool.name}</span>
             </div>
