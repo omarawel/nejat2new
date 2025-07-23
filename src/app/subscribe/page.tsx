@@ -23,29 +23,30 @@ const content = {
             {
                 name: "Unterstützer",
                 price: "2,99€",
-                description: "Für gelegentliche Nutzer, die die App-Entwicklung unterstützen möchten.",
+                description: "Für Nutzer, die werbefrei lernen und grundlegende KI-Tools nutzen möchten.",
                 features: [
                     "Werbefreie Erfahrung",
                     "KI-Dua-Generator",
-                    "Standard-Support"
+                    "Sprachausgabe (Koran, Hadith etc.)",
+                    "Lern-Werkzeug (Auswendiglernen)",
                 ]
             },
             {
                 name: "Pro",
                 price: "4,99€",
-                description: "Ideal für regelmäßige Nutzer, die das volle Potenzial der App ausschöpfen möchten.",
+                description: "Ideal für Wissbegierige, die das volle Potenzial der KI ausschöpfen möchten.",
                 features: [
                     "Alle Funktionen des Unterstützer-Plans",
-                    "KI-Gelehrter & Vers-Finder",
+                    "KI-Gelehrter (unbegrenzte Fragen)",
+                    "KI-Vers-Finder",
                     "Personalisierter Lernpfad-Generator",
-                    "Priorisierter Support"
                 ],
                 recommended: true
             },
             {
                 name: "Patron",
                 price: "9,99€",
-                description: "Für diejenigen, die maßgeblich zum Wachstum und zur Zukunft der Plattform beitragen möchten.",
+                description: "Für diejenigen, die maßgeblich zum Wachstum der Plattform beitragen möchten.",
                 features: [
                     "Alle Funktionen des Pro-Plans",
                     "Frühzugang zu neuen Features",
@@ -61,14 +62,12 @@ const content = {
             featuresList: [
                 { name: "Zugang zu grundlegenden Lerninhalten", free: true, supporter: true, pro: true, patron: true },
                 { name: "Werbefreie Erfahrung", free: false, supporter: true, pro: true, patron: true },
+                { name: "Sprachausgabe für Koran, Hadith etc.", free: false, supporter: true, pro: true, patron: true },
+                { name: "Lern-Werkzeug (Auswendiglernen)", free: false, supporter: true, pro: true, patron: true },
                 { name: "KI-Dua-Generator", free: false, supporter: true, pro: true, patron: true },
-                { name: "Standard-Support", free: false, supporter: true, pro: true, patron: true },
                 { name: "KI-Gelehrter & Vers-Finder", free: false, supporter: false, pro: true, patron: true },
                 { name: "Personalisierter Lernpfad-Generator", free: false, supporter: false, pro: true, patron: true },
-                { name: "Priorisierter Support", free: false, supporter: false, pro: true, patron: true },
                 { name: "Frühzugang zu neuen Features", free: false, supporter: false, pro: false, patron: true },
-                { name: "Direkter Einfluss auf die Entwicklung", free: false, supporter: false, pro: false, patron: true },
-                { name: "Exklusive Community-Abzeichen", free: false, supporter: false, pro: false, patron: true }
             ]
         }
     },
@@ -83,22 +82,23 @@ const content = {
             {
                 name: "Supporter",
                 price: "€2.99",
-                description: "For occasional users who want to support the app's development.",
+                description: "For users who want an ad-free experience and basic AI tools.",
                 features: [
                     "Ad-free experience",
                     "AI Dua Generator",
-                    "Standard support"
+                    "Voice Output (Quran, Hadith etc.)",
+                    "Memorization Tool"
                 ]
             },
             {
                 name: "Pro",
                 price: "€4.99",
-                description: "Ideal for regular users who want to unlock the full potential of the app.",
+                description: "Ideal for eager learners who want to unlock the full potential of AI.",
                 features: [
                     "All features of the Supporter plan",
-                    "AI Scholar & Verse Finder",
+                    "AI Scholar (unlimited questions)",
+                    "AI Verse Finder",
                     "Personalized Learning Path Generator",
-                    "Priority support"
                 ],
                 recommended: true
             },
@@ -121,14 +121,12 @@ const content = {
             featuresList: [
                 { name: "Access to basic learning content", free: true, supporter: true, pro: true, patron: true },
                 { name: "Ad-free experience", free: false, supporter: true, pro: true, patron: true },
+                { name: "Voice output for Quran, Hadith, etc.", free: false, supporter: true, pro: true, patron: true },
+                { name: "Memorization Tool", free: false, supporter: true, pro: true, patron: true },
                 { name: "AI Dua Generator", free: false, supporter: true, pro: true, patron: true },
-                { name: "Standard support", free: false, supporter: true, pro: true, patron: true },
                 { name: "AI Scholar & Verse Finder", free: false, supporter: false, pro: true, patron: true },
                 { name: "Personalized Learning Path Generator", free: false, supporter: false, pro: true, patron: true },
-                { name: "Priority support", free: false, supporter: false, pro: true, patron: true },
                 { name: "Early access to new features", free: false, supporter: false, pro: false, patron: true },
-                { name: "Direct influence on development", free: false, supporter: false, pro: false, patron: true },
-                { name: "Exclusive community badges", free: false, supporter: false, pro: false, patron: true }
             ]
         }
     }
@@ -226,3 +224,5 @@ export default function SubscribePage() {
     </div>
   );
 }
+
+    
