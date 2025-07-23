@@ -32,11 +32,7 @@ export function ThemeProvider({
     if (typeof window === 'undefined') {
       return defaultTheme;
     }
-    const storedTheme = localStorage.getItem(storageKey) as Theme | null;
-    if (storedTheme) {
-        return storedTheme;
-    }
-    return window.matchMedia("(prefers-color-scheme: dark)").matches ? "black" : "light";
+    return (localStorage.getItem(storageKey) as Theme | null) || defaultTheme;
   });
 
   useEffect(() => {
