@@ -96,22 +96,18 @@ export function AppHeader() {
           </DropdownMenu>
         ) : (
           <>
-            <Link href="/login" passHref legacyBehavior>
-                <Button variant="ghost" asChild className="hidden sm:inline-flex">
-                    <a>
-                        <LogIn />
-                        Anmelden
-                    </a>
-                </Button>
-            </Link>
-             <Link href="/signup" passHref legacyBehavior>
-                <Button asChild>
-                    <a>
-                        <UserPlus />
-                        Konto erstellen
-                    </a>
-                </Button>
-            </Link>
+            <Button variant="ghost" asChild className="hidden sm:inline-flex">
+                <Link href="/login">
+                    <LogIn />
+                    Anmelden
+                </Link>
+            </Button>
+             <Button asChild>
+                <Link href="/signup">
+                    <UserPlus />
+                    Konto erstellen
+                </Link>
+            </Button>
           </>
         )}
         <LanguageToggle />
