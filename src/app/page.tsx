@@ -1,3 +1,4 @@
+
 "use client"
 
 import { Button } from "@/components/ui/button";
@@ -6,14 +7,74 @@ import Link from "next/link";
 import { useLanguage } from "@/components/language-provider";
 
 const tools = [
-  { icon: "🕌" },
-  { icon: "📖" },
-  { icon: "📿" },
-  { icon: "🕋" },
-  { icon: "🌙" },
-  { icon: "🤲" },
-  { icon: "🧭" },
-  { icon: "📅" },
+  { icon: "🕌", name: "Moscheefinder" },
+  { icon: "📖", name: "Koran" },
+  { icon: "📿", name: "Tasbih" },
+  { icon: "🕋", name: "Qibla" },
+  { icon: "🌙", name: "Gebetszeiten" },
+  { icon: "🤲", name: "Dua" },
+  { icon: "🧭", name: "Kompass" },
+  { icon: "📅", name: "Kalender" },
+  { icon: "👨‍👩‍👧‍👦", name: "25 Propheten" },
+  { icon: "🙌", name: "Asma-Ul Husna" },
+  { icon: "✍️", name: "Arabische Grundlagen" },
+  { icon: "🔢", name: "Arabische Zahlen" },
+  { icon: "🧠", name: "Auswendiglernen" },
+  { icon: "🎉", name: "Community & Events" },
+  { icon: "⭐", name: "Deine Favoriten" },
+  { icon: "🙏", name: "Dhikr & Bittgebete" },
+  { icon: "✨", name: "Die Strahlen Des Islam" },
+  { icon: "🤖", name: "Du'a-Generator" },
+  { icon: "💍", name: "Ehe (Nikah)" },
+  { icon: "🔔", name: "Erinnerungen" },
+  { icon: "🍽️", name: "Essensregeln" },
+  { icon: "💰", name: "Finanzen" },
+  { icon: "🕌", name: "Freitagsgebet (Jumu'ah)" },
+  { icon: "⏳", name: "Gebet auf Zeit" },
+  { icon: "💧", name: "Gebetswaschung (Wudu)" },
+  { icon: "⏰", name: "Gebetszeiten" },
+  { icon: "💌", name: "Grußkarte" },
+  { icon: "😊", name: "Gute Manieren (Akhlaq)" },
+  { icon: "📜", name: "Hadith des Tages" },
+  { icon: "📚", name: "Hadith Sammlung" },
+  { icon: "✅", name: "Halal & Haram Checker" },
+  { icon: "📖", name: "Hatim" },
+  { icon: "📖", name: "Heiliger Koran" },
+  { icon: "🔄", name: "Hijri Konverter" },
+  { icon: "🛡️", name: "Hisnul Muslim" },
+  { icon: "🎓", name: "Islamische Erziehung" },
+  { icon: "📜", name: "Islamische Geschichten" },
+  { icon: "🎨", name: "Islamische Kunst" },
+  { icon: "👚", name: "Islamische Mode" },
+  { icon: "🌙", name: "Islamische Monate" },
+  { icon: "👶", name: "Islamische Namen" },
+  { icon: "🌟", name: "Islamische Wunder" },
+  { icon: "💬", name: "Islamische Zitate" },
+  { icon: "📅", name: "Islamischer Kalender" },
+  { icon: "🎤", name: "Khutbah der Woche" },
+  { icon: "🤖", name: "KI-Gelehrter" },
+  { icon: "🤝", name: "Konvertiten-Ecke" },
+  { icon: "🔍", name: "Koran-Erkenner" },
+  { icon: "📜", name: "Koranvers des Tages" },
+  { icon: "👩", name: "Ladies Special" },
+  { icon: "🗺️", name: "Lernpfad-Generator" },
+  { icon: "🌿", name: "Prophetische Medizin" },
+  { icon: "❓", name: "Quiz" },
+  { icon: "📻", name: "Radio" },
+  { icon: "✈️", name: "Reise-Etikette" },
+  { icon: "👥", name: "Sahaba" },
+  { icon: "💸", name: "Spenden" },
+  { icon: "📿", name: "Tasbih Zähler" },
+  { icon: "⚰️", name: "Todesfall (Janazah)" },
+  { icon: "🌙", name: "Traumdeuter" },
+  { icon: "💤", name: "Träume im Islam" },
+  { icon: "❤️", name: "Unterstützung" },
+  { icon: "🗓️", name: "Verpasste Fastentage" },
+  { icon: " نماز", name: "Verpasste Gebete" },
+  { icon: "🔎", name: "Vers-Finder" },
+  { icon: "✨", name: "Wunder des Korans" },
+  { icon: "💸", name: "Zakat-Rechner" },
+  { icon: "🏛️", name: "Zivilisation" }
 ];
 
 const content = {
@@ -63,10 +124,11 @@ export default function Home() {
       <section className="mt-20 w-full max-w-5xl mx-auto">
         <h2 className="text-2xl sm:text-3xl font-bold">{c.sectionTitle}</h2>
         <p className="mt-2 text-md sm:text-lg text-muted-foreground">{c.sectionDescription}</p>
-        <div className="mt-8 grid grid-cols-4 md:grid-cols-8 gap-4">
+        <div className="mt-8 grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-4">
           {tools.map((tool, index) => (
-            <div key={index} className="flex justify-center items-center p-4 border border-border rounded-lg bg-card hover:bg-accent cursor-pointer transition-colors">
+            <div key={index} className="flex flex-col justify-center items-center p-4 border border-border rounded-lg bg-card hover:bg-accent cursor-pointer transition-colors aspect-square">
               <span className="text-3xl">{tool.icon}</span>
+              <span className="mt-2 text-sm text-center font-medium">{tool.name}</span>
             </div>
           ))}
         </div>
