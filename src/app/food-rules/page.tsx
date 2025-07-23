@@ -3,12 +3,12 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useLanguage } from '@/components/language-provider';
-import { CheckCircle, XCircle, Drumstick, Fish, GlassWater } from 'lucide-react';
+import { CheckCircle, XCircle, Drumstick, Fish, GlassWater, HandHeart } from 'lucide-react';
 
 const content = {
     de: {
         title: "Islamische Essensregeln",
-        description: "Ein Überblick über Halal (erlaubt) und Haram (verboten) im Islam.",
+        description: "Ein Überblick über Halal (erlaubt), Haram (verboten) und die Etikette des Essens.",
         halal: {
             title: "Was ist Halal?",
             description: "Halal ist ein arabisches Wort und bedeutet „erlaubt“ oder „zulässig“. Es bezieht sich auf alles, was nach islamischem Recht erlaubt ist. Bei Lebensmitteln bedeutet dies, dass sie nach bestimmten Regeln zubereitet und verzehrt werden.",
@@ -29,6 +29,18 @@ const content = {
                 { icon: XCircle, text: "Alkohol und andere berauschende Substanzen." }
             ]
         },
+        etiquette: {
+            title: "Die Etikette des Essens (Adab al-Ta'am)",
+            description: "Neben den Regeln, was gegessen werden darf, gibt es auch Empfehlungen für das Verhalten beim Essen, die auf der Sunnah des Propheten (ﷺ) basieren.",
+            points: [
+                "Beginne mit „Bismillah“ (Im Namen Allahs).",
+                "Iss mit der rechten Hand.",
+                "Iss von dem, was direkt vor dir liegt.",
+                "Iss nicht übermäßig und verschwende keine Lebensmittel.",
+                "Zeige Dankbarkeit und lobe Allah nach dem Essen, indem du „Alhamdulillah“ sagst.",
+                "Iss gemeinsam mit anderen, wann immer es möglich ist, um Segen zu fördern."
+            ]
+        },
         importance: {
             title: "Die Weisheit hinter den Regeln",
             content: "Die islamischen Speisevorschriften dienen nicht nur der körperlichen, sondern auch der spirituellen Reinheit und Gesundheit. Sie fördern Achtsamkeit, Disziplin und Dankbarkeit gegenüber Allah für seine Gaben. Das Einhalten von Halal ist ein wichtiger Teil des Gottesdienstes eines Muslims."
@@ -36,7 +48,7 @@ const content = {
     },
     en: {
         title: "Islamic Food Rules",
-        description: "An overview of Halal (permissible) and Haram (forbidden) in Islam.",
+        description: "An overview of Halal (permissible), Haram (forbidden), and the etiquette of eating.",
         halal: {
             title: "What is Halal?",
             description: "Halal is an Arabic word meaning 'permissible' or 'lawful'. It refers to anything that is permitted under Islamic law. For food, this means it is prepared and consumed according to specific rules.",
@@ -57,6 +69,18 @@ const content = {
                 { icon: XCircle, text: "Alcohol and other intoxicants." }
             ]
         },
+        etiquette: {
+            title: "The Etiquette of Eating (Adab al-Ta'am)",
+            description: "In addition to the rules about what may be eaten, there are also recommendations for behavior during meals, based on the Sunnah of the Prophet (ﷺ).",
+            points: [
+                "Start by saying 'Bismillah' (In the name of Allah).",
+                "Eat with your right hand.",
+                "Eat from what is directly in front of you.",
+                "Do not overeat and do not waste food.",
+                "Show gratitude and praise Allah after eating by saying 'Alhamdulillah'.",
+                "Eat together with others whenever possible to encourage blessings."
+            ]
+        },
         importance: {
             title: "The Wisdom Behind the Rules",
             content: "The Islamic dietary laws serve not only physical but also spiritual purity and health. They promote mindfulness, discipline, and gratitude to Allah for His blessings. Adhering to Halal is an important part of a Muslim's worship."
@@ -75,7 +99,7 @@ export default function FoodRulesPage() {
                 <p className="text-muted-foreground mt-2 text-lg max-w-3xl mx-auto">{c.description}</p>
             </header>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto mb-8">
                 <Card className="border-green-500/50 border-2">
                     <CardHeader>
                         <CardTitle className="flex items-center gap-3 text-green-600 dark:text-green-500">
@@ -111,6 +135,25 @@ export default function FoodRulesPage() {
                                     <item.icon className="h-5 w-5 text-destructive mt-1 flex-shrink-0" />
                                     <span>{item.text}</span>
                                 </li>
+                            ))}
+                        </ul>
+                    </CardContent>
+                </Card>
+            </div>
+
+             <div className="max-w-5xl mx-auto mb-8">
+                <Card>
+                    <CardHeader>
+                        <CardTitle className="flex items-center gap-3">
+                            <HandHeart className="h-8 w-8 text-primary" />
+                            {c.etiquette.title}
+                        </CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                        <p className="text-muted-foreground">{c.etiquette.description}</p>
+                        <ul className="list-disc list-inside space-y-2">
+                            {c.etiquette.points.map((point, index) => (
+                                <li key={index}>{point}</li>
                             ))}
                         </ul>
                     </CardContent>
