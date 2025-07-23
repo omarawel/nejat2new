@@ -41,7 +41,7 @@ export async function getHadiths(page: number = 1, query: string = ''): Promise<
         url.searchParams.append('apiKey', apiKey);
 
         if (query) {
-            url.searchParams.append('query', query);
+            url.searchParams.append('hadith', query);
         }
         
         const response = await fetch(url.toString());
