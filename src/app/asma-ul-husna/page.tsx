@@ -1,8 +1,13 @@
 
 "use client"
 
+import { useState, useRef, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Play, Pause, Loader, Eye, EyeOff } from 'lucide-react';
 import { useLanguage } from '@/components/language-provider';
+import { cn } from '@/lib/utils';
+import { textToSpeech } from "@/ai/flows/text-to-speech";
 
 const names = [
   { arabic: 'الرحمن', transliteration: 'Ar-Rahman', german: 'Der Allerbarmer', english: 'The All-Merciful' },
@@ -110,11 +115,15 @@ const content = {
         title: "Asma-Ul Husna",
         description: "Die 99 schönsten Namen Allahs.",
         meaningKey: "german",
+        play: "Abspielen",
+        memorize: "Lernen"
     },
     en: {
         title: "Asma-Ul Husna",
         description: "The 99 most beautiful names of Allah.",
         meaningKey: "english",
+        play: "Play",
+        memorize: "Memorize"
     }
 }
 
@@ -123,25 +132,87 @@ export default function AsmaUlHusnaPage() {
   const { language } = useLanguage();
   const c = content[language] || content.de;
 
+  const [hidden, setHidden] = useState<Record<string, boolean>>({});
+  const [playingAudio, setPlayingAudio] = useState<string | null>(null);
+  const [loadingAudio, setLoadingAudio] = useState<string | null>(null);
+  const [audioUrl, setAudioUrl] = useState<string | null>(null);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  const toggleVisibility = (id: string) => {
+    setHidden(prev => ({ ...prev, [id]: !prev[id] }));
+  };
+
+  const handlePlayAudio = async (textToPlay: string, id: string) => {
+    if (playingAudio === id) {
+        audioRef.current?.pause();
+        setPlayingAudio(null);
+        return;
+    }
+    setLoadingAudio(id);
+    setAudioUrl(null);
+    setPlayingAudio(null);
+
+    try {
+      const result = await textToSpeech(textToPlay);
+      setAudioUrl(result.audio);
+      setPlayingAudio(id);
+    } catch (err) {
+      console.error("Failed to get audio", err);
+    } finally {
+      setLoadingAudio(null);
+    }
+  };
+
+  useEffect(() => {
+    if (audioUrl && audioRef.current) {
+        audioRef.current.play().catch(e => console.error("Audio play failed", e));
+    }
+  }, [audioUrl]);
+
   return (
     <div className="container mx-auto px-4 py-8">
+      {audioUrl && (
+        <audio
+          ref={audioRef}
+          src={audioUrl}
+          onEnded={() => setPlayingAudio(null)}
+        />
+      )}
       <header className="text-center mb-12">
         <h1 className="text-4xl font-bold tracking-tight text-primary">{c.title}</h1>
         <p className="text-muted-foreground mt-2 text-lg">{c.description}</p>
       </header>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        {names.map((name, index) => (
-          <Card key={index} className="flex flex-col items-center justify-center p-4 text-center transform transition-all duration-300 hover:scale-105 hover:bg-accent">
-            <CardTitle className="text-3xl font-quranic text-primary">{name.arabic}</CardTitle>
-            <CardDescription className="mt-2 text-lg font-semibold">{name.transliteration}</CardDescription>
-            <CardContent className="p-0 mt-1">
-              <p className="text-muted-foreground">{name[c.meaningKey as keyof typeof name]}</p>
-            </CardContent>
-          </Card>
-        ))}
+        {names.map((name, index) => {
+            const id = name.transliteration;
+            const isHidden = hidden[id];
+            const isPlaying = playingAudio === id;
+            const isLoading = loadingAudio === id;
+            const meaning = name[c.meaningKey as keyof typeof name];
+
+            return (
+              <Card key={index} className="flex flex-col justify-between p-4 text-center">
+                <div>
+                  <CardTitle className="text-3xl font-quranic text-primary">{name.arabic}</CardTitle>
+                  <div className={cn("transition-opacity", isHidden ? 'opacity-0' : 'opacity-100')}>
+                    <CardDescription className="mt-2 text-lg font-semibold">{name.transliteration}</CardDescription>
+                    <CardContent className="p-0 mt-1">
+                      <p className="text-muted-foreground">{meaning}</p>
+                    </CardContent>
+                  </div>
+                </div>
+                <div className="flex justify-center items-center mt-4 pt-4 border-t">
+                    <Button variant="ghost" size="icon" onClick={() => handlePlayAudio(name.transliteration, id)} disabled={isLoading}>
+                      {isLoading ? <Loader className="h-5 w-5 animate-spin" /> : (isPlaying ? <Pause className="h-5 w-5" /> : <Play className="h-5 w-5" />)}
+                    </Button>
+                    <Button variant="ghost" size="icon" onClick={() => toggleVisibility(id)}>
+                      {isHidden ? <EyeOff /> : <Eye />}
+                    </Button>
+                </div>
+              </Card>
+            )
+        })}
       </div>
     </div>
   );
 }
-
-    
