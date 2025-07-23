@@ -26,7 +26,7 @@ const alphabet = [
   { letter: 'ش', name: 'Shin', forms: { isolated: 'ش', final: 'ـش', medial: 'ـشـ', initial: 'شـ' } },
   { letter: 'ص', name: 'Sad', forms: { isolated: 'ص', final: 'ـص', medial: 'ـصـ', initial: 'صـ' } },
   { letter: 'ض', name: 'Dad', forms: { isolated: 'ض', final: 'ـض', medial: 'ـضـ', initial: 'ضـ' } },
-  { letter: 'ط', name: 'Ta', forms: { isolated: 'ط', final: 'ـط', medial: 'ـطـ', initial: 'طـ' } },
+  { letter: 'ط', name: 'Taa', forms: { isolated: 'ط', final: 'ـط', medial: 'ـطـ', initial: 'طـ' } },
   { letter: 'ظ', name: 'Dha', forms: { isolated: 'ظ', final: 'ـظ', medial: 'ـظـ', initial: 'ظـ' } },
   { letter: 'ع', name: 'Ain', forms: { isolated: 'ع', final: 'ـع', medial: 'ـعـ', initial: 'عـ' } },
   { letter: 'غ', name: 'Ghain', forms: { isolated: 'غ', final: 'ـغ', medial: 'ـغـ', initial: 'غـ' } },
@@ -171,7 +171,7 @@ export default function ArabicBasicsPage() {
             </TableHeader>
             <TableBody>
               {alphabet.map((char) => {
-                const id = char.name;
+                const id = char.letter;
                 const isHidden = hiddenRows[id];
                 const isPlaying = playingAudio === id;
                 const isLoading = loadingAudio === id;
@@ -247,5 +247,7 @@ export default function ArabicBasicsPage() {
   );
 }
 
+
+    
 
     
