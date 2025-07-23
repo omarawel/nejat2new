@@ -71,6 +71,11 @@ export default function HadithPage() {
   const [submittedSearchTerm, setSubmittedSearchTerm] = useState("");
   const [language, setLanguage] = useState<Language>("eng");
   const [page, setPage] = useState(1);
+  const [pageInput, setPageInput] = useState("1");
+
+  useEffect(() => {
+    setPageInput(page.toString());
+  }, [page]);
 
   useEffect(() => {
     async function fetchHadiths() {
@@ -85,14 +90,24 @@ export default function HadithPage() {
             throw new Error("No hadiths data received.");
         }
         
-        setHadiths(data.hadiths.data)
+        const hadithsData = data.hadiths.data;
+
+        setHadiths(hadithsData)
+        
+        const total = data.hadiths.total;
+        const perPage = hadithsData.length > 0 ? hadithsData.length : 25; // Default to 25 if data is empty
+        const lastPage = Math.ceil(total / perPage);
+        const from = data.hadiths.from;
+        const to = data.hadiths.to;
+
         setPaginationInfo({
-            currentPage: data.hadiths.from / data.hadiths.data.length + 1,
-            lastPage: Math.ceil(data.hadiths.total / data.hadiths.data.length),
-            from: data.hadiths.from,
-            to: data.hadiths.to,
-            total: data.hadiths.total,
+            currentPage: page,
+            lastPage,
+            from,
+            to,
+            total,
         })
+
       } catch (err) {
         setError(err instanceof Error ? err.message : 'An unknown error occurred')
       } finally {
@@ -119,6 +134,16 @@ export default function HadithPage() {
     if (paginationInfo && paginationInfo.currentPage > 1) {
       setPage(p => p - 1);
     }
+  }
+
+  const handleGoToPage = (e: FormEvent) => {
+      e.preventDefault();
+      const pageNum = parseInt(pageInput, 10);
+      if (paginationInfo && !isNaN(pageNum) && pageNum >= 1 && pageNum <= paginationInfo.lastPage) {
+          setPage(pageNum);
+      } else {
+         setPageInput(page.toString()); // Reset input to current page if invalid
+      }
   }
   
   return (
@@ -209,10 +234,22 @@ export default function HadithPage() {
                     <p className="text-sm text-muted-foreground">
                         Showing {paginationInfo.from} to {paginationInfo.to} of {paginationInfo.total} hadiths
                     </p>
-                    <div className="flex gap-2">
+                    <div className="flex items-center gap-2">
                         <Button variant="outline" size="icon" onClick={handlePrevPage} disabled={paginationInfo.currentPage <= 1 || loading}>
                             <ChevronLeft />
                         </Button>
+                        <form onSubmit={handleGoToPage} className="flex items-center gap-1">
+                           <Input 
+                             type="number"
+                             value={pageInput}
+                             onChange={e => setPageInput(e.target.value)}
+                             className="w-16 h-9 text-center"
+                             min="1"
+                             max={paginationInfo.lastPage}
+                           />
+                           <span className="text-muted-foreground text-sm">/ {paginationInfo.lastPage}</span>
+                           <Button type="submit" variant="outline" size="sm" className="h-9">Go</Button>
+                        </form>
                         <Button variant="outline" size="icon" onClick={handleNextPage} disabled={paginationInfo.currentPage >= paginationInfo.lastPage || loading}>
                             <ChevronRight />
                         </Button>
