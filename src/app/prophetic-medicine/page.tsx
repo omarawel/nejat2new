@@ -3,7 +3,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { useLanguage } from '@/components/language-provider';
-import { Leaf, Droplets, Utensils, Shield, ArrowLeft } from 'lucide-react';
+import { Leaf, Droplets, Utensils, Shield, ArrowLeft, Sun, Sprout } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 
@@ -37,6 +37,41 @@ const content = {
                 icon: Shield,
                 title: "Hijama (Schröpfen)",
                 content: "Hijama ist eine traditionelle Heilmethode, bei der durch das Anlegen von Schröpfgläsern ein Unterdruck erzeugt wird, um Giftstoffe aus dem Körper zu ziehen. Der Prophet (ﷺ) praktizierte und empfahl diese Methode und bezeichnete sie als eine der besten Heilmethoden."
+            },
+            {
+                icon: Leaf,
+                title: "Oliven & Olivenöl (Zaytun)",
+                content: "Der Olivenbaum wird im Koran als 'gesegneter Baum' bezeichnet. Der Prophet (ﷺ) empfahl, Olivenöl zu essen und es auf Haut und Haar aufzutragen. Es ist reich an gesunden Fetten und Antioxidantien und gilt als nahrhaft für den gesamten Körper."
+            },
+            {
+                icon: Droplets,
+                title: "Wasser (Ma')",
+                content: "Wasser ist die Quelle allen Lebens. Der Islam betont die Bedeutung von Reinheit und das Trinken von sauberem Wasser. Dem Zamzam-Wasser aus Mekka wird eine besondere heilende Wirkung zugeschrieben. Der Prophet (ﷺ) sagte: 'Das Zamzam-Wasser ist für das, wofür es getrunken wird.'"
+            },
+            {
+                icon: Utensils,
+                title: "Talbina (Gerstenbrei)",
+                content: "Talbina ist ein Brei aus Gerstenmehl, Milch und Honig. Der Prophet (ﷺ) empfahl es, um das Herz des Trauernden zu beruhigen und den Kranken zu stärken. Es ist leicht verdaulich und nahrhaft."
+            },
+            {
+                icon: Sprout,
+                title: "Feigen (Teen)",
+                content: "Die Feige wird im Koran in der gleichnamigen Sure erwähnt, was ihre besondere Stellung unterstreicht. Sie gilt als Frucht des Paradieses und ist bekannt für ihren hohen Gehalt an Ballaststoffen und Mineralien, die die Verdauung fördern."
+            },
+             {
+                icon: Leaf,
+                title: "Miswak",
+                content: "Der Miswak ist ein Zweig des Arak-Baumes, der als natürliche Zahnbürste verwendet wird. Der Prophet (ﷺ) benutzte ihn regelmäßig und betonte seine Wichtigkeit stark: 'Wäre es für meine Ummah keine Härte, hätte ich ihnen befohlen, den Miswak vor jedem Gebet zu benutzen.' (Bukhari). Er reinigt den Mund, erfreut Allah und stärkt das Zahnfleisch."
+            },
+             {
+                icon: Sprout,
+                title: "Ingwer (Zanjabil)",
+                content: "Ingwer wird im Koran als eines der Getränke der Paradiesbewohner erwähnt. In der prophetischen Medizin wird er für seine wärmenden Eigenschaften, die Förderung der Verdauung und die Linderung von Übelkeit geschätzt."
+            },
+             {
+                icon: Utensils,
+                title: "Kürbis (Dabba')",
+                content: "Es wird überliefert, dass der Kürbis eines der Lieblingsgemüse des Propheten Muhammad (ﷺ) war. Er ist reich an Vitaminen und Wasser und gilt als leicht und nahrhaft für den Körper."
             }
         ]
     },
@@ -69,6 +104,41 @@ const content = {
                 icon: Shield,
                 title: "Hijama (Cupping)",
                 content: "Hijama is a traditional healing method in which a vacuum is created by placing cups on the skin to draw out toxins from the body. The Prophet (ﷺ) practiced and recommended this method, calling it one of the best healing methods."
+            },
+            {
+                icon: Leaf,
+                title: "Olives & Olive Oil (Zaytun)",
+                content: "The olive tree is described in the Quran as a 'blessed tree'. The Prophet (ﷺ) recommended eating olive oil and applying it to the skin and hair. It is rich in healthy fats and antioxidants and is considered nourishing for the entire body."
+            },
+            {
+                icon: Droplets,
+                title: "Water (Ma')",
+                content: "Water is the source of all life. Islam emphasizes the importance of purity and drinking clean water. Zamzam water from Mecca is attributed with special healing properties. The Prophet (ﷺ) said: 'Zamzam water is for whatever it is drunk for.'"
+            },
+            {
+                icon: Utensils,
+                title: "Talbina (Barley Porridge)",
+                content: "Talbina is a porridge made from barley flour, milk, and honey. The Prophet (ﷺ) recommended it to soothe the heart of the grieving and to strengthen the sick. It is easily digestible and nutritious."
+            },
+            {
+                icon: Sprout,
+                title: "Figs (Teen)",
+                content: "The fig is mentioned in the Quran in the surah of the same name, which underscores its special status. It is considered a fruit of Paradise and is known for its high content of fiber and minerals that promote digestion."
+            },
+            {
+                icon: Leaf,
+                title: "Miswak",
+                content: "The Miswak is a branch of the Arak tree used as a natural toothbrush. The Prophet (ﷺ) used it regularly and strongly emphasized its importance: 'Were it not that I would be overburdening my Ummah, I would have ordered them to use the Miswak before every prayer.' (Bukhari). It cleanses the mouth, pleases Allah, and strengthens the gums."
+            },
+            {
+                icon: Sprout,
+                title: "Ginger (Zanjabil)",
+                content: "Ginger is mentioned in the Quran as one of the drinks of the inhabitants of Paradise. In prophetic medicine, it is valued for its warming properties, promoting digestion, and relieving nausea."
+            },
+            {
+                icon: Utensils,
+                title: "Pumpkin (Dabba')",
+                content: "It is narrated that pumpkin was one of the favorite vegetables of the Prophet Muhammad (ﷺ). It is rich in vitamins and water and is considered light and nutritious for the body."
             }
         ]
     }
@@ -94,7 +164,7 @@ export default function PropheticMedicinePage() {
                 <p className="text-muted-foreground mt-2 text-lg max-w-3xl mx-auto">{c.description}</p>
             </header>
             
-            <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {c.sections.map((section, index) => (
                     <Card key={index} className="flex flex-col">
                         <CardHeader>
