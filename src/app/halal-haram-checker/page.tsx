@@ -1,4 +1,7 @@
-import { HalalHaramForm } from "./halal-haram-form";
+
+"use client"
+
+import { HalalHaramForm } from "./insights-form";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ShieldCheck, ArrowLeft } from "lucide-react";
 import { useLanguage } from "@/components/language-provider";
