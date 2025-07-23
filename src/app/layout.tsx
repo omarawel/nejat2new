@@ -5,6 +5,7 @@ import { LanguageProvider } from '@/components/language-provider';
 import { AppHeader } from '@/components/layout/header';
 import { Toaster } from '@/components/ui/toaster';
 import { Suspense } from 'react';
+import { Footer } from '@/components/layout/footer';
 
 export const metadata: Metadata = {
   title: 'Nejat Digital',
@@ -33,6 +34,7 @@ export default function RootLayout({
                     {children}
                   </Suspense>
               </main>
+              <Footer />
             </div>
             <Toaster />
           </LanguageProvider>
