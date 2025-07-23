@@ -32,7 +32,6 @@ export const allTools = [
     { key: "islamic_fashion", icon: "👚", de: "Islamische Mode", en: "Islamic Fashion", href: "/islamic-fashion" },
     { key: "islamic_months", icon: "🌙", de: "Islamische Monate", en: "Islamic Months", href: "/islamic-months" },
     { key: "islamic_names", icon: "👶", de: "Islamische Namen", en: "Islamic Names", href: "/islamic-names" },
-    { key: "islamic_miracles", icon: "🌟", de: "Wunder im Islam", en: "Miracles in Islam", href: "/islamic-miracles" },
     { key: "islamic_quotes", icon: "💬", de: "Islamische Zitate", en: "Islamic Quotes", href: "/islamic-quotes" },
     { key: "islamic_calendar", icon: "📅", de: "Islamischer Kalender", en: "Islamic Calendar", href: "/islamic-calendar" },
     { key: "insights", icon: "🤖", de: "KI-Gelehrter", en: "AI Scholar", href: "/insights" },
@@ -54,10 +53,11 @@ export const allTools = [
     { key: "dreams_in_islam", icon: "💤", de: "Träume im Islam", en: "Dreams in Islam", href: "/dreams-in-islam" },
     { key: "travel_etiquette", icon: "✈️", de: "Reise-Etikette", en: "Travel Etiquette", href: "/travel-etiquette" },
     { key: "support", icon: "❤️", de: "Unterstützung", en: "Support", href: null },
-    { key: "missed_fasts", icon: "🗓️", de: "Verpasste Fastentage", en: "Missed Fasts", href: null },
-    { key: "missed_prayers", icon: " نماز", de: "Verpasste Gebete", en: "Missed Prayers", href: null },
-    { key: "verse_finder", icon: "🔎", de: "Vers-Finder", en: "Verse Finder", href: null },
-    { key: "quran_miracles", icon: "✨", de: "Wunder des Korans", en: "Miracles of the Quran", href: null },
-    { key: "zakat_calculator", icon: "💸", de: "Zakat-Rechner", en: "Zakat Calculator", href: null },
-    { key: "civilization", icon: "🏛️", de: "Zivilisation", en: "Civilization", href: null }
+    { key: "missed_fasts", icon: "🗓️", de: "Verpasste Fastentage", en: "Missed Fasts", href: "/missed-fasts" },
+    { key: "missed_prayers", icon: "🧎", de: "Verpasste Gebete", en: "Missed Prayers", href: "/missed-prayers" },
+    { key: "verse_finder", icon: "🔎", de: "Vers-Finder", en: "Verse Finder", href: "/verse-finder" },
+    { key: "quran_miracles", icon: "✨", de: "Wunder des Korans", en: "Miracles of the Quran", href: "/quran-miracles" },
+    { key: "islamic_miracles", icon: "🌟", de: "Wunder im Islam", en: "Miracles in Islam", href: "/islamic-miracles" },
+    { key: "zakat_calculator", icon: "💸", de: "Zakat-Rechner", en: "Zakat Calculator", href: "/zakat-calculator" },
+    { key: "civilization", icon: "🏛️", de: "Zivilisation", en: "Civilization", href: "/civilization" }
 ];
