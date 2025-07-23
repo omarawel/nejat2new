@@ -7,77 +7,39 @@ import {
   CardHeader,
   CardTitle,
   CardDescription,
-  CardFooter
 } from "@/components/ui/card"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Button } from "@/components/ui/button"
 import { Terminal, ChevronLeft, ChevronRight } from "lucide-react"
 import { useEffect, useState } from "react"
-
-interface Hadith {
-  id: number;
-  hadithNumber: string;
-  englishNarrator: string;
-  hadithEnglish: string;
-  hadithUrdu: string;
-  hadithArabic: string;
-  chapter: {
-    chapterNumber: string;
-    chapterEnglish: string;
-    chapterUrdu: string;
-    chapterArabic: string;
-  };
-  book: {
-    bookName: string;
-    writerName: string;
-  };
-}
-
-interface HadithApiResponse {
-    hadiths: {
-        data: Hadith[];
-        next_page_url: string | null;
-        prev_page_url: string | null;
-        from: number;
-        to: number;
-        total: number;
-    };
-}
+import type { Hadith, HadithApiResponse } from "./actions"
+import { getHadiths } from "./actions"
 
 export default function HadithPage() {
   const [hadiths, setHadiths] = useState<Hadith[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
-  const [currentPageUrl, setCurrentPageUrl] = useState<string>('https://hadithapi.com/api/hadiths')
-  const [paginationInfo, setPaginationInfo] = useState<{next: string | null, prev: string | null, from: number, to: number, total: number} | null>(null)
+  const [currentPage, setCurrentPage] = useState<number>(1)
+  const [paginationInfo, setPaginationInfo] = useState<{next: boolean, prev: boolean, from: number, to: number, total: number} | null>(null)
   
   useEffect(() => {
     async function fetchHadiths() {
       setLoading(true)
       setError(null)
       try {
-        const apiKey = "$2y$10$CyPRMBPY6e9ijyeQ6pvZgT8wmb5ptObUWWDEoJhKbXRDXfkUwJW";
-        if (!apiKey) {
-            throw new Error('Hadith API key is missing. Please add NEXT_PUBLIC_HADITH_API_KEY to your environment variables.');
+        const data = await getHadiths(currentPage);
+        if (data.error) {
+            throw new Error(data.error);
         }
-
-        const url = new URL(currentPageUrl);
-        url.searchParams.append('apiKey', apiKey);
-
-        const response = await fetch(url.toString())
-
-        if (!response.ok) {
-             if (response.status === 401) {
-                throw new Error("Invalid Hadith API key. Please check your environment variables.");
-            }
-            throw new Error("Failed to fetch Hadiths. Please try again later.")
+        if (!data.hadiths) {
+            throw new Error("No hadiths data received.");
         }
-        const data: HadithApiResponse = await response.json()
+        
         setHadiths(data.hadiths.data)
         setPaginationInfo({
-            next: data.hadiths.next_page_url,
-            prev: data.hadiths.prev_page_url,
+            next: !!data.hadiths.next_page_url,
+            prev: !!data.hadiths.prev_page_url,
             from: data.hadiths.from,
             to: data.hadiths.to,
             total: data.hadiths.total,
@@ -89,17 +51,17 @@ export default function HadithPage() {
       }
     }
     fetchHadiths()
-  }, [currentPageUrl])
+  }, [currentPage])
   
   const handleNextPage = () => {
     if (paginationInfo?.next) {
-        setCurrentPageUrl(paginationInfo.next);
+        setCurrentPage(prev => prev + 1);
     }
   }
 
   const handlePrevPage = () => {
     if (paginationInfo?.prev) {
-        setCurrentPageUrl(paginationInfo.prev);
+        setCurrentPage(prev => prev - 1);
     }
   }
 
