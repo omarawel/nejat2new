@@ -1,5 +1,9 @@
-import Image from 'next/image';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@/components/ui/accordion';
 
 const prophets = [
   { name: 'Adam (عليه السلام)', story: 'Der erste Mensch, von Allah erschaffen. Er lebte im Paradies, wurde aber nach dem Essen von der verbotenen Frucht auf die Erde geschickt.' },
@@ -36,28 +40,16 @@ export default function ProphetsPage() {
         <h1 className="text-4xl font-bold tracking-tight text-primary">Die 25 Propheten im Koran</h1>
         <p className="text-muted-foreground mt-2 text-lg">Lerne die Gesandten Allahs und ihre Geschichten kennen.</p>
       </header>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <Accordion type="single" collapsible className="w-full max-w-3xl mx-auto">
         {prophets.map((prophet, index) => (
-          <Card key={index} className="overflow-hidden transform transition-all duration-300 hover:scale-105 hover:shadow-xl">
-            <CardHeader className="p-0">
-               <div className="relative w-full h-48">
-                 <Image
-                    src={`https://placehold.co/600x400.png`}
-                    alt={`Bild von ${prophet.name}`}
-                    layout="fill"
-                    objectFit="cover"
-                    className="bg-accent"
-                    data-ai-hint="islamic prophet"
-                 />
-               </div>
-            </CardHeader>
-            <CardContent className="p-6">
-              <CardTitle className="text-2xl text-primary">{prophet.name}</CardTitle>
-              <CardDescription className="mt-2 text-base h-24 overflow-hidden">{prophet.story}</CardDescription>
-            </CardContent>
-          </Card>
+          <AccordionItem key={index} value={`item-${index}`}>
+            <AccordionTrigger className="text-xl text-primary">{prophet.name}</AccordionTrigger>
+            <AccordionContent className="text-base text-foreground/80 px-4">
+              {prophet.story}
+            </AccordionContent>
+          </AccordionItem>
         ))}
-      </div>
+      </Accordion>
     </div>
   );
 }
