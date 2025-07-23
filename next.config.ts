@@ -32,11 +32,11 @@ const nextConfig: NextConfig = {
     ],
   },
   experimental: {
-    allowedDevOrigins: [
-      "https://6000-firebase-studio-1753240519809.cluster-lu4mup47g5gm4rtyvhzpwbfadi.cloudworkstations.dev",
-      "https://9000-firebase-studio-1753240519809.cluster-lu4mup47g5gm4rtyvhzpwbfadi.cloudworkstations.dev",
-    ]
   },
+  allowedDevOrigins: [
+    "https://6000-firebase-studio-1753240519809.cluster-lu4mup47g5gm4rtyvhzpwbfadi.cloudworkstations.dev",
+    "https://9000-firebase-studio-1753240519809.cluster-lu4mup47g5gm4rtyvhzpwbfadi.cloudworkstations.dev",
+  ],
   webpack: (
     config,
     { isServer }
