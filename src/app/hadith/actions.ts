@@ -61,9 +61,6 @@ export async function getHadiths(page: number = 1, query: string = ''): Promise<
         const response = await fetch(url.toString());
 
         if (!response.ok) {
-            if (response.status === 401) {
-                return { error: "The provided Hadith API key is invalid." };
-            }
             const errorText = await response.text();
             return { error: `Failed to fetch Hadiths: ${response.status} ${errorText}` };
         }
@@ -72,13 +69,14 @@ export async function getHadiths(page: number = 1, query: string = ''): Promise<
 
         if (query) {
             const searchData = data as HadithSearchApiResponse;
+            // The search API returns a slightly different structure. We normalize it here.
             return {
                 hadiths: {
                     data: searchData.hadiths.data,
                     next_page_url: searchData.hadiths.next_page_url,
                     prev_page_url: searchData.hadiths.prev_page_url,
-                    from: (searchData.hadiths.current_page - 1) * 25 + 1,
-                    to: (searchData.hadiths.current_page - 1) * 25 + searchData.hadiths.data.length,
+                    from: (searchData.hadiths.current_page - 1) * 25 + 1, // 'from' is not in search response
+                    to: (searchData.hadiths.current_page - 1) * 25 + searchData.hadiths.data.length, // 'to' is not in search response
                     total: searchData.hadiths.total
                 }
             };
