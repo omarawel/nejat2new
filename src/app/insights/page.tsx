@@ -1,3 +1,5 @@
+"use client"
+
 import { InsightsForm } from "./insights-form";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Sparkles, ArrowLeft } from "lucide-react";
