@@ -118,7 +118,7 @@ export default function LoginPage() {
     <Card className="mx-auto max-w-sm">
       <CardHeader>
         <div className="flex justify-center mb-4">
-          <Logo className="h-12 w-12 text-primary" />
+          
         </div>
         <CardTitle className="text-2xl text-center">Login to Nejat Digital</CardTitle>
         <CardDescription className="text-center">
