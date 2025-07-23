@@ -4,7 +4,6 @@
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Calendar, Users, MessageSquare } from 'lucide-react';
-import Image from 'next/image';
 import { useLanguage } from '@/components/language-provider';
 
 const content = {
@@ -43,20 +42,10 @@ export default function CommunityPage() {
 
   return (
     <div className="flex-grow flex flex-col">
-      <div className="relative h-64 md:h-80 w-full">
-         <Image
-            src="https://placehold.co/1200x400.png"
-            alt="Community Banner"
-            layout="fill"
-            objectFit="cover"
-            className="bg-accent"
-            data-ai-hint="community event"
-          />
-        <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
-            <div className="text-center text-white p-4">
-                <h1 className="text-4xl md:text-6xl font-bold tracking-tight">{c.joinCommunity}</h1>
-                <p className="mt-4 text-lg md:text-xl max-w-3xl">{c.connect}</p>
-            </div>
+      <div className="bg-accent text-accent-foreground py-16 md:py-24">
+        <div className="container mx-auto text-center px-4">
+            <h1 className="text-4xl md:text-6xl font-bold tracking-tight text-primary">{c.joinCommunity}</h1>
+            <p className="mt-4 text-lg md:text-xl max-w-3xl mx-auto text-muted-foreground">{c.connect}</p>
         </div>
       </div>
 
@@ -105,5 +94,3 @@ export default function CommunityPage() {
     </div>
   );
 }
-
-    
