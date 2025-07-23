@@ -20,13 +20,15 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { Button } from "@/components/ui/button"
-import { Terminal, Search, Eye, EyeOff, Play, Loader, Pause, ArrowLeft } from "lucide-react"
-import { useEffect, useState, useMemo, FormEvent, useRef } from "react"
+import { Terminal, Search, Eye, EyeOff, Play, Loader, Pause, ArrowLeft, Download, WifiOff } from "lucide-react"
+import { useEffect, useState, useMemo, FormEvent, useRef, useCallback } from "react"
 import { cn } from "@/lib/utils"
 import { textToSpeech } from "@/ai/flows/text-to-speech"
 import type { TextToSpeechInput, TextToSpeechOutput } from "@/ai/flows/text-to-speech-types";
 import Link from "next/link"
 import { useLanguage } from "@/components/language-provider"
+import { getSurahList, storeSurahList, getSurahWithEditions, storeSurahEdition, isQuranDownloaded, clearOfflineQuranData } from "@/lib/quran-offline"
+import { Progress } from "@/components/ui/progress"
 
 
 interface Surah {
@@ -103,6 +105,14 @@ const content = {
         errorAudio: "Fehler beim Generieren des Audios für den Vers.",
         searchError: "Suchanfrage fehlgeschlagen. Bitte versuche es erneut.",
         searchErrorTitle: "Suchfehler",
+        offlineAccess: "Offline-Zugriff",
+        downloadQuran: "Für Offline-Nutzung herunterladen",
+        downloadingQuran: "Koran wird heruntergeladen...",
+        downloadComplete: "Download abgeschlossen!",
+        clearOfflineData: "Offline-Daten löschen",
+        downloadingSurah: "Lade Sure",
+        downloaded: "Heruntergeladen",
+        offlineReady: "Koran ist offline verfügbar.",
     },
     en: {
         title: "The Holy Quran",
@@ -125,6 +135,14 @@ const content = {
         errorAudio: "Failed to generate audio for the verse.",
         searchError: "Search request failed. Please try again.",
         searchErrorTitle: "Search Error",
+        offlineAccess: "Offline Access",
+        downloadQuran: "Download for Offline Use",
+        downloadingQuran: "Downloading Quran...",
+        downloadComplete: "Download Complete!",
+        clearOfflineData: "Clear Offline Data",
+        downloadingSurah: "Downloading Surah",
+        downloaded: "Downloaded",
+        offlineReady: "Quran is available offline.",
     }
 }
 
@@ -179,6 +197,20 @@ const SurahDetailContent = ({ surahNumber, languageEdition, c }: { surahNumber: 
       setLoading(true)
       setError(null)
       setHiddenAyahs({})
+      
+      const editions = ['quran-uthmani', languageEdition, 'en.transliteration'];
+      const offlineData = await getSurahWithEditions(surahNumber, editions);
+
+      if (offlineData) {
+        setDetail({
+            arabic: offlineData[0],
+            translation: offlineData[1],
+            transliteration: offlineData[2]
+        });
+        setLoading(false);
+        return;
+      }
+      
       try {
         const response = await fetch(`https://api.alquran.cloud/v1/surah/${surahNumber}/editions/quran-uthmani,${languageEdition},en.transliteration`)
         if (!response.ok) {
@@ -201,7 +233,7 @@ const SurahDetailContent = ({ surahNumber, languageEdition, c }: { surahNumber: 
       }
     }
     fetchSurahDetail()
-  }, [surahNumber, languageEdition, c.errorSurahDetails, c.errorInvalidData])
+  }, [surahNumber, languageEdition, c.errorSurahDetails, c.errorInvalidData, c.errorAudio])
 
   if (loading) {
     return (
@@ -289,9 +321,65 @@ export default function QuranPage() {
   const [searchError, setSearchError] = useState<string | null>(null);
   const [searchResults, setSearchResults] = useState<SearchResults | null>(null);
 
+  const [isDownloaded, setIsDownloaded] = useState(false);
+  const [isDownloading, setIsDownloading] = useState(false);
+  const [downloadProgress, setDownloadProgress] = useState(0);
+
+
+  const checkDownloadStatus = useCallback(async () => {
+    const status = await isQuranDownloaded();
+    setIsDownloaded(status);
+  }, []);
+
+  useEffect(() => {
+    checkDownloadStatus();
+  }, [checkDownloadStatus]);
+  
+
+  const handleDownloadQuran = async () => {
+    setIsDownloading(true);
+    setDownloadProgress(0);
+    setError(null);
+    try {
+        const editions = ['quran-uthmani', 'en.sahih', 'de.aburida', 'en.transliteration'];
+        
+        for (let i = 1; i <= 114; i++) {
+            const response = await fetch(`https://api.alquran.cloud/v1/surah/${i}/editions/${editions.join(',')}`);
+            if (!response.ok) {
+                throw new Error(`Failed to download surah ${i}`);
+            }
+            const data = await response.json();
+             if (data.code !== 200 || !data.data) {
+                throw new Error(`Invalid data for surah ${i}`);
+            }
+            for (const editionData of data.data) {
+                await storeSurahEdition(i, editionData.edition.identifier, editionData);
+            }
+            setDownloadProgress(((i / 114) * 100));
+        }
+        await storeSurahList(surahs);
+        setIsDownloaded(true);
+    } catch(err) {
+        setError(err instanceof Error ? err.message : 'Unknown download error');
+    } finally {
+        setIsDownloading(false);
+    }
+  }
+
+  const handleClearOfflineData = async () => {
+    await clearOfflineQuranData();
+    setIsDownloaded(false);
+  }
+
   useEffect(() => {
     async function fetchSurahs() {
-      setLoading(true)
+      setLoading(true);
+      const offlineSurahs = await getSurahList();
+      if (offlineSurahs) {
+        setSurahs(offlineSurahs);
+        setLoading(false);
+        return;
+      }
       try {
         const response = await fetch('https://api.alquran.cloud/v1/surah')
         if (!response.ok) {
@@ -299,6 +387,7 @@ export default function QuranPage() {
         }
         const data = await response.json()
         setSurahs(data.data)
+        await storeSurahList(data.data); // Store list for future offline use
       } catch (err) {
         setError(err instanceof Error ? err.message : 'An unknown error occurred')
       } finally {
@@ -387,6 +476,34 @@ export default function QuranPage() {
         </div>
       </div>
       
+      <Card>
+        <CardHeader>
+            <CardTitle>{c.offlineAccess}</CardTitle>
+        </CardHeader>
+        <CardContent>
+            {isDownloading ? (
+                <div className="space-y-2">
+                    <p>{c.downloadingQuran}</p>
+                    <Progress value={downloadProgress} />
+                    <p className="text-sm text-muted-foreground">{c.downloadingSurah} {Math.ceil(downloadProgress / 100 * 114)}/114</p>
+                </div>
+            ) : isDownloaded ? (
+                 <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2 text-green-600">
+                        <WifiOff className="h-5 w-5" />
+                        <p className="font-semibold">{c.offlineReady}</p>
+                    </div>
+                    <Button variant="destructive" size="sm" onClick={handleClearOfflineData}>{c.clearOfflineData}</Button>
+                </div>
+            ) : (
+                <Button onClick={handleDownloadQuran} disabled={isDownloading}>
+                    <Download className="mr-2 h-4 w-4" />
+                    {c.downloadQuran}
+                </Button>
+            )}
+        </CardContent>
+      </Card>
+
       {isSearching && (
           <div className="flex items-center justify-center py-4">
               <Skeleton className="h-8 w-1/2" />
