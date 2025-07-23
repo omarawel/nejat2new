@@ -5,7 +5,7 @@ import { useState, useEffect } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { User, onAuthStateChanged, signOut } from "firebase/auth"
-import { LogIn, UserPlus, LogOut, UserCircle, LayoutGrid } from "lucide-react"
+import { LogIn, UserPlus, LogOut, UserCircle, LayoutGrid, Shield } from "lucide-react"
 
 import { ThemeToggle } from "@/components/theme-toggle"
 import { LanguageToggle } from "@/components/language-toggle"
@@ -22,6 +22,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { useLanguage } from "../language-provider"
+import { isAdmin } from "@/lib/admin"
 
 const content = {
   de: {
@@ -30,6 +31,7 @@ const content = {
     myAccount: "Mein Konto",
     profile: "Profil",
     dashboard: "Mein Dashboard",
+    admin: "Admin",
     logout: "Abmelden",
     loggedOut: "Abgemeldet",
     loggedOutSuccess: "Sie wurden erfolgreich abgemeldet.",
@@ -43,6 +45,7 @@ const content = {
     myAccount: "My Account",
     profile: "Profile",
     dashboard: "My Dashboard",
+    admin: "Admin",
     logout: "Log out",
     loggedOut: "Logged Out",
     loggedOutSuccess: "You have been successfully logged out.",
@@ -55,15 +58,22 @@ const content = {
 export function AppHeader() {
   const [user, setUser] = useState<User | null>(null)
   const [loading, setLoading] = useState(true)
+  const [userIsAdmin, setUserIsAdmin] = useState(false);
   const router = useRouter()
   const { toast } = useToast()
   const { language } = useLanguage();
   const c = content[language as keyof typeof content] || content.de;
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser)
-      setLoading(false)
+    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+      setUser(currentUser);
+      if (currentUser) {
+        const adminStatus = await isAdmin(currentUser.uid);
+        setUserIsAdmin(adminStatus);
+      } else {
+        setUserIsAdmin(false);
+      }
+      setLoading(false);
     })
     return () => unsubscribe()
   }, [])
@@ -124,6 +134,12 @@ export function AppHeader() {
                 <UserCircle className="mr-2 h-4 w-4" />
                 <span>{c.profile}</span>
               </DropdownMenuItem>
+              {userIsAdmin && (
+                 <DropdownMenuItem onClick={() => router.push('/admin/dashboard')}>
+                    <Shield className="mr-2 h-4 w-4" />
+                    <span>{c.admin}</span>
+                </DropdownMenuItem>
+              )}
               <DropdownMenuSeparator />
               <DropdownMenuItem onClick={handleLogout}>
                 <LogOut className="mr-2 h-4 w-4" />

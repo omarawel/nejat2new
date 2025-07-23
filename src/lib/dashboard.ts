@@ -8,8 +8,9 @@ export interface DashboardConfig {
 }
 
 // Get real-time updates for a user's dashboard configuration
-export const getUserDashboard = (userId: string, callback: (config: DashboardConfig | null) => void) => {
-  const docRef = doc(db, 'users', userId, 'config', 'dashboard');
+export const getUserDashboard = (userId: string, callback: (config: DashboardConfig | null) => void, isAdmin: boolean = false) => {
+  const collectionName = isAdmin ? 'admin' : 'config';
+  const docRef = doc(db, 'users', userId, collectionName, 'dashboard');
 
   const unsubscribe = onSnapshot(docRef, (docSnap) => {
     if (docSnap.exists()) {
@@ -19,7 +20,7 @@ export const getUserDashboard = (userId: string, callback: (config: DashboardCon
       callback({ selectedTools: [] });
     }
   }, (error) => {
-      console.error("Error fetching dashboard config:", error);
+      console.error(`Error fetching ${collectionName} dashboard config:`, error);
       callback(null);
   });
 
@@ -27,11 +28,12 @@ export const getUserDashboard = (userId: string, callback: (config: DashboardCon
 };
 
 // Update or create a user's dashboard configuration
-export const updateUserDashboard = (userId: string, config: DashboardConfig) => {
+export const updateUserDashboard = (userId: string, config: DashboardConfig, isAdmin: boolean = false) => {
   if (!userId) {
     throw new Error('User ID cannot be empty');
   }
-  const docRef = doc(db, 'users', userId, 'config', 'dashboard');
+  const collectionName = isAdmin ? 'admin' : 'config';
+  const docRef = doc(db, 'users', userId, collectionName, 'dashboard');
   return setDoc(docRef, { 
     ...config,
     updatedAt: Timestamp.now() 
