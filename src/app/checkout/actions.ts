@@ -12,12 +12,11 @@ interface PaymentIntentResult {
     error?: string;
 }
 
-// A map to associate your plan keys with Stripe Price IDs
-// This should ideally be managed in a database or a secure config file.
-const priceMap: { [key: string]: string } = {
-    supporter: 'price_1RltQWGXWEMb96gVAEDYSZay',
-    pro: 'price_1RmJ3rGXWEMb96gVBYrwf9DD',
-    patron: 'price_1RltR4GXWEMb96gVOcjACqRR',
+// A map to associate your plan keys with Stripe Price IDs and amounts in cents
+const priceMap: { [key: string]: { id: string, amount: number } } = {
+    supporter: { id: 'price_1RltQWGXWEMb96gVAEDYSZay', amount: 299 },
+    pro: { id: 'price_1RmJ3rGXWEMb96gVBYrwf9DD', amount: 499 },
+    patron: { id: 'price_1RltR4GXWEMb96gVOcjACqRR', amount: 999 },
 };
 
 // This function now creates a real PaymentIntent on the server.
@@ -25,14 +24,17 @@ export async function createPaymentIntent(
     { priceId }: { priceId: string }
 ): Promise<PaymentIntentResult> {
     
-    // Find the corresponding price amount from your price map.
-    // In a real subscription model, you might fetch price details from Stripe.
-    // For this example, we'll set a placeholder amount. You should adjust this
-    // to fetch the real amount for the given priceId from Stripe.
-    let amount = 299; // Default amount
-    if (priceId === priceMap.supporter) amount = 299; // 2.99€
-    if (priceId === priceMap.pro) amount = 499; // 4.99€
-    if (priceId === priceMap.patron) amount = 999; // 9.99€
+    let amount: number | undefined;
+    for (const plan in priceMap) {
+        if (priceMap[plan as keyof typeof priceMap].id === priceId) {
+            amount = priceMap[plan as keyof typeof priceMap].amount;
+            break;
+        }
+    }
+
+    if (amount === undefined) {
+        return { error: 'Invalid price ID provided.' };
+    }
 
     try {
       const paymentIntent = await stripe.paymentIntents.create({
