@@ -7,10 +7,10 @@ import { Mosque, Bath, BookOpen, Clock, Users, ArrowLeft } from 'lucide-react';
 import type { LucideIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import { ComponentType } from 'react';
 
-// Define a type for the items to ensure type safety
 type SunnahItem = {
-    icon: LucideIcon;
+    icon: ComponentType<{ className?: string }>;
     text: string;
 };
 
