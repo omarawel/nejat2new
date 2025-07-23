@@ -25,7 +25,7 @@ export function ThemeToggle() {
       onClick={toggleTheme}
       aria-label="Toggle theme"
     >
-      <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:hidden" />
+      <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:hidden rose:hidden blue:hidden black:hidden" />
       <Moon className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all hidden light:hidden dark:inline-block rose:hidden blue:hidden black:hidden" />
       <Paintbrush className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all hidden rose:inline-block" />
       <Paintbrush className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all hidden blue:inline-block text-blue-400" />

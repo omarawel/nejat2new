@@ -28,14 +28,16 @@ export function ThemeProvider({
   storageKey = "nejat-digital-theme",
   ...props
 }: ThemeProviderProps) {
-  const [theme, setTheme] = useState<Theme>(defaultTheme);
-
-  useEffect(() => {
+  const [theme, setTheme] = useState<Theme>(() => {
+    if (typeof window === 'undefined') {
+      return defaultTheme;
+    }
     const storedTheme = localStorage.getItem(storageKey) as Theme | null;
     if (storedTheme) {
-      setTheme(storedTheme);
+        return storedTheme;
     }
-  }, [storageKey]);
+    return window.matchMedia("(prefers-color-scheme: dark)").matches ? "black" : "light";
+  });
 
   useEffect(() => {
     const root = window.document.documentElement;
