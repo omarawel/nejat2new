@@ -1,12 +1,15 @@
 
 import { db } from './firebase';
-import { collection, addDoc, onSnapshot, query, doc, deleteDoc, updateDoc, Timestamp, orderBy } from 'firebase/firestore';
+import { collection, addDoc, onSnapshot, query, doc, deleteDoc, updateDoc, Timestamp, orderBy, where } from 'firebase/firestore';
 
 export interface Ad {
   id: string;
   slotId: string;
+  title: string;
+  description: string;
   imageUrl: string;
   linkUrl: string;
+  actionButtonText: string;
   createdAt: Timestamp;
 }
 
@@ -31,7 +34,7 @@ export const getAds = (callback: (ads: Ad[]) => void) => {
 
 // Add a new ad
 export const addAd = (ad: Omit<Ad, 'id' | 'createdAt'>) => {
-  if (!ad.slotId || !ad.imageUrl || !ad.linkUrl) {
+  if (!ad.slotId || !ad.imageUrl || !ad.linkUrl || !ad.title) {
     throw new Error('Ad data is incomplete');
   }
   const adsCol = collection(db, 'ads');

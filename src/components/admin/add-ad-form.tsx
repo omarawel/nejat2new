@@ -14,15 +14,37 @@ import { Loader2, UploadCloud } from 'lucide-react';
 import { addAd } from '@/lib/ads';
 import { storage } from '@/lib/firebase';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { Textarea } from '../ui/textarea';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
+
+const adPlacements = [
+    'homepage-top-banner',
+    'homepage-sidebar',
+    'quran-page-bottom',
+    'hadith-page-bottom',
+    'feature-page-sidebar'
+];
 
 const content = {
     de: {
-        slotIdLabel: "Slot ID",
-        slotIdPlaceholder: "z.B. homepage-banner",
+        titleLabel: "Titel",
+        titlePlaceholder: "z.B. Lerne die Grundlagen des Islam",
+        descriptionLabel: "Beschreibung",
+        descriptionPlaceholder: "Eine kurze Beschreibung für die Anzeige...",
+        slotIdLabel: "Platzierung (Slot ID)",
+        slotIdPlaceholder: "Wähle einen Platzierungsort",
         linkUrlLabel: "Link URL",
-        linkUrlPlaceholder: "https://example.com",
+        linkUrlPlaceholder: "https://example.com/learn-islam",
+        actionButtonLabel: "Aktions-Button Text",
+        actionButtonPlaceholder: "z.B. 'Jetzt lernen'",
+        imageSource: "Bildquelle",
+        upload: "Hochladen",
+        fromUrl: "Von URL",
         imageLabel: "Bilddatei",
         imageSubtext: "PNG, JPG, WEBP bis zu 2MB",
+        imageUrlLabel: "Bild-URL",
+        imageUrlPlaceholder: "https://example.com/image.png",
         createAd: "Anzeige erstellen",
         creatingAd: "Wird erstellt...",
         adCreated: "Anzeige erfolgreich erstellt",
@@ -30,12 +52,23 @@ const content = {
         errorUploading: "Fehler beim Hochladen des Bildes",
     },
     en: {
-        slotIdLabel: "Slot ID",
-        slotIdPlaceholder: "e.g. homepage-banner",
+        titleLabel: "Title",
+        titlePlaceholder: "e.g. Learn the Basics of Islam",
+        descriptionLabel: "Description",
+        descriptionPlaceholder: "A short description for the ad...",
+        slotIdLabel: "Placement (Slot ID)",
+        slotIdPlaceholder: "Select a placement",
         linkUrlLabel: "Link URL",
-        linkUrlPlaceholder: "https://example.com",
+        linkUrlPlaceholder: "https://example.com/learn-islam",
+        actionButtonLabel: "Action Button Text",
+        actionButtonPlaceholder: "e.g. 'Learn Now'",
+        imageSource: "Image Source",
+        upload: "Upload",
+        fromUrl: "From URL",
         imageLabel: "Image File",
         imageSubtext: "PNG, JPG, WEBP up to 2MB",
+        imageUrlLabel: "Image URL",
+        imageUrlPlaceholder: "https://example.com/image.png",
         createAd: "Create Ad",
         creatingAd: "Creating...",
         adCreated: "Ad created successfully",
@@ -45,9 +78,21 @@ const content = {
 }
 
 const formSchema = z.object({
-  slotId: z.string().min(3, { message: "Slot ID must be at least 3 characters." }).regex(/^[a-z0-9-]+$/, "Only lowercase letters, numbers, and hyphens allowed."),
+  title: z.string().min(3, "Title must be at least 3 characters."),
+  description: z.string().optional(),
+  slotId: z.string().min(1, "Placement is required."),
   linkUrl: z.string().url({ message: "Please enter a valid URL." }),
-  image: z.instanceof(File).refine(file => file.size < 2 * 1024 * 1024, "File size must be less than 2MB").refine(file => ['image/png', 'image/jpeg', 'image/webp'].includes(file.type), "Only PNG, JPG, and WEBP formats are allowed."),
+  actionButtonText: z.string().min(1, "Button text is required."),
+  imageSource: z.enum(['upload', 'url']),
+  imageFile: z.instanceof(File).optional().refine(file => !file || file.size < 2 * 1024 * 1024, "File size must be less than 2MB").refine(file => !file || ['image/png', 'image/jpeg', 'image/webp'].includes(file.type), "Only PNG, JPG, and WEBP formats are allowed."),
+  imageUrl: z.string().optional(),
+}).refine(data => {
+    if (data.imageSource === 'upload') return !!data.imageFile;
+    if (data.imageSource === 'url') return !!data.imageUrl && z.string().url().safeParse(data.imageUrl).success;
+    return false;
+}, {
+    message: "Please provide a valid image file or URL.",
+    path: ['imageFile']
 });
 
 
@@ -60,26 +105,40 @@ export function AddAdForm({ onFinished }: { onFinished: () => void }) {
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            slotId: "",
+            title: "",
+            description: "",
+            slotId: undefined,
             linkUrl: "",
-            image: undefined,
+            actionButtonText: "",
+            imageSource: "upload",
         },
     });
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
         setIsSubmitting(true);
-        try {
-            // 1. Upload image to Firebase Storage
-            const imageFile = values.image;
-            const storageRef = ref(storage, `ads/${Date.now()}-${imageFile.name}`);
-            const uploadResult = await uploadBytes(storageRef, imageFile);
-            const imageUrl = await getDownloadURL(uploadResult.ref);
+        let finalImageUrl = "";
 
-            // 2. Add ad data to Firestore
+        try {
+            if (values.imageSource === 'upload' && values.imageFile) {
+                const imageFile = values.imageFile;
+                const storageRef = ref(storage, `ads/${Date.now()}-${imageFile.name}`);
+                const uploadResult = await uploadBytes(storageRef, imageFile);
+                finalImageUrl = await getDownloadURL(uploadResult.ref);
+            } else if (values.imageSource === 'url' && values.imageUrl) {
+                finalImageUrl = values.imageUrl;
+            }
+
+            if (!finalImageUrl) {
+                throw new Error("Image URL could not be determined.");
+            }
+
             await addAd({
                 slotId: values.slotId,
+                title: values.title,
+                description: values.description || '',
                 linkUrl: values.linkUrl,
-                imageUrl: imageUrl,
+                imageUrl: finalImageUrl,
+                actionButtonText: values.actionButtonText,
             });
 
             toast({ title: c.adCreated });
@@ -98,6 +157,7 @@ export function AddAdForm({ onFinished }: { onFinished: () => void }) {
         }
     };
 
+    const imageSource = form.watch('imageSource');
 
     return (
         <Form {...form}>
@@ -108,8 +168,41 @@ export function AddAdForm({ onFinished }: { onFinished: () => void }) {
                     render={({ field }) => (
                         <FormItem>
                             <FormLabel>{c.slotIdLabel}</FormLabel>
+                             <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                <FormControl>
+                                <SelectTrigger>
+                                    <SelectValue placeholder={c.slotIdPlaceholder} />
+                                </SelectTrigger>
+                                </FormControl>
+                                <SelectContent>
+                                    {adPlacements.map(p => <SelectItem key={p} value={p}>{p}</SelectItem>)}
+                                </SelectContent>
+                            </Select>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+                <FormField
+                    control={form.control}
+                    name="title"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>{c.titleLabel}</FormLabel>
                             <FormControl>
-                                <Input placeholder={c.slotIdPlaceholder} {...field} />
+                                <Input placeholder={c.titlePlaceholder} {...field} />
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+                 <FormField
+                    control={form.control}
+                    name="description"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>{c.descriptionLabel}</FormLabel>
+                            <FormControl>
+                                <Textarea placeholder={c.descriptionPlaceholder} {...field} />
                             </FormControl>
                             <FormMessage />
                         </FormItem>
@@ -129,30 +222,77 @@ export function AddAdForm({ onFinished }: { onFinished: () => void }) {
                         </FormItem>
                     )}
                 />
+
                  <FormField
                     control={form.control}
-                    name="image"
-                    render={({ field: { onChange, value, ...rest } }) => (
+                    name="actionButtonText"
+                    render={({ field }) => (
                         <FormItem>
-                            <FormLabel>{c.imageLabel}</FormLabel>
+                            <FormLabel>{c.actionButtonLabel}</FormLabel>
                             <FormControl>
-                                <Input 
-                                    type="file" 
-                                    accept="image/png, image/jpeg, image/webp"
-                                    onChange={(e) => {
-                                        const file = e.target.files?.[0];
-                                        if (file) onChange(file);
-                                    }}
-                                    className="pt-2"
-                                    {...rest}
-                                 />
+                                <Input placeholder={c.actionButtonPlaceholder} {...field} />
                             </FormControl>
                             <FormMessage />
                         </FormItem>
                     )}
                 />
+                
+                <FormField
+                    control={form.control}
+                    name="imageSource"
+                    render={({ field }) => (
+                         <FormItem className="pt-2">
+                            <FormLabel>{c.imageSource}</FormLabel>
+                            <Tabs value={field.value} onValueChange={field.onChange} className="w-full">
+                                <TabsList className="grid w-full grid-cols-2">
+                                    <TabsTrigger value="upload">{c.upload}</TabsTrigger>
+                                    <TabsTrigger value="url">{c.fromUrl}</TabsTrigger>
+                                </TabsList>
+                            </Tabs>
+                         </FormItem>
+                    )}
+                />
 
-                <Button type="submit" className="w-full" disabled={isSubmitting}>
+                {imageSource === 'upload' ? (
+                     <FormField
+                        control={form.control}
+                        name="imageFile"
+                        render={({ field: { onChange, value, ...rest } }) => (
+                            <FormItem>
+                                <FormLabel>{c.imageLabel}</FormLabel>
+                                <FormControl>
+                                    <Input 
+                                        type="file" 
+                                        accept="image/png, image/jpeg, image/webp"
+                                        onChange={(e) => {
+                                            const file = e.target.files?.[0];
+                                            if (file) onChange(file);
+                                        }}
+                                        className="pt-2"
+                                        {...rest}
+                                    />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                ) : (
+                     <FormField
+                        control={form.control}
+                        name="imageUrl"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>{c.imageUrlLabel}</FormLabel>
+                                <FormControl>
+                                    <Input placeholder={c.imageUrlPlaceholder} {...field} />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                )}
+
+                <Button type="submit" className="w-full !mt-6" disabled={isSubmitting}>
                     {isSubmitting ? (
                         <>
                             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -164,4 +304,3 @@ export function AddAdForm({ onFinished }: { onFinished: () => void }) {
         </Form>
     );
 }
-

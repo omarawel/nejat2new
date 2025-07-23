@@ -18,6 +18,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { AddAdForm } from '@/components/admin/add-ad-form';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { useToast } from '@/hooks/use-toast';
+import { Badge } from '@/components/ui/badge';
 
 const content = {
     de: {
@@ -31,7 +32,7 @@ const content = {
         addNewAd: "Neue Anzeige hinzufügen",
         slotId: "Slot-ID",
         image: "Bild",
-        link: "Link",
+        titleHeader: "Titel",
         actions: "Aktionen",
         noAds: "Noch keine Anzeigen erstellt. Füge eine neue hinzu, um zu beginnen.",
         confirmDeleteTitle: "Bist du sicher?",
@@ -52,7 +53,7 @@ const content = {
         addNewAd: "Add New Ad",
         slotId: "Slot ID",
         image: "Image",
-        link: "Link",
+        titleHeader: "Title",
         actions: "Actions",
         noAds: "No ads created yet. Add a new one to get started.",
         confirmDeleteTitle: "Are you sure?",
@@ -167,9 +168,9 @@ export default function AdManagementPage() {
                         <Table>
                             <TableHeader>
                                 <TableRow>
-                                    <TableHead className="w-[20%]">{c.slotId}</TableHead>
-                                    <TableHead className="w-[30%]">{c.image}</TableHead>
-                                    <TableHead>{c.link}</TableHead>
+                                    <TableHead className="w-[15%]">{c.image}</TableHead>
+                                    <TableHead className="w-[30%]">{c.titleHeader}</TableHead>
+                                    <TableHead>{c.slotId}</TableHead>
                                     <TableHead className="text-right w-[15%]">{c.actions}</TableHead>
                                 </TableRow>
                             </TableHeader>
@@ -177,18 +178,21 @@ export default function AdManagementPage() {
                                 {ads.length > 0 ? (
                                     ads.map(ad => (
                                         <TableRow key={ad.id}>
-                                            <TableCell className="font-mono">{ad.slotId}</TableCell>
                                             <TableCell>
                                                 <Image 
                                                     src={ad.imageUrl}
-                                                    alt={ad.slotId}
-                                                    width={120}
-                                                    height={60}
-                                                    className="rounded-md object-cover"
+                                                    alt={ad.title}
+                                                    width={100}
+                                                    height={50}
+                                                    className="rounded-md object-cover bg-muted"
                                                 />
                                             </TableCell>
                                             <TableCell>
-                                                <a href={ad.linkUrl} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline truncate">{ad.linkUrl}</a>
+                                                <p className="font-semibold">{ad.title}</p>
+                                                <p className="text-xs text-muted-foreground truncate">{ad.description}</p>
+                                            </TableCell>
+                                             <TableCell>
+                                                <Badge variant="outline">{ad.slotId}</Badge>
                                             </TableCell>
                                             <TableCell className="text-right">
                                                 <Button variant="ghost" size="icon" disabled><Edit className="h-4 w-4" /></Button>
@@ -222,7 +226,7 @@ export default function AdManagementPage() {
                     </CardContent>
                 </Card>
             </div>
-             <DialogContent>
+             <DialogContent className="sm:max-w-[480px]">
                 <DialogHeader>
                     <DialogTitle>{c.addNewAd}</DialogTitle>
                 </DialogHeader>
@@ -231,4 +235,3 @@ export default function AdManagementPage() {
         </Dialog>
     );
 }
-
