@@ -53,6 +53,8 @@ const content = {
         errorLoading: "Fehler beim Laden der Hadithe",
         searchErrorTitle: "Suchfehler",
         noHadithsFound: "Keine Hadithe gefunden.",
+        german: "Deutsch",
+        comingSoon: "(bald verfügbar)",
     },
     en: {
         title: "Collection of Hadith",
@@ -73,6 +75,8 @@ const content = {
         errorLoading: "Error Loading Hadiths",
         searchErrorTitle: "Search Error",
         noHadithsFound: "No hadiths found.",
+        german: "German",
+        comingSoon: "(coming soon)",
     }
 }
 
@@ -302,6 +306,7 @@ export default function HadithPage() {
                         <SelectItem value="eng">English</SelectItem>
                         <SelectItem value="urd">Urdu</SelectItem>
                         <SelectItem value="ara">Arabic</SelectItem>
+                        <SelectItem value="de" disabled>{c.german} {c.comingSoon}</SelectItem>
                     </SelectContent>
                 </Select>
             </div>
