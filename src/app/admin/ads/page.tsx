@@ -12,8 +12,12 @@ import Link from 'next/link';
 import { isAdmin } from '@/lib/admin';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { getAds, type Ad } from '@/lib/ads';
+import { getAds, deleteAd, type Ad } from '@/lib/ads';
 import Image from 'next/image';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { AddAdForm } from '@/components/admin/add-ad-form';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
+import { useToast } from '@/hooks/use-toast';
 
 const content = {
     de: {
@@ -30,6 +34,12 @@ const content = {
         link: "Link",
         actions: "Aktionen",
         noAds: "Noch keine Anzeigen erstellt. Füge eine neue hinzu, um zu beginnen.",
+        confirmDeleteTitle: "Bist du sicher?",
+        confirmDeleteDesc: "Diese Aktion kann nicht rückgängig gemacht werden. Dadurch wird die Anzeige dauerhaft gelöscht.",
+        cancel: "Abbrechen",
+        confirm: "Bestätigen",
+        adDeleted: "Anzeige gelöscht",
+        errorDeleting: "Fehler beim Löschen der Anzeige.",
     },
     en: {
         title: "Manage Advertisements",
@@ -45,6 +55,12 @@ const content = {
         link: "Link",
         actions: "Actions",
         noAds: "No ads created yet. Add a new one to get started.",
+        confirmDeleteTitle: "Are you sure?",
+        confirmDeleteDesc: "This action cannot be undone. This will permanently delete the ad.",
+        cancel: "Cancel",
+        confirm: "Confirm",
+        adDeleted: "Ad deleted.",
+        errorDeleting: "Error deleting ad.",
     }
 };
 
@@ -52,11 +68,13 @@ export default function AdManagementPage() {
     const { language } = useLanguage();
     const c = content[language];
     const router = useRouter();
+    const { toast } = useToast();
 
     const [user, loadingAuth] = useAuthState(auth);
     const [userIsAdmin, setUserIsAdmin] = useState(false);
     const [loading, setLoading] = useState(true);
     const [ads, setAds] = useState<Ad[]>([]);
+    const [isFormOpen, setIsFormOpen] = useState(false);
     
     useEffect(() => {
         if (loadingAuth) return;
@@ -78,6 +96,23 @@ export default function AdManagementPage() {
             }
         });
     }, [user, loadingAuth, router]);
+
+    const handleDelete = async (adId: string) => {
+        try {
+            await deleteAd(adId);
+            toast({
+                title: c.adDeleted
+            });
+        } catch(e) {
+            console.error(e);
+            toast({
+                variant: 'destructive',
+                title: 'Error',
+                description: c.errorDeleting
+            })
+        }
+    }
+
 
     if (loadingAuth || loading) {
         return (
@@ -106,70 +141,94 @@ export default function AdManagementPage() {
     }
 
     return (
-        <div className="container mx-auto px-4 py-8">
-             <header className="flex flex-col sm:flex-row justify-between sm:items-center mb-12 gap-4">
-                <div>
-                    <Button asChild variant="ghost" className="mb-4">
-                        <Link href="/admin/dashboard">
-                            <ArrowLeft className="mr-2 h-4 w-4" />
-                            {c.backToDashboard}
-                        </Link>
-                    </Button>
-                    <h1 className="text-4xl font-bold tracking-tight text-primary">{c.title}</h1>
-                    <p className="text-muted-foreground mt-2 text-lg max-w-2xl">{c.description}</p>
-                </div>
-                <Button disabled>
-                    <PlusCircle className="mr-2 h-4 w-4" />
-                    {c.addNewAd}
-                </Button>
-            </header>
+        <Dialog open={isFormOpen} onOpenChange={setIsFormOpen}>
+            <div className="container mx-auto px-4 py-8">
+                <header className="flex flex-col sm:flex-row justify-between sm:items-center mb-12 gap-4">
+                    <div>
+                        <Button asChild variant="ghost" className="mb-4">
+                            <Link href="/admin/dashboard">
+                                <ArrowLeft className="mr-2 h-4 w-4" />
+                                {c.backToDashboard}
+                            </Link>
+                        </Button>
+                        <h1 className="text-4xl font-bold tracking-tight text-primary">{c.title}</h1>
+                        <p className="text-muted-foreground mt-2 text-lg max-w-2xl">{c.description}</p>
+                    </div>
+                     <DialogTrigger asChild>
+                        <Button>
+                            <PlusCircle className="mr-2 h-4 w-4" />
+                            {c.addNewAd}
+                        </Button>
+                    </DialogTrigger>
+                </header>
 
-            <Card>
-                <CardContent className="p-0">
-                    <Table>
-                        <TableHeader>
-                            <TableRow>
-                                <TableHead className="w-[20%]">{c.slotId}</TableHead>
-                                <TableHead className="w-[30%]">{c.image}</TableHead>
-                                <TableHead>{c.link}</TableHead>
-                                <TableHead className="text-right w-[15%]">{c.actions}</TableHead>
-                            </TableRow>
-                        </TableHeader>
-                        <TableBody>
-                            {ads.length > 0 ? (
-                                ads.map(ad => (
-                                    <TableRow key={ad.id}>
-                                        <TableCell className="font-mono">{ad.slotId}</TableCell>
-                                        <TableCell>
-                                            <Image 
-                                                src={ad.imageUrl}
-                                                alt={ad.slotId}
-                                                width={120}
-                                                height={60}
-                                                className="rounded-md object-cover"
-                                            />
-                                        </TableCell>
-                                        <TableCell>
-                                            <a href={ad.linkUrl} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline truncate">{ad.linkUrl}</a>
-                                        </TableCell>
-                                        <TableCell className="text-right">
-                                            <Button variant="ghost" size="icon" disabled><Edit className="h-4 w-4" /></Button>
-                                            <Button variant="ghost" size="icon" disabled><Trash2 className="h-4 w-4 text-destructive" /></Button>
+                <Card>
+                    <CardContent className="p-0">
+                        <Table>
+                            <TableHeader>
+                                <TableRow>
+                                    <TableHead className="w-[20%]">{c.slotId}</TableHead>
+                                    <TableHead className="w-[30%]">{c.image}</TableHead>
+                                    <TableHead>{c.link}</TableHead>
+                                    <TableHead className="text-right w-[15%]">{c.actions}</TableHead>
+                                </TableRow>
+                            </TableHeader>
+                            <TableBody>
+                                {ads.length > 0 ? (
+                                    ads.map(ad => (
+                                        <TableRow key={ad.id}>
+                                            <TableCell className="font-mono">{ad.slotId}</TableCell>
+                                            <TableCell>
+                                                <Image 
+                                                    src={ad.imageUrl}
+                                                    alt={ad.slotId}
+                                                    width={120}
+                                                    height={60}
+                                                    className="rounded-md object-cover"
+                                                />
+                                            </TableCell>
+                                            <TableCell>
+                                                <a href={ad.linkUrl} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline truncate">{ad.linkUrl}</a>
+                                            </TableCell>
+                                            <TableCell className="text-right">
+                                                <Button variant="ghost" size="icon" disabled><Edit className="h-4 w-4" /></Button>
+                                                <AlertDialog>
+                                                    <AlertDialogTrigger asChild>
+                                                        <Button variant="ghost" size="icon"><Trash2 className="h-4 w-4 text-destructive" /></Button>
+                                                    </AlertDialogTrigger>
+                                                    <AlertDialogContent>
+                                                        <AlertDialogHeader>
+                                                            <AlertDialogTitle>{c.confirmDeleteTitle}</AlertDialogTitle>
+                                                            <AlertDialogDescription>{c.confirmDeleteDesc}</AlertDialogDescription>
+                                                        </AlertDialogHeader>
+                                                        <AlertDialogFooter>
+                                                            <AlertDialogCancel>{c.cancel}</AlertDialogCancel>
+                                                            <AlertDialogAction onClick={() => handleDelete(ad.id)}>{c.confirm}</AlertDialogAction>
+                                                        </AlertDialogFooter>
+                                                    </AlertDialogContent>
+                                                </AlertDialog>
+                                            </TableCell>
+                                        </TableRow>
+                                    ))
+                                ) : (
+                                    <TableRow>
+                                        <TableCell colSpan={4} className="h-24 text-center">
+                                            {c.noAds}
                                         </TableCell>
                                     </TableRow>
-                                ))
-                            ) : (
-                                <TableRow>
-                                    <TableCell colSpan={4} className="h-24 text-center">
-                                        {c.noAds}
-                                    </TableCell>
-                                </TableRow>
-                            )}
-                        </TableBody>
-                    </Table>
-                </CardContent>
-            </Card>
-        </div>
+                                )}
+                            </TableBody>
+                        </Table>
+                    </CardContent>
+                </Card>
+            </div>
+             <DialogContent>
+                <DialogHeader>
+                    <DialogTitle>{c.addNewAd}</DialogTitle>
+                </DialogHeader>
+                <AddAdForm onFinished={() => setIsFormOpen(false)} />
+            </DialogContent>
+        </Dialog>
     );
 }
 
