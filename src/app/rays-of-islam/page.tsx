@@ -3,7 +3,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { ExternalLink } from 'lucide-react';
+import { ExternalLink, ArrowLeft } from 'lucide-react';
 import { useLanguage } from '@/components/language-provider';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -12,6 +12,7 @@ const content = {
     de: {
         pageTitle: "Die Strahlen Des Islam",
         pageDescription: "Entdecke die umfassenden Leitfäden zum Islam von Omar Awel.",
+        backToFeatures: "Zurück zu den Funktionen",
         germanBook: {
             title: "Die Strahlen Des Islam",
             author: "von Omar Awel",
@@ -52,6 +53,7 @@ const content = {
     en: {
         pageTitle: "The Rays Of Islam",
         pageDescription: "Discover the comprehensive guides to Islam by Omar Awel.",
+        backToFeatures: "Back to Features",
          germanBook: {
             title: "Die Strahlen Des Islam (German Edition)",
             author: "by Omar Awel",
@@ -143,6 +145,12 @@ export default function RaysOfIslamPage() {
 
   return (
     <div className="container mx-auto px-4 py-8">
+        <Button asChild variant="ghost" className="mb-8">
+            <Link href="/">
+                <ArrowLeft className="mr-2 h-4 w-4" />
+                {c.backToFeatures}
+            </Link>
+        </Button>
         <header className="text-center mb-12">
             <h1 className="text-4xl font-bold tracking-tight text-primary">{c.pageTitle}</h1>
             <p className="text-muted-foreground mt-2 text-lg">{c.pageDescription}</p>

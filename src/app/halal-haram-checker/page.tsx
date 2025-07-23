@@ -9,8 +9,9 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
-import { Loader2, Search, CheckCircle, XCircle, AlertTriangle } from 'lucide-react';
+import { Loader2, Search, CheckCircle, XCircle, AlertTriangle, ArrowLeft } from 'lucide-react';
 import { useLanguage } from '@/components/language-provider';
+import Link from 'next/link';
 
 // This is a simplified list for demonstration purposes. A real app would use a comprehensive database.
 const ingredientDatabase: Record<string, { status: 'halal' | 'haram' | 'mushbooh', reason_en: string, reason_de: string }> = {
@@ -39,6 +40,7 @@ const content = {
     de: {
         title: "Halal & Haram Checker",
         description: "Gib eine Zutat ein, um ihren islamischen Status zu überprüfen. (Dies ist ein Demo-Tool und dient nur zur Veranschaulichung.)",
+        backToFeatures: "Zurück zu den Funktionen",
         formTitle: "Zutat prüfen",
         ingredientLabel: "Zutat",
         ingredientPlaceholder: "z.B. Gelatine, Karmin, Molke...",
@@ -53,6 +55,7 @@ const content = {
     en: {
         title: "Halal & Haram Checker",
         description: "Enter an ingredient to check its Islamic status. (This is a demo tool for illustrative purposes only.)",
+        backToFeatures: "Back to Features",
         formTitle: "Check Ingredient",
         ingredientLabel: "Ingredient",
         ingredientPlaceholder: "e.g., gelatin, carmine, whey...",
@@ -158,6 +161,12 @@ export default function HalalHaramCheckerPage() {
 
     return (
         <div className="container mx-auto px-4 py-8">
+            <Button asChild variant="ghost" className="mb-8">
+                <Link href="/">
+                    <ArrowLeft className="mr-2 h-4 w-4" />
+                    {c.backToFeatures}
+                </Link>
+            </Button>
             <header className="text-center mb-12">
                 <h1 className="text-4xl font-bold tracking-tight text-primary">{c.title}</h1>
                 <p className="text-muted-foreground mt-2 text-lg max-w-2xl mx-auto">{c.description}</p>
@@ -201,4 +210,3 @@ export default function HalalHaramCheckerPage() {
         </div>
     );
 }
-

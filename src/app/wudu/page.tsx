@@ -3,11 +3,15 @@
 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { useLanguage } from '@/components/language-provider';
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
+import { ArrowLeft } from 'lucide-react';
 
 const content = {
     de: {
         title: "Gebetswaschung (Wudu)",
         description: "Eine Schritt-für-Schritt-Anleitung zur rituellen Waschung vor dem Gebet.",
+        backToFeatures: "Zurück zu den Funktionen",
         intention: {
             title: "1. Absicht (Niyyah) & Basmala",
             description: "Fasse im Herzen die Absicht, Wudu zu vollziehen. Beginne mit den Worten „Bismillah“ (Im Namen Allahs).",
@@ -55,6 +59,7 @@ const content = {
     en: {
         title: "Ablution (Wudu)",
         description: "A step-by-step guide to the ritual purification before prayer.",
+        backToFeatures: "Back to Features",
         intention: {
             title: "1. Intention (Niyyah) & Basmala",
             description: "Make the intention in your heart to perform Wudu. Begin by saying \"Bismillah\" (In the name of Allah).",
@@ -121,6 +126,12 @@ export default function WuduPage() {
 
   return (
     <div className="container mx-auto px-4 py-8">
+       <Button asChild variant="ghost" className="mb-8">
+            <Link href="/">
+                <ArrowLeft className="mr-2 h-4 w-4" />
+                {c.backToFeatures}
+            </Link>
+        </Button>
       <header className="text-center mb-12">
         <h1 className="text-4xl font-bold tracking-tight text-primary">{c.title}</h1>
         <p className="text-muted-foreground mt-2 text-lg">{c.description}</p>

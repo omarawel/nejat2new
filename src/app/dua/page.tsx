@@ -8,11 +8,15 @@ import {
   AccordionTrigger,
 } from '@/components/ui/accordion';
 import { useLanguage } from '@/components/language-provider';
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
+import { ArrowLeft } from 'lucide-react';
 
 const duaData = {
   de: {
     title: "Sammlung von Bittgebeten (Dua)",
     description: "Wichtige Bittgebete für verschiedene Anlässe im Leben eines Muslims.",
+    backToFeatures: "Zurück zu den Funktionen",
     duas: [
       {
         category: "Morgens & Abends",
@@ -82,7 +86,7 @@ const duaData = {
         items: [
             {
                 title: "Bei Sorgen und Kummer",
-                arabic: "اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْهَمِّ وَالْحَزَنِ، وَالْعَجْزِ وَالْكَسَلِ، وَالْبُخْلِ وَالْجُبْنِ، وَضَلَعِ الدَّيْنِ وَغَلَبَةِ الرِّجَالِ",
+                arabic: "اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْهَمِّ وَالْحَзَنِ، وَالْعَجْزِ وَالْكَسَلِ، وَالْبُخْلِ وَالْجُبْنِ، وَضَلَعِ الدَّيْنِ وَغَلَبَةِ الرِّجَالِ",
                 transliteration: "Allahumma inni a'udhu bika minal-hammi wal-hazan, wal-'ajzi wal-kasal, wal-bukhli wal-jubn, wa dala'id-dayni wa ghalabatir-rijal.",
                 translation: "O Allah, ich suche Zuflucht bei Dir vor Sorge und Kummer, vor Unfähigkeit und Faulheit, vor Geiz und Feigheit, vor der Last der Schulden und der Überwältigung durch Menschen."
             },
@@ -99,6 +103,7 @@ const duaData = {
   en: {
     title: "Collection of Supplications (Dua)",
     description: "Important supplications for various occasions in a Muslim's life.",
+    backToFeatures: "Back to Features",
     duas: [
        {
         category: "Morning & Evening",
@@ -168,7 +173,7 @@ const duaData = {
         items: [
             {
                 title: "For Worry and Grief",
-                arabic: "اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْهَمِّ وَالْحَزَنِ، وَالْعَجْزِ وَالْكَسَلِ، وَالْبُخْلِ وَالْجُبْنِ، وَضَلَعِ الدَّيْنِ وَغَلَبَةِ الرِّجَالِ",
+                arabic: "اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْهَمِّ وَالْحَзَنِ، وَالْعَجْزِ وَالْكَسَلِ، وَالْبُخْلِ وَالْجُبْنِ، وَضَلَعِ الدَّيْنِ وَغَلَبَةِ الرِّجَالِ",
                 transliteration: "Allahumma inni a'udhu bika minal-hammi wal-hazan, wal-'ajzi wal-kasal, wal-bukhli wal-jubn, wa dala'id-dayni wa ghalabatir-rijal.",
                 translation: "O Allah, I seek refuge in You from worry and grief, from incapacity and laziness, from stinginess and cowardice, from the burden of debt and from being overpowered by men."
             },
@@ -190,6 +195,12 @@ export default function DuaPage() {
 
   return (
     <div className="container mx-auto px-4 py-8">
+      <Button asChild variant="ghost" className="mb-8">
+        <Link href="/">
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            {content.backToFeatures}
+        </Link>
+      </Button>
       <header className="text-center mb-12">
         <h1 className="text-4xl font-bold tracking-tight text-primary">{content.title}</h1>
         <p className="text-muted-foreground mt-2 text-lg max-w-2xl mx-auto">{content.description}</p>

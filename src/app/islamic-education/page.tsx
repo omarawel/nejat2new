@@ -3,12 +3,15 @@
 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { useLanguage } from '@/components/language-provider';
-import { GraduationCap, BookHeart, Heart, Brain, Lightbulb, Users } from 'lucide-react';
+import { GraduationCap, BookHeart, Heart, Brain, Lightbulb, Users, ArrowLeft } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 
 const content = {
     de: {
         title: "Islamische Erziehung (Tarbiyah)",
         description: "Prinzipien und Ratschläge für die Erziehung von Kindern im Licht des Korans und der Sunnah.",
+        backToFeatures: "Zurück zu den Funktionen",
         sections: [
             {
                 icon: BookHeart,
@@ -44,6 +47,7 @@ const content = {
     en: {
         title: "Islamic Education (Tarbiyah)",
         description: "Principles and advice for raising children in the light of the Quran and Sunnah.",
+        backToFeatures: "Back to Features",
         sections: [
             {
                 icon: BookHeart,
@@ -84,6 +88,12 @@ export default function IslamicEducationPage() {
 
     return (
         <div className="container mx-auto px-4 py-8">
+            <Button asChild variant="ghost" className="mb-8">
+                <Link href="/">
+                    <ArrowLeft className="mr-2 h-4 w-4" />
+                    {c.backToFeatures}
+                </Link>
+            </Button>
             <header className="text-center mb-12">
                 <h1 className="text-4xl font-bold tracking-tight text-primary flex items-center justify-center gap-3">
                     <GraduationCap className="h-10 w-10" />

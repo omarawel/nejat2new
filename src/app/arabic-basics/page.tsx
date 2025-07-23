@@ -5,10 +5,11 @@ import { useState, useRef, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
-import { Eye, EyeOff, Play, Pause, Loader } from 'lucide-react';
+import { Eye, EyeOff, Play, Pause, Loader, ArrowLeft } from 'lucide-react';
 import { useLanguage } from '@/components/language-provider';
 import { cn } from '@/lib/utils';
-import { textToSpeech } from "@/ai/flows/text-to-speech"
+import { textToSpeech } from "@/ai/flows/text-to-speech";
+import Link from 'next/link';
 
 const alphabet = [
   { letter: 'ا', name_de: 'Alif', name_en: 'Alif', forms: { isolated: 'ا', final: 'ـا', medial: 'ـا', initial: 'ا' } },
@@ -67,6 +68,7 @@ const content = {
     de: {
         title: "Arabische Grundlagen",
         description: "Lerne das arabische Alphabet, Vokale und weitere wichtige Zeichen.",
+        backToFeatures: "Zurück zu den Funktionen",
         alphabet: "Das Alphabet",
         letter: "Buchstabe",
         name: "Name",
@@ -82,6 +84,7 @@ const content = {
     en: {
         title: "Arabic Basics",
         description: "Learn the Arabic alphabet, vowels, and other important marks.",
+        backToFeatures: "Back to Features",
         alphabet: "The Alphabet",
         letter: "Letter",
         name: "Name",
@@ -146,6 +149,12 @@ export default function ArabicBasicsPage() {
           onEnded={() => setPlayingAudio(null)}
         />
       )}
+      <Button asChild variant="ghost" className="mb-8">
+        <Link href="/">
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            {c.backToFeatures}
+        </Link>
+      </Button>
       <header className="text-center mb-12">
         <h1 className="text-4xl font-bold tracking-tight text-primary">{c.title}</h1>
         <p className="text-muted-foreground mt-2 text-lg">{c.description}</p>

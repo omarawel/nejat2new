@@ -3,12 +3,15 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useLanguage } from '@/components/language-provider';
-import { Clock, CheckCircle, Shield, Heart, Sparkles, Lightbulb } from 'lucide-react';
+import { Clock, CheckCircle, Shield, Heart, Sparkles, Lightbulb, ArrowLeft } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 
 const content = {
     de: {
         title: "Das Gebet pünktlich verrichten",
         description: "Die Bedeutung, der Nutzen und praktische Tipps, um das Gebet zur richtigen Zeit zu verrichten.",
+        backToFeatures: "Zurück zu den Funktionen",
         importance: {
             title: "Die höchste Priorität",
             content: "Das Gebet (Salah) ist die zweite Säule des Islam und die wichtigste Verbindung zwischen einem Muslim und seinem Schöpfer. Allah fragt uns am Tag des Jüngsten Gerichts als Erstes nach unserem Gebet. Der Prophet (ﷺ) wurde gefragt, welche Tat die beste sei, und er antwortete: „Das Gebet zu seiner festgesetzten Zeit.“ (Bukhari). Es ist mehr als eine Pflicht; es ist eine Gelegenheit zur Ruhe, Reflexion und spirituellen Aufladung fünfmal am Tag."
@@ -37,6 +40,7 @@ const content = {
     en: {
         title: "Praying on Time",
         description: "The importance, benefits, and practical tips for performing the prayer at its proper time.",
+        backToFeatures: "Back to Features",
         importance: {
             title: "The Highest Priority",
             content: "Prayer (Salah) is the second pillar of Islam and the most important connection between a Muslim and their Creator. The first thing we will be asked about on the Day of Judgment is our prayer. The Prophet (ﷺ) was asked which deed is the best, and he replied, 'Prayer at its fixed time.' (Bukhari). It is more than a duty; it is an opportunity for rest, reflection, and spiritual recharge five times a day."
@@ -70,6 +74,12 @@ export default function PrayerOnTimePage() {
 
     return (
         <div className="container mx-auto px-4 py-8">
+            <Button asChild variant="ghost" className="mb-8">
+                <Link href="/">
+                    <ArrowLeft className="mr-2 h-4 w-4" />
+                    {c.backToFeatures}
+                </Link>
+            </Button>
             <header className="text-center mb-12">
                 <h1 className="text-4xl font-bold tracking-tight text-primary flex items-center justify-center gap-3">
                     <Clock className="h-10 w-10" />

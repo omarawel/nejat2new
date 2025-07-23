@@ -3,13 +3,15 @@
 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Calendar, Users, MessageSquare } from 'lucide-react';
+import { Calendar, Users, MessageSquare, ArrowLeft } from 'lucide-react';
 import { useLanguage } from '@/components/language-provider';
+import Link from 'next/link';
 
 const content = {
     de: {
         joinCommunity: "Tritt unserer Community bei",
         connect: "Verbinde dich mit Gleichgesinnten, teile Wissen und wachse in deinem Glauben.",
+        backToFeatures: "Zurück zu den Funktionen",
         upcomingEvents: "Kommende Events",
         eventsDescription: "Nimm an Online-Vorträgen, Workshops und gemeinsamen Gebeten teil. (Demnächst verfügbar)",
         viewEvents: "Events ansehen",
@@ -23,6 +25,7 @@ const content = {
     en: {
         joinCommunity: "Join Our Community",
         connect: "Connect with like-minded people, share knowledge, and grow in your faith.",
+        backToFeatures: "Back to Features",
         upcomingEvents: "Upcoming Events",
         eventsDescription: "Participate in online lectures, workshops, and communal prayers. (Coming soon)",
         viewEvents: "View Events",
@@ -42,6 +45,14 @@ export default function CommunityPage() {
 
   return (
     <div className="flex-grow flex flex-col p-4 sm:p-6 lg:p-8">
+      <div className="w-full max-w-7xl mx-auto">
+        <Button asChild variant="ghost" className="mb-8">
+            <Link href="/">
+                <ArrowLeft className="mr-2 h-4 w-4" />
+                {c.backToFeatures}
+            </Link>
+        </Button>
+      </div>
       <div className="container mx-auto text-center px-4 py-12">
         <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-primary">{c.joinCommunity}</h1>
         <p className="mt-4 text-lg md:text-xl max-w-3xl mx-auto text-muted-foreground">{c.connect}</p>

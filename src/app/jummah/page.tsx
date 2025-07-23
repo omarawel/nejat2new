@@ -3,12 +3,15 @@
 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { useLanguage } from '@/components/language-provider';
-import { Mosque, Bath, BookOpen, Mic, Wind, Users, Clock } from 'lucide-react';
+import { Mosque, Bath, BookOpen, Mic, Wind, Users, Clock, ArrowLeft } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 
 const content = {
     de: {
         title: "Das Freitagsgebet (Jumu'ah)",
         description: "Ein Leitfaden zu den Vorzügen, Regeln und der Etikette des wichtigsten wöchentlichen Gebets im Islam.",
+        backToFeatures: "Zurück zu den Funktionen",
         importance: {
             title: "Die Bedeutung des Jumu'ah",
             content: "Der Freitag ist der beste Tag der Woche. Das Jumu'ah-Gebet ist eine gemeinschaftliche Pflicht (Fard al-Ayn) für alle volljährigen, gesunden und ansässigen muslimischen Männer. Allah sagt im Koran: „O die ihr glaubt, wenn zum Gebet gerufen wird am Freitag, dann eilt zum Gedenken Allahs und lasst das Kaufgeschäft. Das ist besser für euch, wenn ihr wisst.“ (Sure Al-Jumu'ah, 62:9)."
@@ -39,6 +42,7 @@ const content = {
     en: {
         title: "The Friday Prayer (Jumu'ah)",
         description: "A guide to the virtues, rules, and etiquette of the most important weekly prayer in Islam.",
+        backToFeatures: "Back to Features",
         importance: {
             title: "The Importance of Jumu'ah",
             content: "Friday is the best day of the week. The Jumu'ah prayer is a communal obligation (Fard al-Ayn) for all adult, healthy, and resident Muslim men. Allah says in the Quran: 'O you who have believed, when the adhan is called for the prayer on the day of Jumu'ah (Friday), then proceed to the remembrance of Allah and leave trade. That is better for you, if you only knew.' (Surah Al-Jumu'ah, 62:9)."
@@ -74,6 +78,12 @@ export default function JummahPage() {
 
     return (
         <div className="container mx-auto px-4 py-8">
+            <Button asChild variant="ghost" className="mb-8">
+                <Link href="/">
+                    <ArrowLeft className="mr-2 h-4 w-4" />
+                    {c.backToFeatures}
+                </Link>
+            </Button>
             <header className="text-center mb-12">
                 <h1 className="text-4xl font-bold tracking-tight text-primary flex items-center justify-center gap-3">
                     <Mosque className="h-10 w-10" />

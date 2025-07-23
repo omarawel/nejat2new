@@ -4,10 +4,11 @@
 import { useState, useRef, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Play, Pause, Loader, Eye, EyeOff } from 'lucide-react';
+import { Play, Pause, Loader, Eye, EyeOff, ArrowLeft } from 'lucide-react';
 import { useLanguage } from '@/components/language-provider';
 import { cn } from '@/lib/utils';
 import { textToSpeech } from "@/ai/flows/text-to-speech";
+import Link from 'next/link';
 
 const names = [
   { arabic: 'الرحمن', transliteration: 'Ar-Rahman', german: 'Der Allerbarmer', english: 'The All-Merciful' },
@@ -114,6 +115,7 @@ const content = {
     de: {
         title: "Asma-Ul Husna",
         description: "Die 99 schönsten Namen Allahs.",
+        backToFeatures: "Zurück zu den Funktionen",
         meaningKey: "german",
         play: "Abspielen",
         memorize: "Lernen"
@@ -121,6 +123,7 @@ const content = {
     en: {
         title: "Asma-Ul Husna",
         description: "The 99 most beautiful names of Allah.",
+        backToFeatures: "Back to Features",
         meaningKey: "english",
         play: "Play",
         memorize: "Memorize"
@@ -171,6 +174,12 @@ export default function AsmaUlHusnaPage() {
 
   return (
     <div className="container mx-auto px-4 py-8">
+      <Button asChild variant="ghost" className="mb-8">
+        <Link href="/">
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            {c.backToFeatures}
+        </Link>
+      </Button>
       {audioUrl && (
         <audio
           ref={audioRef}

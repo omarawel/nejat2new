@@ -11,12 +11,15 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/com
 import { useLanguage } from '@/components/language-provider';
 import { useState } from 'react';
 import { Input } from '@/components/ui/input';
-import { Shield } from 'lucide-react';
+import { Shield, ArrowLeft } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 
 const hisnulMuslimData = {
   de: {
     title: "Hisnul Muslim",
     description: "Eine Festung für den Muslim – eine Sammlung authentischer Bittgebete aus dem Koran und der Sunnah.",
+    backToFeatures: "Zurück zu den Funktionen",
     searchPlaceholder: "Suche nach einem Bittgebet...",
     chapters: [
       {
@@ -74,6 +77,7 @@ const hisnulMuslimData = {
   en: {
     title: "Hisnul Muslim",
     description: "Fortress of the Muslim - a collection of authentic supplications from the Quran and Sunnah.",
+    backToFeatures: "Back to Features",
     searchPlaceholder: "Search for a supplication...",
     chapters: [
        {
@@ -120,7 +124,7 @@ const hisnulMuslimData = {
         title: "For Worry and Grief",
         duas: [
             {
-                arabic: "اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْهَمِّ وَالْحَزَنِ، وَالْعَجْزِ وَالْكَسَلِ، وَالْبُخْلِ وَالْجُبْنِ، وَضَلَعِ الدَّيْنِ وَغَلَبَةِ الرِّجَالِ",
+                arabic: "اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْهَمِّ وَالْحَзَنِ، وَالْعَجْزِ وَالْكَسَلِ، وَالْبُخْلِ وَالْجُبْنِ، وَضَلَعِ الدَّيْنِ وَغَلَبَةِ الرِّجَالِ",
                 transliteration: "Allahumma inni a'udhu bika minal-hammi wal-hazan, wal-'ajzi wal-kasal, wal-bukhli wal-jubn, wa dala'id-dayni wa ghalabatir-rijal.",
                 translation: "O Allah, I seek refuge in You from worry and grief, from incapacity and laziness, from stinginess and cowardice, from the burden of debt and from being overpowered by men."
             }
@@ -149,6 +153,12 @@ export default function HisnulMuslimPage() {
 
   return (
     <div className="container mx-auto px-4 py-8">
+      <Button asChild variant="ghost" className="mb-8">
+        <Link href="/">
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            {c.backToFeatures}
+        </Link>
+      </Button>
       <header className="text-center mb-12">
         <h1 className="text-4xl font-bold tracking-tight text-primary flex items-center justify-center gap-3">
             <Shield className="h-10 w-10" />
@@ -196,4 +206,3 @@ export default function HisnulMuslimPage() {
     </div>
   );
 }
-

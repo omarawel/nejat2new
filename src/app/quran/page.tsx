@@ -20,11 +20,13 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { Button } from "@/components/ui/button"
-import { Terminal, Search, Eye, EyeOff, Play, Loader, Pause } from "lucide-react"
+import { Terminal, Search, Eye, EyeOff, Play, Loader, Pause, ArrowLeft } from "lucide-react"
 import { useEffect, useState, useMemo, FormEvent, useRef } from "react"
 import { cn } from "@/lib/utils"
 import { textToSpeech } from "@/ai/flows/text-to-speech"
 import type { TextToSpeechInput, TextToSpeechOutput } from "@/ai/flows/text-to-speech-types";
+import Link from "next/link"
+import { useLanguage } from "@/components/language-provider"
 
 
 interface Surah {
@@ -79,7 +81,54 @@ interface SearchResults {
 
 type LanguageEdition = "en.sahih" | "de.aburida" | "am.sadiq"
 
-const SurahDetailContent = ({ surahNumber, languageEdition }: { surahNumber: number, languageEdition: LanguageEdition }) => {
+const content = {
+    de: {
+        title: "Der Heilige Koran",
+        description: "Durchsuche, lies und reflektiere über die Worte Allahs.",
+        backToFeatures: "Zurück zu den Funktionen",
+        translationLanguage: "Übersetzungssprache",
+        english: "Englisch",
+        german: "Deutsch",
+        amharic: "Amharisch",
+        searchVerse: "Suche nach Vers oder Wort",
+        searchPlaceholder: "z.B. Thronvers, 2:255, Barmherzigkeit",
+        searchResults: "Suchergebnisse",
+        matches: "Treffer",
+        noResults: "Keine Ergebnisse für deine Anfrage gefunden.",
+        filterSurahs: "Filtere Suren",
+        filterPlaceholder: "z.B. Al-Fatihah, 1",
+        errorLoading: "Fehler beim Laden der Suren",
+        errorSurahDetails: "Fehler beim Laden der Sure-Details",
+        errorInvalidData: "Ungültige Daten von der API empfangen",
+        errorAudio: "Fehler beim Generieren des Audios für den Vers.",
+        searchError: "Suchanfrage fehlgeschlagen. Bitte versuche es erneut.",
+        searchErrorTitle: "Suchfehler",
+    },
+    en: {
+        title: "The Holy Quran",
+        description: "Browse, read, and reflect upon the words of Allah.",
+        backToFeatures: "Back to Features",
+        translationLanguage: "Translation Language",
+        english: "English",
+        german: "German",
+        amharic: "Amharic",
+        searchVerse: "Search Verse or Word",
+        searchPlaceholder: "e.g. Throne Verse, 2:255, mercy",
+        searchResults: "Search Results",
+        matches: "matches",
+        noResults: "No results found for your query.",
+        filterSurahs: "Filter Surahs",
+        filterPlaceholder: "e.g. Al-Fatihah, 1",
+        errorLoading: "Error Loading Surahs",
+        errorSurahDetails: "Failed to fetch surah details",
+        errorInvalidData: "Invalid data received from API",
+        errorAudio: "Failed to generate audio for the verse.",
+        searchError: "Search request failed. Please try again.",
+        searchErrorTitle: "Search Error",
+    }
+}
+
+const SurahDetailContent = ({ surahNumber, languageEdition, c }: { surahNumber: number, languageEdition: LanguageEdition, c: typeof content['de'] | typeof content['en'] }) => {
   const [detail, setDetail] = useState<{ arabic: SurahDetail, translation: SurahDetail, transliteration: SurahDetail } | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -111,7 +160,7 @@ const SurahDetailContent = ({ surahNumber, languageEdition }: { surahNumber: num
       setPlayingAudio(`ayah-${ayahNumber}`);
     } catch (err) {
       console.error("Failed to get audio", err);
-      setError("Failed to generate audio for the verse.");
+      setError(c.errorAudio);
     } finally {
       setLoadingAudio(null);
     }
@@ -133,11 +182,11 @@ const SurahDetailContent = ({ surahNumber, languageEdition }: { surahNumber: num
       try {
         const response = await fetch(`https://api.alquran.cloud/v1/surah/${surahNumber}/editions/quran-uthmani,${languageEdition},en.transliteration`)
         if (!response.ok) {
-          throw new Error('Failed to fetch surah details');
+          throw new Error(c.errorSurahDetails);
         }
         const data = await response.json()
         if (data.code !== 200 || !data.data || data.data.length < 3) {
-            throw new Error('Invalid data received from API');
+            throw new Error(c.errorInvalidData);
         }
 
         setDetail({
@@ -152,7 +201,7 @@ const SurahDetailContent = ({ surahNumber, languageEdition }: { surahNumber: num
       }
     }
     fetchSurahDetail()
-  }, [surahNumber, languageEdition])
+  }, [surahNumber, languageEdition, c.errorSurahDetails, c.errorInvalidData])
 
   if (loading) {
     return (
@@ -225,6 +274,9 @@ const SurahDetailContent = ({ surahNumber, languageEdition }: { surahNumber: num
 
 
 export default function QuranPage() {
+  const { language: currentLanguage } = useLanguage();
+  const c = content[currentLanguage] || content.de;
+
   const [surahs, setSurahs] = useState<Surah[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -243,7 +295,7 @@ export default function QuranPage() {
       try {
         const response = await fetch('https://api.alquran.cloud/v1/surah')
         if (!response.ok) {
-            throw new Error("Failed to fetch surahs. Please try again later.")
+            throw new Error(c.errorLoading)
         }
         const data = await response.json()
         setSurahs(data.data)
@@ -254,7 +306,7 @@ export default function QuranPage() {
       }
     }
     fetchSurahs()
-  }, [])
+  }, [c.errorLoading])
 
   const handleSearch = async (e: FormEvent) => {
     e.preventDefault();
@@ -270,7 +322,7 @@ export default function QuranPage() {
     try {
       const response = await fetch(`https://api.alquran.cloud/v1/search/${searchQuery}/all/${language}`);
       if (!response.ok) {
-        throw new Error('Search request failed. Please try again.');
+        throw new Error(c.searchError);
       }
       const data = await response.json();
       if (data.code !== 200) {
@@ -296,31 +348,37 @@ export default function QuranPage() {
 
   return (
     <div className="space-y-8 flex-grow flex flex-col p-4 sm:p-6 lg:p-8">
+        <Button asChild variant="ghost" className="self-start">
+            <Link href="/">
+                <ArrowLeft className="mr-2 h-4 w-4" />
+                {c.backToFeatures}
+            </Link>
+        </Button>
       <header>
-        <h1 className="text-3xl font-bold tracking-tight text-primary">The Holy Quran</h1>
-        <p className="text-muted-foreground mt-2">Browse, read, and reflect upon the words of Allah.</p>
+        <h1 className="text-3xl font-bold tracking-tight text-primary">{c.title}</h1>
+        <p className="text-muted-foreground mt-2">{c.description}</p>
       </header>
         
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <Label htmlFor="language">Translation Language</Label>
+            <Label htmlFor="language">{c.translationLanguage}</Label>
             <Select value={language} onValueChange={(value) => setLanguage(value as LanguageEdition)}>
                 <SelectTrigger id="language" className="mt-1">
                     <SelectValue placeholder="Select Language" />
                 </SelectTrigger>
                 <SelectContent>
-                    <SelectItem value="en.sahih">English</SelectItem>
-                    <SelectItem value="de.aburida">German</SelectItem>
-                    <SelectItem value="am.sadiq">Amharic</SelectItem>
+                    <SelectItem value="en.sahih">{c.english}</SelectItem>
+                    <SelectItem value="de.aburida">{c.german}</SelectItem>
+                    <SelectItem value="am.sadiq">{c.amharic}</SelectItem>
                 </SelectContent>
             </Select>
           </div>
         <div>
-          <Label htmlFor="search-verse">Search Verse or Word</Label>
+          <Label htmlFor="search-verse">{c.searchVerse}</Label>
             <form onSubmit={handleSearch} className="flex items-center gap-2 mt-1">
                 <Input
                     id="search-verse"
-                    placeholder="e.g. Throne Verse, 2:255, mercy"
+                    placeholder={c.searchPlaceholder}
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                 />
@@ -338,7 +396,7 @@ export default function QuranPage() {
       {searchError && (
           <Alert variant="destructive">
               <Terminal className="h-4 w-4" />
-              <AlertTitle>Search Error</AlertTitle>
+              <AlertTitle>{c.searchErrorTitle}</AlertTitle>
               <AlertDescription>{searchError}</AlertDescription>
           </Alert>
       )}
@@ -346,7 +404,7 @@ export default function QuranPage() {
       {searchResults && (
           <Card>
               <CardContent className="p-6">
-                  <h2 className="text-xl font-semibold mb-4">Search Results ({searchResults.count} matches)</h2>
+                  <h2 className="text-xl font-semibold mb-4">{c.searchResults} ({searchResults.count} {c.matches})</h2>
                   {searchResults.count > 0 ? (
                       <div className="space-y-4">
                           {searchResults.matches.map(match => (
@@ -357,17 +415,17 @@ export default function QuranPage() {
                           ))}
                       </div>
                   ) : (
-                      <p>No results found for your query.</p>
+                      <p>{c.noResults}</p>
                   )}
               </CardContent>
           </Card>
       )}
 
       <div className="pt-4">
-          <Label htmlFor="search-surah">Filter Surahs</Label>
+          <Label htmlFor="search-surah">{c.filterSurahs}</Label>
           <Input 
             id="search-surah"
-            placeholder="e.g. Al-Fatihah, 1"
+            placeholder={c.filterPlaceholder}
             value={filter}
             onChange={e => setFilter(e.target.value)}
             className="mt-1"
@@ -377,7 +435,7 @@ export default function QuranPage() {
       {error && (
         <Alert variant="destructive">
             <Terminal className="h-4 w-4" />
-            <AlertTitle>Error Loading Surahs</AlertTitle>
+            <AlertTitle>{c.errorLoading}</AlertTitle>
             <AlertDescription>{error}</AlertDescription>
         </Alert>
       )}
@@ -409,7 +467,7 @@ export default function QuranPage() {
                     </AccordionTrigger>
                     <AccordionContent>
                         {openSurah === `item-${surah.number}` && (
-                          <SurahDetailContent surahNumber={surah.number} languageEdition={language} />
+                          <SurahDetailContent surahNumber={surah.number} languageEdition={language} c={c}/>
                         )}
                     </AccordionContent>
                 </AccordionItem>

@@ -12,16 +12,18 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Loader2, Wand2, Copy, Check } from "lucide-react";
+import { Loader2, Wand2, Copy, Check, ArrowLeft } from "lucide-react";
 import { useLanguage } from "@/components/language-provider";
 import { generateDua } from "@/ai/flows/generate-dua";
 import type { GenerateDuaInput } from "@/ai/flows/generate-dua-types";
+import Link from 'next/link';
 
 
 const content = {
     de: {
         title: "Du'a-Generator",
         description: "Erstelle persönliche Bittgebete mit Hilfe von KI.",
+        backToFeatures: "Zurück zu den Funktionen",
         formTitle: "Erstelle dein Bittgebet",
         topicLabel: "Thema",
         topicPlaceholder: "z.B. für eine erfolgreiche Prüfung...",
@@ -40,6 +42,7 @@ const content = {
     en: {
         title: "Du'a Generator",
         description: "Create personalized supplications with the help of AI.",
+        backToFeatures: "Back to Features",
         formTitle: "Create Your Du'a",
         topicLabel: "Topic",
         topicPlaceholder: "e.g. for success in an exam...",
@@ -113,6 +116,12 @@ export default function DuaGeneratorPage() {
 
     return (
         <div className="container mx-auto px-4 py-8">
+            <Button asChild variant="ghost" className="mb-8">
+                <Link href="/">
+                    <ArrowLeft className="mr-2 h-4 w-4" />
+                    {c.backToFeatures}
+                </Link>
+            </Button>
             <header className="text-center mb-12">
                 <h1 className="text-4xl font-bold tracking-tight text-primary flex items-center justify-center gap-3">
                     <Wand2 className="h-10 w-10" />

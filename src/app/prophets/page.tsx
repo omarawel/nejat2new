@@ -8,11 +8,15 @@ import {
   AccordionTrigger,
 } from '@/components/ui/accordion';
 import { useLanguage } from '@/components/language-provider';
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
+import { ArrowLeft } from 'lucide-react';
 
 const prophetsData = {
   de: {
     title: 'Die 25 Propheten im Koran',
     description: 'Lerne die Gesandten Allahs und ihre Geschichten kennen.',
+    backToFeatures: "Zurück zu den Funktionen",
     prophets: [
       {
         name: 'Adam (عليه السلام)',
@@ -119,6 +123,7 @@ const prophetsData = {
   en: {
     title: 'The 25 Prophets in the Quran',
     description: 'Learn about the Messengers of Allah and their stories.',
+    backToFeatures: "Back to Features",
     prophets: [
       {
         name: 'Adam (peace be upon him)',
@@ -231,6 +236,12 @@ export default function ProphetsPage() {
 
   return (
     <div className="container mx-auto px-4 py-8">
+      <Button asChild variant="ghost" className="mb-8">
+        <Link href="/">
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            {content.backToFeatures}
+        </Link>
+      </Button>
       <header className="text-center mb-12">
         <h1 className="text-4xl font-bold tracking-tight text-primary">{content.title}</h1>
         <p className="text-muted-foreground mt-2 text-lg">{content.description}</p>

@@ -3,12 +3,15 @@
 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { useLanguage } from '@/components/language-provider';
-import { Heart, Smile, Users, MessageSquare, Hand, Brain, Shield } from 'lucide-react';
+import { Heart, Smile, Users, MessageSquare, Hand, Brain, Shield, ArrowLeft } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 
 const content = {
     de: {
         title: "Gute Manieren im Islam (Akhlaq)",
         description: "Akhlaq ist das arabische Wort für Charakter, Ethik und Moral. Es ist ein zentraler Aspekt des Islam und beschreibt das vorbildliche Verhalten eines Muslims, wie es der Prophet Muhammad (ﷺ) vorgelebt hat.",
+        backToFeatures: "Zurück zu den Funktionen",
         topics: [
             {
                 icon: Heart,
@@ -51,6 +54,7 @@ const content = {
     en: {
         title: "Good Manners in Islam (Akhlaq)",
         description: "Akhlaq is the Arabic word for character, ethics, and morality. It is a central aspect of Islam and describes the exemplary behavior of a Muslim, as exemplified by the Prophet Muhammad (ﷺ).",
+        backToFeatures: "Back to Features",
         topics: [
             {
                 icon: Heart,
@@ -98,6 +102,12 @@ export default function AkhlaqPage() {
 
     return (
         <div className="container mx-auto px-4 py-8">
+            <Button asChild variant="ghost" className="mb-8">
+                <Link href="/">
+                    <ArrowLeft className="mr-2 h-4 w-4" />
+                    {c.backToFeatures}
+                </Link>
+            </Button>
             <header className="text-center mb-12">
                 <h1 className="text-4xl font-bold tracking-tight text-primary">{c.title}</h1>
                 <p className="text-muted-foreground mt-2 text-lg max-w-3xl mx-auto">{c.description}</p>

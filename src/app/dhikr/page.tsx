@@ -9,11 +9,15 @@ import {
   CardDescription
 } from '@/components/ui/card';
 import { useLanguage } from '@/components/language-provider';
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
+import { ArrowLeft } from 'lucide-react';
 
 const content = {
   de: {
     title: "Dhikr & Bittgebete",
     description: "Eine Sammlung von Gedenkformeln und Gebeten für den täglichen Gebrauch.",
+    backToFeatures: "Zurück zu den Funktionen",
     dhikrList: [
       {
         title: "Subhan'Allah",
@@ -111,6 +115,7 @@ const content = {
   en: {
     title: "Dhikr & Supplications",
     description: "A collection of remembrances and prayers for daily use.",
+    backToFeatures: "Back to Features",
     dhikrList: [
       {
         title: "Subhan'Allah",
@@ -231,6 +236,12 @@ export default function DhikrPage() {
 
   return (
     <div className="container mx-auto px-4 py-8">
+      <Button asChild variant="ghost" className="mb-8">
+        <Link href="/">
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            {c.backToFeatures}
+        </Link>
+      </Button>
       <header className="text-center mb-12">
         <h1 className="text-4xl font-bold tracking-tight text-primary">{c.title}</h1>
         <p className="text-muted-foreground mt-2 text-lg max-w-2xl mx-auto">{c.description}</p>
@@ -251,5 +262,3 @@ export default function DhikrPage() {
     </div>
   );
 }
-
-    

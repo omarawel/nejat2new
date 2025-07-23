@@ -3,12 +3,15 @@
 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { useLanguage } from '@/components/language-provider';
-import { CheckCircle, XCircle, Drumstick, Fish, GlassWater, HandHeart } from 'lucide-react';
+import { CheckCircle, XCircle, Drumstick, Fish, GlassWater, HandHeart, ArrowLeft } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 
 const content = {
     de: {
         title: "Islamische Essensregeln",
         description: "Ein umfassender Leitfaden zu Halal, Haram und der Etikette des Essens.",
+        backToFeatures: "Zurück zu den Funktionen",
         halal: {
             title: "Was ist Halal?",
             description: "Halal ist ein arabisches Wort und bedeutet „erlaubt“ oder „zulässig“. Es bezieht sich auf alles, was nach islamischem Recht erlaubt ist. Bei Lebensmitteln bedeutet dies, dass sie aus reinen Quellen stammen und auf eine Weise zubereitet werden, die dem islamischen Gesetz entspricht.",
@@ -52,6 +55,7 @@ const content = {
     en: {
         title: "Islamic Food Rules",
         description: "A comprehensive guide to Halal, Haram, and the etiquette of eating.",
+        backToFeatures: "Back to Features",
         halal: {
             title: "What is Halal?",
             description: "Halal is an Arabic word meaning 'permissible' or 'lawful'. It refers to anything permitted under Islamic law. For food, this means it comes from pure sources and is prepared in a manner consistent with Islamic law.",
@@ -100,6 +104,12 @@ export default function FoodRulesPage() {
 
     return (
         <div className="container mx-auto px-4 py-8">
+            <Button asChild variant="ghost" className="mb-8">
+                <Link href="/">
+                    <ArrowLeft className="mr-2 h-4 w-4" />
+                    {c.backToFeatures}
+                </Link>
+            </Button>
             <header className="text-center mb-12">
                 <h1 className="text-4xl font-bold tracking-tight text-primary">{c.title}</h1>
                 <p className="text-muted-foreground mt-2 text-lg max-w-3xl mx-auto">{c.description}</p>

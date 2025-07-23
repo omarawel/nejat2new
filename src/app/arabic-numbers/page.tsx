@@ -5,7 +5,7 @@ import { useState, useRef, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Play, Pause, Loader, Eye, EyeOff } from 'lucide-react';
+import { Play, Pause, Loader, Eye, EyeOff, ArrowLeft } from 'lucide-react';
 import { useLanguage } from '@/components/language-provider';
 import { textToSpeech } from "@/ai/flows/text-to-speech";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
@@ -13,11 +13,13 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 import { cn } from '@/lib/utils';
+import Link from 'next/link';
 
 const content = {
     de: {
         title: "Arabische Zahlen",
         description: "Lerne die arabischen Zahlen von 1-20 oder wandle eine beliebige Zahl um.",
+        backToFeatures: "Zurück zu den Funktionen",
         learnTitle: "Lerne die Zahlen 1-20",
         memorize: "Lernen",
         numeral: "Ziffer",
@@ -38,6 +40,7 @@ const content = {
     en: {
         title: "Arabic Numbers",
         description: "Learn the Arabic numbers from 1-20 or convert any number.",
+        backToFeatures: "Back to Features",
         learnTitle: "Learn the Numbers 1-20",
         memorize: "Memorize",
         numeral: "Numeral",
@@ -214,6 +217,12 @@ export default function ArabicNumbersPage() {
           onEnded={() => setPlayingAudio(null)}
         />
       )}
+      <Button asChild variant="ghost" className="mb-8">
+        <Link href="/">
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            {c.backToFeatures}
+        </Link>
+      </Button>
       <header className="text-center mb-12">
         <h1 className="text-4xl font-bold tracking-tight text-primary">{c.title}</h1>
         <p className="text-muted-foreground mt-2 text-lg">{c.description}</p>

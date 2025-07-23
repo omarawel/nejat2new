@@ -5,7 +5,7 @@ import { useState, useRef, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
-import { Play, Pause, Loader, Eye, EyeOff, BrainCircuit, Star } from 'lucide-react';
+import { Play, Pause, Loader, Eye, EyeOff, BrainCircuit, Star, ArrowLeft } from 'lucide-react';
 import { useLanguage } from '@/components/language-provider';
 import { textToSpeech } from "@/ai/flows/text-to-speech";
 import { cn } from '@/lib/utils';
@@ -19,6 +19,7 @@ const content = {
     de: {
         title: "Lern-Werkzeug",
         description: "Gib einen beliebigen Text ein, um ihn mit Sprachausgabe und Versteckfunktion auswendig zu lernen. Gespeicherte Texte findest du in deinen Favoriten.",
+        backToFeatures: "Zurück zu den Funktionen",
         inputTitle: "Text zum Auswendiglernen",
         inputDescription: "Füge hier den Text ein, den du lernen möchtest. Das kann ein Vers, ein Dua oder etwas anderes sein.",
         inputPlaceholder: "Beginne hier mit der Eingabe...",
@@ -35,6 +36,7 @@ const content = {
     en: {
         title: "Memorization Tool",
         description: "Enter any text to memorize it with audio playback and a hide/show feature. Saved texts can be found in your favorites.",
+        backToFeatures: "Back to Features",
         inputTitle: "Text to Memorize",
         inputDescription: "Paste the text you want to learn here. It can be a verse, a dua, or anything else.",
         inputPlaceholder: "Start typing here...",
@@ -139,6 +141,12 @@ export default function MemorizationPage() {
           onEnded={() => setPlayingAudio(false)}
         />
       )}
+      <Button asChild variant="ghost" className="mb-8">
+        <Link href="/">
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            {c.backToFeatures}
+        </Link>
+      </Button>
       <header className="text-center mb-12">
         <h1 className="text-4xl font-bold tracking-tight text-primary flex items-center justify-center gap-3">
             <BrainCircuit className="h-10 w-10" />
@@ -216,4 +224,3 @@ export default function MemorizationPage() {
     </div>
   );
 }
-

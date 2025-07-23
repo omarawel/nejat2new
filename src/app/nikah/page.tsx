@@ -3,12 +3,15 @@
 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { useLanguage } from '@/components/language-provider';
-import { Heart, FileText, Users, Handshake, Gift, Search, Utensils } from 'lucide-react';
+import { Heart, FileText, Users, Handshake, Gift, Search, Utensils, ArrowLeft } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 
 const content = {
     de: {
         title: "Ehe im Islam (Nikah)",
         description: "Ein umfassender Leitfaden zu den grundlegenden Prinzipien und dem Ablauf der islamischen Eheschließung.",
+        backToFeatures: "Zurück zu den Funktionen",
         sections: [
             {
                 icon: Heart,
@@ -75,6 +78,7 @@ const content = {
     en: {
         title: "Marriage in Islam (Nikah)",
         description: "A comprehensive guide to the fundamental principles and procedures of Islamic marriage.",
+        backToFeatures: "Back to Features",
         sections: [
             {
                 icon: Heart,
@@ -146,6 +150,12 @@ export default function NikahPage() {
 
     return (
         <div className="container mx-auto px-4 py-8">
+            <Button asChild variant="ghost" className="mb-8">
+                <Link href="/">
+                    <ArrowLeft className="mr-2 h-4 w-4" />
+                    {c.backToFeatures}
+                </Link>
+            </Button>
             <header className="text-center mb-12">
                 <h1 className="text-4xl font-bold tracking-tight text-primary">{c.title}</h1>
                 <p className="text-muted-foreground mt-2 text-lg max-w-3xl mx-auto">{c.description}</p>

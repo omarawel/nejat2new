@@ -7,17 +7,19 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { CalendarIcon, ArrowRightLeft } from 'lucide-react';
+import { CalendarIcon, ArrowRightLeft, ArrowLeft } from 'lucide-react';
 import { format } from 'date-fns';
 import { useLanguage } from '@/components/language-provider';
 import HijriDate from 'hijri-date/lib/safe';
 import { cn } from '@/lib/utils';
 import { de } from 'date-fns/locale';
+import Link from 'next/link';
 
 const content = {
     de: {
         title: "Hijri-Kalender Konverter",
         description: "Wandle Daten zwischen dem gregorianischen und dem islamischen Kalender um.",
+        backToFeatures: "Zurück zu den Funktionen",
         gregorianToHijri: "Gregorianisch zu Hijri",
         hijriToGregorian: "Hijri zu Gregorianisch",
         selectDate: "Wähle ein Datum",
@@ -31,6 +33,7 @@ const content = {
     en: {
         title: "Hijri Calendar Converter",
         description: "Convert dates between the Gregorian and Islamic calendars.",
+        backToFeatures: "Back to Features",
         gregorianToHijri: "Gregorian to Hijri",
         hijriToGregorian: "Hijri to Gregorian",
         selectDate: "Select a date",
@@ -74,6 +77,12 @@ export default function HijriConverterPage() {
 
     return (
         <div className="container mx-auto px-4 py-8">
+            <Button asChild variant="ghost" className="mb-8">
+                <Link href="/">
+                    <ArrowLeft className="mr-2 h-4 w-4" />
+                    {c.backToFeatures}
+                </Link>
+            </Button>
             <header className="text-center mb-12">
                 <h1 className="text-4xl font-bold tracking-tight text-primary flex items-center justify-center gap-3">
                     <ArrowRightLeft className="h-10 w-10" />

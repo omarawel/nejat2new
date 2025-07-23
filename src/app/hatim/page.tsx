@@ -3,11 +3,12 @@
 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { BookOpen, Users, PlusCircle, CheckCircle, Loader2 } from 'lucide-react';
+import { BookOpen, Users, PlusCircle, CheckCircle, Loader2, ArrowLeft } from 'lucide-react';
 import { Progress } from '@/components/ui/progress';
 import { useLanguage } from '@/components/language-provider';
 import { useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
+import Link from 'next/link';
 
 // Dummy data for demonstration. In a real app, this would come from a database (e.g., Firestore).
 const initialHatimGroups = [
@@ -42,6 +43,7 @@ const content = {
     de: {
         title: "Hatim - Gemeinsames Lesen",
         description: "Organisiere oder nimm an gemeinschaftlichen Koran-Lesungen teil, um die Belohnung zu teilen.",
+        backToFeatures: "Zurück zu den Funktionen",
         createHatim: "Neuen Hatim starten",
         join: "Beitreten",
         leave: "Verlassen",
@@ -57,6 +59,7 @@ const content = {
     en: {
         title: "Hatim - Communal Reading",
         description: "Organize or join communal Quran readings to share the reward.",
+        backToFeatures: "Back to Features",
         createHatim: "Start a New Hatim",
         join: "Join",
         leave: "Leave",
@@ -109,6 +112,12 @@ export default function HatimPage() {
 
     return (
         <div className="container mx-auto px-4 py-8">
+            <Button asChild variant="ghost" className="mb-8">
+                <Link href="/">
+                    <ArrowLeft className="mr-2 h-4 w-4" />
+                    {c.backToFeatures}
+                </Link>
+            </Button>
             <header className="text-center mb-12">
                 <h1 className="text-4xl font-bold tracking-tight text-primary flex items-center justify-center gap-3">
                     <BookOpen className="h-10 w-10" />
@@ -174,4 +183,3 @@ export default function HatimPage() {
         </div>
     );
 }
-

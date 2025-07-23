@@ -4,8 +4,9 @@
 import { useEffect, useState, useCallback } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { RefreshCw, BookOpen, Loader2 } from 'lucide-react';
+import { RefreshCw, BookOpen, Loader2, ArrowLeft } from 'lucide-react';
 import { useLanguage } from '@/components/language-provider';
+import Link from 'next/link';
 
 interface Hadith {
   hadith_english: string;
@@ -58,12 +59,14 @@ const content = {
     de: {
         title: "Hadith des Tages",
         description: "Eine tägliche Weisheit aus den Überlieferungen des Propheten Muhammad (ﷺ).",
+        backToFeatures: "Zurück zu den Funktionen",
         newHadith: "Neuer Hadith",
         narrated: "Überliefert von"
     },
     en: {
         title: "Hadith of the Day",
         description: "A daily wisdom from the traditions of the Prophet Muhammad (ﷺ).",
+        backToFeatures: "Back to Features",
         newHadith: "New Hadith",
         narrated: "Narrated by"
     }
@@ -97,36 +100,43 @@ export default function HadithOfTheDayPage() {
     }, []);
 
     return (
-        <div className="container mx-auto px-4 py-8 flex items-center justify-center flex-grow">
-            <Card className="w-full max-w-2xl text-center shadow-xl">
-                <CardHeader>
-                    <div className="flex justify-center mb-4">
-                        <div className="p-4 bg-primary/10 rounded-full">
-                            <BookOpen className="h-10 w-10 text-primary" />
+        <div className="container mx-auto px-4 py-8 flex flex-col items-center justify-center flex-grow">
+            <div className="w-full max-w-2xl">
+                <Button asChild variant="ghost" className="mb-8">
+                    <Link href="/">
+                        <ArrowLeft className="mr-2 h-4 w-4" />
+                        {c.backToFeatures}
+                    </Link>
+                </Button>
+                <Card className="w-full text-center shadow-xl">
+                    <CardHeader>
+                        <div className="flex justify-center mb-4">
+                            <div className="p-4 bg-primary/10 rounded-full">
+                                <BookOpen className="h-10 w-10 text-primary" />
+                            </div>
                         </div>
-                    </div>
-                    <CardTitle className="text-3xl font-bold">{c.title}</CardTitle>
-                    <CardDescription className="text-lg">{c.description}</CardDescription>
-                </CardHeader>
-                <CardContent className="min-h-[250px] flex items-center justify-center">
-                    {loading ? (
-                        <Loader2 className="h-12 w-12 animate-spin text-primary" />
-                    ) : hadith ? (
-                        <div className="space-y-6">
-                            <p className="text-3xl font-quranic text-right tracking-wide leading-relaxed">{hadith.hadith_arabic}</p>
-                            <p className="text-lg leading-relaxed text-foreground/90">"{hadith.hadith_english}"</p>
-                            <p className="text-sm text-muted-foreground">{c.narrated} {hadith.narrator} [{hadith.book}, {hadith.chapter}]</p>
-                        </div>
-                    ) : null}
-                </CardContent>
-                <CardFooter className="flex justify-center p-6">
-                    <Button onClick={getNewHadith} disabled={loading}>
-                        <RefreshCw className={`mr-2 h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
-                        {c.newHadith}
-                    </Button>
-                </CardFooter>
-            </Card>
+                        <CardTitle className="text-3xl font-bold">{c.title}</CardTitle>
+                        <CardDescription className="text-lg">{c.description}</CardDescription>
+                    </CardHeader>
+                    <CardContent className="min-h-[250px] flex items-center justify-center">
+                        {loading ? (
+                            <Loader2 className="h-12 w-12 animate-spin text-primary" />
+                        ) : hadith ? (
+                            <div className="space-y-6">
+                                <p className="text-3xl font-quranic text-right tracking-wide leading-relaxed">{hadith.hadith_arabic}</p>
+                                <p className="text-lg leading-relaxed text-foreground/90">"{hadith.hadith_english}"</p>
+                                <p className="text-sm text-muted-foreground">{c.narrated} {hadith.narrator} [{hadith.book}, {hadith.chapter}]</p>
+                            </div>
+                        ) : null}
+                    </CardContent>
+                    <CardFooter className="flex justify-center p-6">
+                        <Button onClick={getNewHadith} disabled={loading}>
+                            <RefreshCw className={`mr-2 h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
+                            {c.newHadith}
+                        </Button>
+                    </CardFooter>
+                </Card>
+            </div>
         </div>
     );
 }
-

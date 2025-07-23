@@ -8,7 +8,7 @@ import { auth } from '@/lib/firebase';
 import { getFavorites, deleteFavorite, type Favorite } from '@/lib/favorites';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Loader2, Trash2, Star, PlusCircle, BrainCircuit } from 'lucide-react';
+import { Loader2, Trash2, Star, PlusCircle, BrainCircuit, ArrowLeft } from 'lucide-react';
 import { useLanguage } from '@/components/language-provider';
 import Link from 'next/link';
 import {
@@ -28,6 +28,7 @@ const content = {
     de: {
         title: "Deine Favoriten",
         description: "Hier sind deine gespeicherten Texte zum Auswendiglernen.",
+        backToFeatures: "Zurück zu den Funktionen",
         noFavorites: "Du hast noch keine Favoriten gespeichert.",
         addFavorite: "Text zum Lernen hinzufügen",
         loading: "Favoriten werden geladen...",
@@ -46,6 +47,7 @@ const content = {
     en: {
         title: "Your Favorites",
         description: "Here are your saved texts for memorization.",
+        backToFeatures: "Back to Features",
         noFavorites: "You haven't saved any favorites yet.",
         addFavorite: "Add text to learn",
         loading: "Loading favorites...",
@@ -138,6 +140,12 @@ export default function FavoritesPage() {
 
     return (
         <div className="container mx-auto px-4 py-8">
+             <Button asChild variant="ghost" className="mb-8">
+                <Link href="/">
+                    <ArrowLeft className="mr-2 h-4 w-4" />
+                    {c.backToFeatures}
+                </Link>
+            </Button>
             <header className="text-center mb-12">
                 <h1 className="text-4xl font-bold tracking-tight text-primary flex items-center justify-center gap-3">
                     <Star className="h-10 w-10" />

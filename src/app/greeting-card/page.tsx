@@ -8,10 +8,11 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Download, Mail, Wand2 } from 'lucide-react';
+import { Download, Mail, Wand2, ArrowLeft } from 'lucide-react';
 import { useLanguage } from '@/components/language-provider';
 import { toPng } from 'html-to-image';
 import { cn } from '@/lib/utils';
+import Link from 'next/link';
 
 const themes = {
     'emerald': { bg: 'bg-emerald-800', text: 'text-white', border: 'border-emerald-600', pattern: 'bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-emerald-700 to-emerald-800' },
@@ -42,6 +43,7 @@ const content = {
     de: {
         title: "Grußkarten-Generator",
         description: "Erstelle und teile wunderschöne islamische Grußkarten für besondere Anlässe.",
+        backToFeatures: "Zurück zu den Funktionen",
         occasion: "Anlass",
         eid: "Eid",
         ramadan: "Ramadan",
@@ -62,6 +64,7 @@ const content = {
     en: {
         title: "Greeting Card Generator",
         description: "Create and share beautiful Islamic greeting cards for special occasions.",
+        backToFeatures: "Back to Features",
         occasion: "Occasion",
         eid: "Eid",
         ramadan: "Ramadan",
@@ -111,6 +114,12 @@ export default function GreetingCardPage() {
 
     return (
         <div className="container mx-auto px-4 py-8">
+            <Button asChild variant="ghost" className="mb-8">
+                <Link href="/">
+                    <ArrowLeft className="mr-2 h-4 w-4" />
+                    {c.backToFeatures}
+                </Link>
+            </Button>
             <header className="text-center mb-12">
                  <h1 className="text-4xl font-bold tracking-tight text-primary flex items-center justify-center gap-3">
                     <Mail className="h-10 w-10" />

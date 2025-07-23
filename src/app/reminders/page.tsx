@@ -4,17 +4,19 @@
 import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Bell, BellRing, BellOff, Sun, Moon, BookOpen, Heart, Calendar, BookText, ClipboardList } from 'lucide-react';
+import { Bell, BellRing, BellOff, Sun, Moon, BookOpen, Heart, Calendar, BookText, ClipboardList, ArrowLeft } from 'lucide-react';
 import { useLanguage } from '@/components/language-provider';
 import { useToast } from '@/hooks/use-toast';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
+import Link from 'next/link';
 
 const content = {
     de: {
         title: "Islamische Erinnerungen",
         description: "Abonniere gezielte Erinnerungen, um deinen Glauben im Alltag zu stärken. (Feature in Entwicklung)",
+        backToFeatures: "Zurück zu den Funktionen",
         toastEnabled: "Erinnerung aktiviert!",
         toastDisabled: "Erinnerung deaktiviert.",
         setTime: "Uhrzeit festlegen",
@@ -72,6 +74,7 @@ const content = {
     en: {
         title: "Islamic Reminders",
         description: "Subscribe to specific reminders to strengthen your faith in daily life. (Feature in development)",
+        backToFeatures: "Back to Features",
         toastEnabled: "Reminder enabled!",
         toastDisabled: "Reminder disabled.",
         setTime: "Set time",
@@ -162,6 +165,12 @@ export default function RemindersPage() {
 
     return (
         <div className="container mx-auto px-4 py-8">
+            <Button asChild variant="ghost" className="mb-8">
+                <Link href="/">
+                    <ArrowLeft className="mr-2 h-4 w-4" />
+                    {c.backToFeatures}
+                </Link>
+            </Button>
             <header className="text-center mb-12">
                 <h1 className="text-4xl font-bold tracking-tight text-primary flex items-center justify-center gap-3">
                     <Bell className="h-10 w-10" />

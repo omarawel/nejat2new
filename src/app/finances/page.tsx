@@ -3,12 +3,15 @@
 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { useLanguage } from '@/components/language-provider';
-import { Landmark, HandCoins, PiggyBank, Briefcase, Handshake, Sprout, TrendingDown, Scale } from 'lucide-react';
+import { Landmark, HandCoins, PiggyBank, Briefcase, Handshake, Sprout, TrendingDown, Scale, ArrowLeft } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 
 const content = {
     de: {
         title: "Finanzen im Islam",
         description: "Ein Leitfaden zu den ethischen und spirituellen Prinzipien des Umgangs mit Vermögen im Islam.",
+        backToFeatures: "Zurück zu den Funktionen",
         sections: [
             {
                 icon: HandCoins,
@@ -50,6 +53,7 @@ const content = {
     en: {
         title: "Finances in Islam",
         description: "A guide to the ethical and spiritual principles of handling wealth in Islam.",
+        backToFeatures: "Back to Features",
         sections: [
             {
                 icon: HandCoins,
@@ -96,6 +100,12 @@ export default function FinancesPage() {
 
     return (
         <div className="container mx-auto px-4 py-8">
+            <Button asChild variant="ghost" className="mb-8">
+                <Link href="/">
+                    <ArrowLeft className="mr-2 h-4 w-4" />
+                    {c.backToFeatures}
+                </Link>
+            </Button>
             <header className="text-center mb-12">
                  <h1 className="text-4xl font-bold tracking-tight text-primary flex items-center justify-center gap-3">
                     <Landmark className="h-10 w-10" />
