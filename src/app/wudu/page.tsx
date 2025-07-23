@@ -49,6 +49,7 @@ const content = {
         completion: {
             title: "10. Abschluss-Dua (Shahada)",
             description: "Hebe deinen Blick zum Himmel und sprich das Glaubensbekenntnis: „Aschhadu an la ilaha illallah, wa aschhadu anna Muhammadan abduhu wa rasuluh.“",
+            arabic: "أَشْهَدُ أَنْ لَا إِلَٰهَ إِلَّا ٱللَّٰهُ وَأَشْهَدُ أَنَّ مُحَمَّدًا عَبْدُهُ وَرَسُولُهُ"
         }
     },
     en: {
@@ -95,6 +96,7 @@ const content = {
         completion: {
             title: "10. Concluding Dua (Shahada)",
             description: "Raise your gaze to the sky and recite the testimony of faith: \"Ashhadu an la ilaha illallah, wa ashhadu anna Muhammadan abduhu wa rasuluh.\"",
+            arabic: "أَشْهَدُ أَنْ لَا إِلَٰهَ إِلَّا ٱللَّٰهُ وَأَشْهَدُ أَنَّ مُحَمَّدًا عَبْدُهُ وَرَسُولُهُ"
         }
     }
 }
@@ -103,13 +105,16 @@ export default function WuduPage() {
   const { language } = useLanguage();
   const c = content[language] || content.de;
 
-  const StepCard = ({ title, description }: { title: string, description: string }) => (
+  const StepCard = ({ title, description, arabic }: { title: string, description: string, arabic?: string }) => (
     <Card>
         <CardHeader>
             <CardTitle className="text-xl">{title}</CardTitle>
         </CardHeader>
         <CardContent>
             <CardDescription className="text-base">{description}</CardDescription>
+            {arabic && (
+                <p className="text-2xl font-quranic text-right mt-4 text-primary">{arabic}</p>
+            )}
         </CardContent>
     </Card>
   );
@@ -138,6 +143,7 @@ export default function WuduPage() {
         <StepCard 
             title={c.completion.title} 
             description={c.completion.description} 
+            arabic={c.completion.arabic}
         />
       </div>
     </div>
