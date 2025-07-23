@@ -10,8 +10,8 @@ body {
   :root {
     --background: 0 0% 100%;
     --foreground: 0 0% 3.9%;
-    --card: 26 10% 19%;
-    --card-foreground: 0 0% 98%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 3.9%;
     --popover: 0 0% 100%;
     --popover-foreground: 0 0% 3.9%;
     --primary: 16 100% 57%;
@@ -20,8 +20,8 @@ body {
     --secondary-foreground: 0 0% 9%;
     --muted: 0 0% 96.1%;
     --muted-foreground: 0 0% 45.1%;
-    --accent: 26 10% 19%;
-    --accent-foreground: 0 0% 98%;
+    --accent: 0 0% 96.1%;
+    --accent-foreground: 0 0% 9%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
     --border: 0 0% 89.8%;
@@ -71,9 +71,9 @@ body {
     --sidebar-foreground: 0 0% 98%;
     --sidebar-primary: 16 100% 57%;
     --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 26 10% 19%;
+    --sidebar-accent: 24 9.8% 10%;
     --sidebar-accent-foreground: 0 0% 98%;
-    --sidebar-border: 26 10% 25%;
+    --sidebar-border: 240 3.7% 15.9%;
     --sidebar-ring: 16 100% 57%;
   }
 }
