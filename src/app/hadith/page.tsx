@@ -29,7 +29,7 @@ import {
 } from "@/components/ui/select"
 import { cn } from "@/lib/utils"
 
-type Language = "english" | "urdu" | "arabic"
+type Language = "english" | "urdu" | "arabic" | "amharic" | "turkish" | "german";
 
 const HadithContent = ({ hadith, language }: { hadith: Hadith, language: Language }) => {
   const getText = () => {
@@ -38,15 +38,32 @@ const HadithContent = ({ hadith, language }: { hadith: Hadith, language: Languag
         return hadith.hadithUrdu
       case "arabic":
         return hadith.hadithArabic
+      case "amharic":
+        // Assuming the API might support these in the future, or we add a different API
+        return `Amharic translation for: ${hadith.hadithEnglish}`;
+      case "turkish":
+        return `Turkish translation for: ${hadith.hadithEnglish}`;
+      case "german":
+        return `German translation for: ${hadith.hadithEnglish}`;
       case "english":
       default:
         return hadith.hadithEnglish
     }
   }
+  
+  const getLanguageDirection = () => {
+    switch(language) {
+        case "urdu":
+        case "arabic":
+            return "rtl";
+        default:
+            return "ltr";
+    }
+  }
 
   return (
     <div className="px-6 py-4 space-y-3">
-        <p className={cn("text-foreground/90", language === "arabic" || language === "urdu" ? "text-right rtl" : "ltr")}>{getText()}</p>
+        <p className={cn("text-foreground/90", getLanguageDirection() === 'rtl' ? "text-right" : "")}>{getText()}</p>
     </div>
   )
 }
@@ -130,6 +147,9 @@ export default function HadithPage() {
                         <SelectItem value="english">English</SelectItem>
                         <SelectItem value="urdu">Urdu</SelectItem>
                         <SelectItem value="arabic">Arabic</SelectItem>
+                        <SelectItem value="german">German</SelectItem>
+                        <SelectItem value="turkish">Turkish</SelectItem>
+                        <SelectItem value="amharic">Amharic</SelectItem>
                     </SelectContent>
                 </Select>
             </div>
