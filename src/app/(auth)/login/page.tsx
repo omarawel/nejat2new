@@ -70,7 +70,7 @@ const content = {
     passwordLabel: "Password",
     forgotPassword: "Forgot your password?",
     loginButton: "Login",
-    noAccount: "Don't have an account?",
+    noAccount: "Don&apos;t have an account?",
     signUp: "Sign up",
     loginFailed: "Login Failed",
     userNotFound: "No account found with this email address.",
