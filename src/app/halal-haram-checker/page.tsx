@@ -1,28 +1,28 @@
-import { InsightsForm } from "./insights-form";
+import { HalalHaramForm } from "./halal-haram-form";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Sparkles, ArrowLeft } from "lucide-react";
+import { ShieldCheck, ArrowLeft } from "lucide-react";
 import { useLanguage } from "@/components/language-provider";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
 const content = {
     de: {
-        title: "KI-Gelehrter",
-        description: "Stelle Fragen und erlange durch KI ein tieferes Verständnis für islamische Texte.",
-        cardTitle: "Stelle eine Frage",
-        cardDescription: "Gib eine Frage zum Islam, dem Koran oder Hadithen ein. Die KI wird eine aufschlussreiche Antwort auf Basis ihres Wissens geben.",
+        title: "Halal & Haram KI-Checker",
+        description: "Überprüfe den islamischen Status von Produkten, Zutaten oder Themen.",
+        cardTitle: "Thema überprüfen",
+        cardDescription: "Gib ein Thema, ein Produkt oder eine Zutat ein (z.B. 'Gelatine', 'Kreditkarte', 'Musik'). Die KI wird eine detaillierte Einschätzung auf Basis islamischer Quellen geben.",
         backToFeatures: "Zurück zu den Funktionen",
     },
     en: {
-        title: "AI Scholar",
-        description: "Ask questions and gain a deeper understanding of Islamic texts through AI.",
-        cardTitle: "Ask a Question",
-        cardDescription: "Enter a question about Islam, the Quran, or Hadith. The AI will provide an insightful answer based on its knowledge.",
+        title: "Halal & Haram AI Checker",
+        description: "Check the Islamic status of products, ingredients, or topics.",
+        cardTitle: "Check a Topic",
+        cardDescription: "Enter a topic, product, or ingredient (e.g., 'Gelatin', 'Credit Card', 'Music'). The AI will provide a detailed assessment based on Islamic sources.",
         backToFeatures: "Back to Features",
     }
 }
 
-export default function InsightsPage() {
+export default function HalalHaramCheckerPage() {
     const { language } = useLanguage();
     const c = content[language] || content.de;
 
@@ -37,7 +37,7 @@ export default function InsightsPage() {
         </Button>
         <header className="text-center">
           <h1 className="text-3xl font-bold tracking-tight text-primary flex items-center justify-center gap-2">
-            <Sparkles className="size-8" />
+            <ShieldCheck className="size-8" />
             {c.title}
           </h1>
           <p className="text-muted-foreground mt-2">
@@ -51,7 +51,7 @@ export default function InsightsPage() {
               <CardDescription>{c.cardDescription}</CardDescription>
           </CardHeader>
           <CardContent>
-              <InsightsForm />
+              <HalalHaramForm />
           </CardContent>
         </Card>
       </div>
