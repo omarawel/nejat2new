@@ -25,7 +25,7 @@ const tools = [
     { key: "community", icon: "🎉", de: "Community & Events", en: "Community & Events", href: "/community" },
     { key: "favorites", icon: "⭐", de: "Deine Favoriten", en: "Your Favorites", href: "/favorites" },
     { key: "dhikr", icon: "🙏", de: "Dhikr & Bittgebete", en: "Dhikr & Supplications", href: "/dhikr" },
-    { key: "rays_of_islam", icon: "✨", de: "Die Strahlen Des Islam", en: "The Rays Of Islam" },
+    { key: "rays_of_islam", icon: "✨", de: "Die Strahlen Des Islam", en: "The Rays Of Islam", href: "/rays-of-islam" },
     { key: "dua_generator", icon: "🤖", de: "Du'a-Generator", en: "Du'a Generator" },
     { key: "dua", icon: "🤲", de: "Dua", en: "Dua" },
     { key: "nikah", icon: "💍", de: "Ehe (Nikah)", en: "Marriage (Nikah)" },
