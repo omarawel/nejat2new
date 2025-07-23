@@ -3,41 +3,28 @@
 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { BookOpen, Users, PlusCircle, CheckCircle, Loader2, ArrowLeft } from 'lucide-react';
+import { BookOpen, Users, PlusCircle, CheckCircle, Loader2, ArrowLeft, RefreshCw } from 'lucide-react';
 import { Progress } from '@/components/ui/progress';
 import { useLanguage } from '@/components/language-provider';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import Link from 'next/link';
-
-// Dummy data for demonstration. In a real app, this would come from a database (e.g., Firestore).
-const initialHatimGroups = [
-    {
-        id: 1,
-        title: "Weekly Family Hatim",
-        description: "Let's complete the Quran together as a family every week.",
-        juzs: Array(30).fill(null).map((_, i) => ({ id: i + 1, assignedTo: i < 12 ? `User ${i + 1}` : null })),
-        isMember: true,
-    },
-    {
-        id: 2,
-        title: "Community Ramadan Challenge",
-        description: "Aiming to complete 10 Hatims this Ramadan. Join us for blessings!",
-        juzs: Array(30).fill(null).map((_, i) => ({ id: i + 1, assignedTo: i < 28 ? `Member ${i + 1}` : null })),
-        isMember: false,
-    },
-     {
-        id: 3,
-        title: "In Memory of Grandpa",
-        description: "We are reading the Quran for the soul of our beloved grandfather.",
-        juzs: Array(30).fill(null).map((_, i) => ({ id: i + 1, assignedTo: i < 5 ? `Family Member ${i + 1}` : null })),
-        isMember: false,
-    }
-];
-
-type Juz = { id: number, assignedTo: string | null };
-type HatimGroup = { id: number, title: string, description: string, juzs: Juz[], isMember: boolean };
-
+import { getHatimGroups, takeJuz, releaseJuz, type HatimGroup, type Juz } from '@/lib/hatim';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { auth } from '@/lib/firebase';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { CreateHatimForm } from '@/components/hatim/create-hatim-form';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
 
 const content = {
     de: {
@@ -45,73 +32,100 @@ const content = {
         description: "Organisiere oder nimm an gemeinschaftlichen Koran-Lesungen teil, um die Belohnung zu teilen.",
         backToFeatures: "Zurück zu den Funktionen",
         createHatim: "Neuen Hatim starten",
-        join: "Beitreten",
-        leave: "Verlassen",
-        joined: "Beigetreten",
         takeJuz: "Juz nehmen",
+        releaseJuz: "Juz freigeben",
+        takenByYou: "Von dir genommen",
         takenBy: "Genommen von:",
         completed: "Abgeschlossen",
         progress: "Fortschritt",
-        toastJoined: "Du bist der Gruppe beigetreten!",
-        toastLeft: "Du hast die Gruppe verlassen.",
         toastJuzTaken: "Du hast Juz {juzId} genommen!",
+        toastJuzReleased: "Du hast Juz {juzId} freigegeben.",
+        errorJuz: "Fehler beim Aktualisieren des Juz.",
+        loadingGroups: "Hatim-Gruppen werden geladen...",
+        noGroups: "Keine Hatim-Gruppen verfügbar. Starte eine neue!",
+        loginToParticipate: "Melde dich an, um teilzunehmen.",
+        confirmReleaseTitle: "Bist du sicher?",
+        confirmReleaseDesc: "Möchtest du Juz {juzId} wirklich freigeben, damit ihn jemand anderes lesen kann?",
+        cancel: "Abbrechen",
+        confirm: "Freigeben"
     },
     en: {
         title: "Hatim - Communal Reading",
         description: "Organize or join communal Quran readings to share the reward.",
         backToFeatures: "Back to Features",
         createHatim: "Start a New Hatim",
-        join: "Join",
-        leave: "Leave",
-        joined: "Joined",
         takeJuz: "Take Juz",
+        releaseJuz: "Release Juz",
+        takenByYou: "Taken by you",
         takenBy: "Taken by:",
         completed: "Completed",
         progress: "Progress",
-        toastJoined: "You have joined the group!",
-        toastLeft: "You have left the group.",
         toastJuzTaken: "You have taken Juz {juzId}!",
+        toastJuzReleased: "You have released Juz {juzId}.",
+        errorJuz: "Error updating Juz.",
+        loadingGroups: "Loading Hatim groups...",
+        noGroups: "No Hatim groups available. Start a new one!",
+        loginToParticipate: "Log in to participate.",
+        confirmReleaseTitle: "Are you sure?",
+        confirmReleaseDesc: "Do you really want to release Juz {juzId} so someone else can read it?",
+        cancel: "Cancel",
+        confirm: "Release"
     }
 }
 
 
 export default function HatimPage() {
     const { language } = useLanguage();
-    const c = content[language] || content.de;
+    const c = content[language];
     const { toast } = useToast();
     
-    // In a real app, you would use user's actual name/ID.
-    const currentUser = "You";
-    const [hatimGroups, setHatimGroups] = useState<HatimGroup[]>(initialHatimGroups);
+    const [user, loadingAuth] = useAuthState(auth);
+    const [hatimGroups, setHatimGroups] = useState<HatimGroup[]>([]);
+    const [loadingGroups, setLoadingGroups] = useState(true);
+    const [isCreateFormOpen, setCreateFormOpen] = useState(false);
 
-    const handleJoinToggle = (groupId: number) => {
-        setHatimGroups(prev => prev.map(group => {
-            if (group.id === groupId) {
-                 toast({ title: !group.isMember ? c.toastJoined : c.toastLeft });
-                return { ...group, isMember: !group.isMember };
-            }
-            return group;
-        }));
-    };
+    useEffect(() => {
+        const unsubscribe = getHatimGroups((groups) => {
+            setHatimGroups(groups);
+            setLoadingGroups(false);
+        });
+        return () => unsubscribe();
+    }, []);
 
-    const handleTakeJuz = (groupId: number, juzId: number) => {
-        setHatimGroups(prev => prev.map(group => {
-            if (group.id === groupId) {
-                const newJuzs = group.juzs.map(juz => {
-                    if (juz.id === juzId && !juz.assignedTo) {
-                         toast({ title: c.toastJuzTaken.replace('{juzId}', juzId.toString()) });
-                        return { ...juz, assignedTo: currentUser };
-                    }
-                    return juz;
-                });
-                return { ...group, juzs: newJuzs };
+
+    const handleJuzClick = async (groupId: string, juz: Juz) => {
+        if (!user) {
+            toast({ title: c.loginToParticipate, variant: 'destructive'});
+            return;
+        }
+
+        try {
+            if (juz.assignedTo === user.displayName) {
+                // This will be handled by the AlertDialog now
+            } else if (!juz.assignedTo) {
+                await takeJuz(groupId, juz.id, user.displayName!);
+                toast({ title: c.toastJuzTaken.replace('{juzId}', juz.id.toString()) });
             }
-            return group;
-        }));
+        } catch (e) {
+            console.error(e);
+            toast({ title: c.errorJuz, variant: 'destructive'});
+        }
     };
+    
+    const handleReleaseJuz = async (groupId: string, juzId: number) => {
+        try {
+            await releaseJuz(groupId, juzId);
+            toast({ title: c.toastJuzReleased.replace('{juzId}', juzId.toString()), variant: 'default' });
+        } catch (e) {
+            console.error(e);
+            toast({ title: c.errorJuz, variant: 'destructive'});
+        }
+    }
+
 
     return (
         <div className="container mx-auto px-4 py-8">
+            <Dialog open={isCreateFormOpen} onOpenChange={setCreateFormOpen}>
             <Button asChild variant="ghost" className="mb-8">
                 <Link href="/">
                     <ArrowLeft className="mr-2 h-4 w-4" />
@@ -125,61 +139,99 @@ export default function HatimPage() {
                 </h1>
                 <p className="text-muted-foreground mt-2 text-lg max-w-2xl mx-auto">{c.description}</p>
                  <div className="mt-6">
-                    <Button size="lg" disabled>
-                        <PlusCircle className="mr-2 h-5 w-5" />
-                        {c.createHatim}
-                    </Button>
+                    <DialogTrigger asChild>
+                        <Button size="lg" disabled={!user}>
+                            <PlusCircle className="mr-2 h-5 w-5" />
+                            {c.createHatim}
+                        </Button>
+                    </DialogTrigger>
+                     {!user && !loadingAuth && <p className="text-sm text-muted-foreground mt-2">{c.loginToParticipate}</p>}
                 </div>
             </header>
 
-            <div className="space-y-8">
-                {hatimGroups.map(group => {
-                    const completedJuzs = group.juzs.filter(j => j.assignedTo !== null).length;
-                    const progress = (completedJuzs / 30) * 100;
+            {loadingGroups || loadingAuth ? (
+                <div className="flex justify-center items-center">
+                    <Loader2 className="h-8 w-8 animate-spin" />
+                </div>
+            ) : hatimGroups.length === 0 ? (
+                 <Card className="text-center max-w-md mx-auto">
+                    <CardHeader>
+                        <CardTitle>{c.noGroups}</CardTitle>
+                    </CardHeader>
+                 </Card>
+            ) : (
+                <div className="space-y-8">
+                    {hatimGroups.map(group => {
+                        const completedJuzs = group.juzs.filter(j => j.assignedTo !== null).length;
+                        const progress = (completedJuzs / 30) * 100;
 
-                    return (
-                        <Card key={group.id} className="shadow-lg">
-                            <CardHeader>
-                                <CardTitle>{group.title}</CardTitle>
-                                <CardDescription>{group.description}</CardDescription>
-                            </CardHeader>
-                            <CardContent className="space-y-4">
-                                <div>
-                                    <div className="flex justify-between items-center mb-2">
-                                        <span className="text-sm font-medium text-muted-foreground">{c.progress}</span>
-                                        <span className="text-sm font-semibold">{completedJuzs} / 30</span>
+                        return (
+                            <Card key={group.id} className="shadow-lg">
+                                <CardHeader>
+                                    <CardTitle>{group.title}</CardTitle>
+                                    <CardDescription>{group.description}</CardDescription>
+                                </CardHeader>
+                                <CardContent className="space-y-4">
+                                    <div>
+                                        <div className="flex justify-between items-center mb-2">
+                                            <span className="text-sm font-medium text-muted-foreground">{c.progress}</span>
+                                            <span className="text-sm font-semibold">{completedJuzs} / 30</span>
+                                        </div>
+                                        <Progress value={progress} />
                                     </div>
-                                    <Progress value={progress} />
-                                </div>
-                                <div className="grid grid-cols-5 sm:grid-cols-6 md:grid-cols-10 gap-2">
-                                    {group.juzs.map(juz => (
-                                        <Button
-                                            key={juz.id}
-                                            variant={juz.assignedTo ? (juz.assignedTo === currentUser ? 'default' : 'secondary') : 'outline'}
-                                            className="flex flex-col h-16"
-                                            onClick={() => handleTakeJuz(group.id, juz.id)}
-                                            disabled={!group.isMember || !!juz.assignedTo}
-                                            title={juz.assignedTo ? `${c.takenBy} ${juz.assignedTo}` : c.takeJuz}
-                                        >
-                                            <span className="text-lg font-bold">{juz.id}</span>
-                                            {juz.assignedTo && <span className="text-xs truncate">{juz.assignedTo}</span>}
-                                        </Button>
-                                    ))}
-                                </div>
-                            </CardContent>
-                            <CardFooter>
-                                <Button onClick={() => handleJoinToggle(group.id)} variant={group.isMember ? 'outline' : 'default'} className="w-full">
-                                    {group.isMember ? (
-                                        <><CheckCircle className="mr-2 h-4 w-4" /> {c.joined}</>
-                                    ) : (
-                                        <><Users className="mr-2 h-4 w-4" /> {c.join}</>
-                                    )}
-                                </Button>
-                            </CardFooter>
-                        </Card>
-                    );
-                })}
-            </div>
+                                    <div className="grid grid-cols-5 sm:grid-cols-6 md:grid-cols-10 gap-2">
+                                        {group.juzs.map(juz => {
+                                            const isTakenByCurrentUser = juz.assignedTo === user?.displayName;
+                                            const isTaken = !!juz.assignedTo;
+                                            
+                                            const buttonContent = (
+                                                 <Button
+                                                    variant={isTaken ? (isTakenByCurrentUser ? 'default' : 'secondary') : 'outline'}
+                                                    className="flex flex-col h-16 w-full"
+                                                    onClick={() => !isTakenByCurrentUser && handleJuzClick(group.id, juz)}
+                                                    disabled={!user || (isTaken && !isTakenByCurrentUser)}
+                                                    title={isTaken ? `${c.takenBy} ${juz.assignedTo}` : c.takeJuz}
+                                                >
+                                                    <span className="text-lg font-bold">{juz.id}</span>
+                                                    {isTaken && <span className="text-xs truncate">{juz.assignedTo}</span>}
+                                                </Button>
+                                            );
+
+                                            if (isTakenByCurrentUser) {
+                                                return (
+                                                    <AlertDialog key={juz.id}>
+                                                        <AlertDialogTrigger asChild>{buttonContent}</AlertDialogTrigger>
+                                                        <AlertDialogContent>
+                                                            <AlertDialogHeader>
+                                                                <AlertDialogTitle>{c.confirmReleaseTitle}</AlertDialogTitle>
+                                                                <AlertDialogDescription>{c.confirmReleaseDesc.replace('{juzId}', juz.id.toString())}</AlertDialogDescription>
+                                                            </AlertDialogHeader>
+                                                            <AlertDialogFooter>
+                                                                <AlertDialogCancel>{c.cancel}</AlertDialogCancel>
+                                                                <AlertDialogAction onClick={() => handleReleaseJuz(group.id, juz.id)}>{c.confirm}</AlertDialogAction>
+                                                            </AlertDialogFooter>
+                                                        </AlertDialogContent>
+                                                    </AlertDialog>
+                                                )
+                                            }
+                                            
+                                            return <div key={juz.id}>{buttonContent}</div>;
+                                        })}
+                                    </div>
+                                </CardContent>
+                            </Card>
+                        );
+                    })}
+                </div>
+            )}
+             <DialogContent>
+                <DialogHeader>
+                    <DialogTitle>{c.createHatim}</DialogTitle>
+                </DialogHeader>
+                <CreateHatimForm onFinished={() => setCreateFormOpen(false)} />
+             </DialogContent>
+             </Dialog>
         </div>
     );
 }
+
