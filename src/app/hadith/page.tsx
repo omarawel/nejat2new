@@ -67,8 +67,13 @@ const CollectionDetailContent = ({ collectionName }: { collectionName: string })
       setLoading(true)
       setError(null)
       try {
+        const apiKey = process.env.NEXT_PUBLIC_SUNNAH_API_KEY;
+        if (!apiKey) {
+            throw new Error('Sunnah.com API key is missing. Please add it to your environment variables.');
+        }
+
         const response = await fetch(`https://api.sunnah.com/v1/collections/${collectionName}/books`, {
-            headers: { 'X-API-Key': 'key-goes-here' }
+            headers: { 'X-API-Key': apiKey }
         })
         if (!response.ok) {
           throw new Error('Failed to fetch collection books');
@@ -148,10 +153,18 @@ export default function HadithPage() {
     async function fetchCollections() {
       setLoading(true)
       try {
+        const apiKey = process.env.NEXT_PUBLIC_SUNNAH_API_KEY;
+        if (!apiKey) {
+            throw new Error('Sunnah.com API key is missing. Please add NEXT_PUBLIC_SUNNAH_API_KEY to your environment variables.');
+        }
+
         const response = await fetch('https://api.sunnah.com/v1/collections', {
-            headers: { 'X-API-Key': 'key-goes-here' }
+            headers: { 'X-API-Key': apiKey }
         })
         if (!response.ok) {
+             if (response.status === 401) {
+                throw new Error("Invalid Sunnah.com API key. Please check your environment variables.");
+            }
             throw new Error("Failed to fetch Hadith collections. Please try again later.")
         }
         const data = await response.json()
@@ -238,4 +251,3 @@ export default function HadithPage() {
     </div>
   );
 }
-
