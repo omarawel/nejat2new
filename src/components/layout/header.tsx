@@ -5,6 +5,7 @@ import { LanguageToggle } from "@/components/language-toggle"
 import { Logo } from "../icons"
 import Link from "next/link"
 import { Button } from "../ui/button"
+import { LogIn, UserPlus } from "lucide-react"
 
 export function AppHeader() {
   return (
@@ -14,12 +15,18 @@ export function AppHeader() {
         <span className="text-xl font-bold">nejat</span>
       </div>
       <div className="flex-1" />
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-2">
         <Button variant="ghost" asChild>
-            <Link href="/login">Anmelden</Link>
+            <Link href="/login">
+                <LogIn className="sm:hidden" />
+                <span className="hidden sm:inline">Anmelden</span>
+            </Link>
         </Button>
         <Button asChild>
-            <Link href="/signup">Konto erstellen</Link>
+            <Link href="/signup">
+                <UserPlus className="sm:hidden" />
+                <span className="hidden sm:inline">Konto erstellen</span>
+            </Link>
         </Button>
         <LanguageToggle />
         <ThemeToggle />
