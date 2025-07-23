@@ -4,35 +4,10 @@
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { useLanguage } from '@/components/language-provider';
 import { Mosque, Bath, BookOpen, Clock, Users, ArrowLeft } from 'lucide-react';
-import type { LucideIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { ComponentType } from 'react';
 
-type SunnahItem = {
-    icon: ComponentType<{ className?: string }>;
-    text: string;
-};
-
-const content: {
-    [key: string]: {
-        title: string;
-        description: string;
-        backToFeatures: string;
-        importance: {
-            title: string;
-            content: string;
-        };
-        sunnah_acts: {
-            title: string;
-            items: SunnahItem[];
-        };
-        etiquette: {
-            title: string;
-            items: string[];
-        };
-    }
-} = {
+const contentData = {
     de: {
         title: "Das Freitagsgebet (Jumu'ah)",
         description: "Ein Leitfaden zu den Vorzügen, Regeln und der Etikette des wichtigsten wöchentlichen Gebets im Islam.",
@@ -44,10 +19,10 @@ const content: {
         sunnah_acts: {
             title: "Empfohlene Handlungen (Sunnah) am Freitag",
             items: [
-                { icon: Bath, text: "Ganzkörperwaschung (Ghusl) vor dem Gebet." },
-                { icon: Users, text: "Die beste, saubere Kleidung anziehen und Parfüm (alkoholfrei) verwenden." },
-                { icon: Clock, text: "Früh zur Moschee gehen, um einen größeren Lohn zu erlangen." },
-                { icon: BookOpen, text: "Die Sura Al-Kahf (Kapitel 18) rezitieren." },
+                "Ganzkörperwaschung (Ghusl) vor dem Gebet.",
+                "Die beste, saubere Kleidung anziehen und Parfüm (alkoholfrei) verwenden.",
+                "Früh zur Moschee gehen, um einen größeren Lohn zu erlangen.",
+                "Die Sura Al-Kahf (Kapitel 18) rezitieren."
             ]
         },
         etiquette: {
@@ -72,10 +47,10 @@ const content: {
         sunnah_acts: {
             title: "Recommended Acts (Sunnah) on Friday",
             items: [
-                { icon: Bath, text: "Performing a full body wash (Ghusl) before the prayer." },
-                { icon: Users, text: "Wearing the best, clean clothes and using perfume (non-alcoholic)." },
-                { icon: Clock, text: "Going to the mosque early to gain a greater reward." },
-                { icon: BookOpen, text: "Reciting Surah Al-Kahf (Chapter 18)." },
+                "Performing a full body wash (Ghusl) before the prayer.",
+                "Wearing the best, clean clothes and using perfume (non-alcoholic).",
+                "Going to the mosque early to gain a greater reward.",
+                "Reciting Surah Al-Kahf (Chapter 18)."
             ]
         },
         etiquette: {
@@ -91,9 +66,11 @@ const content: {
     }
 };
 
+const sunnahIcons = [Bath, Users, Clock, BookOpen];
+
 export default function JummahPage() {
     const { language } = useLanguage();
-    const c = content[language] || content.de;
+    const c = contentData[language] || contentData.de;
 
     return (
         <div className="container mx-auto px-4 py-8">
@@ -127,14 +104,14 @@ export default function JummahPage() {
                     </CardHeader>
                     <CardContent>
                         <ul className="space-y-4">
-                            {c.sunnah_acts.items.map((item, index) => {
-                                const IconComponent = item.icon;
+                            {c.sunnah_acts.items.map((text, index) => {
+                                const IconComponent = sunnahIcons[index];
                                 return (
                                 <li key={index} className="flex items-start gap-4">
                                     <div className="p-2 bg-primary/10 rounded-full">
                                         <IconComponent className="h-6 w-6 text-primary" />
                                     </div>
-                                    <p className="text-muted-foreground mt-1">{item.text}</p>
+                                    <p className="text-muted-foreground mt-1">{text}</p>
                                 </li>
                             )})}
                         </ul>
