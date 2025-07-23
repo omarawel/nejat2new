@@ -23,7 +23,7 @@ const tools = [
     { key: "asmaul_husna", icon: "🙌", de: "Asma-Ul Husna", en: "Asma-Ul Husna", href: "/asma-ul-husna" },
     { key: "memorization", icon: "🧠", de: "Auswendiglernen", en: "Memorization", href: "/memorization" },
     { key: "community", icon: "🎉", de: "Community & Events", en: "Community & Events", href: "/community" },
-    { key: "favorites", icon: "⭐", de: "Deine Favoriten", en: "Your Favorites" },
+    { key: "favorites", icon: "⭐", de: "Deine Favoriten", en: "Your Favorites", href: "/favorites" },
     { key: "dhikr", icon: "🙏", de: "Dhikr & Bittgebete", en: "Dhikr & Supplications" },
     { key: "rays_of_islam", icon: "✨", de: "Die Strahlen Des Islam", en: "The Rays Of Islam" },
     { key: "dua_generator", icon: "🤖", de: "Du'a-Generator", en: "Du'a Generator" },

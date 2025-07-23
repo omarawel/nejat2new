@@ -5,40 +5,57 @@ import { useState, useRef, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
-import { Play, Pause, Loader, Eye, EyeOff, BrainCircuit } from 'lucide-react';
+import { Play, Pause, Loader, Eye, EyeOff, BrainCircuit, Star } from 'lucide-react';
 import { useLanguage } from '@/components/language-provider';
 import { textToSpeech } from "@/ai/flows/text-to-speech";
 import { cn } from '@/lib/utils';
+import { auth } from '@/lib/firebase';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { addFavorite } from '@/lib/favorites';
+import { useToast } from '@/hooks/use-toast';
+import Link from 'next/link';
 
 const content = {
     de: {
         title: "Lern-Werkzeug",
-        description: "Gib einen beliebigen Text ein, um ihn mit Sprachausgabe und Versteckfunktion auswendig zu lernen.",
+        description: "Gib einen beliebigen Text ein, um ihn mit Sprachausgabe und Versteckfunktion auswendig zu lernen. Gespeicherte Texte findest du in deinen Favoriten.",
         inputTitle: "Text zum Auswendiglernen",
         inputDescription: "Füge hier den Text ein, den du lernen möchtest. Das kann ein Vers, ein Dua oder etwas anderes sein.",
         inputPlaceholder: "Beginne hier mit der Eingabe...",
         startButton: "Lernen starten",
         learningZoneTitle: "Lern-Zone",
         play: "Abspielen",
-        memorize: "Lernen"
+        memorize: "Lernen",
+        saveToFavorites: "Als Favorit speichern",
+        loginToSave: "Anmelden, um Favoriten zu speichern",
+        favoriteSaved: "Favorit gespeichert",
+        viewFavorites: "Favoriten ansehen",
+        errorSaving: "Fehler beim Speichern des Favoriten."
     },
     en: {
         title: "Memorization Tool",
-        description: "Enter any text to memorize it with audio playback and a hide/show feature.",
+        description: "Enter any text to memorize it with audio playback and a hide/show feature. Saved texts can be found in your favorites.",
         inputTitle: "Text to Memorize",
         inputDescription: "Paste the text you want to learn here. It can be a verse, a dua, or anything else.",
         inputPlaceholder: "Start typing here...",
         startButton: "Start Learning",
         learningZoneTitle: "Learning Zone",
         play: "Play",
-        memorize: "Memorize"
+        memorize: "Memorize",
+        saveToFavorites: "Save to Favorites",
+        loginToSave: "Login to save favorites",
+        favoriteSaved: "Favorite saved",
+        viewFavorites: "View Favorites",
+        errorSaving: "Error saving favorite."
     }
 }
 
 export default function MemorizationPage() {
   const { language } = useLanguage();
   const c = content[language] || content.de;
+  const { toast } = useToast();
 
+  const [user] = useAuthState(auth);
   const [inputText, setInputText] = useState('');
   const [learningText, setLearningText] = useState('');
   const [isHidden, setIsHidden] = useState(false);
@@ -47,6 +64,7 @@ export default function MemorizationPage() {
   const [loadingAudio, setLoadingAudio] = useState(false);
   const [audioUrl, setAudioUrl] = useState<string | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const [isSaving, setIsSaving] = useState(false);
 
   const handleStartLearning = () => {
     setLearningText(inputText);
@@ -79,6 +97,31 @@ export default function MemorizationPage() {
       setLoadingAudio(false);
     }
   };
+
+  const handleSaveFavorite = async () => {
+      if (!user || !learningText) return;
+      setIsSaving(true);
+      try {
+          await addFavorite(user.uid, learningText);
+          toast({
+              title: c.favoriteSaved,
+              description: (
+                  <Button variant="link" asChild>
+                      <Link href="/favorites">{c.viewFavorites}</Link>
+                  </Button>
+              )
+          })
+      } catch (error) {
+          toast({
+              variant: "destructive",
+              title: "Error",
+              description: c.errorSaving
+          })
+          console.error("Error saving favorite:", error);
+      } finally {
+          setIsSaving(false);
+      }
+  }
 
   useEffect(() => {
     if (audioUrl && audioRef.current && !playingAudio) {
@@ -140,7 +183,7 @@ export default function MemorizationPage() {
                         )}>
                            <p className={cn("whitespace-pre-wrap transition-opacity", isHidden ? "opacity-0" : "opacity-100")}>{learningText}</p>
                         </div>
-                        <div className="flex justify-center gap-4">
+                        <div className="flex justify-center gap-4 flex-wrap">
                             <Button variant="outline" size="lg" onClick={handlePlayAudio} disabled={loadingAudio}>
                                 {loadingAudio ? <Loader className="mr-2 h-5 w-5 animate-spin" /> : (playingAudio ? <Pause className="mr-2 h-5 w-5" /> : <Play className="mr-2 h-5 w-5" />)}
                                 {c.play}
@@ -150,6 +193,17 @@ export default function MemorizationPage() {
                                 {c.memorize}
                             </Button>
                         </div>
+                        {user ? (
+                            <Button variant="outline" className="w-full" onClick={handleSaveFavorite} disabled={isSaving}>
+                               {isSaving ? <Loader className="mr-2 h-4 w-4 animate-spin" /> : <Star className="mr-2 h-4 w-4" />}
+                               {c.saveToFavorites}
+                            </Button>
+                        ): (
+                             <Button variant="outline" className="w-full" disabled>
+                               <Star className="mr-2 h-4 w-4" />
+                               {c.loginToSave}
+                            </Button>
+                        )}
                     </div>
                 ) : (
                     <div className="flex items-center justify-center h-[280px] text-muted-foreground">
@@ -162,3 +216,4 @@ export default function MemorizationPage() {
     </div>
   );
 }
+

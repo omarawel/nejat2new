@@ -4,6 +4,7 @@ import { ThemeProvider } from '@/components/theme-provider';
 import { LanguageProvider } from '@/components/language-provider';
 import { AppHeader } from '@/components/layout/header';
 import { Toaster } from '@/components/ui/toaster';
+import { Suspense } from 'react';
 
 export const metadata: Metadata = {
   title: 'Nejat Digital',
@@ -28,7 +29,9 @@ export default function RootLayout({
             <div className="flex flex-col min-h-screen">
               <AppHeader />
               <main className="flex-grow flex">
-                  {children}
+                  <Suspense>
+                    {children}
+                  </Suspense>
               </main>
             </div>
             <Toaster />
