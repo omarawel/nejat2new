@@ -7,6 +7,7 @@ import { useForm } from "react-hook-form"
 import * as z from "zod"
 import { useState } from "react"
 import { Eye, EyeOff, Loader2 } from "lucide-react"
+import { useRouter } from "next/navigation"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -30,6 +31,9 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Logo } from "@/components/icons"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Terminal } from "lucide-react"
+import { useToast } from "@/hooks/use-toast"
+import { auth } from "@/lib/firebase"
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth"
 
 
 const formSchema = z.object({
@@ -48,6 +52,8 @@ export default function SignupPage() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
+  const router = useRouter()
+  const { toast } = useToast()
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -63,12 +69,47 @@ export default function SignupPage() {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setError(null)
     setLoading(true)
-    // Firebase signup logic will go here.
-    console.log(values);
-    // For now, simulate an API call
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    setError("Firebase is not connected yet. Please check console for submitted data.");
-    setLoading(false)
+    try {
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        values.email,
+        values.password
+      );
+      
+      const user = userCredential.user;
+      await updateProfile(user, {
+        displayName: values.name,
+      });
+
+      toast({
+        title: "Account Created",
+        description: "You have been successfully signed up.",
+      })
+      
+      router.push("/");
+
+    } catch (error: any) {
+       switch (error.code) {
+        case "auth/email-already-in-use":
+          setError("This email address is already in use.");
+          break;
+        case "auth/invalid-email":
+          setError("The email address is not valid.");
+          break;
+        case "auth/operation-not-allowed":
+          setError("Email/password accounts are not enabled.");
+          break;
+        case "auth/weak-password":
+          setError("The password is too weak.");
+          break;
+        default:
+          setError("An unexpected error occurred. Please try again.");
+          console.error(error);
+          break;
+      }
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (

@@ -6,7 +6,8 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
 import { useState } from "react"
-import { Eye, EyeOff, Loader2 } from "lucide-react"
+import { Eye, EyeOff, Loader2, Terminal } from "lucide-react"
+import { useRouter } from "next/navigation"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -27,7 +28,9 @@ import {
 import { Input } from "@/components/ui/input"
 import { Logo } from "@/components/icons"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
-import { Terminal } from "lucide-react"
+import { useToast } from "@/hooks/use-toast"
+import { auth } from "@/lib/firebase"
+import { signInWithEmailAndPassword, sendPasswordResetEmail } from "firebase/auth"
 
 const formSchema = z.object({
   email: z.string().email({ message: "Invalid email address." }),
@@ -38,6 +41,8 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
+  const router = useRouter()
+  const { toast } = useToast()
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -50,13 +55,64 @@ export default function LoginPage() {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setError(null)
     setLoading(true)
-    // Firebase login logic will go here.
-    console.log(values)
-    // For now, simulate an API call
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    setError("Firebase is not connected yet. Please check console for submitted data.");
-    setLoading(false)
+    try {
+      await signInWithEmailAndPassword(auth, values.email, values.password)
+      toast({
+        title: "Login Successful",
+        description: "Welcome back!",
+      })
+      router.push("/")
+    } catch (error: any) {
+      switch (error.code) {
+        case "auth/user-not-found":
+          setError("No account found with this email address.");
+          break;
+        case "auth/wrong-password":
+          setError("Incorrect password. Please try again.");
+          break;
+        case "auth/invalid-credential":
+           setError("Invalid credentials. Please check your email and password.");
+           break;
+        default:
+          setError("An unexpected error occurred. Please try again.");
+          console.error(error);
+          break;
+      }
+    } finally {
+      setLoading(false)
+    }
   }
+
+  async function handlePasswordReset() {
+    const email = form.getValues("email");
+    if (!email) {
+      form.setError("email", { type: "manual", message: "Please enter your email to reset password." });
+      return;
+    }
+    
+    try {
+        await sendPasswordResetEmail(auth, email);
+        toast({
+            title: "Password Reset Email Sent",
+            description: "Please check your inbox to reset your password.",
+        });
+    } catch (error: any) {
+        if (error.code === 'auth/user-not-found') {
+             toast({
+                variant: "destructive",
+                title: "Error",
+                description: "No user found with this email address.",
+            });
+        } else {
+            toast({
+                variant: "destructive",
+                title: "Error",
+                description: "Failed to send password reset email. Please try again later.",
+            });
+        }
+    }
+  }
+
 
   return (
     <Card className="mx-auto max-w-sm">
@@ -99,12 +155,14 @@ export default function LoginPage() {
                 <FormItem>
                     <div className="flex items-center">
                         <FormLabel>Password</FormLabel>
-                        <Link
-                            href="#"
-                            className="ml-auto inline-block text-sm underline"
+                        <Button
+                            type="button"
+                            variant="link"
+                            className="ml-auto h-auto p-0 text-sm"
+                            onClick={handlePasswordReset}
                         >
                             Forgot your password?
-                        </Link>
+                        </Button>
                     </div>
                   <FormControl>
                     <div className="relative">
