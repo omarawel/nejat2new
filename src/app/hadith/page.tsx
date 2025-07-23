@@ -10,16 +10,13 @@ import {
 import {
   Card,
   CardContent,
-  CardHeader,
-  CardTitle,
-  CardDescription,
 } from "@/components/ui/card"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Button } from "@/components/ui/button"
 import { Terminal, ChevronLeft, ChevronRight, Search } from "lucide-react"
 import { useEffect, useState, useMemo } from "react"
-import type { Hadith, HadithApiResponse } from "./actions"
+import type { Hadith } from "./actions"
 import { getHadiths } from "./actions"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -152,7 +149,7 @@ export default function HadithPage() {
                         value={filter}
                         onChange={(e) => setFilter(e.target.value)}
                     />
-                    <Button type="submit" variant="outline" size="icon" disabled><Search className="h-4 w-4"/></Button>
+                    <Button type="button" variant="outline" size="icon" disabled><Search className="h-4 w-4"/></Button>
                 </div>
             </div>
       </div>
@@ -180,7 +177,7 @@ export default function HadithPage() {
                         <AccordionItem value={`item-${hadith.id}`} key={hadith.id}>
                             <AccordionTrigger className="px-6 py-4 text-lg hover:no-underline">
                                 <div className="flex items-center gap-4 text-left">
-                                    <span className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-primary font-bold shrink-0">{hadith.id % 25 === 0 ? 25 : hadith.id % 25}</span>
+                                    <span className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-primary font-bold shrink-0">{hadith.hadithNumber}</span>
                                     <div>
                                         <p className="font-semibold">{hadith.book.bookName}</p>
                                         <p className="text-sm text-muted-foreground">Chapter: {hadith.chapter.chapterEnglish}</p>
