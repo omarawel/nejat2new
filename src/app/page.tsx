@@ -17,12 +17,12 @@ const FeatureCard = ({ icon, name }: { icon: string, name: string }) => {
 };
 
 const tools = [
-    { key: "prophets", icon: "👨‍👩‍👧‍👦", de: "25 Propheten", en: "25 Prophets" },
-    { key: "arabic_basics", icon: "✍️", de: "Arabische Grundlagen", en: "Arabic Basics" },
-    { key: "arabic_numbers", icon: "🔢", de: "Arabische Zahlen", en: "Arabic Numbers" },
-    { key: "asmaul_husna", icon: "🙌", de: "Asma-Ul Husna", en: "Asma-Ul Husna" },
-    { key: "memorization", icon: "🧠", de: "Auswendiglernen", en: "Memorization" },
-    { key: "community", icon: "🎉", de: "Community & Events", en: "Community & Events" },
+    { key: "prophets", icon: "👨‍👩‍👧‍👦", de: "25 Propheten", en: "25 Prophets", href: "/prophets" },
+    { key: "arabic_basics", icon: "✍️", de: "Arabische Grundlagen", en: "Arabic Basics", href: "/arabic-basics" },
+    { key: "arabic_numbers", icon: "🔢", de: "Arabische Zahlen", en: "Arabic Numbers", href: "/arabic-numbers" },
+    { key: "asmaul_husna", icon: "🙌", de: "Asma-Ul Husna", en: "Asma-Ul Husna", href: "/asma-ul-husna" },
+    { key: "memorization", icon: "🧠", de: "Auswendiglernen", en: "Memorization", href: "/memorization" },
+    { key: "community", icon: "🎉", de: "Community & Events", en: "Community & Events", href: "/community" },
     { key: "favorites", icon: "⭐", de: "Deine Favoriten", en: "Your Favorites" },
     { key: "dhikr", icon: "🙏", de: "Dhikr & Bittgebete", en: "Dhikr & Supplications" },
     { key: "rays_of_islam", icon: "✨", de: "Die Strahlen Des Islam", en: "The Rays Of Islam" },
