@@ -50,7 +50,7 @@ const content = {
             {
                 name: "Patron",
                 key: "patron",
-                priceId: "price_1RltSFGXWEMb96gV1BfXy2qZ", // Your Stripe Price ID
+                priceId: "price_1RltR4GXWEMb96gVOcjACqRR", // Your Stripe Price ID
                 price: "9,99€",
                 description: "Für diejenigen, die mit 75 KI-Anfragen/Monat maßgeblich zum Wachstum der Plattform beitragen möchten.",
                 features: [
@@ -117,7 +117,7 @@ const content = {
             {
                 name: "Patron",
                 key: "patron",
-                priceId: "price_1RltSFGXWEMb96gV1BfXy2qZ", // Your Stripe Price ID
+                priceId: "price_1RltR4GXWEMb96gVOcjACqRR", // Your Stripe Price ID
                 price: "€9.99",
                 description: "For those who want to significantly contribute to the platform's growth with 75 AI requests/month.",
                 features: [
