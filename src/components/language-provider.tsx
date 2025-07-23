@@ -1,8 +1,9 @@
+
 "use client"
 
 import React, { createContext, useContext, useState, useEffect } from "react"
 
-type Language = "de" | "en" | "am" | "tr"
+type Language = "de" | "en"
 
 type LanguageProviderProps = {
   children: React.ReactNode

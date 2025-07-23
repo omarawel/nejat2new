@@ -1,3 +1,4 @@
+
 "use client"
 
 import * as React from "react"
@@ -6,7 +7,7 @@ import { Languages } from "lucide-react"
 import { useLanguage } from "@/components/language-provider"
 import { Button } from "@/components/ui/button"
 
-const languages: ("de" | "en" | "am" | "tr")[] = ["de", "en", "tr", "am"];
+const languages: ("de" | "en")[] = ["de", "en"];
 
 export function LanguageToggle() {
   const { language, setLanguage } = useLanguage()

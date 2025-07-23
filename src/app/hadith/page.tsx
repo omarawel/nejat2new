@@ -16,8 +16,7 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Button } from "@/components/ui/button"
 import { Terminal, ChevronLeft, ChevronRight, Search } from "lucide-react"
 import { useEffect, useState, useMemo, FormEvent } from "react"
-import type { Hadith } from "./actions"
-import { getHadiths } from "./actions"
+import { Hadith, getHadiths } from "./actions";
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import {
@@ -29,23 +28,16 @@ import {
 } from "@/components/ui/select"
 import { cn } from "@/lib/utils"
 
-type Language = "english" | "urdu" | "arabic" | "amharic" | "turkish" | "german";
+type Language = "eng" | "urd" | "ara";
 
 const HadithContent = ({ hadith, language }: { hadith: Hadith, language: Language }) => {
   const getText = () => {
     switch(language) {
-      case "urdu":
+      case "urd":
         return hadith.hadithUrdu
-      case "arabic":
+      case "ara":
         return hadith.hadithArabic
-      case "amharic":
-        // Assuming the API might support these in the future, or we add a different API
-        return `Amharic translation for: ${hadith.hadithEnglish}`;
-      case "turkish":
-        return `Turkish translation for: ${hadith.hadithEnglish}`;
-      case "german":
-        return `German translation for: ${hadith.hadithEnglish}`;
-      case "english":
+      case "eng":
       default:
         return hadith.hadithEnglish
     }
@@ -53,8 +45,8 @@ const HadithContent = ({ hadith, language }: { hadith: Hadith, language: Languag
   
   const getLanguageDirection = () => {
     switch(language) {
-        case "urdu":
-        case "arabic":
+        case "urd":
+        case "ara":
             return "rtl";
         default:
             return "ltr";
@@ -73,20 +65,19 @@ export default function HadithPage() {
   const [hadiths, setHadiths] = useState<Hadith[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
-  const [currentPage, setCurrentPage] = useState<number>(1)
-  const [paginationInfo, setPaginationInfo] = useState<{next: boolean, prev: boolean, from: number, to: number, total: number} | null>(null)
+  const [paginationInfo, setPaginationInfo] = useState<{currentPage: number, lastPage: number, from: number, to: number, total: number} | null>(null)
   const [openHadith, setOpenHadith] = useState<string | undefined>(undefined);
   const [searchTerm, setSearchTerm] = useState("");
   const [submittedSearchTerm, setSubmittedSearchTerm] = useState("");
-  const [language, setLanguage] = useState<Language>("english");
+  const [language, setLanguage] = useState<Language>("eng");
+  const [page, setPage] = useState(1);
 
-  
   useEffect(() => {
     async function fetchHadiths() {
       setLoading(true)
       setError(null)
       try {
-        const data = await getHadiths(currentPage, submittedSearchTerm);
+        const data = await getHadiths(page, submittedSearchTerm);
         if (data.error) {
             throw new Error(data.error);
         }
@@ -96,8 +87,8 @@ export default function HadithPage() {
         
         setHadiths(data.hadiths.data)
         setPaginationInfo({
-            next: !!data.hadiths.next_page_url,
-            prev: !!data.hadiths.prev_page_url,
+            currentPage: data.hadiths.from / data.hadiths.data.length + 1,
+            lastPage: Math.ceil(data.hadiths.total / data.hadiths.data.length),
             from: data.hadiths.from,
             to: data.hadiths.to,
             total: data.hadiths.total,
@@ -108,27 +99,28 @@ export default function HadithPage() {
         setLoading(false)
       }
     }
+    
     fetchHadiths()
-  }, [currentPage, submittedSearchTerm])
+  }, [page, submittedSearchTerm])
 
   const handleSearch = (e: FormEvent) => {
     e.preventDefault();
-    setCurrentPage(1); // Reset to first page on new search
+    setPage(1);
     setSubmittedSearchTerm(searchTerm);
   };
-  
+
   const handleNextPage = () => {
-    if (paginationInfo?.next) {
-        setCurrentPage(prev => prev + 1);
+    if (paginationInfo && paginationInfo.currentPage < paginationInfo.lastPage) {
+      setPage(p => p + 1);
     }
   }
 
   const handlePrevPage = () => {
-    if (paginationInfo?.prev) {
-        setCurrentPage(prev => prev - 1);
+    if (paginationInfo && paginationInfo.currentPage > 1) {
+      setPage(p => p - 1);
     }
   }
-
+  
   return (
     <div className="space-y-8 flex-grow flex flex-col p-4 sm:p-6 lg:p-8">
       <header>
@@ -144,21 +136,18 @@ export default function HadithPage() {
                         <SelectValue placeholder="Select Language" />
                     </SelectTrigger>
                     <SelectContent>
-                        <SelectItem value="english">English</SelectItem>
-                        <SelectItem value="urdu">Urdu</SelectItem>
-                        <SelectItem value="arabic">Arabic</SelectItem>
-                        <SelectItem value="german">German</SelectItem>
-                        <SelectItem value="turkish">Turkish</SelectItem>
-                        <SelectItem value="amharic">Amharic</SelectItem>
+                        <SelectItem value="eng">English</SelectItem>
+                        <SelectItem value="urd">Urdu</SelectItem>
+                        <SelectItem value="ara">Arabic</SelectItem>
                     </SelectContent>
                 </Select>
             </div>
-            <div>
+             <div>
                 <Label htmlFor="search-hadith">Search collection</Label>
-                 <form onSubmit={handleSearch} className="flex items-center gap-2 mt-1">
+                <form onSubmit={handleSearch} className="flex items-center gap-2 mt-1">
                     <Input
                         id="search-hadith"
-                        placeholder="e.g. bukhari, muslim, tirmidhi..."
+                        placeholder="e.g. bukhari, muslim..."
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                     />
@@ -166,6 +155,7 @@ export default function HadithPage() {
                 </form>
             </div>
       </div>
+
 
       {error && (
         <Alert variant="destructive">
@@ -189,8 +179,8 @@ export default function HadithPage() {
         </Card>
       ) : (
         <>
-            <Card className="flex-grow">
-                <CardContent className="p-0">
+            <Card className="flex-grow overflow-hidden">
+                <CardContent className="p-0 h-full overflow-y-auto">
                     <Accordion type="single" collapsible className="w-full" value={openHadith} onValueChange={setOpenHadith}>
                         {hadiths.map((hadith) => (
                         <AccordionItem value={`item-${hadith.id}`} key={hadith.id}>
@@ -220,10 +210,10 @@ export default function HadithPage() {
                         Showing {paginationInfo.from} to {paginationInfo.to} of {paginationInfo.total} hadiths
                     </p>
                     <div className="flex gap-2">
-                        <Button variant="outline" size="icon" onClick={handlePrevPage} disabled={!paginationInfo.prev || loading}>
+                        <Button variant="outline" size="icon" onClick={handlePrevPage} disabled={paginationInfo.currentPage <= 1 || loading}>
                             <ChevronLeft />
                         </Button>
-                        <Button variant="outline" size="icon" onClick={handleNextPage} disabled={!paginationInfo.next || loading}>
+                        <Button variant="outline" size="icon" onClick={handleNextPage} disabled={paginationInfo.currentPage >= paginationInfo.lastPage || loading}>
                             <ChevronRight />
                         </Button>
                     </div>
