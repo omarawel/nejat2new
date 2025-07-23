@@ -34,10 +34,10 @@ const content = {
             {
                 name: "Pro",
                 price: "4,99€",
-                description: "Ideal für Wissbegierige, die mit 40 KI-Anfragen/Monat das volle Potenzial der App ausschöpfen wollen.",
+                description: "Ideal für Wissbegierige, die mit 30 KI-Anfragen/Monat das volle Potenzial der App ausschöpfen wollen.",
                 features: [
                     "Alle Funktionen des Unterstützer-Plans",
-                    "40 KI-Anfragen / Monat",
+                    "30 KI-Anfragen / Monat",
                     "Personalisierter Lernpfad-Generator",
                     "Priorisierter Support",
                 ],
@@ -46,10 +46,10 @@ const content = {
             {
                 name: "Patron",
                 price: "9,99€",
-                description: "Für diejenigen, die mit 100 KI-Anfragen/Monat maßgeblich zum Wachstum der Plattform beitragen möchten.",
+                description: "Für diejenigen, die mit 75 KI-Anfragen/Monat maßgeblich zum Wachstum der Plattform beitragen möchten.",
                 features: [
                     "Alle Funktionen des Pro-Plans",
-                    "100 KI-Anfragen / Monat",
+                    "75 KI-Anfragen / Monat",
                     "Frühzugang zu neuen Features",
                     "Exklusive Community-Abzeichen"
                 ]
@@ -66,7 +66,7 @@ const content = {
                 { name: "Zugang zu grundlegenden Lerninhalten", value: "✓" },
                 { name: "Werbefreie Erfahrung", value: "✓" },
                 { name: "Lern-Werkzeug & Sprachausgabe", value: "✓" },
-                { name: "KI-Anfragen (Dua, Gelehrter, etc.)", free: "0", supporter: "15/Monat", pro: "40/Monat", patron: "100/Monat" },
+                { name: "KI-Anfragen (Dua, Gelehrter, etc.)", free: "0", supporter: "15/Monat", pro: "30/Monat", patron: "75/Monat" },
                 { name: "Personalisierter Lernpfad-Generator", value: "✓" },
                 { name: "Priorisierter Support", value: "✓" },
                 { name: "Frühzugang & exklusive Features", value: "✓" },
@@ -95,10 +95,10 @@ const content = {
             {
                 name: "Pro",
                 price: "€4.99",
-                description: "Ideal for eager learners who want to unlock the full potential of the app with 40 AI requests/month.",
+                description: "Ideal for eager learners who want to unlock the full potential of the app with 30 AI requests/month.",
                 features: [
                     "All features of the Supporter plan",
-                    "40 AI Requests / Month",
+                    "30 AI Requests / Month",
                     "Personalized Learning Path Generator",
                     "Priority Support",
                 ],
@@ -107,10 +107,10 @@ const content = {
             {
                 name: "Patron",
                 price: "€9.99",
-                description: "For those who want to significantly contribute to the platform's growth with 100 AI requests/month.",
+                description: "For those who want to significantly contribute to the platform's growth with 75 AI requests/month.",
                 features: [
                     "All features of the Pro plan",
-                    "100 AI Requests / Month",
+                    "75 AI Requests / Month",
                     "Early access to new features",
                     "Exclusive community badges"
                 ]
@@ -127,7 +127,7 @@ const content = {
                 { name: "Access to basic learning content", value: "✓" },
                 { name: "Ad-free experience", value: "✓" },
                 { name: "Memorization Tool & Voice Output", value: "✓" },
-                { name: "AI Requests (Dua, Scholar, etc.)", free: "0", supporter: "15/month", pro: "40/month", patron: "100/month" },
+                { name: "AI Requests (Dua, Scholar, etc.)", free: "0", supporter: "15/month", pro: "30/month", patron: "75/month" },
                 { name: "Personalized Learning Path Generator", value: "✓" },
                 { name: "Priority Support", value: "✓" },
                 { name: "Early Access & Exclusive Features", value: "✓" },
@@ -253,3 +253,4 @@ export default function SubscribePage() {
     </div>
   );
 }
+
