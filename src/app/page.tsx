@@ -35,7 +35,6 @@ const tools = [
     { icon: "⏳", name: "Gebet auf Zeit" },
     { icon: "💧", name: "Gebetswaschung (Wudu)" },
     { icon: "🌙", name: "Gebetszeiten", href: "/prayer-times" },
-    { icon: "⏰", name: "Gebetszeiten", href: "/prayer-times" },
     { icon: "💌", name: "Grußkarte" },
     { icon: "😊", name: "Gute Manieren (Akhlaq)" },
     { icon: "📚", name: "Hadith Sammlung", href: "/hadith" },
@@ -54,12 +53,10 @@ const tools = [
     { icon: "🌟", name: "Islamische Wunder" },
     { icon: "💬", name: "Islamische Zitate" },
     { icon: "📅", name: "Islamischer Kalender" },
-    { icon: "📅", name: "Kalender" },
     { icon: "🎤", name: "Khutbah der Woche" },
     { icon: "🤖", name: "KI-Gelehrter", href: "/insights" },
     { icon: "🧭", name: "Kompass" },
     { icon: "🤝", name: "Konvertiten-Ecke" },
-    { icon: "📖", name: "Koran", href: "/quran" },
     { icon: "🔍", name: "Koran-Erkenner" },
     { icon: "📜", name: "Koranvers des Tages" },
     { icon: "👩", name: "Ladies Special" },
@@ -72,7 +69,6 @@ const tools = [
     { icon: "✈️", name: "Reise-Etikette" },
     { icon: "👥", name: "Sahaba" },
     { icon: "💸", name: "Spenden" },
-    { icon: "📿", name: "Tasbih" },
     { icon: "📿", name: "Tasbih Zähler" },
     { icon: "⚰️", name: "Todesfall (Janazah)" },
     { icon: "🌙", name: "Traumdeuter" },
@@ -136,8 +132,8 @@ export default function Home() {
         <div className="mt-8 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-4">
           {tools.map((tool) => {
             const card = <FeatureCard icon={tool.icon} name={tool.name} />
-            if ((tool as any).href) {
-                return <Link key={tool.name} href={(tool as any).href}>{card}</Link>
+            if (tool.href) {
+                return <Link key={tool.name} href={tool.href}>{card}</Link>
             }
             return <div key={tool.name}>{card}</div>;
           })}
