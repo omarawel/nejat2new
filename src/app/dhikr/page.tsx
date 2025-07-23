@@ -84,6 +84,27 @@ const content = {
         transliteration: "A'udhu bikalimatillahit-tammati min sharri ma khalaq.",
         meaning: "Ich suche Zuflucht bei den vollkommenen Worten Allahs vor dem Übel dessen, was Er erschaffen hat.",
         benefit: "Wer dies dreimal am Abend sagt, dem wird in dieser Nacht kein Unheil widerfahren. (Tirmidhi)"
+      },
+      {
+        title: "Gebet für das Wohl im Dies- und Jenseits",
+        arabic: "رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ",
+        transliteration: "Rabbana atina fid-dunya hasanatan wa fil 'akhirati hasanatan waqina 'adhaban-nar",
+        meaning: "Unser Herr, gib uns im Diesseits Gutes und im Jenseits Gutes und bewahre uns vor der Strafe des Feuers.",
+        benefit: "Anas (RA) berichtete, dass das häufigste Gebet des Propheten (ﷺ) dieses war. (Bukhari, Muslim)"
+      },
+      {
+        title: "Gebet für Rechtleitung und Genügsamkeit",
+        arabic: "اللَّهُمَّ إِنِّي أَسْأَلُكَ الْهُدَى وَالتُّقَى وَالْعَفَافَ وَالْغِنَى",
+        transliteration: "Allahumma inni as'alukal-huda, wat-tuqa, wal-'afafa, wal-ghina",
+        meaning: "O Allah, ich bitte Dich um Rechtleitung, Gottesfurcht, Enthaltsamkeit (vor dem Verbotenen) und Genügsamkeit.",
+        benefit: "Ein umfassendes Bittgebet, das der Prophet (ﷺ) häufig sprach. (Muslim)"
+      },
+      {
+        title: "Gebet um nützliches Wissen",
+        arabic: "رَبِّ زِدْنِي عِلْمًا",
+        transliteration: "Rabbi zidni 'ilma",
+        meaning: "Mein Herr, mehre mein Wissen.",
+        benefit: "Ein koranisches Bittgebet (20:114), das die Wichtigkeit des Strebens nach Wissen unterstreicht."
       }
     ]
   },
@@ -160,6 +181,27 @@ const content = {
         transliteration: "A'udhu bikalimatillahit-tammati min sharri ma khalaq.",
         meaning: "I seek refuge in the perfect words of Allah from the evil of that which He has created.",
         benefit: "Whoever says this three times in the evening, no calamity will befall him that night. (Tirmidhi)"
+      },
+      {
+        title: "Prayer for Well-being in this Life and the Hereafter",
+        arabic: "رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ",
+        transliteration: "Rabbana atina fid-dunya hasanatan wa fil 'akhirati hasanatan waqina 'adhaban-nar",
+        meaning: "Our Lord, give us in this world [that which is] good and in the Hereafter [that which is] good and protect us from the punishment of the Fire.",
+        benefit: "Anas (RA) reported that the most frequent supplication of the Prophet (ﷺ) was this. (Bukhari, Muslim)"
+      },
+      {
+        title: "Prayer for Guidance and Contentment",
+        arabic: "اللَّهُمَّ إِنِّي أَسْأَلُكَ الْهُدَى وَالتُّقَى وَالْعَفَافَ وَالْغِنَى",
+        transliteration: "Allahumma inni as'alukal-huda, wat-tuqa, wal-'afafa, wal-ghina",
+        meaning: "O Allah, I ask You for guidance, piety, abstinence (from the unlawful) and contentment.",
+        benefit: "A comprehensive prayer that the Prophet (ﷺ) used to make. (Muslim)"
+      },
+      {
+        title: "Prayer for Increase in Knowledge",
+        arabic: "رَبِّ زِدْنِي عِلْمًا",
+        transliteration: "Rabbi zidni 'ilma",
+        meaning: "My Lord, increase me in knowledge.",
+        benefit: "A Quranic prayer (20:114) that highlights the importance of seeking knowledge."
       }
     ]
   }
@@ -209,3 +251,5 @@ export default function DhikrPage() {
     </div>
   );
 }
+
+    
