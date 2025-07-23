@@ -15,7 +15,7 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Button } from "@/components/ui/button"
 import { Terminal, ChevronLeft, ChevronRight, Search } from "lucide-react"
-import { useEffect, useState, useMemo } from "react"
+import { useEffect, useState, useMemo, FormEvent } from "react"
 import type { Hadith } from "./actions"
 import { getHadiths } from "./actions"
 import { Input } from "@/components/ui/input"
@@ -59,7 +59,8 @@ export default function HadithPage() {
   const [currentPage, setCurrentPage] = useState<number>(1)
   const [paginationInfo, setPaginationInfo] = useState<{next: boolean, prev: boolean, from: number, to: number, total: number} | null>(null)
   const [openHadith, setOpenHadith] = useState<string | undefined>(undefined);
-  const [filter, setFilter] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [submittedSearchTerm, setSubmittedSearchTerm] = useState("");
   const [language, setLanguage] = useState<Language>("english");
 
   
@@ -68,7 +69,7 @@ export default function HadithPage() {
       setLoading(true)
       setError(null)
       try {
-        const data = await getHadiths(currentPage);
+        const data = await getHadiths(currentPage, submittedSearchTerm);
         if (data.error) {
             throw new Error(data.error);
         }
@@ -91,21 +92,13 @@ export default function HadithPage() {
       }
     }
     fetchHadiths()
-  }, [currentPage])
+  }, [currentPage, submittedSearchTerm])
 
-  const filteredHadiths = useMemo(() => {
-    if (!filter) return hadiths;
-    return hadiths.filter(hadith => {
-        const searchTerm = filter.toLowerCase();
-        return (
-            hadith.hadithNumber.toLowerCase().includes(searchTerm) ||
-            hadith.englishNarrator.toLowerCase().includes(searchTerm) ||
-            hadith.hadithEnglish.toLowerCase().includes(searchTerm) ||
-            hadith.book.bookName.toLowerCase().includes(searchTerm) ||
-            hadith.chapter.chapterEnglish.toLowerCase().includes(searchTerm)
-        )
-    });
-  }, [hadiths, filter]);
+  const handleSearch = (e: FormEvent) => {
+    e.preventDefault();
+    setCurrentPage(1); // Reset to first page on new search
+    setSubmittedSearchTerm(searchTerm);
+  };
   
   const handleNextPage = () => {
     if (paginationInfo?.next) {
@@ -141,16 +134,16 @@ export default function HadithPage() {
                 </Select>
             </div>
             <div>
-                <Label htmlFor="search-hadith">Search on this page</Label>
-                <div className="flex items-center gap-2 mt-1">
+                <Label htmlFor="search-hadith">Search collection</Label>
+                 <form onSubmit={handleSearch} className="flex items-center gap-2 mt-1">
                     <Input
                         id="search-hadith"
-                        placeholder="e.g. Bukhari, prayer, fasting..."
-                        value={filter}
-                        onChange={(e) => setFilter(e.target.value)}
+                        placeholder="e.g. bukhari, muslim, tirmidhi..."
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
                     />
-                    <Button type="button" variant="outline" size="icon" disabled><Search className="h-4 w-4"/></Button>
-                </div>
+                    <Button type="submit" variant="outline" size="icon" disabled={loading}><Search className="h-4 w-4"/></Button>
+                </form>
             </div>
       </div>
 
@@ -168,12 +161,18 @@ export default function HadithPage() {
                  <Skeleton key={i} className="h-12 w-full" />
             ))}
         </div>
+      ) : hadiths.length === 0 ? (
+        <Card>
+            <CardContent className="p-6 text-center">
+                <p>No hadiths found for your search term.</p>
+            </CardContent>
+        </Card>
       ) : (
         <>
             <Card className="flex-grow">
                 <CardContent className="p-0">
                     <Accordion type="single" collapsible className="w-full" value={openHadith} onValueChange={setOpenHadith}>
-                        {filteredHadiths.map((hadith) => (
+                        {hadiths.map((hadith) => (
                         <AccordionItem value={`item-${hadith.id}`} key={hadith.id}>
                             <AccordionTrigger className="px-6 py-4 text-lg hover:no-underline">
                                 <div className="flex items-center gap-4 text-left">
@@ -195,16 +194,16 @@ export default function HadithPage() {
                 </CardContent>
             </Card>
 
-            {paginationInfo && (
+            {paginationInfo && paginationInfo.total > 0 && (
                 <div className="flex items-center justify-between pt-4">
                     <p className="text-sm text-muted-foreground">
                         Showing {paginationInfo.from} to {paginationInfo.to} of {paginationInfo.total} hadiths
                     </p>
                     <div className="flex gap-2">
-                        <Button variant="outline" size="icon" onClick={handlePrevPage} disabled={!paginationInfo.prev}>
+                        <Button variant="outline" size="icon" onClick={handlePrevPage} disabled={!paginationInfo.prev || loading}>
                             <ChevronLeft />
                         </Button>
-                        <Button variant="outline" size="icon" onClick={handleNextPage} disabled={!paginationInfo.next}>
+                        <Button variant="outline" size="icon" onClick={handleNextPage} disabled={!paginationInfo.next || loading}>
                             <ChevronRight />
                         </Button>
                     </div>
