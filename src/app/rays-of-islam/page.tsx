@@ -40,8 +40,10 @@ const content = {
                 "Spiritual concepts like Tawakkul and Sabr",
                 "The character of the Prophet Muhammad (ﷺ)"
             ],
-            buttonText: "Read now on Kindle",
+            buttonText: "Read on Kindle",
             link: "https://lesen.amazon.de/kp/kshare?asin=B0F1HDQZQ7&id=bd54wv7j75bj5jqer3wa5bv7xu",
+            googlePlayButtonText: "Read on Google Play",
+            googlePlayLink: "https://play.google.com/store/books/details/Omar_Awel_The_Rays_Of_Islam?id=wNhPEQAAQBAJ",
             image: "https://dl.dropboxusercontent.com/scl/fi/l7itt143gcy7dtusvrelq/IMG_20250717_094013_874.jpg?rlkey=dpp2528r5jyo7n83d1abga1gg&dl=0"
         }
     },
@@ -60,7 +62,7 @@ const content = {
                 "Spiritual concepts like Tawakkul and Sabr",
                 "The character of the Prophet Muhammad (ﷺ)"
             ],
-            buttonText: "Read now on Kindle (German)",
+            buttonText: "Read on Kindle (German)",
             link: "https://lesen.amazon.de/kp/kshare?asin=B0F195Y5MY&id=ks6jizhuxvh3xhy2fuvlsjprmi",
             image: "https://dl.dropboxusercontent.com/scl/fi/fwwpjh0x0cqllcocnj3as/IMG_20250717_094009_277.jpg?rlkey=4l9ep5b9el2ri2xuajmo7dqe8&dl=0"
         },
@@ -76,15 +78,17 @@ const content = {
                 "Spiritual concepts like Tawakkul and Sabr",
                 "The character of the Prophet Muhammad (ﷺ)"
             ],
-            buttonText: "Read now on Kindle (English)",
+            buttonText: "Read on Kindle (English)",
             link: "https://lesen.amazon.de/kp/kshare?asin=B0F1HDQZQ7&id=bd54wv7j75bj5jqer3wa5bv7xu",
+            googlePlayButtonText: "Read on Google Play",
+            googlePlayLink: "https://play.google.com/store/books/details/Omar_Awel_The_Rays_Of_Islam?id=wNhPEQAAQBAJ",
             image: "https://dl.dropboxusercontent.com/scl/fi/l7itt143gcy7dtusvrelq/IMG_20250717_094013_874.jpg?rlkey=dpp2528r5jyo7n83d1abga1gg&dl=0"
         }
     }
 }
 
 const BookCard = ({ book }: { book: any }) => (
-    <Card className="w-full">
+    <Card className="w-full flex flex-col">
         <CardHeader className="items-center text-center">
              <div className="mb-4">
                 <Image 
@@ -99,8 +103,8 @@ const BookCard = ({ book }: { book: any }) => (
             <CardTitle className="text-3xl font-bold text-primary">{book.title}</CardTitle>
             <CardDescription className="text-lg text-muted-foreground">{book.author}</CardDescription>
         </CardHeader>
-        <CardContent className="text-center px-6 md:px-8">
-            <p className="mb-6 text-left">{book.description}</p>
+        <CardContent className="text-center px-6 md:px-8 flex-grow flex flex-col">
+            <p className="mb-6 text-left flex-grow">{book.description}</p>
 
             <div className="text-left bg-accent/50 p-4 rounded-md mb-6">
                 <h3 className="font-semibold mb-2">{book.topicsTitle}</h3>
@@ -109,12 +113,22 @@ const BookCard = ({ book }: { book: any }) => (
                 </ul>
             </div>
             
-            <Button asChild size="lg">
-                <Link href={book.link} target="_blank" rel="noopener noreferrer">
-                    {book.buttonText}
-                    <ExternalLink className="ml-2 h-4 w-4" />
-                </Link>
-            </Button>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <Button asChild size="lg" className="flex-1">
+                    <Link href={book.link} target="_blank" rel="noopener noreferrer">
+                        {book.buttonText}
+                        <ExternalLink className="ml-2 h-4 w-4" />
+                    </Link>
+                </Button>
+                {book.googlePlayLink && (
+                     <Button asChild size="lg" variant="outline" className="flex-1">
+                        <Link href={book.googlePlayLink} target="_blank" rel="noopener noreferrer">
+                            {book.googlePlayButtonText}
+                            <ExternalLink className="ml-2 h-4 w-4" />
+                        </Link>
+                    </Button>
+                )}
+            </div>
         </CardContent>
     </Card>
 )
@@ -129,7 +143,7 @@ export default function RaysOfIslamPage() {
             <h1 className="text-4xl font-bold tracking-tight text-primary">{c.pageTitle}</h1>
             <p className="text-muted-foreground mt-2 text-lg">{c.pageDescription}</p>
         </header>
-        <div className="flex flex-col lg:flex-row items-start justify-center gap-8">
+        <div className="flex flex-col lg:flex-row items-stretch justify-center gap-8">
             <BookCard book={c.germanBook} />
             <BookCard book={c.englishBook} />
         </div>
