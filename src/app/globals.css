@@ -76,6 +76,48 @@ body {
     --sidebar-border: 16 31% 28%;
     --sidebar-ring: 16 84% 48%;
   }
+  .rose {
+    --background: 350 60% 15%;
+    --foreground: 350 10% 98%;
+    --card: 350 50% 20%;
+    --card-foreground: 350 10% 98%;
+    --popover: 350 70% 10%;
+    --popover-foreground: 350 10% 98%;
+    --primary: 346.8 77.2% 49.8%;
+    --primary-foreground: 355.7 100% 97.3%;
+    --secondary: 350 50% 22%;
+    --secondary-foreground: 350 10% 98%;
+    --muted: 350 50% 22%;
+    --muted-foreground: 350 10% 60%;
+    --accent: 350 60% 30%;
+    --accent-foreground: 350 10% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 350 50% 28%;
+    --input: 350 50% 22%;
+    --ring: 346.8 77.2% 49.8%;
+  }
+  .blue {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 8%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 217.2 91.2% 59.8%;
+    --primary-foreground: 210 40% 9.8%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 22.5%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 217.2 91.2% 59.8%;
+  }
 }
 
 @layer base {
@@ -88,7 +130,7 @@ body {
 }
 
 @layer components {
-    .dark .card-animated {
+    .dark .card-animated, .rose .card-animated, .blue .card-animated {
         background-color: hsla(var(--card), 0.85);
         backdrop-filter: blur(4px);
         animation: fadeIn 0.5s ease-in-out;
