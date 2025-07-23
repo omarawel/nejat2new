@@ -34,7 +34,7 @@ const tools = [
     { key: "finance", icon: "💰", de: "Finanzen", en: "Finances" },
     { key: "jummah", icon: "🕌", de: "Freitagsgebet (Jumu'ah)", en: "Friday Prayer (Jumu'ah)" },
     { key: "prayer_on_time", icon: "⏳", de: "Gebet auf Zeit", en: "Prayer on Time" },
-    { key: "wudu", icon: "💧", de: "Gebetswaschung (Wudu)", en: "Ablution (Wudu)" },
+    { key: "wudu", icon: "💧", de: "Gebetswaschung (Wudu)", en: "Ablution (Wudu)", href: "/wudu" },
     { key: "prayer_times", icon: "🌙", de: "Gebetszeiten", en: "Prayer Times", href: "/prayer-times" },
     { key: "greeting_card", icon: "💌", de: "Grußkarte", en: "Greeting Card" },
     { key: "akhlaq", icon: "😊", de: "Gute Manieren (Akhlaq)", en: "Good Manners (Akhlaq)" },
