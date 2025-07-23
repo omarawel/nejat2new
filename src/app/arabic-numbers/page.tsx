@@ -10,26 +10,26 @@ import { cn } from '@/lib/utils';
 import { textToSpeech } from "@/ai/flows/text-to-speech"
 
 const numbers = [
-  { number: '١', name: 'Wahid', value: 1 },
-  { number: '٢', name: 'Ithnan', value: 2 },
-  { number: '٣', name: 'Thalatha', value: 3 },
-  { number: '٤', name: 'Arba\'a', value: 4 },
-  { number: '٥', name: 'Khamsa', value: 5 },
-  { number: '٦', name: 'Sittah', value: 6 },
-  { number: '٧', name: 'Sab\'a', value: 7 },
-  { number: '٨', name: 'Thamaniyah', value: 8 },
-  { number: '٩', name: 'Tis\'a', value: 9 },
-  { number: '١٠', name: 'Asharah', value: 10 },
-  { number: '١١', name: 'Ahada Ashar', value: 11 },
-  { number: '١٢', name: 'Ithna Ashar', value: 12 },
-  { number: '١٣', name: 'Thalathata Ashar', value: 13 },
-  { number: '١٤', name: 'Arba\'ata Ashar', value: 14 },
-  { number: '١٥', name: 'Khamsata Ashar', value: 15 },
-  { number: '١٦', name: 'Sittata Ashar', value: 16 },
-  { number: '١٧', name: 'Sab\'ata Ashar', value: 17 },
-  { number: '١٨', name: 'Thamaniyata Ashar', value: 18 },
-  { number: '١٩', name: 'Tis\'ata Ashar', value: 19 },
-  { number: '٢٠', name: 'Ishrun', value: 20 },
+  { number: '١', name_de: 'Wahid', name_en: 'Wahid', value: 1 },
+  { number: '٢', name_de: 'Ithnan', name_en: 'Ithnan', value: 2 },
+  { number: '٣', name_de: 'Thalatha', name_en: 'Thalatha', value: 3 },
+  { number: '٤', name_de: 'Arba\'a', name_en: 'Arba\'a', value: 4 },
+  { number: '٥', name_de: 'Khamsa', name_en: 'Khamsa', value: 5 },
+  { number: '٦', name_de: 'Sittah', name_en: 'Sittah', value: 6 },
+  { number: '٧', name_de: 'Sab\'a', name_en: 'Sab\'a', value: 7 },
+  { number: '٨', name_de: 'Thamaniyah', name_en: 'Thamaniyah', value: 8 },
+  { number: '٩', name_de: 'Tis\'a', name_en: 'Tis\'a', value: 9 },
+  { number: '١٠', name_de: 'Asharah', name_en: 'Asharah', value: 10 },
+  { number: '١١', name_de: 'Ahada Ashar', name_en: 'Ahada Ashar', value: 11 },
+  { number: '١٢', name_de: 'Ithna Ashar', name_en: 'Ithna Ashar', value: 12 },
+  { number: '١٣', name_de: 'Thalathata Ashar', name_en: 'Thalathata Ashar', value: 13 },
+  { number: '١٤', name_de: 'Arba\'ata Ashar', name_en: 'Arba\'ata Ashar', value: 14 },
+  { number: '١٥', name_de: 'Khamsata Ashar', name_en: 'Khamsata Ashar', value: 15 },
+  { number: '١٦', name_de: 'Sittata Ashar', name_en: 'Sittata Ashar', value: 16 },
+  { number: '١٧', name_de: 'Sab\'ata Ashar', name_en: 'Sab\'ata Ashar', value: 17 },
+  { number: '١٨', name_de: 'Thamaniyata Ashar', name_en: 'Thamaniyata Ashar', value: 18 },
+  { number: '١٩', name_de: 'Tis\'ata Ashar', name_en: 'Tis\'ata Ashar', value: 19 },
+  { number: '٢٠', name_de: 'Ishrun', name_en: 'Ishrun', value: 20 },
 ];
 
 const content = {
@@ -104,13 +104,14 @@ export default function ArabicNumbersPage() {
           const isHidden = hiddenCards[num.value];
           const isPlaying = playingAudio === num.value;
           const isLoading = loadingAudio === num.value;
+          const name = language === 'de' ? num.name_de : num.name_en;
           return (
             <Card key={num.value} className="text-center transform transition-all duration-300 hover:scale-110 hover:shadow-lg relative">
               <div className="absolute top-2 right-2 flex">
                 <Button variant="ghost" size="icon" onClick={() => toggleCardVisibility(num.value)}>
                     {isHidden ? <EyeOff /> : <Eye />}
                 </Button>
-                <Button variant="ghost" size="icon" onClick={() => handlePlayAudio(num.name, num.value)} disabled={isLoading}>
+                <Button variant="ghost" size="icon" onClick={() => handlePlayAudio(name, num.value)} disabled={isLoading}>
                     {isLoading ? <Loader className="h-5 w-5 animate-spin" /> : (isPlaying ? <Pause className="h-5 w-5" /> : <Play className="h-5 w-5" />)}
                 </Button>
               </div>
@@ -119,7 +120,7 @@ export default function ArabicNumbersPage() {
               </CardHeader>
               <CardContent className="space-y-1">
                 <p className={cn("text-2xl font-semibold", isHidden && 'opacity-0')}>{num.value}</p>
-                <p className={cn("text-muted-foreground", isHidden && 'opacity-0')}>{num.name}</p>
+                <p className={cn("text-muted-foreground", isHidden && 'opacity-0')}>{name}</p>
               </CardContent>
             </Card>
           )
@@ -128,5 +129,3 @@ export default function ArabicNumbersPage() {
     </div>
   );
 }
-
-    

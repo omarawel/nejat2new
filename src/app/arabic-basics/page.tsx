@@ -11,34 +11,34 @@ import { cn } from '@/lib/utils';
 import { textToSpeech } from "@/ai/flows/text-to-speech"
 
 const alphabet = [
-  { letter: 'ا', name: 'Alif', forms: { isolated: 'ا', final: 'ـا', medial: 'ـا', initial: 'ا' } },
-  { letter: 'ب', name: 'Ba', forms: { isolated: 'ب', final: 'ـب', medial: 'ـبـ', initial: 'بـ' } },
-  { letter: 'ت', name: 'Ta', forms: { isolated: 'ت', final: 'ـت', medial: 'ـتـ', initial: 'تـ' } },
-  { letter: 'ث', name: 'Tha', forms: { isolated: 'ث', final: 'ـث', medial: 'ـثـ', initial: 'ثـ' } },
-  { letter: 'ج', name: 'Jim', forms: { isolated: 'ج', final: 'ـج', medial: 'ـجـ', initial: 'جـ' } },
-  { letter: 'ح', name: 'Ha', forms: { isolated: 'ح', final: 'ـح', medial: 'ـحـ', initial: 'حـ' } },
-  { letter: 'خ', name: 'Kha', forms: { isolated: 'خ', final: 'ـخ', medial: 'ـخـ', initial: 'خـ' } },
-  { letter: 'د', name: 'Dal', forms: { isolated: 'د', final: 'ـد', medial: 'ـد', initial: 'د' } },
-  { letter: 'ذ', name: 'Dhal', forms: { isolated: 'ذ', final: 'ـذ', medial: 'ـذ', initial: 'ذ' } },
-  { letter: 'ر', name: 'Ra', forms: { isolated: 'ر', final: 'ـر', medial: 'ـر', initial: 'ر' } },
-  { letter: 'ز', name: 'Zain', forms: { isolated: 'ز', final: 'ـز', medial: 'ـز', initial: 'ز' } },
-  { letter: 'س', name: 'Sin', forms: { isolated: 'س', final: 'ـس', medial: 'ـسـ', initial: 'سـ' } },
-  { letter: 'ش', name: 'Shin', forms: { isolated: 'ش', final: 'ـش', medial: 'ـشـ', initial: 'شـ' } },
-  { letter: 'ص', name: 'Sad', forms: { isolated: 'ص', final: 'ـص', medial: 'ـصـ', initial: 'صـ' } },
-  { letter: 'ض', name: 'Dad', forms: { isolated: 'ض', final: 'ـض', medial: 'ـضـ', initial: 'ضـ' } },
-  { letter: 'ط', name: 'Taa', forms: { isolated: 'ط', final: 'ـط', medial: 'ـطـ', initial: 'طـ' } },
-  { letter: 'ظ', name: 'Dha', forms: { isolated: 'ظ', final: 'ـظ', medial: 'ـظـ', initial: 'ظـ' } },
-  { letter: 'ع', name: 'Ain', forms: { isolated: 'ع', final: 'ـع', medial: 'ـعـ', initial: 'عـ' } },
-  { letter: 'غ', name: 'Ghain', forms: { isolated: 'غ', final: 'ـغ', medial: 'ـغـ', initial: 'غـ' } },
-  { letter: 'ف', name: 'Fa', forms: { isolated: 'ف', final: 'ـف', medial: 'ـفـ', initial: 'فـ' } },
-  { letter: 'ق', name: 'Qaf', forms: { isolated: 'ق', final: 'ـق', medial: 'ـقـ', initial: 'قـ' } },
-  { letter: 'ك', name: 'Kaf', forms: { isolated: 'ك', final: 'ـك', medial: 'ـكـ', initial: 'كـ' } },
-  { letter: 'ل', name: 'Lam', forms: { isolated: 'ل', final: 'ـل', medial: 'ـلـ', initial: 'لـ' } },
-  { letter: 'م', name: 'Mim', forms: { isolated: 'م', final: 'ـم', medial: 'ـمـ', initial: 'مـ' } },
-  { letter: 'ن', name: 'Nun', forms: { isolated: 'ن', final: 'ـن', medial: 'ـنـ', initial: 'نـ' } },
-  { letter: 'ه', name: 'Ha', forms: { isolated: 'ه', final: 'ـه', medial: 'ـهـ', initial: 'هـ' } },
-  { letter: 'و', name: 'Waw', forms: { isolated: 'و', final: 'ـو', medial: 'ـو', initial: 'و' } },
-  { letter: 'ي', name: 'Ya', forms: { isolated: 'ي', final: 'ـي', medial: 'ـيـ', initial: 'يـ' } },
+  { letter: 'ا', name_de: 'Alif', name_en: 'Alif', forms: { isolated: 'ا', final: 'ـا', medial: 'ـا', initial: 'ا' } },
+  { letter: 'ب', name_de: 'Ba', name_en: 'Ba', forms: { isolated: 'ب', final: 'ـب', medial: 'ـبـ', initial: 'بـ' } },
+  { letter: 'ت', name_de: 'Ta', name_en: 'Ta', forms: { isolated: 'ت', final: 'ـت', medial: 'ـتـ', initial: 'تـ' } },
+  { letter: 'ث', name_de: 'Tha', name_en: 'Tha', forms: { isolated: 'ث', final: 'ـث', medial: 'ـثـ', initial: 'ثـ' } },
+  { letter: 'ج', name_de: 'Jim', name_en: 'Jim', forms: { isolated: 'ج', final: 'ـج', medial: 'ـجـ', initial: 'جـ' } },
+  { letter: 'ح', name_de: 'Ha', name_en: 'Ha', forms: { isolated: 'ح', final: 'ـح', medial: 'ـحـ', initial: 'حـ' } },
+  { letter: 'خ', name_de: 'Kha', name_en: 'Kha', forms: { isolated: 'خ', final: 'ـخ', medial: 'ـخـ', initial: 'خـ' } },
+  { letter: 'د', name_de: 'Dal', name_en: 'Dal', forms: { isolated: 'د', final: 'ـد', medial: 'ـد', initial: 'د' } },
+  { letter: 'ذ', name_de: 'Dhal', name_en: 'Dhal', forms: { isolated: 'ذ', final: 'ـذ', medial: 'ـذ', initial: 'ذ' } },
+  { letter: 'ر', name_de: 'Ra', name_en: 'Ra', forms: { isolated: 'ر', final: 'ـر', medial: 'ـر', initial: 'ر' } },
+  { letter: 'ز', name_de: 'Zain', name_en: 'Zain', forms: { isolated: 'ز', final: 'ـز', medial: 'ـز', initial: 'ز' } },
+  { letter: 'س', name_de: 'Sin', name_en: 'Sin', forms: { isolated: 'س', final: 'ـس', medial: 'ـسـ', initial: 'سـ' } },
+  { letter: 'ش', name_de: 'Shin', name_en: 'Shin', forms: { isolated: 'ش', final: 'ـش', medial: 'ـشـ', initial: 'شـ' } },
+  { letter: 'ص', name_de: 'Sad', name_en: 'Sad', forms: { isolated: 'ص', final: 'ـص', medial: 'ـصـ', initial: 'صـ' } },
+  { letter: 'ض', name_de: 'Dad', name_en: 'Dad', forms: { isolated: 'ض', final: 'ـض', medial: 'ـضـ', initial: 'ضـ' } },
+  { letter: 'ط', name_de: 'Taa', name_en: 'Taa', forms: { isolated: 'ط', final: 'ـط', medial: 'ـطـ', initial: 'طـ' } },
+  { letter: 'ظ', name_de: 'Dha', name_en: 'Dha', forms: { isolated: 'ظ', final: 'ـظ', medial: 'ـظـ', initial: 'ظـ' } },
+  { letter: 'ع', name_de: 'Ain', name_en: 'Ain', forms: { isolated: 'ع', final: 'ـع', medial: 'ـعـ', initial: 'عـ' } },
+  { letter: 'غ', name_de: 'Ghain', name_en: 'Ghain', forms: { isolated: 'غ', final: 'ـغ', medial: 'ـغـ', initial: 'غـ' } },
+  { letter: 'ف', name_de: 'Fa', name_en: 'Fa', forms: { isolated: 'ف', final: 'ـف', medial: 'ـفـ', initial: 'فـ' } },
+  { letter: 'ق', name_de: 'Qaf', name_en: 'Qaf', forms: { isolated: 'ق', final: 'ـق', medial: 'ـقـ', initial: 'قـ' } },
+  { letter: 'ك', name_de: 'Kaf', name_en: 'Kaf', forms: { isolated: 'ك', final: 'ـك', medial: 'ـكـ', initial: 'كـ' } },
+  { letter: 'ل', name_de: 'Lam', name_en: 'Lam', forms: { isolated: 'ل', final: 'ـل', medial: 'ـلـ', initial: 'لـ' } },
+  { letter: 'م', name_de: 'Mim', name_en: 'Mim', forms: { isolated: 'م', final: 'ـم', medial: 'ـمـ', initial: 'مـ' } },
+  { letter: 'ن', name_de: 'Nun', name_en: 'Nun', forms: { isolated: 'ن', final: 'ـن', medial: 'ـنـ', initial: 'نـ' } },
+  { letter: 'ه', name_de: 'Ha (Kreis)', name_en: 'Ha (Circle)', forms: { isolated: 'ه', final: 'ـه', medial: 'ـهـ', initial: 'هـ' } },
+  { letter: 'و', name_de: 'Waw', name_en: 'Waw', forms: { isolated: 'و', final: 'ـو', medial: 'ـو', initial: 'و' } },
+  { letter: 'ي', name_de: 'Ya', name_en: 'Ya', forms: { isolated: 'ي', final: 'ـي', medial: 'ـيـ', initial: 'يـ' } },
 ];
 
 const otherSymbols = [
@@ -175,16 +175,17 @@ export default function ArabicBasicsPage() {
                 const isHidden = hiddenRows[id];
                 const isPlaying = playingAudio === id;
                 const isLoading = loadingAudio === id;
+                const name = language === 'de' ? char.name_de : char.name_en;
                 return (
                     <TableRow key={id} className="text-center">
                     <TableCell className="text-3xl font-quranic font-bold text-primary">{char.letter}</TableCell>
-                    <TableCell className={cn(isHidden && 'opacity-0')}>{char.name}</TableCell>
+                    <TableCell className={cn(isHidden && 'opacity-0')}>{name}</TableCell>
                     <TableCell className={cn("text-2xl font-quranic", isHidden && 'opacity-0')}>{char.forms.initial}</TableCell>
                     <TableCell className={cn("text-2xl font-quranic", isHidden && 'opacity-0')}>{char.forms.medial}</TableCell>
                     <TableCell className={cn("text-2xl font-quranic", isHidden && 'opacity-0')}>{char.forms.final}</TableCell>
                     <TableCell className={cn("text-2xl font-quranic", isHidden && 'opacity-0')}>{char.forms.isolated}</TableCell>
                     <TableCell>
-                         <Button variant="ghost" size="icon" onClick={() => handlePlayAudio(char.name, id)} disabled={isLoading}>
+                         <Button variant="ghost" size="icon" onClick={() => handlePlayAudio(name, id)} disabled={isLoading}>
                             {isLoading ? <Loader className="h-5 w-5 animate-spin" /> : (isPlaying ? <Pause className="h-5 w-5" /> : <Play className="h-5 w-5" />)}
                         </Button>
                     </TableCell>
@@ -246,8 +247,3 @@ export default function ArabicBasicsPage() {
     </div>
   );
 }
-
-
-    
-
-    
