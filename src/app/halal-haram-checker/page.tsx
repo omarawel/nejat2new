@@ -7,7 +7,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { useLanguage } from '@/components/language-provider';
 import { CheckCircle, XCircle, ArrowLeft, TriangleAlert, ShieldCheck, Brain, HandCoins, Music, Sparkles, Scale } from 'lucide-react';
 import { Button } from '@/components/ui/button';
