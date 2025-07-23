@@ -51,7 +51,7 @@ export default function RaysOfIslamPage() {
             <CardHeader className="items-center text-center">
                  <div className="mb-4">
                     <Image 
-                        src="https://placehold.co/300x450.png"
+                        src="https://i.ibb.co/18r6JGr/IMG-20250717-094009-277.jpg"
                         alt="Book cover for The Rays Of Islam"
                         width={200}
                         height={300}
