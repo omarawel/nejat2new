@@ -41,15 +41,13 @@ export default function CommunityPage() {
   const c = content[language] || content.de;
 
   return (
-    <div className="flex-grow flex flex-col">
-      <div className="bg-accent text-accent-foreground py-16 md:py-24">
-        <div className="container mx-auto text-center px-4">
-            <h1 className="text-4xl md:text-6xl font-bold tracking-tight text-primary">{c.joinCommunity}</h1>
-            <p className="mt-4 text-lg md:text-xl max-w-3xl mx-auto text-muted-foreground">{c.connect}</p>
-        </div>
+    <div className="flex-grow flex flex-col p-4 sm:p-6 lg:p-8">
+      <div className="container mx-auto text-center px-4 py-12">
+        <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-primary">{c.joinCommunity}</h1>
+        <p className="mt-4 text-lg md:text-xl max-w-3xl mx-auto text-muted-foreground">{c.connect}</p>
       </div>
 
-      <div className="container mx-auto px-4 py-12 flex-grow">
+      <div className="container mx-auto px-4 py-6 flex-grow">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <Card className="text-center">
             <CardHeader>
