@@ -3,7 +3,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useLanguage } from '@/components/language-provider';
-import { Clock, CheckCircle, Shield, Heart, Sparkles, Lightbulb, ArrowLeft } from 'lucide-react';
+import { Clock, CheckCircle, Shield, Heart, Sparkles, Lightbulb, TrendingDown, Users, Home, BookOpen, ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 
@@ -20,20 +20,26 @@ const content = {
             title: "Der Nutzen des pünktlichen Gebets",
             items: [
                 { icon: CheckCircle, text: "Erlangung von Allahs Wohlgefallen und Liebe." },
-                { icon: Shield, text: "Schutz vor Sünden und Schamlosigkeit." },
+                { icon: Shield, text: "Schutz vor Sünden und Schamlosigkeit (Sure 29:45)." },
                 { icon: Heart, text: "Frieden und Ruhe für Herz und Seele." },
-                { icon: Sparkles, text: "Bringt Segen (Barakah) in die Zeit und den Alltag." }
+                { icon: Sparkles, text: "Bringt Segen (Barakah) in die Zeit und den Alltag." },
+                { icon: Lightbulb, text: "Ist ein Licht (Nur) für den Gläubigen an Tag des Jüngsten Gerichts." },
+                { icon: Clock, text: "Strukturiert den Tag und schafft Disziplin im Leben eines Muslims." }
             ]
+        },
+        consequences: {
+            title: "Die Konsequenzen der Verzögerung",
+            content: "Das bewusste und regelmäßige Vernachlässigen oder Verzögern des Gebets ist eine ernste Angelegenheit. Allah warnt im Koran: 'Wehe den Betenden, die auf ihre Gebete nicht achten' (Sure 107:4-5). Das ständige Aufschieben des Gebets bis zum Ende seiner Zeitspanne ohne gültigen Grund wird als eine Eigenschaft der Heuchler (Munafiqun) beschrieben. Es schwächt die spirituelle Verbindung zu Allah und öffnet Türen für die Einflüsterungen des Schaytan."
         },
         tips: {
             title: "Praktische Tipps",
             items: [
-                "Verstehe die Bedeutung: Erinnere dich ständig daran, warum du betest und für Wen.",
-                "Setze Erinnerungen: Nutze Gebets-Apps oder Wecker, die dich kurz vor der Gebetszeit erinnern.",
-                "Bereite dich vor: Halte deine Gebetskleidung und deinen Gebetsplatz sauber und bereit. Verrichte Wudu, sobald die Zeit eintritt.",
-                "Vermeide Aufschub: Erledige das Gebet sofort, wenn die Zeit beginnt. Sage dir: „Nur 5 Minuten für meinen Schöpfer.“",
-                "Suche gute Gesellschaft: Umgib dich mit Freunden, die dich ebenfalls an das Gebet erinnern.",
-                "Mache Dua: Bitte Allah um Hilfe, standhaft und pünktlich im Gebet zu sein."
+                { icon: BookOpen, text: "Verstehe die Bedeutung: Erinnere dich ständig daran, warum du betest und für Wen. Lerne die Bedeutung dessen, was du rezitierst." },
+                { icon: Clock, text: "Setze Erinnerungen: Nutze Gebets-Apps oder Wecker, die dich kurz vor der Gebetszeit erinnern." },
+                { icon: Home, text: "Bereite dich vor: Halte deine Gebetskleidung und deinen Gebetsplatz sauber und bereit. Verrichte Wudu, sobald die Zeit eintritt." },
+                { icon: Shield, text: "Vermeide Aufschub: Erledige das Gebet sofort, wenn die Zeit beginnt. Sage dir: „Nur 5 Minuten für meinen Schöpfer.“" },
+                { icon: Users, text: "Suche gute Gesellschaft: Umgib dich mit Freunden, die dich ebenfalls an das Gebet erinnern, und bete, wenn möglich, in der Gemeinschaft." },
+                { icon: Heart, text: "Mache Dua: Bitte Allah um Hilfe, standhaft und pünktlich im Gebet zu sein." }
             ]
         }
     },
@@ -49,20 +55,26 @@ const content = {
             title: "The Benefits of Praying on Time",
             items: [
                 { icon: CheckCircle, text: "Gaining Allah's pleasure and love." },
-                { icon: Shield, text: "Protection from sins and indecency." },
+                { icon: Shield, text: "Protection from sins and indecency (Surah 29:45)." },
                 { icon: Heart, text: "Peace and tranquility for the heart and soul." },
-                { icon: Sparkles, text: "Brings blessings (Barakah) into one's time and daily life." }
+                { icon: Sparkles, text: "Brings blessings (Barakah) into one's time and daily life." },
+                { icon: Lightbulb, text: "Will be a light (Nur) for the believer on the Day of Judgment." },
+                { icon: Clock, text: "Structures the day and creates discipline in a Muslim's life." }
             ]
+        },
+        consequences: {
+            title: "The Consequences of Delay",
+            content: "Deliberately and regularly neglecting or delaying the prayer is a serious matter. Allah warns in the Quran: 'So woe to those who pray, [but] who are heedless of their prayer' (Surah 107:4-5). Constantly postponing the prayer until the end of its time without a valid reason is described as a characteristic of the hypocrites (Munafiqun). It weakens the spiritual connection to Allah and opens doors to the whispers of Shaytan."
         },
         tips: {
             title: "Practical Tips",
             items: [
-                "Understand the 'Why': Constantly remind yourself why you pray and for Whom.",
-                "Set Reminders: Use prayer apps or alarms that remind you shortly before the prayer time.",
-                "Prepare in Advance: Keep your prayer clothes and prayer space clean and ready. Perform Wudu as soon as the time enters.",
-                "Avoid Procrastination: Perform the prayer as soon as the time begins. Tell yourself: 'Just 5 minutes for my Creator.'",
-                "Seek Good Company: Surround yourself with friends who also remind you of prayer.",
-                "Make Dua: Ask Allah for help to be steadfast and punctual in your prayers."
+                { icon: BookOpen, text: "Understand the 'Why': Constantly remind yourself why you pray and for Whom. Learn the meaning of what you recite." },
+                { icon: Clock, text: "Set Reminders: Use prayer apps or alarms that remind you shortly before the prayer time." },
+                { icon: Home, text: "Prepare in Advance: Keep your prayer clothes and prayer space clean and ready. Perform Wudu as soon as the time enters." },
+                { icon: Shield, text: "Avoid Procrastination: Perform the prayer as soon as the time begins. Tell yourself: 'Just 5 minutes for my Creator.'" },
+                { icon: Users, text: "Seek Good Company: Surround yourself with friends who also remind you of prayer, and pray in congregation whenever possible." },
+                { icon: Heart, text: "Make Dua: Ask Allah for help to be steadfast and punctual in your prayers." }
             ]
         }
     }
@@ -122,14 +134,31 @@ export default function PrayerOnTimePage() {
                         </CardTitle>
                     </CardHeader>
                     <CardContent>
-                        <ul className="list-decimal list-inside space-y-3 text-muted-foreground">
+                         <ul className="space-y-4">
                             {c.tips.items.map((item, index) => (
-                                <li key={index}>{item}</li>
+                                <li key={index} className="flex items-start gap-4">
+                                    <item.icon className="h-6 w-6 text-primary mt-1 flex-shrink-0" />
+                                    <span>{item.text}</span>
+                                </li>
                             ))}
                         </ul>
+                    </CardContent>
+                </Card>
+
+                <Card className="border-destructive/50 bg-destructive/10">
+                    <CardHeader>
+                         <CardTitle className="flex items-center gap-3 text-destructive">
+                            <TrendingDown className="h-7 w-7" />
+                           {c.consequences.title}
+                        </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                        <p className="text-destructive/90">{c.consequences.content}</p>
                     </CardContent>
                 </Card>
             </div>
         </div>
     );
 }
+
+    
