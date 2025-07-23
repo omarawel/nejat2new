@@ -16,7 +16,6 @@ import { Loader2, Wand2, Copy, Check } from "lucide-react";
 import { useLanguage } from "@/components/language-provider";
 import { generateDua } from "@/ai/flows/generate-dua";
 import type { GenerateDuaInput } from "@/ai/flows/generate-dua-types";
-import { GenerateDuaInputSchema } from "@/ai/flows/generate-dua-types";
 
 
 const content = {
@@ -77,20 +76,12 @@ export default function DuaGeneratorPage() {
     const [error, setError] = useState<string | null>(null);
     const [copied, setCopied] = useState(false);
 
-    const FormSchema = GenerateDuaInputSchema.extend({
-        customTopic: z.string().optional(),
-        outputLanguage: z.enum(["de", "en", "ar"]),
-    }).refine(data => data.topic !== "Andere" || data.topic !== "Other" || !!data.customTopic, {
-        message: language === "de" ? "Bitte beschreibe dein Anliegen." : "Please describe your need.",
-        path: ["customTopic"],
-    });
-
     // We need to create a client-side schema for the form that includes the custom topic logic
     const ClientFormSchema = z.object({
         topic: z.string().min(1),
         customTopic: z.string().optional(),
         length: z.enum(["short", "medium", "long"]),
-        outputLanguage: z.enum(["de", "en", "ar"]),
+        language: z.enum(["de", "en", "ar"]),
     }).refine(data => {
         if (data.topic === "Andere" || data.topic === "Other") {
             return !!data.customTopic?.trim();
@@ -107,7 +98,7 @@ export default function DuaGeneratorPage() {
         defaultValues: {
             topic: "",
             length: "medium",
-            outputLanguage: language,
+            language: language,
             customTopic: "",
         },
     });
@@ -125,7 +116,7 @@ export default function DuaGeneratorPage() {
             const duaInput: GenerateDuaInput = {
                 topic: topicToSend,
                 length: data.length,
-                language: data.outputLanguage
+                language: data.language
             };
 
             const result = await generateDua(duaInput);
@@ -224,7 +215,7 @@ export default function DuaGeneratorPage() {
                                 
                                 <FormField
                                     control={form.control}
-                                    name="outputLanguage"
+                                    name="language"
                                     render={({ field }) => (
                                         <FormItem>
                                             <FormLabel>{c.languageLabel}</FormLabel>

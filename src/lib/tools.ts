@@ -9,7 +9,7 @@ export const allTools = [
     { key: "favorites", icon: "⭐", de: "Deine Favoriten", en: "Your Favorites", href: "/favorites" },
     { key: "dhikr", icon: "🙏", de: "Dhikr & Bittgebete", en: "Dhikr & Supplications", href: "/dhikr" },
     { key: "rays_of_islam", icon: "✨", de: "Die Strahlen Des Islam", en: "The Rays Of Islam", href: "/rays-of-islam" },
-    { key: "dua_generator", icon: "🤖", de: "Du'a-Generator", en: "Du'a Generator", href: "/dua-generator" },
+    { key: "dua_generator", icon: "🤖", de: "Du'a-Generator", en: "Du'a Generator", href: "/dua-generator", description: "KI generiert für verschiedene Zwecke und Anlässe Du'a" },
     { key: "dua", icon: "🤲", de: "Dua", en: "Dua", href: "/dua" },
     { key: "nikah", icon: "💍", de: "Ehe (Nikah)", en: "Marriage (Nikah)", href: "/nikah" },
     { key: "reminders", icon: "🔔", de: "Erinnerungen", en: "Reminders", href: "/reminders" },
