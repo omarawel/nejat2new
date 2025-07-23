@@ -101,9 +101,11 @@ export default function Home() {
               </CardDescription>
           </CardHeader>
           <CardContent className="flex justify-center pb-8">
-              <Button size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90">
-                <Star className="mr-2 h-5 w-5" />
-                {c.premiumButton}
+              <Button size="lg" asChild>
+                <Link href="/subscribe">
+                    <Star className="mr-2 h-5 w-5" />
+                    {c.premiumButton}
+                </Link>
               </Button>
           </CardContent>
         </Card>
