@@ -98,18 +98,7 @@ export function AppHeader() {
           </DropdownMenu>
         ) : (
           <>
-            <Button variant="ghost" asChild>
-              <Link href="/login">
-                <LogIn className="sm:hidden" />
-                <span className="hidden sm:inline">Anmelden</span>
-              </Link>
-            </Button>
-            <Button asChild>
-              <Link href="/signup">
-                <UserPlus className="sm:hidden" />
-                <span className="hidden sm:inline">Konto erstellen</span>
-              </Link>
-            </Button>
+            {/* Login and Signup buttons removed for non-authenticated users */}
           </>
         )}
         <LanguageToggle />
