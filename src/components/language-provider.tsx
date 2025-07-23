@@ -28,24 +28,23 @@ export function LanguageProvider({
   storageKey = "nejat-digital-language",
   ...props
 }: LanguageProviderProps) {
-  const [language, setLanguage] = useState<Language>(defaultLanguage)
-
-  useEffect(() => {
-    const storedLanguage = localStorage.getItem(storageKey) as Language | null
-    if (storedLanguage) {
-      setLanguage(storedLanguage)
+  const [language, setLanguage] = useState<Language>(() => {
+    if (typeof window !== 'undefined') {
+      return (localStorage.getItem(storageKey) as Language) || defaultLanguage
     }
-  }, [storageKey])
+    return defaultLanguage
+  })
 
   useEffect(() => {
-    document.documentElement.lang = language
+    const root = window.document.documentElement
+    root.lang = language
     localStorage.setItem(storageKey, language)
   }, [language, storageKey])
 
   const value = {
     language,
-    setLanguage: (newLanguage: Language) => {
-      setLanguage(newLanguage)
+    setLanguage: (language: Language) => {
+      setLanguage(language)
     },
   }
 
@@ -58,7 +57,9 @@ export function LanguageProvider({
 
 export const useLanguage = () => {
   const context = useContext(LanguageProviderContext)
+
   if (context === undefined)
     throw new Error("useLanguage must be used within a LanguageProvider")
+
   return context
 }
