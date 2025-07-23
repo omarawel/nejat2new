@@ -3,7 +3,7 @@
 
 import Link from "next/link";
 import { useLanguage } from "../language-provider";
-import { Logo } from "../icons";
+import { FacebookIcon, InstagramIcon, TwitterIcon, YouTubeIcon } from "../icons";
 
 const content = {
     de: {
@@ -15,7 +15,9 @@ const content = {
         legal: "Rechtliches",
         terms: "AGB",
         privacy: "Datenschutz",
-        imprint: "Impressum"
+        imprint: "Impressum",
+        followUs: "Folge uns",
+        copyright: `© ${new Date().getFullYear()} Nejat Digital. Alle Rechte vorbehalten.`
     },
     en: {
         description: "From precise prayer times and Qibla direction to interactive learning tools like the Quran, Hadith collections, and AI-generated stories. Everything you need for your spiritual journey, in one app.",
@@ -26,10 +28,19 @@ const content = {
         legal: "Legal",
         terms: "Terms",
         privacy: "Privacy",
-        imprint: "Imprint"
+        imprint: "Imprint",
+        followUs: "Follow Us",
+        copyright: `© ${new Date().getFullYear()} Nejat Digital. All rights reserved.`
     }
 }
 
+// These links would ideally come from a CMS or Firestore managed by an admin panel
+const socialLinks = [
+    { name: "Facebook", href: "#", icon: FacebookIcon },
+    { name: "Twitter", href: "#", icon: TwitterIcon },
+    { name: "Instagram", href: "#", icon: InstagramIcon },
+    { name: "YouTube", href: "#", icon: YouTubeIcon },
+];
 
 export function Footer() {
     const { language } = useLanguage();
@@ -59,6 +70,21 @@ export function Footer() {
                             <li><Link href="#" className="text-muted-foreground hover:text-primary">{c.privacy}</Link></li>
                             <li><Link href="#" className="text-muted-foreground hover:text-primary">{c.imprint}</Link></li>
                         </ul>
+                    </div>
+                </div>
+
+                <div className="mt-12 pt-8 border-t flex flex-col sm:flex-row justify-between items-center gap-4">
+                    <p className="text-sm text-muted-foreground order-2 sm:order-1">{c.copyright}</p>
+                    <div className="flex items-center gap-4 order-1 sm:order-2">
+                        <p className="text-sm font-semibold">{c.followUs}:</p>
+                        <div className="flex items-center gap-3">
+                           {socialLinks.map(social => (
+                             <Link key={social.name} href={social.href} className="text-muted-foreground hover:text-primary">
+                               <social.icon className="h-5 w-5" />
+                               <span className="sr-only">{social.name}</span>
+                             </Link>
+                           ))}
+                        </div>
                     </div>
                 </div>
             </div>
