@@ -28,9 +28,53 @@ import {
 } from "@/components/ui/select"
 import { cn } from "@/lib/utils"
 import { textToSpeech } from "@/ai/flows/text-to-speech"
+import { useLanguage } from "@/components/language-provider"
 
 
 type Language = "eng" | "urd" | "ara";
+
+const content = {
+    de: {
+        title: "Hadith-Sammlung",
+        description: "Anleitung aus dem Leben und den Aussprüchen des Propheten Muhammad (ﷺ).",
+        translationLanguage: "Übersetzungssprache",
+        searchCollection: "Sammlung durchsuchen",
+        searchPlaceholder: "z.B. bukhari, muslim...",
+        searchResults: "Suchergebnisse",
+        match: "Treffer",
+        matches: "Treffer",
+        noResults: "Keine Ergebnisse für Ihre Anfrage gefunden:",
+        chapter: "Kapitel",
+        showing: "Zeige",
+        to: "bis",
+        of: "von",
+        hadiths: "Hadithe",
+        goToPage: "Gehe zu",
+        errorLoading: "Fehler beim Laden der Hadithe",
+        searchErrorTitle: "Suchfehler",
+        noHadithsFound: "Keine Hadithe gefunden.",
+    },
+    en: {
+        title: "Collection of Hadith",
+        description: "Guidance from the life and sayings of the Prophet Muhammad (ﷺ).",
+        translationLanguage: "Translation Language",
+        searchCollection: "Search collection",
+        searchPlaceholder: "e.g. bukhari, muslim...",
+        searchResults: "Search Results",
+        match: "match",
+        matches: "matches",
+        noResults: "No results found for your query:",
+        chapter: "Chapter",
+        showing: "Showing",
+        to: "to",
+        of: "of",
+        hadiths: "hadiths",
+        goToPage: "Go",
+        errorLoading: "Error Loading Hadiths",
+        searchErrorTitle: "Search Error",
+        noHadithsFound: "No hadiths found.",
+    }
+}
 
 const HadithContent = ({ hadith, language }: { hadith: Hadith, language: Language }) => {
   const [isHidden, setIsHidden] = useState(false);
@@ -118,6 +162,9 @@ const HadithContent = ({ hadith, language }: { hadith: Hadith, language: Languag
 
 
 export default function HadithPage() {
+  const { language: currentLanguage } = useLanguage();
+  const c = content[currentLanguage] || content.de;
+
   const [hadiths, setHadiths] = useState<Hadith[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -235,17 +282,18 @@ export default function HadithPage() {
   }
   
   const displayHadiths = hadiths;
+  const chapterText = c.chapter;
 
   return (
     <div className="space-y-8 flex-grow flex flex-col p-4 sm:p-6 lg:p-8">
       <header>
-        <h1 className="text-3xl font-bold tracking-tight text-primary">Collection of Hadith</h1>
-        <p className="text-muted-foreground mt-2">Guidance from the life and sayings of the Prophet Muhammad (ﷺ).</p>
+        <h1 className="text-3xl font-bold tracking-tight text-primary">{c.title}</h1>
+        <p className="text-muted-foreground mt-2">{c.description}</p>
       </header>
 
        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-                <Label htmlFor="language">Translation Language</Label>
+                <Label htmlFor="language">{c.translationLanguage}</Label>
                 <Select value={language} onValueChange={(value) => setLanguage(value as Language)}>
                     <SelectTrigger id="language" className="mt-1">
                         <SelectValue placeholder="Select Language" />
@@ -258,11 +306,11 @@ export default function HadithPage() {
                 </Select>
             </div>
              <div>
-                <Label htmlFor="search-hadith">Search collection</Label>
+                <Label htmlFor="search-hadith">{c.searchCollection}</Label>
                 <form onSubmit={handleSearch} className="flex items-center gap-2 mt-1">
                     <Input
                         id="search-hadith"
-                        placeholder="e.g. bukhari, muslim..."
+                        placeholder={c.searchPlaceholder}
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                     />
@@ -275,7 +323,7 @@ export default function HadithPage() {
       {error && (
         <Alert variant="destructive">
             <Terminal className="h-4 w-4" />
-            <AlertTitle>Error Loading Hadiths</AlertTitle>
+            <AlertTitle>{c.errorLoading}</AlertTitle>
             <AlertDescription>{error}</AlertDescription>
         </Alert>
       )}
@@ -289,7 +337,7 @@ export default function HadithPage() {
       {searchError && (
           <Alert variant="destructive">
               <Terminal className="h-4 w-4" />
-              <AlertTitle>Search Error</AlertTitle>
+              <AlertTitle>{c.searchErrorTitle}</AlertTitle>
               <AlertDescription>{searchError}</AlertDescription>
           </Alert>
       )}
@@ -297,7 +345,7 @@ export default function HadithPage() {
       {searchResults && (
         <Card>
             <CardContent className="p-6">
-                <h2 className="text-xl font-semibold mb-4">Search Results ({searchResults.length} {searchResults.length === 1 ? 'match' : 'matches'})</h2>
+                <h2 className="text-xl font-semibold mb-4">{c.searchResults} ({searchResults.length} {searchResults.length === 1 ? c.match : c.matches})</h2>
                 {searchResults.length > 0 ? (
                     <div className="space-y-4">
                         {searchResults.map(hadith => (
@@ -308,7 +356,7 @@ export default function HadithPage() {
                                             <span className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-primary font-bold shrink-0">{hadith.hadithNumber}</span>
                                             <div>
                                                 <p className="font-semibold">{hadith.book.bookName}</p>
-                                                <p className="text-sm text-muted-foreground">Chapter: {hadith.chapter.chapterEnglish}</p>
+                                                <p className="text-sm text-muted-foreground">{chapterText}: {hadith.chapter.chapterEnglish}</p>
                                             </div>
                                         </div>
                                     </AccordionTrigger>
@@ -320,7 +368,7 @@ export default function HadithPage() {
                         ))}
                     </div>
                 ) : (
-                    <p>No results found for your query: "{submittedSearchTerm}"</p>
+                    <p>{c.noResults} "{submittedSearchTerm}"</p>
                 )}
             </CardContent>
         </Card>
@@ -337,7 +385,7 @@ export default function HadithPage() {
         ) : displayHadiths.length === 0 ? (
           <Card>
               <CardContent className="p-6 text-center">
-                  <p>No hadiths found.</p>
+                  <p>{c.noHadithsFound}</p>
               </CardContent>
           </Card>
         ) : (
@@ -352,7 +400,7 @@ export default function HadithPage() {
                                       <span className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-primary font-bold shrink-0">{hadith.hadithNumber}</span>
                                       <div>
                                           <p className="font-semibold">{hadith.book.bookName}</p>
-                                          <p className="text-sm text-muted-foreground">Chapter: {hadith.chapter.chapterEnglish}</p>
+                                          <p className="text-sm text-muted-foreground">{chapterText}: {hadith.chapter.chapterEnglish}</p>
                                       </div>
                                   </div>
                               </AccordionTrigger>
@@ -370,7 +418,7 @@ export default function HadithPage() {
               {paginationInfo && paginationInfo.total > 0 && (
                   <div className="flex items-center justify-between pt-4">
                       <p className="text-sm text-muted-foreground">
-                          Showing {paginationInfo.from} to {paginationInfo.to} of {paginationInfo.total} hadiths
+                          {c.showing} {paginationInfo.from} {c.to} {paginationInfo.to} {c.of} {paginationInfo.total} {c.hadiths}
                       </p>
                       <div className="flex items-center gap-2">
                           <Button variant="outline" size="icon" onClick={handlePrevPage} disabled={paginationInfo.currentPage <= 1 || loading}>
@@ -386,7 +434,7 @@ export default function HadithPage() {
                                max={paginationInfo.lastPage}
                              />
                              <span className="text-muted-foreground text-sm">/ {paginationInfo.lastPage}</span>
-                             <Button type="submit" variant="outline" size="sm" className="h-9">Go</Button>
+                             <Button type="submit" variant="outline" size="sm" className="h-9">{c.goToPage}</Button>
                           </form>
                           <Button variant="outline" size="icon" onClick={handleNextPage} disabled={paginationInfo.currentPage >= paginationInfo.lastPage || loading}>
                               <ChevronRight />
