@@ -123,8 +123,14 @@ export default function HadithPage() {
   const [error, setError] = useState<string | null>(null)
   const [paginationInfo, setPaginationInfo] = useState<{currentPage: number, lastPage: number, from: number, to: number, total: number} | null>(null)
   const [openHadith, setOpenHadith] = useState<string | undefined>(undefined);
+  
   const [searchTerm, setSearchTerm] = useState("");
   const [submittedSearchTerm, setSubmittedSearchTerm] = useState("");
+  
+  const [isSearching, setIsSearching] = useState(false);
+  const [searchError, setSearchError] = useState<string | null>(null);
+  const [searchResults, setSearchResults] = useState<Hadith[] | null>(null);
+
   const [language, setLanguage] = useState<Language>("eng");
   const [page, setPage] = useState(1);
   const [pageInput, setPageInput] = useState("1");
@@ -135,10 +141,12 @@ export default function HadithPage() {
 
   useEffect(() => {
     async function fetchHadiths() {
+      if (submittedSearchTerm) return; // Don't fetch list if a search is active
+
       setLoading(true)
       setError(null)
       try {
-        const data = await getHadiths(page, submittedSearchTerm);
+        const data = await getHadiths(page);
         if (data.error) {
             throw new Error(data.error);
         }
@@ -147,7 +155,6 @@ export default function HadithPage() {
         }
         
         const hadithsData = data.hadiths.data;
-
         setHadiths(hadithsData)
         
         const total = data.hadiths.total;
@@ -174,10 +181,34 @@ export default function HadithPage() {
     fetchHadiths()
   }, [page, submittedSearchTerm])
 
-  const handleSearch = (e: FormEvent) => {
+  const handleSearch = async (e: FormEvent) => {
     e.preventDefault();
+    if (!searchTerm.trim()) {
+      setSearchResults(null);
+      setSubmittedSearchTerm("");
+      return;
+    }
+
     setPage(1);
     setSubmittedSearchTerm(searchTerm);
+    setIsSearching(true);
+    setSearchError(null);
+    setSearchResults(null);
+    
+    try {
+        const data = await getHadiths(1, searchTerm);
+        if (data.error) {
+            throw new Error(data.error);
+        }
+        if (!data.hadiths) {
+            throw new Error("No search results received.");
+        }
+        setSearchResults(data.hadiths.data);
+    } catch (err) {
+        setSearchError(err instanceof Error ? err.message : 'An unknown error occurred');
+    } finally {
+        setIsSearching(false);
+    }
   };
 
   const handleNextPage = () => {
@@ -202,6 +233,8 @@ export default function HadithPage() {
       }
   }
   
+  const displayHadiths = hadiths;
+
   return (
     <div className="space-y-8 flex-grow flex flex-col p-4 sm:p-6 lg:p-8">
       <header>
@@ -232,7 +265,7 @@ export default function HadithPage() {
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                     />
-                    <Button type="submit" variant="outline" size="icon" disabled={loading}><Search className="h-4 w-4"/></Button>
+                    <Button type="submit" variant="outline" size="icon" disabled={isSearching}><Search className="h-4 w-4"/></Button>
                 </form>
             </div>
       </div>
@@ -246,73 +279,122 @@ export default function HadithPage() {
         </Alert>
       )}
 
-      {loading ? (
-        <div className="space-y-2">
-            {[...Array(10)].map((_, i) => (
-                 <Skeleton key={i} className="h-12 w-full" />
-            ))}
-        </div>
-      ) : hadiths.length === 0 ? (
+      {isSearching && (
+          <div className="flex items-center justify-center py-4">
+              <Skeleton className="h-8 w-1/2" />
+          </div>
+      )}
+      
+      {searchError && (
+          <Alert variant="destructive">
+              <Terminal className="h-4 w-4" />
+              <AlertTitle>Search Error</AlertTitle>
+              <AlertDescription>{searchError}</AlertDescription>
+          </Alert>
+      )}
+      
+      {searchResults && (
         <Card>
-            <CardContent className="p-6 text-center">
-                <p>No hadiths found for your search term.</p>
+            <CardContent className="p-6">
+                <h2 className="text-xl font-semibold mb-4">Search Results ({searchResults.length} matches)</h2>
+                {searchResults.length > 0 ? (
+                    <div className="space-y-4">
+                        {searchResults.map(hadith => (
+                             <Accordion type="single" collapsible className="w-full" key={hadith.id}>
+                                <AccordionItem value={`search-item-${hadith.id}`}>
+                                    <AccordionTrigger className="text-lg hover:no-underline">
+                                        <div className="flex items-center gap-4 text-left">
+                                            <span className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-primary font-bold shrink-0">{hadith.hadithNumber}</span>
+                                            <div>
+                                                <p className="font-semibold">{hadith.book.bookName}</p>
+                                                <p className="text-sm text-muted-foreground">Chapter: {hadith.chapter.chapterEnglish}</p>
+                                            </div>
+                                        </div>
+                                    </AccordionTrigger>
+                                    <AccordionContent>
+                                        <HadithContent hadith={hadith} language={language} />
+                                    </AccordionContent>
+                                </AccordionItem>
+                             </Accordion>
+                        ))}
+                    </div>
+                ) : (
+                    <p>No results found for your query.</p>
+                )}
             </CardContent>
         </Card>
-      ) : (
-        <>
-            <Card className="flex-grow overflow-hidden">
-                <CardContent className="p-0 h-full overflow-y-auto">
-                    <Accordion type="single" collapsible className="w-full" value={openHadith} onValueChange={setOpenHadith}>
-                        {hadiths.map((hadith) => (
-                        <AccordionItem value={`item-${hadith.id}`} key={hadith.id}>
-                            <AccordionTrigger className="px-6 py-4 text-lg hover:no-underline">
-                                <div className="flex items-center gap-4 text-left">
-                                    <span className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-primary font-bold shrink-0">{hadith.hadithNumber}</span>
-                                    <div>
-                                        <p className="font-semibold">{hadith.book.bookName}</p>
-                                        <p className="text-sm text-muted-foreground">Chapter: {hadith.chapter.chapterEnglish}</p>
-                                    </div>
-                                </div>
-                            </AccordionTrigger>
-                            <AccordionContent>
-                                {openHadith === `item-${hadith.id}` && (
-                                    <HadithContent hadith={hadith} language={language} />
-                                )}
-                            </AccordionContent>
-                        </AccordionItem>
-                        ))}
-                    </Accordion>
-                </CardContent>
-            </Card>
+      )}
 
-            {paginationInfo && paginationInfo.total > 0 && (
-                <div className="flex items-center justify-between pt-4">
-                    <p className="text-sm text-muted-foreground">
-                        Showing {paginationInfo.from} to {paginationInfo.to} of {paginationInfo.total} hadiths
-                    </p>
-                    <div className="flex items-center gap-2">
-                        <Button variant="outline" size="icon" onClick={handlePrevPage} disabled={paginationInfo.currentPage <= 1 || loading}>
-                            <ChevronLeft />
-                        </Button>
-                        <form onSubmit={handleGoToPage} className="flex items-center gap-1">
-                           <Input 
-                             type="number"
-                             value={pageInput}
-                             onChange={e => setPageInput(e.target.value)}
-                             className="w-16 h-9 text-center"
-                             min="1"
-                             max={paginationInfo.lastPage}
-                           />
-                           <span className="text-muted-foreground text-sm">/ {paginationInfo.lastPage}</span>
-                           <Button type="submit" variant="outline" size="sm" className="h-9">Go</Button>
-                        </form>
-                        <Button variant="outline" size="icon" onClick={handleNextPage} disabled={paginationInfo.currentPage >= paginationInfo.lastPage || loading}>
-                            <ChevronRight />
-                        </Button>
-                    </div>
-                </div>
-            )}
-        </>
+
+      {!submittedSearchTerm && (
+        loading ? (
+          <div className="space-y-2">
+              {[...Array(10)].map((_, i) => (
+                   <Skeleton key={i} className="h-12 w-full" />
+              ))}
+          </div>
+        ) : displayHadiths.length === 0 ? (
+          <Card>
+              <CardContent className="p-6 text-center">
+                  <p>No hadiths found.</p>
+              </CardContent>
+          </Card>
+        ) : (
+          <>
+              <Card className="flex-grow overflow-hidden">
+                  <CardContent className="p-0 h-full overflow-y-auto">
+                      <Accordion type="single" collapsible className="w-full" value={openHadith} onValueChange={setOpenHadith}>
+                          {displayHadiths.map((hadith) => (
+                          <AccordionItem value={`item-${hadith.id}`} key={hadith.id}>
+                              <AccordionTrigger className="px-6 py-4 text-lg hover:no-underline">
+                                  <div className="flex items-center gap-4 text-left">
+                                      <span className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-primary font-bold shrink-0">{hadith.hadithNumber}</span>
+                                      <div>
+                                          <p className="font-semibold">{hadith.book.bookName}</p>
+                                          <p className="text-sm text-muted-foreground">Chapter: {hadith.chapter.chapterEnglish}</p>
+                                      </div>
+                                  </div>
+                              </AccordionTrigger>
+                              <AccordionContent>
+                                  {openHadith === `item-${hadith.id}` && (
+                                      <HadithContent hadith={hadith} language={language} />
+                                  )}
+                              </AccordionContent>
+                          </AccordionItem>
+                          ))}
+                      </Accordion>
+                  </CardContent>
+              </Card>
+
+              {paginationInfo && paginationInfo.total > 0 && (
+                  <div className="flex items-center justify-between pt-4">
+                      <p className="text-sm text-muted-foreground">
+                          Showing {paginationInfo.from} to {paginationInfo.to} of {paginationInfo.total} hadiths
+                      </p>
+                      <div className="flex items-center gap-2">
+                          <Button variant="outline" size="icon" onClick={handlePrevPage} disabled={paginationInfo.currentPage <= 1 || loading}>
+                              <ChevronLeft />
+                          </Button>
+                          <form onSubmit={handleGoToPage} className="flex items-center gap-1">
+                             <Input 
+                               type="number"
+                               value={pageInput}
+                               onChange={e => setPageInput(e.target.value)}
+                               className="w-16 h-9 text-center"
+                               min="1"
+                               max={paginationInfo.lastPage}
+                             />
+                             <span className="text-muted-foreground text-sm">/ {paginationInfo.lastPage}</span>
+                             <Button type="submit" variant="outline" size="sm" className="h-9">Go</Button>
+                          </form>
+                          <Button variant="outline" size="icon" onClick={handleNextPage} disabled={paginationInfo.currentPage >= paginationInfo.lastPage || loading}>
+                              <ChevronRight />
+                          </Button>
+                      </div>
+                  </div>
+              )}
+          </>
+        )
       )}
     </div>
   );
