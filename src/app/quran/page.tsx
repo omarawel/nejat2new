@@ -19,8 +19,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { Terminal } from "lucide-react"
-import { useEffect, useState, useMemo } from "react"
+import { Button } from "@/components/ui/button"
+import { Terminal, Search } from "lucide-react"
+import { useEffect, useState, useMemo, FormEvent } from "react"
 
 interface Surah {
   number: number
@@ -58,6 +59,18 @@ interface Edition {
 interface SurahDetail extends Surah {
   ayahs: Ayah[]
   edition: Edition
+}
+
+interface SearchResultAyah {
+    number: number;
+    text: string;
+    surah: Surah;
+    numberInSurah: number;
+}
+
+interface SearchResults {
+    count: number;
+    matches: SearchResultAyah[];
 }
 
 type LanguageEdition = "en.sahih" | "de.aburida" | "am.sadiq"
@@ -146,6 +159,11 @@ export default function QuranPage() {
   const [language, setLanguage] = useState<LanguageEdition>("en.sahih")
   const [openSurah, setOpenSurah] = useState<string | undefined>(undefined);
 
+  const [searchQuery, setSearchQuery] = useState("");
+  const [isSearching, setIsSearching] = useState(false);
+  const [searchError, setSearchError] = useState<string | null>(null);
+  const [searchResults, setSearchResults] = useState<SearchResults | null>(null);
+
   useEffect(() => {
     async function fetchSurahs() {
       setLoading(true)
@@ -165,6 +183,35 @@ export default function QuranPage() {
     fetchSurahs()
   }, [])
 
+  const handleSearch = async (e: FormEvent) => {
+    e.preventDefault();
+    if (!searchQuery.trim()) {
+      setSearchResults(null);
+      return;
+    }
+
+    setIsSearching(true);
+    setSearchError(null);
+    setSearchResults(null);
+
+    try {
+      const response = await fetch(`https://api.alquran.cloud/v1/search/${searchQuery}/all/${language}`);
+      if (!response.ok) {
+        throw new Error('Search request failed. Please try again.');
+      }
+      const data = await response.json();
+      if (data.code !== 200) {
+        throw new Error(data.data || 'An error occurred during search.');
+      }
+      setSearchResults(data.data);
+    } catch (err) {
+      setSearchError(err instanceof Error ? err.message : 'An unknown error occurred');
+    } finally {
+      setIsSearching(false);
+    }
+  };
+
+
   const filteredSurahs = useMemo(() => {
     if (!filter) return surahs;
     return surahs.filter(surah => 
@@ -182,29 +229,76 @@ export default function QuranPage() {
       </header>
         
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <Label htmlFor="language">Translation Language</Label>
+            <Select value={language} onValueChange={(value) => setLanguage(value as LanguageEdition)}>
+                <SelectTrigger id="language" className="mt-1">
+                    <SelectValue placeholder="Select Language" />
+                </SelectTrigger>
+                <SelectContent>
+                    <SelectItem value="en.sahih">English</SelectItem>
+                    <SelectItem value="de.aburida">German</SelectItem>
+                    <SelectItem value="am.sadiq">Amharic</SelectItem>
+                </SelectContent>
+            </Select>
+          </div>
         <div>
-          <Label htmlFor="search">Search Surah</Label>
+          <Label htmlFor="search-verse">Search Verse or Word</Label>
+            <form onSubmit={handleSearch} className="flex items-center gap-2 mt-1">
+                <Input
+                    id="search-verse"
+                    placeholder="e.g. Throne Verse, 2:255, mercy"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                />
+                <Button type="submit" disabled={isSearching}><Search className="h-4 w-4"/></Button>
+            </form>
+        </div>
+      </div>
+      
+      {isSearching && (
+          <div className="flex items-center justify-center py-4">
+              <Skeleton className="h-8 w-1/2" />
+          </div>
+      )}
+
+      {searchError && (
+          <Alert variant="destructive">
+              <Terminal className="h-4 w-4" />
+              <AlertTitle>Search Error</AlertTitle>
+              <AlertDescription>{searchError}</AlertDescription>
+          </Alert>
+      )}
+
+      {searchResults && (
+          <Card>
+              <CardContent className="p-6">
+                  <h2 className="text-xl font-semibold mb-4">Search Results ({searchResults.count} matches)</h2>
+                  {searchResults.count > 0 ? (
+                      <div className="space-y-4">
+                          {searchResults.matches.map(match => (
+                              <div key={match.number} className="border-b pb-4">
+                                  <p className="font-semibold">{match.surah.name} ({match.surah.englishName}) - Ayah {match.numberInSurah}</p>
+                                  <p className="mt-2 text-foreground/90">{match.text}</p>
+                              </div>
+                          ))}
+                      </div>
+                  ) : (
+                      <p>No results found for your query.</p>
+                  )}
+              </CardContent>
+          </Card>
+      )}
+
+      <div className="pt-4">
+          <Label htmlFor="search-surah">Filter Surahs</Label>
           <Input 
-            id="search"
+            id="search-surah"
             placeholder="e.g. Al-Fatihah, 1"
             value={filter}
             onChange={e => setFilter(e.target.value)}
             className="mt-1"
           />
-        </div>
-        <div>
-          <Label htmlFor="language">Translation Language</Label>
-          <Select value={language} onValueChange={(value) => setLanguage(value as LanguageEdition)}>
-              <SelectTrigger id="language" className="mt-1">
-                  <SelectValue placeholder="Select Language" />
-              </SelectTrigger>
-              <SelectContent>
-                  <SelectItem value="en.sahih">English</SelectItem>
-                  <SelectItem value="de.aburida">German</SelectItem>
-                  <SelectItem value="am.sadiq">Amharic</SelectItem>
-              </SelectContent>
-          </Select>
-        </div>
       </div>
 
       {error && (
@@ -254,3 +348,4 @@ export default function QuranPage() {
     </div>
   );
 }
+
