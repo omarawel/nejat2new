@@ -52,7 +52,7 @@ export const allTools = [
     { key: "janazah", icon: "⚰️", de: "Todesfall (Janazah)", en: "Death (Janazah)", href: "/janazah" },
     { key: "dreams_in_islam", icon: "💤", de: "Träume im Islam", en: "Dreams in Islam", href: "/dreams-in-islam" },
     { key: "travel_etiquette", icon: "✈️", de: "Reise-Etikette", en: "Travel Etiquette", href: "/travel-etiquette" },
-    { key: "support", icon: "❤️", de: "Unterstützung", en: "Support", href: null },
+    { key: "support", icon: "❤️", de: "Diese Plattform unterstützen", en: "Support This Platform", href: null },
     { key: "missed_fasts", icon: "🗓️", de: "Verpasste Fastentage", en: "Missed Fasts", href: "/missed-fasts" },
     { key: "missed_prayers", icon: "🧎", de: "Verpasste Gebete", en: "Missed Prayers", href: "/missed-prayers" },
     { key: "verse_finder", icon: "🔎", de: "Vers-Finder", en: "Verse Finder", href: "/verse-finder" },
