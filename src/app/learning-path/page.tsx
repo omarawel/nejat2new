@@ -1,29 +1,42 @@
 
 "use client"
 
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Map, ArrowLeft, AlertTriangle, Wand2 } from 'lucide-react';
+import { Map, ArrowLeft, Wand2, User, Target, ClipboardList } from 'lucide-react';
 import { useLanguage } from '@/components/language-provider';
 import Link from 'next/link';
-import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
 
 const content = {
     de: {
         pageTitle: "KI-Lernpfad-Generator",
         pageDescription: "Erhalte einen personalisierten Lernplan, der auf deine Ziele und dein Wissen zugeschnitten ist.",
         backToFeatures: "Zurück zu den Funktionen",
-        comingSoon: "Funktion in Entwicklung",
-        infoText: "Diese Funktion nutzt KI, um dir einen strukturierten Lernpfad zu erstellen. Gib einfach deine Interessen an (z.B. 'Grundlagen für Konvertiten', 'Fiqh des Gebets', 'Prophetengeschichten'), und die KI schlägt dir Themen, Reihenfolgen und Ressourcen vor.",
-        generatePath: "Meinen Lernpfad erstellen"
+        formTitle: "Erstelle deinen persönlichen Lernpfad",
+        levelLabel: "Mein aktuelles Wissenslevel",
+        levelPlaceholder: "z.B. Anfänger, Konvertit, Fortgeschritten",
+        goalsLabel: "Meine Lernziele",
+        goalsPlaceholder: "z.B. Ich möchte das Gebet lernen, die Geschichte der Propheten verstehen, mein Wissen über Fiqh vertiefen...",
+        generateButton: "Meinen Lernpfad erstellen",
+        resultTitle: "Dein personalisierter Lernpfad",
+        resultDescription: "Die KI hat basierend auf deinen Eingaben den folgenden Lernpfad erstellt:",
+        step: "Schritt"
     },
     en: {
         pageTitle: "AI Learning Path Generator",
         pageDescription: "Get a personalized learning plan tailored to your goals and knowledge.",
         backToFeatures: "Back to Features",
-        comingSoon: "Feature in Development",
-        infoText: "This feature uses AI to create a structured learning path for you. Simply state your interests (e.g., 'Basics for reverts', 'Fiqh of prayer', 'Stories of the prophets'), and the AI will suggest topics, sequences, and resources.",
-        generatePath: "Create My Learning Path"
+        formTitle: "Create Your Personal Learning Path",
+        levelLabel: "My Current Knowledge Level",
+        levelPlaceholder: "e.g., Beginner, Revert, Advanced",
+        goalsLabel: "My Learning Goals",
+        goalsPlaceholder: "e.g., I want to learn the prayer, understand the stories of the prophets, deepen my knowledge of Fiqh...",
+        generateButton: "Create My Learning Path",
+        resultTitle: "Your Personalized Learning Path",
+        resultDescription: "Based on your input, the AI has created the following learning path:",
+        step: "Step"
     }
 }
 
@@ -33,36 +46,51 @@ export default function LearningPathPage() {
   const c = content[language] || content.de;
 
   return (
-    <div className="container mx-auto px-4 py-8 flex-grow flex flex-col items-center justify-center">
-        <div className="w-full max-w-md">
-            <Button asChild variant="ghost" className="mb-8">
-                <Link href="/">
-                    <ArrowLeft className="mr-2 h-4 w-4" />
-                    {c.backToFeatures}
-                </Link>
-            </Button>
-            <Card className="text-center">
+    <div className="container mx-auto px-4 py-8">
+        <Button asChild variant="ghost" className="mb-8">
+            <Link href="/">
+                <ArrowLeft className="mr-2 h-4 w-4" />
+                {c.backToFeatures}
+            </Link>
+        </Button>
+        <header className="text-center mb-12">
+             <h1 className="text-4xl font-bold tracking-tight text-primary flex items-center justify-center gap-3">
+                <Map className="h-10 w-10" />
+                {c.pageTitle}
+            </h1>
+            <p className="text-muted-foreground mt-2 text-lg max-w-2xl mx-auto">{c.pageDescription}</p>
+        </header>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+            <Card>
                 <CardHeader>
-                    <div className="flex justify-center mb-4">
-                        <div className="p-4 bg-primary/10 rounded-full">
-                            <Map className="h-12 w-12 text-primary" />
-                        </div>
-                    </div>
-                    <CardTitle className="text-3xl">{c.pageTitle}</CardTitle>
-                    <CardDescription className="text-lg">{c.pageDescription}</CardDescription>
+                    <CardTitle>{c.formTitle}</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                    <Alert variant="destructive">
-                        <AlertTriangle className="h-4 w-4" />
-                        <AlertTitle>{c.comingSoon}</AlertTitle>
-                        <AlertDescription>
-                            {c.infoText}
-                        </AlertDescription>
-                    </Alert>
-                    <Button disabled>
+                     <div className="space-y-2">
+                        <label htmlFor="level" className="flex items-center gap-2 font-medium"><User /> {c.levelLabel}</label>
+                        <Input id="level" placeholder={c.levelPlaceholder} />
+                    </div>
+                     <div className="space-y-2">
+                        <label htmlFor="goals" className="flex items-center gap-2 font-medium"><Target /> {c.goalsLabel}</label>
+                        <Textarea id="goals" placeholder={c.goalsPlaceholder} rows={5} />
+                    </div>
+                </CardContent>
+                <CardFooter>
+                     <Button className="w-full" disabled>
                         <Wand2 className="mr-2 h-4 w-4" />
-                        {c.generatePath}
+                        {c.generateButton}
                     </Button>
+                </CardFooter>
+            </Card>
+
+            <Card className="bg-muted/30">
+                 <CardHeader>
+                    <CardTitle className="flex items-center gap-2"><ClipboardList /> {c.resultTitle}</CardTitle>
+                    <CardDescription>{c.resultDescription}</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                    <p className="text-sm text-center text-muted-foreground">Die Ergebnisse der KI werden hier angezeigt.</p>
                 </CardContent>
             </Card>
         </div>

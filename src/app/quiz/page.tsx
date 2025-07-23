@@ -1,28 +1,39 @@
 
 "use client"
 
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { HelpCircle, ArrowLeft, AlertTriangle } from 'lucide-react';
+import { HelpCircle, ArrowLeft, BookOpen, User, Users } from 'lucide-react';
 import { useLanguage } from '@/components/language-provider';
 import Link from 'next/link';
-import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
+import { useState } from 'react';
+
+const quizTopics = {
+    de: [
+        { key: "prophets", title: "Die Propheten", icon: Users },
+        { key: "quran", title: "Der Koran", icon: BookOpen },
+        { key: "sahaba", title: "Die Sahaba", icon: User },
+    ],
+    en: [
+        { key: "prophets", title: "The Prophets", icon: Users },
+        { key: "quran", title: "The Quran", icon: BookOpen },
+        { key: "sahaba", title: "The Sahaba", icon: User },
+    ]
+}
 
 const content = {
     de: {
         pageTitle: "Islamisches Quiz",
         pageDescription: "Teste und erweitere dein Wissen über den Islam auf spielerische Weise.",
         backToFeatures: "Zurück zu den Funktionen",
-        comingSoon: "Funktion in Entwicklung",
-        infoText: "Diese Funktion befindet sich derzeit in der Entwicklung. Bald wirst du hier spannende Quizze zu verschiedenen Themen wie Koran, Hadith, Prophetengeschichten und Fiqh finden können.",
+        chooseTopic: "Wähle eine Kategorie, um zu beginnen:",
         startQuiz: "Quiz starten"
     },
     en: {
         pageTitle: "Islamic Quiz",
         pageDescription: "Test and expand your knowledge of Islam in a fun way.",
         backToFeatures: "Back to Features",
-        comingSoon: "Feature in Development",
-        infoText: "This feature is currently under development. Soon you will be able to find exciting quizzes on various topics such as Quran, Hadith, stories of the prophets, and Fiqh here.",
+        chooseTopic: "Choose a category to start:",
         startQuiz: "Start Quiz"
     }
 }
@@ -31,6 +42,8 @@ const content = {
 export default function QuizPage() {
   const { language } = useLanguage();
   const c = content[language] || content.de;
+  const topics = quizTopics[language] || quizTopics.de;
+  const [selectedTopic, setSelectedTopic] = useState<string | null>(null);
 
   return (
     <div className="container mx-auto px-4 py-8 flex-grow flex flex-col items-center justify-center">
@@ -52,15 +65,29 @@ export default function QuizPage() {
                     <CardDescription className="text-lg">{c.pageDescription}</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                    <Alert variant="destructive">
-                        <AlertTriangle className="h-4 w-4" />
-                        <AlertTitle>{c.comingSoon}</AlertTitle>
-                        <AlertDescription>
-                            {c.infoText}
-                        </AlertDescription>
-                    </Alert>
-                    <Button disabled>{c.startQuiz}</Button>
+                    <h3 className="font-semibold">{c.chooseTopic}</h3>
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        {topics.map(topic => {
+                            const Icon = topic.icon;
+                            return (
+                                <Button 
+                                    key={topic.key} 
+                                    variant={selectedTopic === topic.key ? "default" : "outline"}
+                                    className="flex flex-col h-24"
+                                    onClick={() => setSelectedTopic(topic.key)}
+                                >
+                                    <Icon className="h-8 w-8 mb-1"/>
+                                    <span>{topic.title}</span>
+                                </Button>
+                            )
+                        })}
+                    </div>
                 </CardContent>
+                <CardFooter>
+                    <Button className="w-full" size="lg" disabled={!selectedTopic}>
+                        {c.startQuiz}
+                    </Button>
+                </CardFooter>
             </Card>
         </div>
     </div>
