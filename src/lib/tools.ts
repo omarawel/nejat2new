@@ -15,7 +15,6 @@ export const allTools = [
     { key: "reminders", icon: "🔔", de: "Erinnerungen", en: "Reminders", href: "/reminders" },
     { key: "food_rules", icon: "🍽️", de: "Essensregeln", en: "Food Rules", href: "/food-rules" },
     { key: "finance", icon: "💰", de: "Finanzen", en: "Finances", href: "/finances" },
-    { key: "jummah", icon: "🕌", de: "Freitagsgebet (Jumu'ah)", en: "Friday Prayer (Jumu'ah)", href: "/jummah" },
     { key: "prayer_on_time", icon: "⏳", de: "Gebet auf Zeit", en: "Prayer on Time", href: "/prayer-on-time" },
     { key: "wudu", icon: "💧", de: "Gebetswaschung (Wudu)", en: "Ablution (Wudu)", href: "/wudu" },
     { key: "prayer_times", icon: "🌙", de: "Gebetszeiten", en: "Prayer Times", href: "/prayer-times" },
