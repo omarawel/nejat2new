@@ -109,14 +109,16 @@ export default function JummahPage() {
                     </CardHeader>
                     <CardContent>
                         <ul className="space-y-4">
-                            {c.sunnah_acts.items.map((item, index) => (
+                            {c.sunnah_acts.items.map((item, index) => {
+                                const IconComponent = item.icon;
+                                return (
                                 <li key={index} className="flex items-start gap-4">
                                     <div className="p-2 bg-primary/10 rounded-full">
-                                        <item.icon className="h-6 w-6 text-primary" />
+                                        <IconComponent className="h-6 w-6 text-primary" />
                                     </div>
                                     <p className="text-muted-foreground mt-1">{item.text}</p>
                                 </li>
-                            ))}
+                            )})}
                         </ul>
                     </CardContent>
                 </Card>
