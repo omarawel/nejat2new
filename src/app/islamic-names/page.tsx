@@ -1,13 +1,21 @@
 
 "use client"
 
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { useLanguage } from '@/components/language-provider';
-import { Baby, ArrowLeft } from 'lucide-react';
+import { Baby, ArrowLeft, Wand2, Loader2, Sparkles, AlertTriangle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { useState } from 'react';
 import { Input } from '@/components/ui/input';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import * as z from 'zod';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { generateIslamicName } from '@/ai/flows/generate-islamic-name';
+import type { GenerateIslamicNameOutput, NameSuggestionSchema } from '@/ai/flows/generate-islamic-name-types';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
 const names = {
   male: [
@@ -48,7 +56,19 @@ const content = {
         searchPlaceholder: "Suche nach einem Namen...",
         maleNames: "Namen für Jungen",
         femaleNames: "Namen für Mädchen",
-        meaning: "Bedeutung"
+        meaning: "Bedeutung",
+        aiTitle: "KI Namens-Generator",
+        aiDescription: "Beschreibe eine Bedeutung und lass die KI passende Namen finden.",
+        aiGenderLabel: "Geschlecht",
+        aiGenderMale: "Männlich",
+        aiGenderFemale: "Weiblich",
+        aiMeaningLabel: "Gewünschte Bedeutung",
+        aiMeaningPlaceholder: "z.B. Geduld, Licht, Mutig",
+        aiGenerateButton: "Namen generieren",
+        aiGeneratingButton: "Wird generiert...",
+        aiResultsTitle: "KI-Vorschläge",
+        aiError: "Fehler beim Generieren der Namen. Bitte versuche es erneut.",
+        proFeature: "Pro-Funktion"
     },
     en: {
         title: "Islamic Names and Their Meanings",
@@ -57,14 +77,59 @@ const content = {
         searchPlaceholder: "Search for a name...",
         maleNames: "Names for Boys",
         femaleNames: "Names for Girls",
-        meaning: "Meaning"
+        meaning: "Meaning",
+        aiTitle: "AI Name Generator",
+        aiDescription: "Describe a meaning and let the AI find suitable names.",
+        aiGenderLabel: "Gender",
+        aiGenderMale: "Male",
+        aiGenderFemale: "Female",
+        aiMeaningLabel: "Desired Meaning",
+        aiMeaningPlaceholder: "e.g., Patience, Light, Brave",
+        aiGenerateButton: "Generate Names",
+        aiGeneratingButton: "Generating...",
+        aiResultsTitle: "AI Suggestions",
+        aiError: "Error generating names. Please try again.",
+        proFeature: "Pro Feature"
     }
 };
+
+const aiFormSchema = z.object({
+    gender: z.enum(['male', 'female']),
+    meaning: z.string().min(3, { message: "Meaning must be at least 3 characters." }),
+});
+
 
 export default function IslamicNamesPage() {
     const { language } = useLanguage();
     const c = content[language] || content.de;
     const [searchTerm, setSearchTerm] = useState('');
+    
+    const [isLoading, setIsLoading] = useState(false);
+    const [aiResults, setAiResults] = useState<GenerateIslamicNameOutput | null>(null);
+    const [aiError, setAiError] = useState<string | null>(null);
+
+    const form = useForm<z.infer<typeof aiFormSchema>>({
+        resolver: zodResolver(aiFormSchema),
+        defaultValues: {
+            gender: "male",
+            meaning: "",
+        },
+    });
+
+    async function onAiSubmit(data: z.infer<typeof aiFormSchema>) {
+        setIsLoading(true);
+        setAiError(null);
+        setAiResults(null);
+        try {
+            const result = await generateIslamicName({ ...data, count: 5 });
+            setAiResults(result);
+        } catch (error) {
+            console.error(error);
+            setAiError(c.aiError);
+        } finally {
+            setIsLoading(false);
+        }
+    }
 
     const filterNames = (nameList: typeof names.male) => {
         if (!searchTerm) return nameList;
@@ -90,6 +155,90 @@ export default function IslamicNamesPage() {
                 <p className="text-muted-foreground mt-2 text-lg max-w-3xl mx-auto">{c.description}</p>
             </header>
 
+            <div className="max-w-4xl mx-auto mb-12">
+                <Card className="border-primary/50 shadow-lg">
+                    <CardHeader>
+                        <CardTitle className="flex items-center justify-between">
+                           <div className="flex items-center gap-2">
+                             <Wand2 />
+                             {c.aiTitle}
+                           </div>
+                           <span className="text-sm font-semibold bg-primary text-primary-foreground px-2 py-1 rounded-full">{c.proFeature}</span>
+                        </CardTitle>
+                        <CardDescription>{c.aiDescription}</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                        <Form {...form}>
+                            <form onSubmit={form.handleSubmit(onAiSubmit)} className="space-y-4">
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <FormField
+                                        control={form.control}
+                                        name="gender"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <FormLabel>{c.aiGenderLabel}</FormLabel>
+                                                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                                    <FormControl>
+                                                    <SelectTrigger><SelectValue /></SelectTrigger>
+                                                    </FormControl>
+                                                    <SelectContent>
+                                                    <SelectItem value="male">{c.aiGenderMale}</SelectItem>
+                                                    <SelectItem value="female">{c.aiGenderFemale}</SelectItem>
+                                                    </SelectContent>
+                                                </Select>
+                                            </FormItem>
+                                        )}
+                                    />
+                                     <FormField
+                                        control={form.control}
+                                        name="meaning"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <FormLabel>{c.aiMeaningLabel}</FormLabel>
+                                                <FormControl>
+                                                    <Input placeholder={c.aiMeaningPlaceholder} {...field} />
+                                                </FormControl>
+                                                 <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
+                                </div>
+                                <Button type="submit" className="w-full" disabled={isLoading}>
+                                     {isLoading ? (
+                                        <>
+                                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                            {c.aiGeneratingButton}
+                                        </>
+                                    ) : (
+                                        c.aiGenerateButton
+                                    )}
+                                </Button>
+                            </form>
+                        </Form>
+                         {aiError && (
+                            <Alert variant="destructive" className="mt-4">
+                                <AlertTriangle className="h-4 w-4" />
+                                <AlertTitle>Error</AlertTitle>
+                                <AlertDescription>{aiError}</AlertDescription>
+                            </Alert>
+                        )}
+                        {aiResults && aiResults.names.length > 0 && (
+                            <div className="mt-6">
+                                <h3 className="text-lg font-semibold mb-2">{c.aiResultsTitle}</h3>
+                                <div className="space-y-2">
+                                    {aiResults.names.map(name => (
+                                         <Card key={name.name} className="p-3 bg-accent/50">
+                                            <p className="font-bold text-lg">{name.name} <span className="font-quranic">({name.arabic})</span></p>
+                                            <p className="text-sm text-muted-foreground">{name.meaning}</p>
+                                         </Card>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+                    </CardContent>
+                </Card>
+            </div>
+            
             <div className="max-w-4xl mx-auto mb-8">
                 <Input 
                     type="search"
