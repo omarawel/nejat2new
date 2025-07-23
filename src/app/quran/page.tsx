@@ -20,9 +20,10 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { Button } from "@/components/ui/button"
-import { Terminal, Search, Eye, EyeOff } from "lucide-react"
-import { useEffect, useState, useMemo, FormEvent } from "react"
+import { Terminal, Search, Eye, EyeOff, Play, Loader, Pause } from "lucide-react"
+import { useEffect, useState, useMemo, FormEvent, useRef } from "react"
 import { cn } from "@/lib/utils"
+import { textToSpeech } from "@/ai/flows/text-to-speech"
 
 interface Surah {
   number: number
@@ -81,10 +82,45 @@ const SurahDetailContent = ({ surahNumber, languageEdition }: { surahNumber: num
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [hiddenAyahs, setHiddenAyahs] = useState<Record<number, boolean>>({});
+  
+  const [playingAudio, setPlayingAudio] = useState<string | null>(null);
+  const [loadingAudio, setLoadingAudio] = useState<number | null>(null);
+  const [audioUrl, setAudioUrl] = useState<string | null>(null);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+
 
   const toggleAyahVisibility = (ayahNumber: number) => {
     setHiddenAyahs(prev => ({ ...prev, [ayahNumber]: !prev[ayahNumber] }));
   };
+
+  const handlePlayAudio = async (ayahText: string, ayahNumber: number) => {
+    if (playingAudio === `ayah-${ayahNumber}`) {
+        audioRef.current?.pause();
+        setPlayingAudio(null);
+        return;
+    }
+    setLoadingAudio(ayahNumber);
+    setAudioUrl(null);
+    setPlayingAudio(null);
+
+    try {
+      const result = await textToSpeech(ayahText);
+      setAudioUrl(result.audio);
+      setPlayingAudio(`ayah-${ayahNumber}`);
+    } catch (err) {
+      console.error("Failed to get audio", err);
+      setError("Failed to generate audio for the verse.");
+    } finally {
+      setLoadingAudio(null);
+    }
+  };
+
+  useEffect(() => {
+    if (audioUrl && audioRef.current) {
+        audioRef.current.play().catch(e => console.error("Audio play failed", e));
+    }
+  }, [audioUrl]);
+
 
   useEffect(() => {
     async function fetchSurahDetail() {
@@ -146,17 +182,33 @@ const SurahDetailContent = ({ surahNumber, languageEdition }: { surahNumber: num
 
   return (
     <div className="divide-y divide-border">
+       {audioUrl && (
+        <audio
+          ref={audioRef}
+          src={audioUrl}
+          onEnded={() => setPlayingAudio(null)}
+        />
+      )}
       {detail.arabic.ayahs.map((_, index) => {
         const ayahNumber = detail.arabic.ayahs[index].number;
         const isHidden = hiddenAyahs[ayahNumber];
+        const arabicText = detail.arabic.ayahs[index].text;
+
+        const isPlaying = playingAudio === `ayah-${ayahNumber}`;
+        const isLoading = loadingAudio === ayahNumber;
 
         return (
             <div key={ayahNumber} className="px-6 py-4 space-y-3 relative">
                 <div className="flex justify-between items-start">
-                    <p className="text-2xl font-quranic text-right tracking-wide leading-relaxed flex-1">{detail.arabic.ayahs[index].text}</p>
-                    <Button variant="ghost" size="icon" onClick={() => toggleAyahVisibility(ayahNumber)} className="ml-4">
-                        {isHidden ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
-                    </Button>
+                    <p className="text-2xl font-quranic text-right tracking-wide leading-relaxed flex-1">{arabicText}</p>
+                    <div className="flex items-center ml-4">
+                        <Button variant="ghost" size="icon" onClick={() => handlePlayAudio(arabicText, ayahNumber)} disabled={isLoading}>
+                            {isLoading ? <Loader className="h-5 w-5 animate-spin" /> : (isPlaying ? <Pause className="h-5 w-5" /> : <Play className="h-5 w-5" />)}
+                        </Button>
+                        <Button variant="ghost" size="icon" onClick={() => toggleAyahVisibility(ayahNumber)}>
+                            {isHidden ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                        </Button>
+                    </div>
                 </div>
                 <div className={cn("transition-opacity duration-300", isHidden ? "opacity-0 h-0 overflow-hidden" : "opacity-100")}>
                     <p className="text-muted-foreground italic mt-2">{detail.transliteration.ayahs[index].text}</p>
@@ -367,5 +419,3 @@ export default function QuranPage() {
     </div>
   );
 }
-
-
