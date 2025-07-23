@@ -3,11 +3,13 @@
 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, CheckCircle2 } from 'lucide-react';
+import { ArrowLeft, CheckCircle2, Check, X } from 'lucide-react';
 import { useLanguage } from '@/components/language-provider';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
 import { Badge } from '@/components/ui/badge';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+
 
 const content = {
     de: {
@@ -51,7 +53,24 @@ const content = {
                     "Exklusive Community-Abzeichen"
                 ]
             }
-        ]
+        ],
+        comparison: {
+            title: "Vergleiche die Pläne",
+            feature: "Funktion",
+            free: "Kostenlos",
+            featuresList: [
+                { name: "Zugang zu grundlegenden Lerninhalten", free: true, supporter: true, pro: true, patron: true },
+                { name: "Werbefreie Erfahrung", free: false, supporter: true, pro: true, patron: true },
+                { name: "KI-Dua-Generator", free: false, supporter: true, pro: true, patron: true },
+                { name: "Standard-Support", free: false, supporter: true, pro: true, patron: true },
+                { name: "KI-Gelehrter & Vers-Finder", free: false, supporter: false, pro: true, patron: true },
+                { name: "Personalisierter Lernpfad-Generator", free: false, supporter: false, pro: true, patron: true },
+                { name: "Priorisierter Support", free: false, supporter: false, pro: true, patron: true },
+                { name: "Frühzugang zu neuen Features", free: false, supporter: false, pro: false, patron: true },
+                { name: "Direkter Einfluss auf die Entwicklung", free: false, supporter: false, pro: false, patron: true },
+                { name: "Exklusive Community-Abzeichen", free: false, supporter: false, pro: false, patron: true }
+            ]
+        }
     },
     en: {
         pageTitle: "Support Nejat Digital",
@@ -94,7 +113,24 @@ const content = {
                     "Exclusive community badges"
                 ]
             }
-        ]
+        ],
+         comparison: {
+            title: "Compare Plans",
+            feature: "Feature",
+            free: "Free",
+            featuresList: [
+                { name: "Access to basic learning content", free: true, supporter: true, pro: true, patron: true },
+                { name: "Ad-free experience", free: false, supporter: true, pro: true, patron: true },
+                { name: "AI Dua Generator", free: false, supporter: true, pro: true, patron: true },
+                { name: "Standard support", free: false, supporter: true, pro: true, patron: true },
+                { name: "AI Scholar & Verse Finder", free: false, supporter: false, pro: true, patron: true },
+                { name: "Personalized Learning Path Generator", free: false, supporter: false, pro: true, patron: true },
+                { name: "Priority support", free: false, supporter: false, pro: true, patron: true },
+                { name: "Early access to new features", free: false, supporter: false, pro: false, patron: true },
+                { name: "Direct influence on development", free: false, supporter: false, pro: false, patron: true },
+                { name: "Exclusive community badges", free: false, supporter: false, pro: false, patron: true }
+            ]
+        }
     }
 }
 
@@ -157,6 +193,34 @@ export default function SubscribePage() {
                         </CardFooter>
                     </Card>
                 ))}
+            </div>
+
+            <div className="mt-20">
+                <h2 className="text-3xl font-bold text-center mb-8">{c.comparison.title}</h2>
+                <Card>
+                    <Table>
+                        <TableHeader>
+                            <TableRow>
+                                <TableHead className="w-[40%] text-lg">{c.comparison.feature}</TableHead>
+                                <TableHead className="text-center text-lg">{c.comparison.free}</TableHead>
+                                <TableHead className="text-center text-lg">{c.plans[0].name}</TableHead>
+                                <TableHead className="text-center text-lg">{c.plans[1].name}</TableHead>
+                                <TableHead className="text-center text-lg">{c.plans[2].name}</TableHead>
+                            </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                            {c.comparison.featuresList.map((feature, index) => (
+                                <TableRow key={index}>
+                                    <TableCell className="font-medium">{feature.name}</TableCell>
+                                    <TableCell className="text-center">{feature.free ? <Check className="h-6 w-6 text-green-500 mx-auto" /> : <X className="h-6 w-6 text-muted-foreground mx-auto" />}</TableCell>
+                                    <TableCell className="text-center">{feature.supporter ? <Check className="h-6 w-6 text-green-500 mx-auto" /> : <X className="h-6 w-6 text-muted-foreground mx-auto" />}</TableCell>
+                                    <TableCell className="text-center">{feature.pro ? <Check className="h-6 w-6 text-green-500 mx-auto" /> : <X className="h-6 w-6 text-muted-foreground mx-auto" />}</TableCell>
+                                    <TableCell className="text-center">{feature.patron ? <Check className="h-6 w-6 text-green-500 mx-auto" /> : <X className="h-6 w-6 text-muted-foreground mx-auto" />}</TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </Card>
             </div>
         </div>
     </div>
