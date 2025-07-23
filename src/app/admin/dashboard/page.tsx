@@ -147,9 +147,10 @@ export default function AdminDashboardPage() {
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                      {displayedTools.map((tool) => {
                         const card = <FeatureCard name={tool.name} description={tool.description} />;
-                        // In a real app, you would link to the actual admin pages.
-                        // For now, we just display the card.
-                        return <div key={tool.key}>{card}</div>;
+                        if (tool.href) {
+                            return <Link key={tool.key} href={tool.href}>{card}</Link>
+                        }
+                        return <div key={tool.key} className="opacity-50 cursor-not-allowed">{card}</div>;
                     })}
                 </div>
             )}
