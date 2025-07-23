@@ -21,12 +21,42 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { useLanguage } from "../language-provider"
+
+const content = {
+  de: {
+    login: "Anmelden",
+    signup: "Konto erstellen",
+    myAccount: "Mein Konto",
+    profile: "Profil",
+    logout: "Abmelden",
+    loggedOut: "Abgemeldet",
+    loggedOutSuccess: "Sie wurden erfolgreich abgemeldet.",
+    logoutFailed: "Abmeldung fehlgeschlagen",
+    logoutError: "Beim Abmelden ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.",
+    user: "Benutzer"
+  },
+  en: {
+    login: "Login",
+    signup: "Create Account",
+    myAccount: "My Account",
+    profile: "Profile",
+    logout: "Log out",
+    loggedOut: "Logged Out",
+    loggedOutSuccess: "You have been successfully logged out.",
+    logoutFailed: "Logout Failed",
+    logoutError: "An error occurred while logging out. Please try again.",
+    user: "User"
+  },
+}
 
 export function AppHeader() {
   const [user, setUser] = useState<User | null>(null)
   const [loading, setLoading] = useState(true)
   const router = useRouter()
   const { toast } = useToast()
+  const { language } = useLanguage();
+  const c = content[language as keyof typeof content] || content.de;
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -40,15 +70,15 @@ export function AppHeader() {
     try {
       await signOut(auth)
       toast({
-        title: "Logged Out",
-        description: "You have been successfully logged out.",
+        title: c.loggedOut,
+        description: c.loggedOutSuccess,
       })
       router.push("/login")
     } catch (error) {
       toast({
         variant: "destructive",
-        title: "Logout Failed",
-        description: "An error occurred while logging out. Please try again.",
+        title: c.logoutFailed,
+        description: c.logoutError,
       })
     }
   }
@@ -78,19 +108,19 @@ export function AppHeader() {
                   <AvatarImage src={user.photoURL ?? undefined} alt={user.displayName ?? ""} />
                   <AvatarFallback>{getInitials(user.displayName)}</AvatarFallback>
                 </Avatar>
-                <span className="hidden sm:inline">{user.displayName || "User"}</span>
+                <span className="hidden sm:inline">{user.displayName || c.user}</span>
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuLabel>My Account</DropdownMenuLabel>
+              <DropdownMenuLabel>{c.myAccount}</DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem onClick={() => router.push('/profile')}>
                 <UserCircle className="mr-2 h-4 w-4" />
-                <span>Profile</span>
+                <span>{c.profile}</span>
               </DropdownMenuItem>
               <DropdownMenuItem onClick={handleLogout}>
                 <LogOut className="mr-2 h-4 w-4" />
-                <span>Log out</span>
+                <span>{c.logout}</span>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -99,13 +129,13 @@ export function AppHeader() {
             <Button variant="ghost" asChild className="hidden sm:inline-flex">
                 <Link href="/login">
                     <LogIn />
-                    Anmelden
+                    {c.login}
                 </Link>
             </Button>
              <Button asChild>
                 <Link href="/signup">
                     <UserPlus />
-                    Konto erstellen
+                    {c.signup}
                 </Link>
             </Button>
           </>

@@ -26,18 +26,73 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { Logo } from "@/components/icons"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { useToast } from "@/hooks/use-toast"
 import { auth } from "@/lib/firebase"
 import { signInWithEmailAndPassword, sendPasswordResetEmail } from "firebase/auth"
+import { useLanguage } from "@/components/language-provider"
 
 const formSchema = z.object({
   email: z.string().email({ message: "Invalid email address." }),
   password: z.string().min(1, { message: "Password is required." }),
 })
 
+const content = {
+  de: {
+    title: "Anmelden bei Nejat Digital",
+    description: "Geben Sie Ihre E-Mail-Adresse unten ein, um sich bei Ihrem Konto anzumelden",
+    emailLabel: "Email",
+    emailPlaceholder: "m@example.com",
+    passwordLabel: "Passwort",
+    forgotPassword: "Haben Sie Ihr Passwort vergessen?",
+    loginButton: "Anmelden",
+    noAccount: "Sie haben noch kein Konto?",
+    signUp: "Registrieren",
+    loginFailed: "Anmeldung fehlgeschlagen",
+    userNotFound: "Kein Konto mit dieser E-Mail-Adresse gefunden.",
+    wrongPassword: "Falsches Passwort. Bitte versuchen Sie es erneut.",
+    invalidCredential: "Ungültige Anmeldeinformationen. Bitte überprüfen Sie Ihre E-Mail-Adresse und Ihr Passwort.",
+    unexpectedError: "Ein unerwarteter Fehler ist aufgetreten. Bitte versuchen Sie es erneut.",
+    passwordResetSent: "E-Mail zum Zurücksetzen des Passworts gesendet",
+    checkInbox: "Bitte überprüfen Sie Ihren Posteingang, um Ihr Passwort zurückzusetzen.",
+    enterEmailForReset: "Bitte geben Sie Ihre E-Mail-Adresse ein, um das Passwort zurückzusetzen.",
+    error: "Fehler",
+    noUserFound: "Kein Benutzer mit dieser E-Mail-Adresse gefunden.",
+    failedToSendResetEmail: "Das Senden der E-Mail zum Zurücksetzen des Passworts ist fehlgeschlagen. Bitte versuchen Sie es später erneut.",
+    loginSuccess: "Anmeldung erfolgreich",
+    welcomeBack: "Willkommen zurück!"
+  },
+  en: {
+    title: "Login to Nejat Digital",
+    description: "Enter your email below to login to your account",
+    emailLabel: "Email",
+    emailPlaceholder: "m@example.com",
+    passwordLabel: "Password",
+    forgotPassword: "Forgot your password?",
+    loginButton: "Login",
+    noAccount: "Don't have an account?",
+    signUp: "Sign up",
+    loginFailed: "Login Failed",
+    userNotFound: "No account found with this email address.",
+    wrongPassword: "Incorrect password. Please try again.",
+    invalidCredential: "Invalid credentials. Please check your email and password.",
+    unexpectedError: "An unexpected error occurred. Please try again.",
+    passwordResetSent: "Password Reset Email Sent",
+    checkInbox: "Please check your inbox to reset your password.",
+    enterEmailForReset: "Please enter your email to reset password.",
+    error: "Error",
+    noUserFound: "No user found with this email address.",
+    failedToSendResetEmail: "Failed to send password reset email. Please try again later.",
+    loginSuccess: "Login Successful",
+    welcomeBack: "Welcome back!",
+  },
+}
+
+
 export default function LoginPage() {
+  const { language } = useLanguage();
+  const c = content[language as keyof typeof content] || content.de;
+
   const [showPassword, setShowPassword] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
@@ -58,23 +113,23 @@ export default function LoginPage() {
     try {
       await signInWithEmailAndPassword(auth, values.email, values.password)
       toast({
-        title: "Login Successful",
-        description: "Welcome back!",
+        title: c.loginSuccess,
+        description: c.welcomeBack,
       })
       router.push("/")
     } catch (error: any) {
       switch (error.code) {
         case "auth/user-not-found":
-          setError("No account found with this email address.");
+          setError(c.userNotFound);
           break;
         case "auth/wrong-password":
-          setError("Incorrect password. Please try again.");
+          setError(c.wrongPassword);
           break;
         case "auth/invalid-credential":
-           setError("Invalid credentials. Please check your email and password.");
+           setError(c.invalidCredential);
            break;
         default:
-          setError("An unexpected error occurred. Please try again.");
+          setError(c.unexpectedError);
           console.error(error);
           break;
       }
@@ -86,28 +141,28 @@ export default function LoginPage() {
   async function handlePasswordReset() {
     const email = form.getValues("email");
     if (!email) {
-      form.setError("email", { type: "manual", message: "Please enter your email to reset password." });
+      form.setError("email", { type: "manual", message: c.enterEmailForReset });
       return;
     }
     
     try {
         await sendPasswordResetEmail(auth, email);
         toast({
-            title: "Password Reset Email Sent",
-            description: "Please check your inbox to reset your password.",
+            title: c.passwordResetSent,
+            description: c.checkInbox,
         });
     } catch (error: any) {
         if (error.code === 'auth/user-not-found') {
              toast({
                 variant: "destructive",
-                title: "Error",
-                description: "No user found with this email address.",
+                title: c.error,
+                description: c.noUserFound,
             });
         } else {
             toast({
                 variant: "destructive",
-                title: "Error",
-                description: "Failed to send password reset email. Please try again later.",
+                title: c.error,
+                description: c.failedToSendResetEmail,
             });
         }
     }
@@ -120,9 +175,9 @@ export default function LoginPage() {
         <div className="flex justify-center mb-4">
           
         </div>
-        <CardTitle className="text-2xl text-center">Login to Nejat Digital</CardTitle>
+        <CardTitle className="text-2xl text-center">{c.title}</CardTitle>
         <CardDescription className="text-center">
-          Enter your email below to login to your account
+          {c.description}
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -131,7 +186,7 @@ export default function LoginPage() {
             {error && (
                 <Alert variant="destructive">
                     <Terminal className="h-4 w-4" />
-                    <AlertTitle>Login Failed</AlertTitle>
+                    <AlertTitle>{c.loginFailed}</AlertTitle>
                     <AlertDescription>{error}</AlertDescription>
                 </Alert>
             )}
@@ -140,9 +195,9 @@ export default function LoginPage() {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Email</FormLabel>
+                  <FormLabel>{c.emailLabel}</FormLabel>
                   <FormControl>
-                    <Input placeholder="m@example.com" {...field} />
+                    <Input placeholder={c.emailPlaceholder} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -154,14 +209,14 @@ export default function LoginPage() {
               render={({ field }) => (
                 <FormItem>
                     <div className="flex items-center">
-                        <FormLabel>Password</FormLabel>
+                        <FormLabel>{c.passwordLabel}</FormLabel>
                         <Button
                             type="button"
                             variant="link"
                             className="ml-auto h-auto p-0 text-sm"
                             onClick={handlePasswordReset}
                         >
-                            Forgot your password?
+                            {c.forgotPassword}
                         </Button>
                     </div>
                   <FormControl>
@@ -188,14 +243,14 @@ export default function LoginPage() {
             />
             <Button type="submit" className="w-full" disabled={loading}>
               {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-              Login
+              {c.loginButton}
             </Button>
           </form>
         </Form>
         <div className="mt-4 text-center text-sm">
-          Don&apos;t have an account?{" "}
+          {c.noAccount}{" "}
           <Link href="/signup" className="underline">
-            Sign up
+            {c.signUp}
           </Link>
         </div>
       </CardContent>

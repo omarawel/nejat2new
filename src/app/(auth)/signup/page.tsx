@@ -28,12 +28,12 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Checkbox } from "@/components/ui/checkbox"
-import { Logo } from "@/components/icons"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Terminal } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
 import { auth } from "@/lib/firebase"
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth"
+import { useLanguage } from "@/components/language-provider"
 
 
 const formSchema = z.object({
@@ -47,7 +47,60 @@ const formSchema = z.object({
   path: ["confirmPassword"],
 });
 
+const content = {
+    de: {
+        createAccount: "Konto erstellen",
+        enterInfo: "Geben Sie Ihre Informationen ein, um ein Konto zu erstellen",
+        signupFailed: "Registrierung fehlgeschlagen",
+        nameLabel: "Name",
+        namePlaceholder: "Ihr Name",
+        emailLabel: "Email",
+        emailPlaceholder: "m@example.com",
+        passwordLabel: "Passwort",
+        confirmPasswordLabel: "Passwort bestätigen",
+        acceptTerms: "Akzeptieren Sie die Allgemeinen Geschäftsbedingungen",
+        termsDescription: "Sie stimmen unseren Nutzungsbedingungen und Datenschutzrichtlinien zu.",
+        createAccountButton: "Konto erstellen",
+        alreadyHaveAccount: "Haben Sie bereits ein Konto?",
+        login: "Anmelden",
+        emailInUse: "Diese E-Mail-Adresse wird bereits verwendet.",
+        invalidEmail: "Die E-Mail-Adresse ist ungültig.",
+        operationNotAllowed: "E-Mail/Passwort-Konten sind nicht aktiviert.",
+        weakPassword: "Das Passwort ist zu schwach.",
+        unexpectedError: "Ein unerwarteter Fehler ist aufgetreten. Bitte versuchen Sie es erneut.",
+        accountCreated: "Konto erstellt",
+        signedUpSuccess: "Sie haben sich erfolgreich registriert.",
+    },
+    en: {
+        createAccount: "Create an Account",
+        enterInfo: "Enter your information to create an account",
+        signupFailed: "Signup Failed",
+        nameLabel: "Name",
+        namePlaceholder: "Your Name",
+        emailLabel: "Email",
+        emailPlaceholder: "m@example.com",
+        passwordLabel: "Password",
+        confirmPasswordLabel: "Confirm Password",
+        acceptTerms: "Accept terms and conditions",
+        termsDescription: "You agree to our Terms of Service and Privacy Policy.",
+        createAccountButton: "Create an account",
+        alreadyHaveAccount: "Already have an account?",
+        login: "Login",
+        emailInUse: "This email address is already in use.",
+        invalidEmail: "The email address is not valid.",
+        operationNotAllowed: "Email/password accounts are not enabled.",
+        weakPassword: "The password is too weak.",
+        unexpectedError: "An unexpected error occurred. Please try again.",
+        accountCreated: "Account Created",
+        signedUpSuccess: "You have been successfully signed up.",
+    }
+};
+
+
 export default function SignupPage() {
+  const { language } = useLanguage();
+  const c = content[language as keyof typeof content] || content.de;
+
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -82,8 +135,8 @@ export default function SignupPage() {
       });
 
       toast({
-        title: "Account Created",
-        description: "You have been successfully signed up.",
+        title: c.accountCreated,
+        description: c.signedUpSuccess,
       })
       
       router.push("/");
@@ -91,19 +144,19 @@ export default function SignupPage() {
     } catch (error: any) {
        switch (error.code) {
         case "auth/email-already-in-use":
-          setError("This email address is already in use.");
+          setError(c.emailInUse);
           break;
         case "auth/invalid-email":
-          setError("The email address is not valid.");
+          setError(c.invalidEmail);
           break;
         case "auth/operation-not-allowed":
-          setError("Email/password accounts are not enabled.");
+          setError(c.operationNotAllowed);
           break;
         case "auth/weak-password":
-          setError("The password is too weak.");
+          setError(c.weakPassword);
           break;
         default:
-          setError("An unexpected error occurred. Please try again.");
+          setError(c.unexpectedError);
           console.error(error);
           break;
       }
@@ -118,9 +171,9 @@ export default function SignupPage() {
         <div className="flex justify-center mb-4">
           
         </div>
-        <CardTitle className="text-2xl text-center">Create an Account</CardTitle>
+        <CardTitle className="text-2xl text-center">{c.createAccount}</CardTitle>
         <CardDescription className="text-center">
-          Enter your information to create an account
+          {c.enterInfo}
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -129,7 +182,7 @@ export default function SignupPage() {
              {error && (
                 <Alert variant="destructive">
                     <Terminal className="h-4 w-4" />
-                    <AlertTitle>Signup Failed</AlertTitle>
+                    <AlertTitle>{c.signupFailed}</AlertTitle>
                     <AlertDescription>{error}</AlertDescription>
                 </Alert>
             )}
@@ -138,9 +191,9 @@ export default function SignupPage() {
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Name</FormLabel>
+                  <FormLabel>{c.nameLabel}</FormLabel>
                   <FormControl>
-                    <Input placeholder="Your Name" {...field} />
+                    <Input placeholder={c.namePlaceholder} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -151,9 +204,9 @@ export default function SignupPage() {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Email</FormLabel>
+                  <FormLabel>{c.emailLabel}</FormLabel>
                   <FormControl>
-                    <Input placeholder="m@example.com" {...field} />
+                    <Input placeholder={c.emailPlaceholder} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -164,7 +217,7 @@ export default function SignupPage() {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Password</FormLabel>
+                  <FormLabel>{c.passwordLabel}</FormLabel>
                   <FormControl>
                     <div className="relative">
                       <Input
@@ -192,7 +245,7 @@ export default function SignupPage() {
               name="confirmPassword"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Confirm Password</FormLabel>
+                  <FormLabel>{c.confirmPasswordLabel}</FormLabel>
                   <FormControl>
                     <div className="relative">
                       <Input
@@ -228,10 +281,10 @@ export default function SignupPage() {
                         </FormControl>
                         <div className="space-y-1 leading-none">
                             <FormLabel>
-                                Accept terms and conditions
+                                {c.acceptTerms}
                             </FormLabel>
                             <FormDescription>
-                                You agree to our Terms of Service and Privacy Policy.
+                                {c.termsDescription}
                             </FormDescription>
                              <FormMessage />
                         </div>
@@ -240,14 +293,14 @@ export default function SignupPage() {
             />
             <Button type="submit" className="w-full" disabled={loading}>
               {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-              Create an account
+              {c.createAccountButton}
             </Button>
           </form>
         </Form>
         <div className="mt-4 text-center text-sm">
-          Already have an account?{" "}
+          {c.alreadyHaveAccount}{" "}
           <Link href="/login" className="underline">
-            Login
+            {c.login}
           </Link>
         </div>
       </CardContent>
