@@ -43,37 +43,37 @@ body {
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
   .dark {
-    --background: 16 31% 12%;
+    --background: 16 31% 15%;
     --foreground: 0 0% 98%;
-    --card: 16 31% 17%;
+    --card: 16 31% 20%;
     --card-foreground: 0 0% 98%;
-    --popover: 16 31% 7%;
+    --popover: 16 31% 10%;
     --popover-foreground: 0 0% 98%;
     --primary: 16 84% 48%;
     --primary-foreground: 0 0% 9%;
-    --secondary: 16 31% 16%;
+    --secondary: 16 31% 19%;
     --secondary-foreground: 0 0% 98%;
-    --muted: 16 31% 16%;
+    --muted: 16 31% 19%;
     --muted-foreground: 0 0% 63.9%;
-    --accent: 16 31% 22%;
+    --accent: 16 31% 25%;
     --accent-foreground: 0 0% 98%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
-    --border: 16 31% 25%;
-    --input: 16 31% 16%;
+    --border: 16 31% 28%;
+    --input: 16 31% 19%;
     --ring: 16 84% 48%;
     --chart-1: 220 70% 50%;
     --chart-2: 160 60% 45%;
     --chart-3: 30 80% 55%;
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
-    --sidebar-background: 16 31% 12%;
+    --sidebar-background: 16 31% 15%;
     --sidebar-foreground: 0 0% 98%;
     --sidebar-primary: 16 84% 48%;
     --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 16 31% 17%;
+    --sidebar-accent: 16 31% 20%;
     --sidebar-accent-foreground: 0 0% 98%;
-    --sidebar-border: 16 31% 25%;
+    --sidebar-border: 16 31% 28%;
     --sidebar-ring: 16 84% 48%;
   }
 }
@@ -85,4 +85,17 @@ body {
   body {
     @apply bg-background text-foreground;
   }
+}
+
+@layer components {
+    .dark .card-animated {
+        background-color: hsla(var(--card), 0.85);
+        backdrop-filter: blur(4px);
+        animation: fadeIn 0.5s ease-in-out;
+    }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
 }

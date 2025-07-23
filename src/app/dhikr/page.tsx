@@ -209,7 +209,7 @@ const content = {
 
 const DhikrCard = ({ title, arabic, transliteration, meaning, benefit }: { title: string, arabic: string, transliteration: string, meaning: string, benefit: string }) => {
   return (
-    <Card>
+    <Card className="card-animated">
       <CardHeader>
         <CardTitle className="text-xl">{title}</CardTitle>
         <CardDescription className="text-2xl font-quranic text-right mt-2 text-primary">{arabic}</CardDescription>
