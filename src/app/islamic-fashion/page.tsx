@@ -3,79 +3,104 @@
 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { useLanguage } from '@/components/language-provider';
-import { Shirt, HandHeart, Shield, ArrowLeft } from 'lucide-react';
+import { Shirt, HandHeart, Shield, ArrowLeft, Eye, Mic } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import Image from 'next/image';
 
 const content = {
     de: {
         title: "Islamische Mode & Bescheidenheit",
-        description: "Ein Einblick in die Prinzipien der bescheidenen Kleidung im Islam (Hidschab) und ihre Vielfalt.",
+        description: "Ein Einblick in die Prinzipien der bescheidenen Kleidung und des Verhaltens im Islam.",
         backToFeatures: "Zurück zu den Funktionen",
         sections: [
             {
                 icon: Shield,
                 title: "Das Konzept des Hidschab",
-                content: "Hidschab ist mehr als nur ein Kopftuch. Es ist ein umfassendes Konzept der Bescheidenheit in Kleidung, Verhalten und Sprache für Männer und Frauen. Das Ziel ist es, den Fokus von der äußeren Erscheinung auf den inneren Charakter und die Frömmigkeit zu lenken und eine respektvolle Interaktion in der Gesellschaft zu fördern."
+                content: "Hidschab ist mehr als nur ein Kopftuch. Es ist ein umfassendes Konzept der Bescheidenheit, das sich auf Kleidung, Verhalten und Sprache für Männer und Frauen bezieht. Das Ziel ist es, den Fokus von der äußeren Erscheinung auf den inneren Charakter und die Frömmigkeit zu lenken und eine würdevolle, respektvolle Interaktion in der Gesellschaft zu fördern."
             },
             {
                 icon: HandHeart,
-                title: "Richtlinien für bescheidene Kleidung",
+                title: "Allgemeine Richtlinien für bescheidene Kleidung",
                 points: [
-                    "Die Kleidung sollte den Körper bedecken (die genauen Anforderungen variieren je nach Rechtsschule).",
-                    "Die Kleidung sollte nicht eng anliegen oder durchsichtig sein, um die Körperform nicht zu betonen.",
-                    "Die Kleidung sollte nicht der des anderen Geschlechts ähneln.",
-                    "Die Kleidung sollte nicht extravagant oder prahlerisch sein."
+                    "**Bedeckung (Satr):** Die Kleidung sollte die vorgeschriebenen Körperteile (Aurah) bedecken. Für Männer ist dies in der Regel der Bereich vom Nabel bis zu den Knien, für Frauen der gesamte Körper außer Gesicht und Händen, wobei es hier unterschiedliche Gelehrtenmeinungen gibt.",
+                    "**Nicht durchsichtig oder eng:** Die Kleidung sollte nicht so dünn sein, dass die Haut durchscheint, oder so eng, dass sie die Körperform detailliert nachzeichnet.",
+                    "**Keine Nachahmung:** Die Kleidung sollte nicht der des anderen Geschlechts ähneln oder spezifische Kleidung von Nicht-Muslimen imitieren, die mit deren religiösen Praktiken verbunden ist.",
+                    "**Keine Prahlerei:** Kleidung sollte nicht aus Arroganz oder zur Angeberei getragen werden."
                 ]
+            },
+            {
+                icon: Shirt,
+                title: "Bescheidenheit des Mannes",
+                content: "Die Bescheidenheit des Mannes geht über die Bedeckung des Bereichs vom Nabel bis zu den Knien hinaus. Es umfasst auch das Tragen von lockerer, würdevoller Kleidung, die nicht extravagant ist. Das Herablassen der Kleidung unter die Knöchel (Isbal) aus Stolz wird missbilligt. Eine gepflegte Erscheinung, wie das Schneiden des Schnurrbarts und das Wachsenlassen des Bartes, ist ebenfalls Teil der Sunnah."
+            },
+            {
+                icon: Shirt,
+                title: "Bescheidenheit der Frau",
+                content: "Für Frauen bedeutet Bescheidenheit das Tragen von Kleidung, die den gesamten Körper außer Gesicht und Händen bedeckt, wie z.B. eine 'Abaya' oder ein 'Jilbab', und ein Kopftuch ('Khimar'). Die Stile, Farben und Stoffe variieren stark je nach Kultur und persönlicher Vorliebe, solange die Grundprinzipien der Bedeckung und Lockerheit eingehalten werden."
+            },
+            {
+                icon: Eye,
+                title: "Bescheidenheit ist mehr als nur Kleidung",
+                content: "Wahre Bescheidenheit (Haya') ist eine innere Eigenschaft, die sich im gesamten Verhalten widerspiegelt:",
+                points: [
+                   "**Senken des Blicks:** Sowohl Männer als auch Frauen sind angewiesen, ihre Blicke zu senken und nicht lüstern auf das andere Geschlecht zu starren.",
+                   "**Zurückhaltung in der Sprache:** Vermeiden von vulgärer, anzüglicher oder nutzloser Rede.",
+                   "**Würde im Gang und Verhalten:** Ein würdevolles und respektvolles Auftreten in der Öffentlichkeit."
+                ]
+            },
+            {
+                icon: Mic,
+                title: "Die Weisheit hinter der Bescheidenheit",
+                content: "Die islamischen Kleidungs- und Verhaltensregeln sind kein Selbstzweck, sondern dienen einem höheren Ziel. Sie schützen die Würde des Einzelnen und der Gesellschaft, lenken den Fokus auf den Charakter statt auf das Äußere, reduzieren soziale Reibungen und fördern eine Atmosphäre des Respekts und der Frömmigkeit. Sie sind ein Ausdruck des Gehorsams und der Liebe zu Allah, dem Schöpfer."
             }
-        ],
-        styles_men: {
-            title: "Kleidung für Männer",
-            content: "Die Bescheidenheit des Mannes beinhaltet das Bedecken des Bereichs vom Nabel bis zu den Knien. Kleidung wie die 'Thobe' oder 'Dishdasha', weite Hosen und Hemden sind üblich.",
-            image: "https://placehold.co/600x400.png",
-            hint: "islamic men fashion",
-        },
-        styles_women: {
-            title: "Kleidung für Frauen",
-            content: "Für Frauen bedeutet Bescheidenheit oft das Tragen von 'Abaya', 'Jilbab' oder anderen lockeren Kleidungsstücken sowie einem Kopftuch ('Khimar'). Die Stile, Farben und Stoffe variieren stark je nach Kultur und persönlicher Vorliebe.",
-            image: "https://placehold.co/600x400.png",
-            hint: "islamic women fashion",
-        }
+        ]
     },
     en: {
         title: "Islamic Fashion & Modesty",
-        description: "An insight into the principles of modest clothing in Islam (Hijab) and its diversity.",
+        description: "An insight into the principles of modest clothing and conduct in Islam.",
         backToFeatures: "Back to Features",
         sections: [
             {
                 icon: Shield,
                 title: "The Concept of Hijab",
-                content: "Hijab is more than just a headscarf. It is a comprehensive concept of modesty in dress, behavior, and speech for both men and women. The goal is to shift the focus from outer appearance to inner character and piety and to foster respectful interaction in society."
+                content: "Hijab is more than just a headscarf. It is a comprehensive concept of modesty that applies to clothing, behavior, and speech for both men and women. The goal is to shift the focus from outer appearance to inner character and piety and to foster dignified, respectful interaction in society."
             },
             {
                 icon: HandHeart,
-                title: "Guidelines for Modest Dress",
+                title: "General Guidelines for Modest Dress",
                 points: [
-                    "Clothing should cover the body (the exact requirements vary by school of thought).",
-                    "Clothing should not be tight-fitting or transparent so as not to accentuate the body shape.",
-                    "Clothing should not resemble that of the opposite sex.",
-                    "Clothing should not be extravagant or boastful."
+                    "**Coverage (Satr):** Clothing should cover the prescribed parts of the body (Aurah). For men, this is typically the area from the navel to the knees; for women, the entire body except for the face and hands, though there are differing scholarly opinions on this.",
+                    "**Not Transparent or Tight:** The clothing should not be so thin that the skin shows through, or so tight that it details the shape of the body.",
+                    "**No Imitation:** Clothing should not resemble that of the opposite sex or imitate specific clothing of non-Muslims associated with their religious practices.",
+                    "**No Ostentation:** Clothing should not be worn out of arrogance or for showing off."
                 ]
+            },
+            {
+                icon: Shirt,
+                title: "Modesty for Men",
+                content: "A man's modesty extends beyond covering the area from the navel to the knees. It also includes wearing loose, dignified clothing that is not extravagant. Letting clothes hang below the ankles (Isbal) out of pride is discouraged. A well-groomed appearance, such as trimming the mustache and letting the beard grow, is also part of the Sunnah."
+            },
+            {
+                icon: Shirt,
+                title: "Modesty for Women",
+                content: "For women, modesty often involves wearing clothes that cover the entire body except for the face and hands, such as an 'Abaya' or 'Jilbab', and a headscarf ('Khimar'). The styles, colors, and fabrics vary greatly depending on culture and personal preference, as long as the basic principles of coverage and looseness are met."
+            },
+            {
+                icon: Eye,
+                title: "Modesty is More Than Just Clothing",
+                content: "True modesty (Haya') is an inner quality that is reflected in one's entire conduct:",
+                 points: [
+                   "**Lowering the Gaze:** Both men and women are instructed to lower their gaze and not to stare lustfully at the opposite sex.",
+                   "**Restraint in Speech:** Avoiding vulgar, suggestive, or useless talk.",
+                   "**Dignity in Gait and Behavior:** Maintaining a dignified and respectful demeanor in public."
+                ]
+            },
+             {
+                icon: Mic,
+                title: "The Wisdom Behind Modesty",
+                content: "The Islamic rules of dress and conduct are not an end in themselves but serve a higher purpose. They protect the dignity of the individual and society, shift the focus to character rather than appearance, reduce social friction, and promote an atmosphere of respect and piety. They are an expression of obedience and love for Allah, the Creator."
             }
-        ],
-        styles_men: {
-            title: "Clothing for Men",
-            content: "A man's modesty includes covering the area from the navel to the knees. Garments like the 'Thobe' or 'Dishdasha', loose trousers, and shirts are common.",
-            image: "https://placehold.co/600x400.png",
-            hint: "islamic men fashion",
-        },
-        styles_women: {
-            title: "Clothing for Women",
-            content: "For women, modesty often involves wearing an 'Abaya', 'Jilbab', or other loose-fitting garments, along with a headscarf ('Khimar'). The styles, colors, and fabrics vary greatly depending on culture and personal preference.",
-            image: "https://placehold.co/600x400.png",
-            hint: "islamic women fashion",
-        }
+        ]
     }
 };
 
@@ -99,47 +124,27 @@ export default function IslamicFashionPage() {
                 <p className="text-muted-foreground mt-2 text-lg max-w-3xl mx-auto">{c.description}</p>
             </header>
             
-            <div className="max-w-4xl mx-auto space-y-8">
+            <div className="max-w-3xl mx-auto space-y-6">
                 {c.sections.map((section, index) => (
                     <Card key={index}>
                         <CardHeader>
-                            <CardTitle className="flex items-center gap-3">
-                                <section.icon className="h-7 w-7 text-primary" />
-                                {section.title}
+                            <CardTitle className="flex items-start gap-3">
+                                <section.icon className="h-7 w-7 text-primary mt-1" />
+                                <span>{section.title}</span>
                             </CardTitle>
                         </CardHeader>
                         <CardContent>
                             {section.content && <p className="text-muted-foreground">{section.content}</p>}
                             {section.points && (
-                                <ul className="list-disc list-inside space-y-2 text-muted-foreground">
-                                    {section.points.map((point, pIndex) => <li key={pIndex}>{point}</li>)}
+                                <ul className="list-disc list-inside space-y-2 text-muted-foreground mt-4">
+                                    {section.points.map((point, pIndex) => 
+                                        <li key={pIndex} dangerouslySetInnerHTML={{ __html: point }} />
+                                    )}
                                 </ul>
                             )}
                         </CardContent>
                     </Card>
                 ))}
-
-                <Card className="overflow-hidden">
-                    <div className="grid md:grid-cols-2 items-center">
-                        <div className="p-6">
-                            <CardTitle>{c.styles_men.title}</CardTitle>
-                            <p className="text-muted-foreground mt-2">{c.styles_men.content}</p>
-                        </div>
-                        <Image src={c.styles_men.image} alt={c.styles_men.title} width={600} height={400} className="w-full h-full object-cover" data-ai-hint={c.styles_men.hint} />
-                    </div>
-                </Card>
-
-                 <Card className="overflow-hidden">
-                    <div className="grid md:grid-cols-2 items-center">
-                        <div className="p-6 md:order-2">
-                            <CardTitle>{c.styles_women.title}</CardTitle>
-                            <p className="text-muted-foreground mt-2">{c.styles_women.content}</p>
-                        </div>
-                        <div className="md:order-1">
-                           <Image src={c.styles_women.image} alt={c.styles_women.title} width={600} height={400} className="w-full h-full object-cover" data-ai-hint={c.styles_women.hint} />
-                        </div>
-                    </div>
-                </Card>
             </div>
         </div>
     );
