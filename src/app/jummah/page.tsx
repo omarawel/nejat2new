@@ -6,6 +6,7 @@ import { useLanguage } from '@/components/language-provider';
 import { Mosque, Bath, BookOpen, Mic, Wind, Users, Clock, ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import Image from 'next/image';
 
 const content = {
     de: {
