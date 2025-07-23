@@ -34,15 +34,15 @@ const tools = [
     { icon: "🕌", name: "Freitagsgebet (Jumu'ah)" },
     { icon: "⏳", name: "Gebet auf Zeit" },
     { icon: "💧", name: "Gebetswaschung (Wudu)" },
-    { icon: "🌙", name: "Gebetszeiten" },
-    { icon: "⏰", name: "Gebetszeiten" },
+    { icon: "🌙", name: "Gebetszeiten", href: "/prayer-times" },
+    { icon: "⏰", name: "Gebetszeiten", href: "/prayer-times" },
     { icon: "💌", name: "Grußkarte" },
     { icon: "😊", name: "Gute Manieren (Akhlaq)" },
-    { icon: "📚", name: "Hadith Sammlung" },
+    { icon: "📚", name: "Hadith Sammlung", href: "/hadith" },
     { icon: "📜", name: "Hadith des Tages" },
     { icon: "✅", name: "Halal & Haram Checker" },
     { icon: "📖", name: "Hatim" },
-    { icon: "📖", name: "Heiliger Koran" },
+    { icon: "📖", name: "Heiliger Koran", href: "/quran" },
     { icon: "🔄", name: "Hijri Konverter" },
     { icon: "🛡️", name: "Hisnul Muslim" },
     { icon: "🎓", name: "Islamische Erziehung" },
@@ -56,10 +56,10 @@ const tools = [
     { icon: "📅", name: "Islamischer Kalender" },
     { icon: "📅", name: "Kalender" },
     { icon: "🎤", name: "Khutbah der Woche" },
-    { icon: "🤖", name: "KI-Gelehrter" },
+    { icon: "🤖", name: "KI-Gelehrter", href: "/insights" },
     { icon: "🧭", name: "Kompass" },
     { icon: "🤝", name: "Konvertiten-Ecke" },
-    { icon: "📖", name: "Koran" },
+    { icon: "📖", name: "Koran", href: "/quran" },
     { icon: "🔍", name: "Koran-Erkenner" },
     { icon: "📜", name: "Koranvers des Tages" },
     { icon: "👩", name: "Ladies Special" },
@@ -134,9 +134,13 @@ export default function Home() {
         <h2 className="text-2xl sm:text-3xl font-bold">{c.sectionTitle}</h2>
         <p className="mt-2 text-md sm:text-lg text-muted-foreground">{c.sectionDescription}</p>
         <div className="mt-8 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-4">
-          {tools.map((tool, index) => (
-            <FeatureCard key={index} icon={tool.icon} name={tool.name} />
-          ))}
+          {tools.map((tool, index) => {
+            const card = <FeatureCard key={index} icon={tool.icon} name={tool.name} />
+            if ((tool as any).href) {
+                return <Link href={(tool as any).href}>{card}</Link>
+            }
+            return card;
+          })}
         </div>
       </section>
     </div>
