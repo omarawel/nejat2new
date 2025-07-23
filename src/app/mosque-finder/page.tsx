@@ -9,6 +9,7 @@ import Link from 'next/link';
 import { Input } from '@/components/ui/input';
 import { useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
+import { useRouter } from 'next/navigation';
 
 
 const content = {
@@ -39,6 +40,7 @@ export default function MosqueFinderPage() {
   const { language } = useLanguage();
   const c = content[language] || content.de;
   const { toast } = useToast();
+  const router = useRouter();
   const [locationQuery, setLocationQuery] = useState('');
   const [isLocating, setIsLocating] = useState(false);
 
@@ -81,11 +83,9 @@ export default function MosqueFinderPage() {
   return (
     <div className="container mx-auto px-4 py-8 flex-grow flex flex-col">
         <div className="w-full max-w-2xl mx-auto">
-            <Button asChild variant="ghost" className="mb-8">
-                <Link href="/">
-                    <ArrowLeft className="mr-2 h-4 w-4" />
-                    {c.backToFeatures}
-                </Link>
+            <Button variant="ghost" className="mb-8" onClick={() => router.back()}>
+                <ArrowLeft className="mr-2 h-4 w-4" />
+                {c.backToFeatures}
             </Button>
             <Card>
                 <CardHeader className="text-center">
