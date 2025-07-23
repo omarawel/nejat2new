@@ -14,7 +14,7 @@ import {
 import { Skeleton } from "@/components/ui/skeleton"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Button } from "@/components/ui/button"
-import { Terminal, ChevronLeft, ChevronRight, Search, Eye, EyeOff, Play, Pause, Loader } from "lucide-react"
+import { Terminal, ChevronLeft, ChevronRight, Search, Eye, EyeOff, Play, Pause, Loader, ArrowLeft } from "lucide-react"
 import { useEffect, useState, useMemo, FormEvent, useRef } from "react"
 import { Hadith, getHadiths } from "./actions";
 import { Input } from "@/components/ui/input"
@@ -29,6 +29,7 @@ import {
 import { cn } from "@/lib/utils"
 import { textToSpeech } from "@/ai/flows/text-to-speech"
 import { useLanguage } from "@/components/language-provider"
+import Link from "next/link"
 
 
 type Language = "eng" | "urd" | "ara";
@@ -55,6 +56,7 @@ const content = {
         noHadithsFound: "Keine Hadithe gefunden.",
         german: "Deutsch",
         comingSoon: "(bald verfügbar)",
+        backToFeatures: "Zurück zu den Funktionen",
     },
     en: {
         title: "Collection of Hadith",
@@ -77,6 +79,7 @@ const content = {
         noHadithsFound: "No hadiths found.",
         german: "German",
         comingSoon: "(coming soon)",
+        backToFeatures: "Back to Features",
     }
 }
 
@@ -290,6 +293,12 @@ export default function HadithPage() {
 
   return (
     <div className="space-y-8 flex-grow flex flex-col p-4 sm:p-6 lg:p-8">
+      <Button asChild variant="ghost" className="self-start">
+        <Link href="/">
+          <ArrowLeft className="mr-2 h-4 w-4" />
+          {c.backToFeatures}
+        </Link>
+      </Button>
       <header>
         <h1 className="text-3xl font-bold tracking-tight text-primary">{c.title}</h1>
         <p className="text-muted-foreground mt-2">{c.description}</p>
