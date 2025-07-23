@@ -36,8 +36,8 @@ const content = {
 
 // These links would ideally come from a CMS or Firestore managed by an admin panel
 const socialLinks = [
-    { name: "Facebook", href: "#", icon: FacebookIcon },
-    { name: "Twitter", href: "#", icon: TwitterIcon },
+    { name: "Facebook", href: "https://facebook.com/nejatapp", icon: FacebookIcon },
+    { name: "Twitter", href: "https://twitter.com/nejatapp", icon: TwitterIcon },
     { name: "Instagram", href: "#", icon: InstagramIcon },
     { name: "YouTube", href: "#", icon: YouTubeIcon },
 ];
@@ -58,17 +58,17 @@ export function Footer() {
                     <div>
                         <h4 className="font-semibold mb-4">{c.company}</h4>
                         <ul className="space-y-2">
-                            <li><Link href="#" className="text-muted-foreground hover:text-primary">{c.about}</Link></li>
-                            <li><Link href="#" className="text-muted-foreground hover:text-primary">{c.contact}</Link></li>
-                            <li><Link href="/subscribe" className="text-muted-foreground hover:text-primary">{c.support}</Link></li>
+                            <li><Link href="/about" className="text-muted-foreground hover:text-primary">{c.about}</Link></li>
+                            <li><Link href="/contact" className="text-muted-foreground hover:text-primary">{c.contact}</Link></li>
+                            <li><Link href="/support" className="text-muted-foreground hover:text-primary">{c.support}</Link></li>
                         </ul>
                     </div>
                      <div>
                         <h4 className="font-semibold mb-4">{c.legal}</h4>
                         <ul className="space-y-2">
-                            <li><Link href="#" className="text-muted-foreground hover:text-primary">{c.terms}</Link></li>
-                            <li><Link href="#" className="text-muted-foreground hover:text-primary">{c.privacy}</Link></li>
-                            <li><Link href="#" className="text-muted-foreground hover:text-primary">{c.imprint}</Link></li>
+                            <li><Link href="/terms" className="text-muted-foreground hover:text-primary">{c.terms}</Link></li>
+                            <li><Link href="/privacy" className="text-muted-foreground hover:text-primary">{c.privacy}</Link></li>
+                            <li><Link href="/imprint" className="text-muted-foreground hover:text-primary">{c.imprint}</Link></li>
                         </ul>
                     </div>
                 </div>
