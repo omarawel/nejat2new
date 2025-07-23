@@ -129,13 +129,14 @@ export default function Home() {
       <section className="mt-20 w-full max-w-5xl mx-auto">
         <h2 className="text-2xl sm:text-3xl font-bold">{c.sectionTitle}</h2>
         <p className="mt-2 text-md sm:text-lg text-muted-foreground">{c.sectionDescription}</p>
-        <div className="mt-8 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-4">
+        <div className="mt-8 grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-4">
           {tools.map((tool) => {
-            const card = <FeatureCard icon={tool.icon} name={tool.name} />
+            const card = <FeatureCard icon={tool.icon} name={tool.name} />;
+            const uniqueKey = `${tool.name}-${tool.icon}`;
             if (tool.href) {
-                return <Link key={tool.name} href={tool.href}>{card}</Link>
+                return <Link key={uniqueKey} href={tool.href}>{card}</Link>
             }
-            return <div key={tool.name}>{card}</div>;
+            return <div key={uniqueKey}>{card}</div>;
           })}
         </div>
       </section>
