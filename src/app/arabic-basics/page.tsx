@@ -1,9 +1,13 @@
 
 "use client"
 
+import { useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Button } from '@/components/ui/button';
+import { Eye, EyeOff } from 'lucide-react';
 import { useLanguage } from '@/components/language-provider';
+import { cn } from '@/lib/utils';
 
 const alphabet = [
   { letter: 'ا', name: 'Alif', forms: { isolated: 'ا', final: 'ـا', medial: 'ـا', initial: 'ا' } },
@@ -46,6 +50,7 @@ const content = {
         medial: "Mitte",
         final: "Ende",
         isolated: "Isoliert",
+        memorize: "Auswendiglernen"
     },
     en: {
         title: "Arabic Basics",
@@ -56,12 +61,18 @@ const content = {
         medial: "Medial",
         final: "Final",
         isolated: "Isolated",
+        memorize: "Memorize"
     }
 }
 
 export default function ArabicBasicsPage() {
   const { language } = useLanguage();
   const c = content[language] || content.de;
+  const [hiddenRows, setHiddenRows] = useState<Record<string, boolean>>({});
+
+  const toggleRowVisibility = (letterName: string) => {
+    setHiddenRows(prev => ({ ...prev, [letterName]: !prev[letterName] }));
+  };
     
   return (
     <div className="container mx-auto px-4 py-8">
@@ -81,19 +92,28 @@ export default function ArabicBasicsPage() {
                 <TableHead className="text-center">{c.medial}</TableHead>
                 <TableHead className="text-center">{c.final}</TableHead>
                 <TableHead className="text-center">{c.isolated}</TableHead>
+                <TableHead className="text-center">{c.memorize}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {alphabet.map((char) => (
-                <TableRow key={char.name} className="text-center">
-                  <TableCell className="text-3xl font-quranic font-bold text-primary">{char.letter}</TableCell>
-                  <TableCell>{char.name}</TableCell>
-                  <TableCell className="text-2xl font-quranic">{char.forms.initial}</TableCell>
-                  <TableCell className="text-2xl font-quranic">{char.forms.medial}</TableCell>
-                  <TableCell className="text-2xl font-quranic">{char.forms.final}</TableCell>
-                  <TableCell className="text-2xl font-quranic">{char.forms.isolated}</TableCell>
-                </TableRow>
-              ))}
+              {alphabet.map((char) => {
+                const isHidden = hiddenRows[char.name];
+                return (
+                    <TableRow key={char.name} className="text-center">
+                    <TableCell className="text-3xl font-quranic font-bold text-primary">{char.letter}</TableCell>
+                    <TableCell className={cn(isHidden && 'opacity-0')}>{char.name}</TableCell>
+                    <TableCell className={cn("text-2xl font-quranic", isHidden && 'opacity-0')}>{char.forms.initial}</TableCell>
+                    <TableCell className={cn("text-2xl font-quranic", isHidden && 'opacity-0')}>{char.forms.medial}</TableCell>
+                    <TableCell className={cn("text-2xl font-quranic", isHidden && 'opacity-0')}>{char.forms.final}</TableCell>
+                    <TableCell className={cn("text-2xl font-quranic", isHidden && 'opacity-0')}>{char.forms.isolated}</TableCell>
+                    <TableCell>
+                        <Button variant="ghost" size="icon" onClick={() => toggleRowVisibility(char.name)}>
+                            {isHidden ? <EyeOff /> : <Eye />}
+                        </Button>
+                    </TableCell>
+                    </TableRow>
+                )
+              })}
             </TableBody>
           </Table>
         </CardContent>
@@ -101,5 +121,3 @@ export default function ArabicBasicsPage() {
     </div>
   );
 }
-
-    

@@ -1,8 +1,12 @@
 
 "use client"
 
+import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Eye, EyeOff } from 'lucide-react';
 import { useLanguage } from '@/components/language-provider';
+import { cn } from '@/lib/utils';
 
 const numbers = [
   { number: '١', name: 'Wahid', value: 1 },
@@ -42,6 +46,11 @@ const content = {
 export default function ArabicNumbersPage() {
   const { language } = useLanguage();
   const c = content[language] || content.de;
+  const [hiddenCards, setHiddenCards] = useState<Record<number, boolean>>({});
+
+  const toggleCardVisibility = (value: number) => {
+    setHiddenCards(prev => ({ ...prev, [value]: !prev[value] }));
+  };
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -50,20 +59,24 @@ export default function ArabicNumbersPage() {
         <p className="text-muted-foreground mt-2 text-lg">{c.description}</p>
       </header>
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
-        {numbers.map((num) => (
-          <Card key={num.value} className="text-center transform transition-all duration-300 hover:scale-110 hover:shadow-lg">
-            <CardHeader>
-              <CardTitle className="text-6xl font-bold text-primary">{num.number}</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-1">
-              <p className="text-2xl font-semibold">{num.value}</p>
-              <p className="text-muted-foreground">{num.name}</p>
-            </CardContent>
-          </Card>
-        ))}
+        {numbers.map((num) => {
+          const isHidden = hiddenCards[num.value];
+          return (
+            <Card key={num.value} className="text-center transform transition-all duration-300 hover:scale-110 hover:shadow-lg relative">
+              <Button variant="ghost" size="icon" className="absolute top-2 right-2" onClick={() => toggleCardVisibility(num.value)}>
+                {isHidden ? <EyeOff /> : <Eye />}
+              </Button>
+              <CardHeader>
+                <CardTitle className="text-6xl font-bold text-primary pt-8">{num.number}</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-1">
+                <p className={cn("text-2xl font-semibold", isHidden && 'opacity-0')}>{num.value}</p>
+                <p className={cn("text-muted-foreground", isHidden && 'opacity-0')}>{num.name}</p>
+              </CardContent>
+            </Card>
+          )
+        })}
       </div>
     </div>
   );
 }
-
-    
