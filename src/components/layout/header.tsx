@@ -103,7 +103,7 @@ export function AppHeader() {
   return (
     <header className="sticky top-0 z-10 flex h-20 items-center gap-4 border-b bg-background/80 px-4 backdrop-blur-sm sm:px-8">
       <Link href="/" className="flex items-center gap-2">
-        <span className="text-xl font-bold">nejat</span>
+        <span className="text-xl font-bold">Nejat</span>
       </Link>
       <div className="flex-1" />
       <div className="flex items-center gap-2">
