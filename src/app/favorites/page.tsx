@@ -126,7 +126,6 @@ export default function FavoritesPage() {
                     <CardContent>
                        <Button asChild>
                            <Link href="/login">
-                                <BrainCircuit className="mr-2 h-4 w-4" />
                                {c.login}
                            </Link>
                        </Button>
