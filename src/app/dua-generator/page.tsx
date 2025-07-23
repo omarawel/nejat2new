@@ -24,9 +24,7 @@ const content = {
         description: "Erstelle persönliche Bittgebete mit Hilfe von KI.",
         formTitle: "Erstelle dein Bittgebet",
         topicLabel: "Thema",
-        topicPlaceholder: "z.B. Prüfung, Gesundheit, Dankbarkeit",
-        customTopicLabel: "Benutzerdefiniertes Thema",
-        customTopicPlaceholder: "Beschreibe dein Anliegen...",
+        topicPlaceholder: "z.B. für eine erfolgreiche Prüfung...",
         lengthLabel: "Länge",
         lengthShort: "Kurz",
         lengthMedium: "Mittel",
@@ -44,9 +42,7 @@ const content = {
         description: "Create personalized supplications with the help of AI.",
         formTitle: "Create Your Du'a",
         topicLabel: "Topic",
-        topicPlaceholder: "e.g. Exam, Health, Gratitude",
-        customTopicLabel: "Custom Topic",
-        customTopicPlaceholder: "Describe your need...",
+        topicPlaceholder: "e.g. for success in an exam...",
         lengthLabel: "Length",
         lengthShort: "Short",
         lengthMedium: "Medium",
@@ -61,60 +57,40 @@ const content = {
     }
 };
 
-const topics = {
-    de: ["Prüfung", "Gesundheit", "Dankbarkeit", "Vergebung", "Reise", "Familie", "Andere"],
-    en: ["Exam", "Health", "Gratitude", "Forgiveness", "Travel", "Family", "Other"]
-};
+const FormSchema = z.object({
+    topic: z.string().min(3, { message: "Topic must be at least 3 characters." }),
+    length: z.enum(["short", "medium", "long"]),
+    language: z.enum(["de", "en", "ar"]),
+});
+
 
 export default function DuaGeneratorPage() {
     const { language } = useLanguage();
     const c = content[language] || content.de;
-    const formTopics = topics[language] || topics.de;
 
     const [generatedDua, setGeneratedDua] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [copied, setCopied] = useState(false);
 
-    // We need to create a client-side schema for the form that includes the custom topic logic
-    const ClientFormSchema = z.object({
-        topic: z.string().min(1),
-        customTopic: z.string().optional(),
-        length: z.enum(["short", "medium", "long"]),
-        language: z.enum(["de", "en", "ar"]),
-    }).refine(data => {
-        if (data.topic === "Andere" || data.topic === "Other") {
-            return !!data.customTopic?.trim();
-        }
-        return true;
-    }, {
-        message: language === "de" ? "Bitte beschreibe dein Anliegen." : "Please describe your need.",
-        path: ["customTopic"],
-    });
-
-
-    const form = useForm<z.infer<typeof ClientFormSchema>>({
-        resolver: zodResolver(ClientFormSchema),
+    const form = useForm<z.infer<typeof FormSchema>>({
+        resolver: zodResolver(FormSchema),
         defaultValues: {
             topic: "",
             length: "medium",
             language: language,
-            customTopic: "",
         },
     });
 
-    const selectedTopic = form.watch("topic");
 
-    async function onSubmit(data: z.infer<typeof ClientFormSchema>) {
+    async function onSubmit(data: z.infer<typeof FormSchema>) {
         setIsLoading(true);
         setError(null);
         setGeneratedDua("");
 
         try {
-            const topicToSend = data.topic === 'Andere' || data.topic === 'Other' ? data.customTopic! : data.topic;
-            
             const duaInput: GenerateDuaInput = {
-                topic: topicToSend,
+                topic: data.topic,
                 length: data.length,
                 language: data.language
             };
@@ -159,36 +135,13 @@ export default function DuaGeneratorPage() {
                                     render={({ field }) => (
                                         <FormItem>
                                             <FormLabel>{c.topicLabel}</FormLabel>
-                                            <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                                <FormControl>
-                                                    <SelectTrigger>
-                                                        <SelectValue placeholder={c.topicPlaceholder} />
-                                                    </SelectTrigger>
-                                                </FormControl>
-                                                <SelectContent>
-                                                    {formTopics.map(t => <SelectItem key={t} value={t}>{t}</SelectItem>)}
-                                                </SelectContent>
-                                            </Select>
+                                            <FormControl>
+                                                <Input placeholder={c.topicPlaceholder} {...field} />
+                                            </FormControl>
                                             <FormMessage />
                                         </FormItem>
                                     )}
                                 />
-
-                                {(selectedTopic === "Andere" || selectedTopic === "Other") && (
-                                     <FormField
-                                        control={form.control}
-                                        name="customTopic"
-                                        render={({ field }) => (
-                                            <FormItem>
-                                                <FormLabel>{c.customTopicLabel}</FormLabel>
-                                                <FormControl>
-                                                    <Textarea placeholder={c.customTopicPlaceholder} {...field} />
-                                                </FormControl>
-                                                <FormMessage />
-                                            </FormItem>
-                                        )}
-                                    />
-                                )}
 
                                 <FormField
                                     control={form.control}
