@@ -96,6 +96,12 @@ export function AppHeader() {
           </DropdownMenu>
         ) : (
           <>
+            <Button variant="ghost" asChild>
+                <Link href="/login">
+                    <LogIn />
+                    Anmelden
+                </Link>
+            </Button>
             <Button asChild>
                 <Link href="/signup">
                     <UserPlus />
