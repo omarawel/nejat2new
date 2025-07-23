@@ -1,89 +1,95 @@
 
 "use client"
 
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { useLanguage } from '@/components/language-provider';
 import { CheckCircle, XCircle, Drumstick, Fish, GlassWater, HandHeart } from 'lucide-react';
 
 const content = {
     de: {
         title: "Islamische Essensregeln",
-        description: "Ein Überblick über Halal (erlaubt), Haram (verboten) und die Etikette des Essens.",
+        description: "Ein umfassender Leitfaden zu Halal, Haram und der Etikette des Essens.",
         halal: {
             title: "Was ist Halal?",
-            description: "Halal ist ein arabisches Wort und bedeutet „erlaubt“ oder „zulässig“. Es bezieht sich auf alles, was nach islamischem Recht erlaubt ist. Bei Lebensmitteln bedeutet dies, dass sie nach bestimmten Regeln zubereitet und verzehrt werden.",
+            description: "Halal ist ein arabisches Wort und bedeutet „erlaubt“ oder „zulässig“. Es bezieht sich auf alles, was nach islamischem Recht erlaubt ist. Bei Lebensmitteln bedeutet dies, dass sie aus reinen Quellen stammen und auf eine Weise zubereitet werden, die dem islamischen Gesetz entspricht.",
             items: [
                 { icon: Drumstick, text: "Fleisch von Tieren, die nach dem islamischen Ritual (Zabiha) geschlachtet wurden, wie Rind, Lamm und Huhn." },
                 { icon: Fish, text: "Fisch und die meisten Meeresfrüchte." },
-                { icon: GlassWater, text: "Milchprodukte, Eier, Getreide, Obst und Gemüse." }
+                { icon: GlassWater, text: "Milchprodukte, Eier, Getreide, Obst und Gemüse, solange sie nicht mit Haram-Substanzen vermischt sind." }
             ]
         },
         haram: {
             title: "Was ist Haram?",
-            description: "Haram bedeutet „verboten“ oder „unzulässig“. Es bezeichnet Handlungen oder Lebensmittel, die im Islam strengstens verboten sind. Der Verzehr von Haram-Lebensmitteln gilt als Sünde.",
+            description: "Haram bedeutet „verboten“ oder „unzulässig“. Es bezeichnet Handlungen oder Lebensmittel, die im Islam strengstens verboten sind. Der Verzehr von Haram-Lebensmitteln gilt als Sünde und beeinträchtigt die spirituelle Reinheit.",
             items: [
                 { icon: XCircle, text: "Schweinefleisch und alle daraus hergestellten Produkte." },
                 { icon: XCircle, text: "Aas (Tiere, die eines natürlichen Todes gestorben sind)." },
-                { icon: XCircle, text: "Blut und Blutprodukte." },
-                { icon: XCircle, text: "Fleisch von Raubtieren und Vögeln mit Krallen." },
+                { icon: XCircle, text: "Blut in jeglicher Form." },
+                { icon: XCircle, text: "Fleisch von Raubtieren, Vögeln mit Krallen und Tieren, die nicht im Namen Allahs geschlachtet wurden." },
                 { icon: XCircle, text: "Alkohol und andere berauschende Substanzen." }
             ]
         },
         etiquette: {
             title: "Die Etikette des Essens (Adab al-Ta'am)",
-            description: "Neben den Regeln, was gegessen werden darf, gibt es auch Empfehlungen für das Verhalten beim Essen, die auf der Sunnah des Propheten (ﷺ) basieren.",
+            description: "Neben den Regeln, was gegessen werden darf, gibt es auch Empfehlungen für das Verhalten beim Essen, die auf der Sunnah des Propheten (ﷺ) basieren und Segen (Barakah) bringen.",
             points: [
-                "Beginne mit „Bismillah“ (Im Namen Allahs).",
+                "Wasche die Hände vor und nach dem Essen.",
+                "Beginne mit „Bismillah“. Wenn du es vergisst, sage „Bismillahi awwalahu wa akhirahu“, sobald du dich erinnerst.",
                 "Iss mit der rechten Hand.",
                 "Iss von dem, was direkt vor dir liegt.",
-                "Iss nicht übermäßig und verschwende keine Lebensmittel.",
+                "Finde keine Fehler am Essen. Wenn du es magst, iss es; wenn nicht, lass es.",
+                "Iss nicht im Liegen.",
+                "Iss nicht übermäßig. Die Sunna empfiehlt, den Magen zu einem Drittel mit Essen, einem Drittel mit Wasser und einem Drittel mit Luft zu füllen.",
+                "Iss gemeinsam mit anderen, wann immer es möglich ist, um den Segen zu mehren.",
                 "Zeige Dankbarkeit und lobe Allah nach dem Essen, indem du „Alhamdulillah“ sagst.",
-                "Iss gemeinsam mit anderen, wann immer es möglich ist, um Segen zu fördern."
             ]
         },
         importance: {
             title: "Die Weisheit hinter den Regeln",
-            content: "Die islamischen Speisevorschriften dienen nicht nur der körperlichen, sondern auch der spirituellen Reinheit und Gesundheit. Sie fördern Achtsamkeit, Disziplin und Dankbarkeit gegenüber Allah für seine Gaben. Das Einhalten von Halal ist ein wichtiger Teil des Gottesdienstes eines Muslims."
+            content: "Die islamischen Speisevorschriften dienen nicht nur der körperlichen, sondern auch der spirituellen Reinheit und Gesundheit. Sie fördern Achtsamkeit, Disziplin und Dankbarkeit gegenüber Allah für seine Gaben. Das Einhalten von Halal ist ein wichtiger Teil des Gottesdienstes (Ibadah) eines Muslims und ein Ausdruck des Gehorsams gegenüber dem Schöpfer."
         }
     },
     en: {
         title: "Islamic Food Rules",
-        description: "An overview of Halal (permissible), Haram (forbidden), and the etiquette of eating.",
+        description: "A comprehensive guide to Halal, Haram, and the etiquette of eating.",
         halal: {
             title: "What is Halal?",
-            description: "Halal is an Arabic word meaning 'permissible' or 'lawful'. It refers to anything that is permitted under Islamic law. For food, this means it is prepared and consumed according to specific rules.",
+            description: "Halal is an Arabic word meaning 'permissible' or 'lawful'. It refers to anything permitted under Islamic law. For food, this means it comes from pure sources and is prepared in a manner consistent with Islamic law.",
             items: [
                 { icon: Drumstick, text: "Meat from animals slaughtered according to the Islamic ritual (Zabiha), such as beef, lamb, and chicken." },
                 { icon: Fish, text: "Fish and most seafood." },
-                { icon: GlassWater, text: "Dairy products, eggs, grains, fruits, and vegetables." }
+                { icon: GlassWater, text: "Dairy products, eggs, grains, fruits, and vegetables, as long as they are not mixed with Haram substances." }
             ]
         },
         haram: {
             title: "What is Haram?",
-            description: "Haram means 'forbidden' or 'unlawful'. It refers to actions or foods that are strictly prohibited in Islam. Consuming Haram food is considered a sin.",
+            description: "Haram means 'forbidden' or 'unlawful'. It refers to actions or foods that are strictly prohibited in Islam. Consuming Haram food is considered a sin and affects one's spiritual purity.",
             items: [
                 { icon: XCircle, text: "Pork and all products derived from it." },
                 { icon: XCircle, text: "Carrion (animals that have died of natural causes)." },
-                { icon: XCircle, text: "Blood and blood products." },
-                { icon: XCircle, text: "Meat from predators and birds with talons." },
+                { icon: XCircle, text: "Blood in any form." },
+                { icon: XCircle, text: "Meat from predators, birds with talons, and animals not slaughtered in the name of Allah." },
                 { icon: XCircle, text: "Alcohol and other intoxicants." }
             ]
         },
         etiquette: {
             title: "The Etiquette of Eating (Adab al-Ta'am)",
-            description: "In addition to the rules about what may be eaten, there are also recommendations for behavior during meals, based on the Sunnah of the Prophet (ﷺ).",
+            description: "In addition to the rules about what may be eaten, there are also recommendations for behavior during meals, based on the Sunnah of the Prophet (ﷺ), which bring blessings (Barakah).",
             points: [
-                "Start by saying 'Bismillah' (In the name of Allah).",
+                "Wash hands before and after eating.",
+                "Start by saying 'Bismillah'. If you forget, say 'Bismillahi awwalahu wa akhirahu' as soon as you remember.",
                 "Eat with your right hand.",
                 "Eat from what is directly in front of you.",
-                "Do not overeat and do not waste food.",
-                "Show gratitude and praise Allah after eating by saying 'Alhamdulillah'.",
-                "Eat together with others whenever possible to encourage blessings."
+                "Do not find fault with the food. If you like it, eat it; if not, leave it.",
+                "Do not eat while reclining.",
+                "Do not overeat. The Sunnah recommends filling the stomach with one-third food, one-third drink, and one-third air.",
+                "Eat together with others whenever possible to increase blessings.",
+                "Show gratitude and praise Allah after eating by saying 'Alhamdulillah'."
             ]
         },
         importance: {
             title: "The Wisdom Behind the Rules",
-            content: "The Islamic dietary laws serve not only physical but also spiritual purity and health. They promote mindfulness, discipline, and gratitude to Allah for His blessings. Adhering to Halal is an important part of a Muslim's worship."
+            content: "The Islamic dietary laws serve not only physical but also spiritual purity and health. They promote mindfulness, discipline, and gratitude to Allah for His blessings. Adhering to Halal is an important part of a Muslim's worship (Ibadah) and an expression of obedience to the Creator."
         }
     }
 };
@@ -100,14 +106,14 @@ export default function FoodRulesPage() {
             </header>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto mb-8">
-                <Card className="border-green-500/50 border-2">
+                <Card className="border-green-500/50 border-2 flex flex-col">
                     <CardHeader>
                         <CardTitle className="flex items-center gap-3 text-green-600 dark:text-green-500">
                             <CheckCircle className="h-8 w-8" />
                             {c.halal.title}
                         </CardTitle>
                     </CardHeader>
-                    <CardContent className="space-y-4">
+                    <CardContent className="space-y-4 flex-grow">
                         <p className="text-muted-foreground">{c.halal.description}</p>
                         <ul className="space-y-3">
                             {c.halal.items.map((item, index) => (
@@ -120,14 +126,14 @@ export default function FoodRulesPage() {
                     </CardContent>
                 </Card>
 
-                <Card className="border-destructive/50 border-2">
+                <Card className="border-destructive/50 border-2 flex flex-col">
                     <CardHeader>
                         <CardTitle className="flex items-center gap-3 text-destructive">
                             <XCircle className="h-8 w-8" />
                             {c.haram.title}
                         </CardTitle>
                     </CardHeader>
-                    <CardContent className="space-y-4">
+                    <CardContent className="space-y-4 flex-grow">
                         <p className="text-muted-foreground">{c.haram.description}</p>
                          <ul className="space-y-3">
                             {c.haram.items.map((item, index) => (
@@ -148,12 +154,12 @@ export default function FoodRulesPage() {
                             <HandHeart className="h-8 w-8 text-primary" />
                             {c.etiquette.title}
                         </CardTitle>
+                         <CardDescription>{c.etiquette.description}</CardDescription>
                     </CardHeader>
-                    <CardContent className="space-y-4">
-                        <p className="text-muted-foreground">{c.etiquette.description}</p>
-                        <ul className="list-disc list-inside space-y-2">
+                    <CardContent>
+                        <ul className="list-decimal list-inside space-y-3">
                             {c.etiquette.points.map((point, index) => (
-                                <li key={index}>{point}</li>
+                                <li key={index} className="pl-2">{point}</li>
                             ))}
                         </ul>
                     </CardContent>
@@ -161,12 +167,12 @@ export default function FoodRulesPage() {
             </div>
 
             <div className="max-w-5xl mx-auto mt-8">
-                <Card>
+                <Card className="bg-accent/20">
                     <CardHeader>
                         <CardTitle>{c.importance.title}</CardTitle>
                     </CardHeader>
                     <CardContent>
-                        <p className="text-muted-foreground">{c.importance.content}</p>
+                        <p className="text-foreground/80">{c.importance.content}</p>
                     </CardContent>
                 </Card>
             </div>
