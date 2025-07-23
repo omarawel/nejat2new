@@ -186,6 +186,7 @@ export default function HadithPage() {
     if (!searchTerm.trim()) {
       setSearchResults(null);
       setSubmittedSearchTerm("");
+      setSearchError(null);
       return;
     }
 
@@ -296,7 +297,7 @@ export default function HadithPage() {
       {searchResults && (
         <Card>
             <CardContent className="p-6">
-                <h2 className="text-xl font-semibold mb-4">Search Results ({searchResults.length} matches)</h2>
+                <h2 className="text-xl font-semibold mb-4">Search Results ({searchResults.length} {searchResults.length === 1 ? 'match' : 'matches'})</h2>
                 {searchResults.length > 0 ? (
                     <div className="space-y-4">
                         {searchResults.map(hadith => (
@@ -319,14 +320,14 @@ export default function HadithPage() {
                         ))}
                     </div>
                 ) : (
-                    <p>No results found for your query.</p>
+                    <p>No results found for your query: "{submittedSearchTerm}"</p>
                 )}
             </CardContent>
         </Card>
       )}
 
 
-      {!submittedSearchTerm && (
+      {!submittedSearchTerm && !searchResults && (
         loading ? (
           <div className="space-y-2">
               {[...Array(10)].map((_, i) => (
