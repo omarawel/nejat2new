@@ -15,6 +15,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Loader2, Wand2, Copy, Check } from "lucide-react";
 import { useLanguage } from "@/components/language-provider";
 import { generateDua } from "@/ai/flows/generate-dua";
+import type { GenerateDuaInput } from "@/ai/flows/generate-dua-types";
+import { GenerateDuaInputSchema } from "@/ai/flows/generate-dua-types";
+
 
 const content = {
     de: {
@@ -74,39 +77,58 @@ export default function DuaGeneratorPage() {
     const [error, setError] = useState<string | null>(null);
     const [copied, setCopied] = useState(false);
 
-    const FormSchema = z.object({
-        topic: z.string().min(1),
+    const FormSchema = GenerateDuaInputSchema.extend({
         customTopic: z.string().optional(),
-        length: z.enum(["short", "medium", "long"]),
         outputLanguage: z.enum(["de", "en", "ar"]),
-    }).refine(data => data.topic !== "Andere" || !!data.customTopic, {
+    }).refine(data => data.topic !== "Andere" || data.topic !== "Other" || !!data.customTopic, {
         message: language === "de" ? "Bitte beschreibe dein Anliegen." : "Please describe your need.",
         path: ["customTopic"],
     });
 
-    const form = useForm<z.infer<typeof FormSchema>>({
-        resolver: zodResolver(FormSchema),
+    // We need to create a client-side schema for the form that includes the custom topic logic
+    const ClientFormSchema = z.object({
+        topic: z.string().min(1),
+        customTopic: z.string().optional(),
+        length: z.enum(["short", "medium", "long"]),
+        outputLanguage: z.enum(["de", "en", "ar"]),
+    }).refine(data => {
+        if (data.topic === "Andere" || data.topic === "Other") {
+            return !!data.customTopic?.trim();
+        }
+        return true;
+    }, {
+        message: language === "de" ? "Bitte beschreibe dein Anliegen." : "Please describe your need.",
+        path: ["customTopic"],
+    });
+
+
+    const form = useForm<z.infer<typeof ClientFormSchema>>({
+        resolver: zodResolver(ClientFormSchema),
         defaultValues: {
             topic: "",
             length: "medium",
             outputLanguage: language,
+            customTopic: "",
         },
     });
 
     const selectedTopic = form.watch("topic");
 
-    async function onSubmit(data: z.infer<typeof FormSchema>) {
+    async function onSubmit(data: z.infer<typeof ClientFormSchema>) {
         setIsLoading(true);
         setError(null);
         setGeneratedDua("");
 
         try {
-            const prompt = data.topic === 'Andere' || data.topic === 'Other' ? data.customTopic! : data.topic;
-            const result = await generateDua({
-                topic: prompt,
+            const topicToSend = data.topic === 'Andere' || data.topic === 'Other' ? data.customTopic! : data.topic;
+            
+            const duaInput: GenerateDuaInput = {
+                topic: topicToSend,
                 length: data.length,
-                language: data.outputLanguage,
-            });
+                language: data.outputLanguage
+            };
+
+            const result = await generateDua(duaInput);
             setGeneratedDua(result.dua);
         } catch (e) {
             console.error(e);
