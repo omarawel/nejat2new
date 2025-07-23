@@ -56,6 +56,34 @@ const content = {
         transliteration: "La ilaha illa anta, subhanaka, inni kuntu minaz-zalimin",
         meaning: "Es gibt keine Gottheit außer Dir! Gepriesen seist Du, ich war wahrlich einer der Ungerechten.",
         benefit: "Kein Muslim bittet mit diesen Worten um etwas, ohne dass Allah sein Gebet erhört. (Tirmidhi)"
+      },
+      {
+        title: "Salawat für den Propheten (ﷺ)",
+        arabic: "اللَّهُمَّ صَلِّ عَلَى مُحَمَّدٍ وَعَلَى آلِ مُحَمَّدٍ",
+        transliteration: "Allahumma salli 'ala Muhammadin wa 'ala aali Muhammad",
+        meaning: "O Allah, sende Deine Gnade, Ehre und Barmherzigkeit auf Muhammad und die Familie von Muhammad.",
+        benefit: "Der Prophet (ﷺ) sagte: 'Wer einmal Segenswünsche über mich ausspricht, über den wird Allah zehnmal Segenswünsche aussprechen, ihm zehn Sünden vergeben und ihn um zehn Stufen erhöhen.' (an-Nasa'i)"
+      },
+      {
+        title: "Hawqala (Kanz aus dem Paradies)",
+        arabic: "لَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِٱللَّٰهِ",
+        transliteration: "La hawla wa la quwwata illa billah",
+        meaning: "Es gibt keine Macht noch Kraft außer bei Allah.",
+        benefit: "Dies ist einer der Schätze des Paradieses. (Bukhari, Muslim)"
+      },
+       {
+        title: "Sayyid al-Istighfar",
+        arabic: "اللَّهُمَّ أَنْتَ رَبِّي لَا إِلَهَ إِلَّا أَنْتَ، خَلَقْتَنِي وَأَنَا عَبْدُكَ، وَأَنَا عَلَى عَهْدِكَ وَوَعْدِكَ مَا اسْتَطَعْتُ، أَعُوذُ بِكَ مِنْ شَرِّ مَا صَنَعْتُ، أَبُوءُ لَكَ بِنِعْمَتِكَ عَلَيَّ، وَأَبُوءُ لَكَ بِذَنْبِي فَاغْفِرْ لِي، فَإِنَّهُ لَا يَغْفِرُ الذُّنُوبَ إِلَّا أَنْتَ",
+        transliteration: "Allahumma anta Rabbi la ilaha illa anta, khalaqtani wa ana 'abduka, wa ana 'ala 'ahdika wa wa'dika mastata'tu, a'udhu bika min sharri ma sana'tu, abu'u laka bini'matika 'alayya, wa abu'u laka bidhanbi faghfir li, fa'innahu la yaghfirudh-dhunuba illa anta.",
+        meaning: "O Allah, Du bist mein Herr, es gibt keine Gottheit außer Dir. Du hast mich erschaffen und ich bin Dein Diener. Ich halte an Deinem Bund und Deinem Versprechen fest, so gut ich kann. Ich suche Zuflucht bei Dir vor dem Übel, das ich getan habe. Ich erkenne Deine Gaben an mir an und ich gestehe meine Sünde. So vergib mir, denn niemand vergibt Sünden außer Dir.",
+        benefit: "Wer dies am Tag mit Überzeugung sagt und an diesem Tag vor dem Abend stirbt, wird zu den Bewohnern des Paradieses gehören. Und wer dies in der Nacht mit Überzeugung sagt und vor dem Morgen stirbt, wird zu den Bewohnern des Paradieses gehören. (Bukhari)"
+      },
+       {
+        title: "Schutz vor dem Übel der Schöpfung",
+        arabic: "أَعُوذُ بِكَلِمَاتِ اللَّهِ التَّامَّاتِ مِنْ شَرِّ مَا خَلَقَ",
+        transliteration: "A'udhu bikalimatillahit-tammati min sharri ma khalaq.",
+        meaning: "Ich suche Zuflucht bei den vollkommenen Worten Allahs vor dem Übel dessen, was Er erschaffen hat.",
+        benefit: "Wer dies dreimal am Abend sagt, dem wird in dieser Nacht kein Unheil widerfahren. (Tirmidhi)"
       }
     ]
   },
@@ -104,6 +132,34 @@ const content = {
         transliteration: "La ilaha illa anta, subhanaka, inni kuntu minaz-zalimin",
         meaning: "There is no deity except You; exalted are You. Indeed, I have been of the wrongdoers.",
         benefit: "No Muslim supplicates with these words for anything, but that Allah will answer his prayer. (Tirmidhi)"
+      },
+       {
+        title: "Salawat on the Prophet (ﷺ)",
+        arabic: "اللَّهُمَّ صَلِّ عَلَى مُحَمَّدٍ وَعَلَى آلِ مُحَمَّدٍ",
+        transliteration: "Allahumma salli 'ala Muhammadin wa 'ala aali Muhammad",
+        meaning: "O Allah, send Your grace, honour and mercy upon Muhammad and the family of Muhammad.",
+        benefit: "The Prophet (ﷺ) said: 'Whoever sends blessings upon me once, Allah will send blessings upon him tenfold, forgive him ten sins, and raise him ten degrees in status.' (an-Nasa'i)"
+      },
+      {
+        title: "Hawqala (Treasure from Paradise)",
+        arabic: "لَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِٱللَّٰهِ",
+        transliteration: "La hawla wa la quwwata illa billah",
+        meaning: "There is no might nor power except with Allah.",
+        benefit: "This is one of the treasures of Paradise. (Bukhari, Muslim)"
+      },
+      {
+        title: "Sayyid al-Istighfar",
+        arabic: "اللَّهُمَّ أَنْتَ رَبِّي لَا إِلَهَ إِلَّا أَنْتَ، خَلَقْتَنِي وَأَنَا عَبْدُكَ، وَأَنَا عَلَى عَهْدِكَ وَوَعْدِكَ مَا اسْتَطَعْتُ، أَعُوذُ بِكَ مِنْ شَرِّ مَا صَنَعْتُ، أَبُوءُ لَكَ بِنِعْمَتِكَ عَلَيَّ، وَأَبُوءُ لَكَ بِذَنْبِي فَاغْفِرْ لِي، فَإِنَّهُ لَا يَغْفِرُ الذُّنُوبَ إِلَّا أَنْتَ",
+        transliteration: "Allahumma anta Rabbi la ilaha illa anta, khalaqtani wa ana 'abduka, wa ana 'ala 'ahdika wa wa'dika mastata'tu, a'udhu bika min sharri ma sana'tu, abu'u laka bini'matika 'alayya, wa abu'u laka bidhanbi faghfir li, fa'innahu la yaghfirudh-dhunuba illa anta.",
+        meaning: "O Allah, You are my Lord, there is no deity but You. You created me and I am Your servant. I abide by Your covenant and promise as much as I can. I seek refuge in You from the evil of what I have done. I acknowledge Your favor upon me and I acknowledge my sin. So forgive me, for none forgives sins except You.",
+        benefit: "Whoever says it during the day with firm faith in it, and dies on the same day before the evening, he will be from the people of Paradise; and if somebody says it at night with firm faith in it, and dies before the morning, he will be from the people of Paradise. (Bukhari)"
+      },
+      {
+        title: "Protection from the evil of creation",
+        arabic: "أَعُوذُ بِكَلِمَاتِ اللَّهِ التَّامَّاتِ مِنْ شَرِّ مَا خَلَقَ",
+        transliteration: "A'udhu bikalimatillahit-tammati min sharri ma khalaq.",
+        meaning: "I seek refuge in the perfect words of Allah from the evil of that which He has created.",
+        benefit: "Whoever says this three times in the evening, no calamity will befall him that night. (Tirmidhi)"
       }
     ]
   }
