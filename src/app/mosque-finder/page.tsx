@@ -3,10 +3,12 @@
 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { MapPin, ArrowLeft, Search, LocateFixed } from 'lucide-react';
+import { MapPin, ArrowLeft, Search, LocateFixed, Loader2 } from 'lucide-react';
 import { useLanguage } from '@/components/language-provider';
 import Link from 'next/link';
 import { Input } from '@/components/ui/input';
+import { useState } from 'react';
+import { useToast } from '@/hooks/use-toast';
 
 
 const content = {
@@ -17,8 +19,8 @@ const content = {
         searchPlaceholder: "Stadt oder Adresse eingeben...",
         searchButton: "Suchen",
         useCurrentLocation: "Meinen Standort verwenden",
-        infoTitle: "Funktion in Kürze verfügbar",
-        infoText: "Die Karten- und Suchfunktion wird bald integriert. In der Zwischenzeit kannst du beliebte Online-Dienste nutzen, um Moscheen zu finden."
+        locationError: "Standort konnte nicht abgerufen werden. Bitte überprüfe deine Browsereinstellungen.",
+        locating: "Standort wird ermittelt...",
     },
     en: {
         pageTitle: "Mosque Finder",
@@ -27,8 +29,8 @@ const content = {
         searchPlaceholder: "Enter city or address...",
         searchButton: "Search",
         useCurrentLocation: "Use My Location",
-        infoTitle: "Feature Coming Soon",
-        infoText: "The map and search functionality will be integrated soon. In the meantime, you can use popular online services to find mosques."
+        locationError: "Could not retrieve location. Please check your browser settings.",
+        locating: "Getting location...",
     }
 }
 
@@ -36,29 +38,78 @@ const content = {
 export default function MosqueFinderPage() {
   const { language } = useLanguage();
   const c = content[language] || content.de;
+  const { toast } = useToast();
+  const [locationQuery, setLocationQuery] = useState('');
+  const [isLocating, setIsLocating] = useState(false);
+
+  const handleSearch = () => {
+      if (!locationQuery.trim()) return;
+      const url = `https://www.google.com/maps/search/?api=1&query=mosques+near+${encodeURIComponent(locationQuery)}`;
+      window.open(url, '_blank');
+  };
+  
+  const handleCurrentLocation = () => {
+    setIsLocating(true);
+    if (!navigator.geolocation) {
+        toast({
+            variant: "destructive",
+            title: "Error",
+            description: c.locationError,
+        });
+        setIsLocating(false);
+        return;
+    }
+    navigator.geolocation.getCurrentPosition(
+        (position) => {
+            const { latitude, longitude } = position.coords;
+            const url = `https://www.google.com/maps/search/?api=1&query=mosques&query_place_id=${latitude},${longitude}`;
+            window.open(url, '_blank');
+            setIsLocating(false);
+        },
+        (error) => {
+             toast({
+                variant: "destructive",
+                title: "Error",
+                description: c.locationError,
+            });
+            console.error(error);
+            setIsLocating(false);
+        }
+    );
+  }
 
   return (
     <div className="container mx-auto px-4 py-8 flex-grow flex flex-col">
-        <div className="w-full max-w-4xl mx-auto">
+        <div className="w-full max-w-2xl mx-auto">
             <Button asChild variant="ghost" className="mb-8">
                 <Link href="/">
                     <ArrowLeft className="mr-2 h-4 w-4" />
                     {c.backToFeatures}
                 </Link>
             </Button>
-            <header className="text-center mb-12">
-                <h1 className="text-4xl font-bold tracking-tight text-primary flex items-center justify-center gap-3">
-                    <MapPin className="h-10 w-10" />
-                    {c.pageTitle}
-                </h1>
-                <p className="text-muted-foreground mt-2 text-lg">{c.pageDescription}</p>
-            </header>
-
-            <Card className="mb-8">
+            <Card>
+                <CardHeader className="text-center">
+                     <div className="flex justify-center mb-4">
+                        <div className="p-4 bg-primary/10 rounded-full">
+                            <MapPin className="h-12 w-12 text-primary" />
+                        </div>
+                    </div>
+                    <CardTitle className="text-3xl">{c.pageTitle}</CardTitle>
+                    <CardDescription className="text-lg">{c.pageDescription}</CardDescription>
+                </CardHeader>
                 <CardContent className="p-6">
                     <div className="flex flex-col sm:flex-row gap-4">
-                        <Input placeholder={c.searchPlaceholder} className="flex-grow" />
-                        <Button className="w-full sm:w-auto"><Search className="mr-2 h-4 w-4" />{c.searchButton}</Button>
+                        <Input 
+                            placeholder={c.searchPlaceholder}
+                            className="flex-grow"
+                            value={locationQuery}
+                            onChange={(e) => setLocationQuery(e.target.value)}
+                            onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
+                        />
+                        <Button className="w-full sm:w-auto" onClick={handleSearch} disabled={!locationQuery.trim()}>
+                            <Search className="mr-2 h-4 w-4" />
+                            {c.searchButton}
+                        </Button>
                     </div>
                      <div className="relative flex items-center justify-center my-4">
                         <div className="absolute inset-0 flex items-center">
@@ -68,15 +119,16 @@ export default function MosqueFinderPage() {
                             <span className="bg-card px-2 text-muted-foreground">OR</span>
                         </div>
                     </div>
-                     <Button variant="secondary" className="w-full"><LocateFixed className="mr-2 h-4 w-4" /> {c.useCurrentLocation}</Button>
+                     <Button variant="secondary" className="w-full" onClick={handleCurrentLocation} disabled={isLocating}>
+                         {isLocating ? (
+                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                         ) : (
+                            <LocateFixed className="mr-2 h-4 w-4" />
+                         )}
+                         {isLocating ? c.locating : c.useCurrentLocation}
+                    </Button>
                 </CardContent>
             </Card>
-
-            <div className="aspect-video w-full bg-muted rounded-lg flex flex-col items-center justify-center text-center p-4">
-                <MapPin className="h-16 w-16 text-muted-foreground/50 mb-4" />
-                <h3 className="text-xl font-semibold text-muted-foreground">{c.infoTitle}</h3>
-                <p className="text-muted-foreground">{c.infoText}</p>
-            </div>
         </div>
     </div>
   );
