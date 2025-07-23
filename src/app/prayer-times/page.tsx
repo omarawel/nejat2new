@@ -7,6 +7,7 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { useLanguage } from "@/components/language-provider";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 
 
 const content = {
@@ -57,13 +58,12 @@ const prayerTimes = [
 export default function PrayerTimesPage() {
     const { language } = useLanguage();
     const c = content[language];
+    const router = useRouter();
   return (
     <div className="container mx-auto px-4 py-8 max-w-md">
-        <Button asChild variant="ghost" className="mb-8">
-            <Link href="/">
-                <ArrowLeft className="mr-2 h-4 w-4" />
-                {c.backToFeatures}
-            </Link>
+        <Button variant="ghost" className="mb-8" onClick={() => router.back()}>
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            {c.backToFeatures}
         </Button>
       <header className="text-center mb-8">
         <h1 className="text-3xl font-bold tracking-tight text-primary">{c.title}</h1>
