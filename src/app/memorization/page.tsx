@@ -1,135 +1,164 @@
 
 "use client"
 
+import { useState, useRef, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { CheckCircle2 } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Textarea } from '@/components/ui/textarea';
+import { Play, Pause, Loader, Eye, EyeOff, BrainCircuit } from 'lucide-react';
 import { useLanguage } from '@/components/language-provider';
-
-const tips = [
-  {
-    de: {
-      title: 'Setze dir klare Ziele',
-      description: 'Beginne mit kurzen Suren oder wenigen Versen. Ein tägliches, kleines Ziel ist effektiver als unregelmäßige, große Lerneinheiten.',
-    },
-    en: {
-      title: 'Set Clear Goals',
-      description: 'Start with short Surahs or a few verses. A small, daily goal is more effective than irregular, large study sessions.',
-    }
-  },
-  {
-    de: {
-      title: 'Schaffe eine Routine',
-      description: 'Lerne jeden Tag zur gleichen Zeit, idealerweise nach dem Fajr-Gebet, wenn der Geist frisch und die Umgebung ruhig ist.',
-    },
-    en: {
-        title: 'Create a Routine',
-        description: 'Study at the same time every day, ideally after the Fajr prayer when the mind is fresh and the environment is quiet.',
-    }
-  },
-  {
-    de: {
-      title: 'Höre regelmäßig zu',
-      description: 'Höre dir die Verse, die du lernen möchtest, von einem Qari mit korrekter Aussprache (Tajwid) an. Dies schult dein Gehör und verbessert deine eigene Rezitation.',
-    },
-    en: {
-      title: 'Listen Regularly',
-      description: 'Listen to the verses you want to learn from a Qari with correct pronunciation (Tajwid). This trains your ear and improves your own recitation.',
-    }
-  },
-  {
-    de: {
-      title: 'Verstehe die Bedeutung',
-      description: 'Wenn du die Bedeutung der Verse kennst, schaffst du eine tiefere Verbindung zum Text, was das Behalten erleichtert.',
-    },
-    en: {
-        title: 'Understand the Meaning',
-        description: 'Knowing the meaning of the verses creates a deeper connection to the text, which makes it easier to remember.',
-    }
-  },
-  {
-    de: {
-      title: 'Wiederhole konstant',
-      description: 'Wiederholung ist der Schlüssel. Rezitiere die gelernten Verse in deinen täglichen Gebeten, um sie im Gedächtnis zu festigen.',
-    },
-    en: {
-      title: 'Repeat Consistently',
-      description: 'Repetition is key. Recite the learned verses in your daily prayers to solidify them in your memory.',
-    }
-  },
-  {
-    de: {
-      title: 'Nutze die "Schreib"-Methode',
-      description: 'Schreibe die Verse auf, die du auswendig lernst. Die physische Handlung des Schreibens kann das Erinnerungsvermögen stärken.',
-    },
-    en: {
-        title: 'Use the "Writing" Method',
-        description: 'Write down the verses you are memorizing. The physical act of writing can strengthen memory.',
-    }
-  },
-  {
-    de: {
-      title: 'Finde einen Lernpartner',
-      description: 'Ein Partner kann dich korrigieren, motivieren und dir helfen, am Ball zu bleiben. Ihr könnt euch gegenseitig abfragen.',
-    },
-    en: {
-        title: 'Find a Study Partner',
-        description: 'A partner can correct you, motivate you, and help you stay on track. You can quiz each other.',
-    }
-  },
-  {
-    de: {
-      title: 'Mache Dua zu Allah',
-      description: 'Bitte Allah (SWT) um Hilfe und Segen für dein Vorhaben. Aufrichtige Bitten können Türen öffnen und das Lernen erleichtern.',
-    },
-    en: {
-      title: 'Make Dua to Allah',
-      description: 'Ask Allah (SWT) for help and blessings for your endeavor. Sincere supplications can open doors and make learning easier.',
-    }
-  }
-];
+import { textToSpeech } from "@/ai/flows/text-to-speech";
+import { cn } from '@/lib/utils';
 
 const content = {
     de: {
-        title: "Tipps zum Auswendiglernen",
-        description: "Effektive Techniken, um den Koran und Bittgebete zu memorieren.",
+        title: "Lern-Werkzeug",
+        description: "Gib einen beliebigen Text ein, um ihn mit Sprachausgabe und Versteckfunktion auswendig zu lernen.",
+        inputTitle: "Text zum Auswendiglernen",
+        inputDescription: "Füge hier den Text ein, den du lernen möchtest. Das kann ein Vers, ein Dua oder etwas anderes sein.",
+        inputPlaceholder: "Beginne hier mit der Eingabe...",
+        startButton: "Lernen starten",
+        learningZoneTitle: "Lern-Zone",
+        play: "Abspielen",
+        memorize: "Lernen"
     },
     en: {
-        title: "Memorization Tips",
-        description: "Effective techniques to memorize the Quran and supplications.",
+        title: "Memorization Tool",
+        description: "Enter any text to memorize it with audio playback and a hide/show feature.",
+        inputTitle: "Text to Memorize",
+        inputDescription: "Paste the text you want to learn here. It can be a verse, a dua, or anything else.",
+        inputPlaceholder: "Start typing here...",
+        startButton: "Start Learning",
+        learningZoneTitle: "Learning Zone",
+        play: "Play",
+        memorize: "Memorize"
     }
 }
-
 
 export default function MemorizationPage() {
   const { language } = useLanguage();
   const c = content[language] || content.de;
 
+  const [inputText, setInputText] = useState('');
+  const [learningText, setLearningText] = useState('');
+  const [isHidden, setIsHidden] = useState(false);
+  
+  const [playingAudio, setPlayingAudio] = useState(false);
+  const [loadingAudio, setLoadingAudio] = useState(false);
+  const [audioUrl, setAudioUrl] = useState<string | null>(null);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  const handleStartLearning = () => {
+    setLearningText(inputText);
+    setIsHidden(false);
+    setPlayingAudio(false);
+    setLoadingAudio(false);
+    setAudioUrl(null);
+  };
+
+  const handlePlayAudio = async () => {
+    if (playingAudio) {
+        audioRef.current?.pause();
+        setPlayingAudio(false);
+        return;
+    }
+
+    if (audioUrl) {
+        audioRef.current?.play();
+        setPlayingAudio(true);
+        return;
+    }
+    
+    setLoadingAudio(true);
+    try {
+      const result = await textToSpeech(learningText);
+      setAudioUrl(result.audio);
+    } catch (err) {
+      console.error("Failed to get audio", err);
+    } finally {
+      setLoadingAudio(false);
+    }
+  };
+
+  useEffect(() => {
+    if (audioUrl && audioRef.current && !playingAudio) {
+        audioRef.current.play().catch(e => console.error("Audio play failed", e));
+        setPlayingAudio(true);
+    }
+  }, [audioUrl, playingAudio]);
+
   return (
     <div className="container mx-auto px-4 py-8">
+      {audioUrl && (
+        <audio
+          ref={audioRef}
+          src={audioUrl}
+          onEnded={() => setPlayingAudio(false)}
+        />
+      )}
       <header className="text-center mb-12">
-        <h1 className="text-4xl font-bold tracking-tight text-primary">{c.title}</h1>
-        <p className="text-muted-foreground mt-2 text-lg">{c.description}</p>
+        <h1 className="text-4xl font-bold tracking-tight text-primary flex items-center justify-center gap-3">
+            <BrainCircuit className="h-10 w-10" />
+            {c.title}
+        </h1>
+        <p className="text-muted-foreground mt-2 text-lg max-w-2xl mx-auto">{c.description}</p>
       </header>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        {tips.map((tip, index) => {
-            const localizedTip = tip[language] || tip.de;
-            return (
-              <Card key={index}>
-                <CardHeader className="flex flex-row items-center gap-4">
-                  <CheckCircle2 className="w-8 h-8 text-primary" />
-                  <div>
-                    <CardTitle>{localizedTip.title}</CardTitle>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <CardDescription className="text-base">{localizedTip.description}</CardDescription>
-                </CardContent>
-              </Card>
-            )
-        })}
+      
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+        <Card>
+          <CardHeader>
+            <CardTitle>{c.inputTitle}</CardTitle>
+            <CardDescription>{c.inputDescription}</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <Textarea 
+              placeholder={c.inputPlaceholder}
+              value={inputText}
+              onChange={(e) => setInputText(e.target.value)}
+              rows={10}
+              className="resize-none"
+            />
+            <Button onClick={handleStartLearning} disabled={!inputText.trim()} className="w-full">
+              {c.startButton}
+            </Button>
+          </CardContent>
+        </Card>
+
+        <Card className={cn(!learningText && "bg-muted/50")}>
+            <CardHeader>
+                <CardTitle>{c.learningZoneTitle}</CardTitle>
+                <CardDescription>
+                    {learningText ? 'Use the controls to learn.' : 'Your text will appear here.'}
+                </CardDescription>
+            </CardHeader>
+            <CardContent>
+                {learningText ? (
+                    <div className="space-y-4">
+                        <div className={cn(
+                            "p-4 border rounded-md min-h-[220px] transition-all",
+                             isHidden ? "bg-card text-card" : "bg-background"
+                        )}>
+                           <p className={cn("whitespace-pre-wrap transition-opacity", isHidden ? "opacity-0" : "opacity-100")}>{learningText}</p>
+                        </div>
+                        <div className="flex justify-center gap-4">
+                            <Button variant="outline" size="lg" onClick={handlePlayAudio} disabled={loadingAudio}>
+                                {loadingAudio ? <Loader className="mr-2 h-5 w-5 animate-spin" /> : (playingAudio ? <Pause className="mr-2 h-5 w-5" /> : <Play className="mr-2 h-5 w-5" />)}
+                                {c.play}
+                            </Button>
+                            <Button variant="outline" size="lg" onClick={() => setIsHidden(!isHidden)}>
+                                {isHidden ? <EyeOff className="mr-2 h-5 w-5" /> : <Eye className="mr-2 h-5 w-5" />}
+                                {c.memorize}
+                            </Button>
+                        </div>
+                    </div>
+                ) : (
+                    <div className="flex items-center justify-center h-[280px] text-muted-foreground">
+                        <p>No text to learn yet.</p>
+                    </div>
+                )}
+            </CardContent>
+        </Card>
       </div>
     </div>
   );
 }
-
-    
