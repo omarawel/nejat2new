@@ -1,9 +1,46 @@
+
+"use client"
+
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Calendar, Users, MessageSquare } from 'lucide-react';
 import Image from 'next/image';
+import { useLanguage } from '@/components/language-provider';
+
+const content = {
+    de: {
+        joinCommunity: "Tritt unserer Community bei",
+        connect: "Verbinde dich mit Gleichgesinnten, teile Wissen und wachse in deinem Glauben.",
+        upcomingEvents: "Kommende Events",
+        eventsDescription: "Nimm an Online-Vorträgen, Workshops und gemeinsamen Gebeten teil. (Demnächst verfügbar)",
+        viewEvents: "Events ansehen",
+        studyGroups: "Lerngruppen",
+        studyGroupsDescription: "Finde oder gründe Gruppen zum gemeinsamen Studium des Korans, der Hadithe oder der arabischen Sprache. (Demnächst verfügbar)",
+        findGroups: "Gruppen finden",
+        discussionForums: "Diskussionsforen",
+        discussionForumsDescription: "Tausche dich über theologische Fragen, spirituelle Erfahrungen und Alltags-Themen aus. (Demnächst verfügbar)",
+        goToForum: "Zum Forum"
+    },
+    en: {
+        joinCommunity: "Join Our Community",
+        connect: "Connect with like-minded people, share knowledge, and grow in your faith.",
+        upcomingEvents: "Upcoming Events",
+        eventsDescription: "Participate in online lectures, workshops, and communal prayers. (Coming soon)",
+        viewEvents: "View Events",
+        studyGroups: "Study Groups",
+        studyGroupsDescription: "Find or create groups to study the Quran, Hadith, or the Arabic language together. (Coming soon)",
+        findGroups: "Find Groups",
+        discussionForums: "Discussion Forums",
+        discussionForumsDescription: "Discuss theological questions, spiritual experiences, and everyday topics. (Coming soon)",
+        goToForum: "Go to Forum"
+    }
+}
+
 
 export default function CommunityPage() {
+  const { language } = useLanguage();
+  const c = content[language] || content.de;
+
   return (
     <div className="flex-grow flex flex-col">
       <div className="relative h-64 md:h-80 w-full">
@@ -17,8 +54,8 @@ export default function CommunityPage() {
           />
         <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
             <div className="text-center text-white p-4">
-                <h1 className="text-4xl md:text-6xl font-bold tracking-tight">Tritt unserer Community bei</h1>
-                <p className="mt-4 text-lg md:text-xl max-w-3xl">Verbinde dich mit Gleichgesinnten, teile Wissen und wachse in deinem Glauben.</p>
+                <h1 className="text-4xl md:text-6xl font-bold tracking-tight">{c.joinCommunity}</h1>
+                <p className="mt-4 text-lg md:text-xl max-w-3xl">{c.connect}</p>
             </div>
         </div>
       </div>
@@ -30,11 +67,11 @@ export default function CommunityPage() {
               <div className="mx-auto bg-primary/10 rounded-full h-16 w-16 flex items-center justify-center">
                   <Calendar className="h-8 w-8 text-primary" />
               </div>
-              <CardTitle className="mt-4">Kommende Events</CardTitle>
+              <CardTitle className="mt-4">{c.upcomingEvents}</CardTitle>
             </CardHeader>
             <CardContent>
-              <CardDescription>Nimm an Online-Vorträgen, Workshops und gemeinsamen Gebeten teil. (Demnächst verfügbar)</CardDescription>
-              <Button variant="outline" className="mt-4" disabled>Events ansehen</Button>
+              <CardDescription>{c.eventsDescription}</CardDescription>
+              <Button variant="outline" className="mt-4" disabled>{c.viewEvents}</Button>
             </CardContent>
           </Card>
 
@@ -43,11 +80,11 @@ export default function CommunityPage() {
                 <div className="mx-auto bg-primary/10 rounded-full h-16 w-16 flex items-center justify-center">
                     <Users className="h-8 w-8 text-primary" />
                 </div>
-              <CardTitle className="mt-4">Lerngruppen</CardTitle>
+              <CardTitle className="mt-4">{c.studyGroups}</CardTitle>
             </CardHeader>
             <CardContent>
-              <CardDescription>Finde oder gründe Gruppen zum gemeinsamen Studium des Korans, der Hadithe oder der arabischen Sprache. (Demnächst verfügbar)</CardDescription>
-              <Button variant="outline" className="mt-4" disabled>Gruppen finden</Button>
+              <CardDescription>{c.studyGroupsDescription}</CardDescription>
+              <Button variant="outline" className="mt-4" disabled>{c.findGroups}</Button>
             </CardContent>
           </Card>
 
@@ -56,11 +93,11 @@ export default function CommunityPage() {
                 <div className="mx-auto bg-primary/10 rounded-full h-16 w-16 flex items-center justify-center">
                     <MessageSquare className="h-8 w-8 text-primary" />
                 </div>
-              <CardTitle className="mt-4">Diskussionsforen</CardTitle>
+              <CardTitle className="mt-4">{c.discussionForums}</CardTitle>
             </CardHeader>
             <CardContent>
-              <CardDescription>Tausche dich über theologische Fragen, spirituelle Erfahrungen und Alltags-Themen aus. (Demnächst verfügbar)</CardDescription>
-              <Button variant="outline" className="mt-4" disabled>Zum Forum</Button>
+              <CardDescription>{c.discussionForumsDescription}</CardDescription>
+              <Button variant="outline" className="mt-4" disabled>{c.goToForum}</Button>
             </CardContent>
           </Card>
         </div>
@@ -68,3 +105,5 @@ export default function CommunityPage() {
     </div>
   );
 }
+
+    

@@ -1,5 +1,9 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+
+"use client"
+
+import { Card, CardContent } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { useLanguage } from '@/components/language-provider';
 
 const alphabet = [
   { letter: 'ا', name: 'Alif', forms: { isolated: 'ا', final: 'ـا', medial: 'ـا', initial: 'ا' } },
@@ -32,12 +36,38 @@ const alphabet = [
   { letter: 'ي', name: 'Ya', forms: { isolated: 'ي', final: 'ـي', medial: 'ـيـ', initial: 'يـ' } },
 ];
 
+const content = {
+    de: {
+        title: "Arabische Grundlagen",
+        description: "Lerne das arabische Alphabet und die Formen der Buchstaben.",
+        letter: "Buchstabe",
+        name: "Name",
+        initial: "Anfang",
+        medial: "Mitte",
+        final: "Ende",
+        isolated: "Isoliert",
+    },
+    en: {
+        title: "Arabic Basics",
+        description: "Learn the Arabic alphabet and the forms of the letters.",
+        letter: "Letter",
+        name: "Name",
+        initial: "Initial",
+        medial: "Medial",
+        final: "Final",
+        isolated: "Isolated",
+    }
+}
+
 export default function ArabicBasicsPage() {
+  const { language } = useLanguage();
+  const c = content[language] || content.de;
+    
   return (
     <div className="container mx-auto px-4 py-8">
       <header className="text-center mb-12">
-        <h1 className="text-4xl font-bold tracking-tight text-primary">Arabische Grundlagen</h1>
-        <p className="text-muted-foreground mt-2 text-lg">Lerne das arabische Alphabet und die Formen der Buchstaben.</p>
+        <h1 className="text-4xl font-bold tracking-tight text-primary">{c.title}</h1>
+        <p className="text-muted-foreground mt-2 text-lg">{c.description}</p>
       </header>
 
       <Card>
@@ -45,12 +75,12 @@ export default function ArabicBasicsPage() {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead className="text-center text-lg">Buchstabe</TableHead>
-                <TableHead className="text-center">Name</TableHead>
-                <TableHead className="text-center">Anfang</TableHead>
-                <TableHead className="text-center">Mitte</TableHead>
-                <TableHead className="text-center">Ende</TableHead>
-                <TableHead className="text-center">Isoliert</TableHead>
+                <TableHead className="text-center text-lg">{c.letter}</TableHead>
+                <TableHead className="text-center">{c.name}</TableHead>
+                <TableHead className="text-center">{c.initial}</TableHead>
+                <TableHead className="text-center">{c.medial}</TableHead>
+                <TableHead className="text-center">{c.final}</TableHead>
+                <TableHead className="text-center">{c.isolated}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -71,3 +101,5 @@ export default function ArabicBasicsPage() {
     </div>
   );
 }
+
+    

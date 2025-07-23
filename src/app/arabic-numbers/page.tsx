@@ -1,4 +1,8 @@
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+
+"use client"
+
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { useLanguage } from '@/components/language-provider';
 
 const numbers = [
   { number: '١', name: 'Wahid', value: 1 },
@@ -23,12 +27,27 @@ const numbers = [
   { number: '٢٠', name: 'Ishrun', value: 20 },
 ];
 
+const content = {
+    de: {
+        title: "Arabische Zahlen",
+        description: "Lerne die Zahlen von 1 bis 20 auf Arabisch.",
+    },
+    en: {
+        title: "Arabic Numbers",
+        description: "Learn the numbers from 1 to 20 in Arabic.",
+    }
+}
+
+
 export default function ArabicNumbersPage() {
+  const { language } = useLanguage();
+  const c = content[language] || content.de;
+
   return (
     <div className="container mx-auto px-4 py-8">
       <header className="text-center mb-12">
-        <h1 className="text-4xl font-bold tracking-tight text-primary">Arabische Zahlen</h1>
-        <p className="text-muted-foreground mt-2 text-lg">Lerne die Zahlen von 1 bis 20 auf Arabisch.</p>
+        <h1 className="text-4xl font-bold tracking-tight text-primary">{c.title}</h1>
+        <p className="text-muted-foreground mt-2 text-lg">{c.description}</p>
       </header>
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
         {numbers.map((num) => (
@@ -46,3 +65,5 @@ export default function ArabicNumbersPage() {
     </div>
   );
 }
+
+    
