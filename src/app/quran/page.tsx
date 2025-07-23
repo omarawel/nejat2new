@@ -20,8 +20,9 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { Button } from "@/components/ui/button"
-import { Terminal, Search } from "lucide-react"
+import { Terminal, Search, Eye, EyeOff } from "lucide-react"
 import { useEffect, useState, useMemo, FormEvent } from "react"
+import { cn } from "@/lib/utils"
 
 interface Surah {
   number: number
@@ -79,12 +80,18 @@ const SurahDetailContent = ({ surahNumber, languageEdition }: { surahNumber: num
   const [detail, setDetail] = useState<{ arabic: SurahDetail, translation: SurahDetail, transliteration: SurahDetail } | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [hiddenAyahs, setHiddenAyahs] = useState<Record<number, boolean>>({});
+
+  const toggleAyahVisibility = (ayahNumber: number) => {
+    setHiddenAyahs(prev => ({ ...prev, [ayahNumber]: !prev[ayahNumber] }));
+  };
 
   useEffect(() => {
     async function fetchSurahDetail() {
       if (!surahNumber) return
       setLoading(true)
       setError(null)
+      setHiddenAyahs({})
       try {
         const response = await fetch(`https://api.alquran.cloud/v1/surah/${surahNumber}/editions/quran-uthmani,${languageEdition},en.transliteration`)
         if (!response.ok) {
@@ -139,13 +146,25 @@ const SurahDetailContent = ({ surahNumber, languageEdition }: { surahNumber: num
 
   return (
     <div className="divide-y divide-border">
-      {detail.arabic.ayahs.map((_, index) => (
-        <div key={detail.arabic.ayahs[index].number} className="px-6 py-4 space-y-3">
-          <p className="text-2xl font-quranic text-right tracking-wide leading-relaxed">{detail.arabic.ayahs[index].text}</p>
-          <p className="text-muted-foreground italic">{detail.transliteration.ayahs[index].text}</p>
-          <p className="text-foreground/90">{detail.translation.ayahs[index].text}</p>
-        </div>
-      ))}
+      {detail.arabic.ayahs.map((_, index) => {
+        const ayahNumber = detail.arabic.ayahs[index].number;
+        const isHidden = hiddenAyahs[ayahNumber];
+
+        return (
+            <div key={ayahNumber} className="px-6 py-4 space-y-3 relative">
+                <div className="flex justify-between items-start">
+                    <p className="text-2xl font-quranic text-right tracking-wide leading-relaxed flex-1">{detail.arabic.ayahs[index].text}</p>
+                    <Button variant="ghost" size="icon" onClick={() => toggleAyahVisibility(ayahNumber)} className="ml-4">
+                        {isHidden ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                    </Button>
+                </div>
+                <div className={cn("transition-opacity duration-300", isHidden ? "opacity-0 h-0 overflow-hidden" : "opacity-100")}>
+                    <p className="text-muted-foreground italic mt-2">{detail.transliteration.ayahs[index].text}</p>
+                    <p className="text-foreground/90 mt-1">{detail.translation.ayahs[index].text}</p>
+                </div>
+            </div>
+        )
+      })}
     </div>
   )
 }
@@ -348,4 +367,5 @@ export default function QuranPage() {
     </div>
   );
 }
+
 
