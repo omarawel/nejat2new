@@ -8,9 +8,9 @@ import { useLanguage } from "@/components/language-provider";
 
 const FeatureCard = ({ icon, name }: { icon: string, name: string }) => {
   return (
-    <div className="flex flex-col justify-center items-center p-2 border border-border rounded-lg bg-card hover:bg-accent cursor-pointer transition-colors w-full h-24">
-      <span className="text-2xl">{icon}</span>
-      <span className="mt-2 text-xs text-center font-medium">{name}</span>
+    <div className="flex flex-col justify-center items-center p-2 border border-border rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 cursor-pointer transition-colors w-full h-20">
+      <span className="text-xl">{icon}</span>
+      <span className="mt-1 text-xs text-center font-medium">{name}</span>
     </div>
   );
 };
