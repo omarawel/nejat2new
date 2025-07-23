@@ -4,40 +4,100 @@
 import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Bell, BellRing, BellOff } from 'lucide-react';
+import { Bell, BellRing, BellOff, Sun, Moon, BookOpen, Heart, Calendar } from 'lucide-react';
 import { useLanguage } from '@/components/language-provider';
 import { useToast } from '@/hooks/use-toast';
+import { Switch } from '@/components/ui/switch';
+import { Label } from '@/components/ui/label';
 
 const content = {
     de: {
         title: "Islamische Erinnerungen",
-        description: "Abonniere tägliche Erinnerungen, um deinen Glauben zu stärken. (Feature in Entwicklung)",
-        enableNotifications: "Benachrichtigungen aktivieren",
-        disableNotifications: "Benachrichtigungen deaktivieren",
-        status: "Status:",
-        enabled: "Aktiviert",
-        disabled: "Deaktiviert",
-        permissionGranted: "Benachrichtigungen aktiviert!",
-        permissionDenied: "Benachrichtigungen blockiert. Bitte in den Browsereinstellungen ändern.",
-        subscriptionSuccess: "Erfolgreich für Erinnerungen angemeldet.",
-        subscriptionError: "Fehler beim Anmelden für Erinnerungen.",
-        unsubscriptionSuccess: "Erfolgreich von Erinnerungen abgemeldet.",
-        unsubscriptionError: "Fehler beim Abmelden von Erinnerungen."
+        description: "Abonniere gezielte Erinnerungen, um deinen Glauben im Alltag zu stärken. (Feature in Entwicklung)",
+        toastEnabled: "Erinnerungen aktiviert!",
+        toastDisabled: "Erinnerungen deaktiviert.",
+        reminders: [
+            {
+                key: "verse_of_day",
+                title: "Vers des Tages",
+                description: "Erhalte jeden Tag einen inspirierenden Vers aus dem Heiligen Koran.",
+                icon: BookOpen,
+            },
+            {
+                key: "hadith_of_day",
+                title: "Hadith des Tages",
+                description: "Eine tägliche Lehre aus dem Leben und den Aussprüchen des Propheten Muhammad (ﷺ).",
+                icon: BookOpen,
+            },
+            {
+                key: "morning_dhikr",
+                title: "Morgen-Dhikr",
+                description: "Eine Erinnerung, deinen Tag mit dem Gedenken an Allah zu beginnen.",
+                icon: Sun,
+            },
+            {
+                key: "evening_dhikr",
+                title: "Abend-Dhikr",
+                description: "Eine Erinnerung, deinen Tag mit dem Gedenken an Allah zu beenden.",
+                icon: Moon,
+            },
+             {
+                key: "fasting_mondays_thursdays",
+                title: "Fasten am Montag & Donnerstag",
+                description: "Werde an die Sunna des freiwilligen Fastens an diesen beiden Tagen erinnert.",
+                icon: Calendar,
+            },
+            {
+                key: "surah_kahf_friday",
+                title: "Sura Al-Kahf am Freitag",
+                description: "Eine wöchentliche Erinnerung, die Sura Al-Kahf am Freitag zu rezitieren.",
+                icon: Heart,
+            }
+        ]
     },
     en: {
         title: "Islamic Reminders",
-        description: "Subscribe to daily reminders to strengthen your faith. (Feature in development)",
-        enableNotifications: "Enable Notifications",
-        disableNotifications: "Disable Notifications",
-        status: "Status:",
-        enabled: "Enabled",
-        disabled: "Disabled",
-        permissionGranted: "Notifications enabled!",
-        permissionDenied: "Notifications blocked. Please change in your browser settings.",
-        subscriptionSuccess: "Successfully subscribed to reminders.",
-        subscriptionError: "Failed to subscribe to reminders.",
-        unsubscriptionSuccess: "Successfully unsubscribed from reminders.",
-        unsubscriptionError: "Failed to unsubscribe from reminders."
+        description: "Subscribe to specific reminders to strengthen your faith in daily life. (Feature in development)",
+        toastEnabled: "Reminders enabled!",
+        toastDisabled: "Reminders disabled.",
+         reminders: [
+            {
+                key: "verse_of_day",
+                title: "Verse of the Day",
+                description: "Receive an inspiring verse from the Holy Quran every day.",
+                icon: BookOpen,
+            },
+            {
+                key: "hadith_of_day",
+                title: "Hadith of the Day",
+                description: "A daily teaching from the life and sayings of the Prophet Muhammad (ﷺ).",
+                icon: BookOpen,
+            },
+            {
+                key: "morning_dhikr",
+                title: "Morning Dhikr",
+                description: "A reminder to start your day with the remembrance of Allah.",
+                icon: Sun,
+            },
+            {
+                key: "evening_dhikr",
+                title: "Evening Dhikr",
+                description: "A reminder to end your day with the remembrance of Allah.",
+                icon: Moon,
+            },
+            {
+                key: "fasting_mondays_thursdays",
+                title: "Fasting on Mondays & Thursdays",
+                description: "Be reminded of the Sunnah of voluntary fasting on these two days.",
+                icon: Calendar,
+            },
+            {
+                key: "surah_kahf_friday",
+                title: "Surah Al-Kahf on Friday",
+                description: "A weekly reminder to recite Surah Al-Kahf on Friday.",
+                icon: Heart,
+            }
+        ]
     }
 };
 
@@ -46,26 +106,16 @@ export default function RemindersPage() {
     const c = content[language] || content.de;
     const { toast } = useToast();
 
-    const [notificationsEnabled, setNotificationsEnabled] = useState(false);
-    const [isSubscribing, setIsSubscribing] = useState(false);
+    const [subscriptions, setSubscriptions] = useState<Record<string, boolean>>({});
 
-    // This is a placeholder for the actual subscription logic
-    const handleSubscription = async () => {
-        setIsSubscribing(true);
+    const handleSubscriptionChange = (key: string, checked: boolean) => {
         // In a real app, you would handle Push API logic here.
-        // For this example, we'll just simulate it.
-        if (!notificationsEnabled) {
-            // Simulate asking for permission
-            await new Promise(res => setTimeout(res, 1000));
-            setNotificationsEnabled(true);
-            toast({ title: c.permissionGranted, description: c.subscriptionSuccess });
-        } else {
-            await new Promise(res => setTimeout(res, 500));
-            setNotificationsEnabled(false);
-            toast({ title: c.unsubscriptionSuccess });
-        }
-        setIsSubscribing(false);
-    };
+        setSubscriptions(prev => ({...prev, [key]: checked}));
+        toast({
+            title: checked ? c.toastEnabled : c.toastDisabled,
+            description: c.reminders.find(r => r.key === key)?.title,
+        })
+    }
 
     return (
         <div className="container mx-auto px-4 py-8">
@@ -77,29 +127,32 @@ export default function RemindersPage() {
                 <p className="text-muted-foreground mt-2 text-lg max-w-2xl mx-auto">{c.description}</p>
             </header>
             
-            <Card className="max-w-md mx-auto">
-                <CardHeader className="text-center">
-                    <div className="mx-auto bg-primary/10 rounded-full h-20 w-20 flex items-center justify-center mb-4">
-                        {notificationsEnabled ? (
-                            <BellRing className="h-12 w-12 text-primary" />
-                        ) : (
-                            <BellOff className="h-12 w-12 text-muted-foreground" />
-                        )}
-                    </div>
-                    <CardTitle>{notificationsEnabled ? c.enabled : c.disabled}</CardTitle>
-                    <CardDescription>{c.status}</CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <Button 
-                        onClick={handleSubscription} 
-                        className="w-full" 
-                        disabled={isSubscribing}
-                        variant={notificationsEnabled ? 'destructive' : 'default'}
-                    >
-                        {notificationsEnabled ? c.disableNotifications : c.enableNotifications}
-                    </Button>
-                </CardContent>
-            </Card>
+            <div className="max-w-2xl mx-auto grid grid-cols-1 gap-6">
+                {c.reminders.map((reminder) => {
+                    const Icon = reminder.icon;
+                    return (
+                        <Card key={reminder.key}>
+                            <CardContent className="p-4 flex items-center justify-between">
+                                <div className="flex items-start gap-4">
+                                     <Icon className="h-6 w-6 text-primary flex-shrink-0 mt-1" />
+                                    <div>
+                                        <Label htmlFor={reminder.key} className="text-lg font-semibold cursor-pointer">
+                                            {reminder.title}
+                                        </Label>
+                                        <p className="text-sm text-muted-foreground">{reminder.description}</p>
+                                    </div>
+                                </div>
+                                <Switch
+                                    id={reminder.key}
+                                    checked={!!subscriptions[reminder.key]}
+                                    onCheckedChange={(checked) => handleSubscriptionChange(reminder.key, checked)}
+                                    aria-label={`Toggle ${reminder.title} reminders`}
+                                />
+                            </CardContent>
+                        </Card>
+                    )
+                })}
+            </div>
         </div>
     );
 }
