@@ -4,7 +4,7 @@
 import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Bell, BellRing, BellOff, Sun, Moon, BookOpen, Heart, Calendar } from 'lucide-react';
+import { Bell, BellRing, BellOff, Sun, Moon, BookOpen, Heart, Calendar, BookText, ClipboardList } from 'lucide-react';
 import { useLanguage } from '@/components/language-provider';
 import { useToast } from '@/hooks/use-toast';
 import { Switch } from '@/components/ui/switch';
@@ -52,6 +52,18 @@ const content = {
                 title: "Sura Al-Kahf am Freitag",
                 description: "Eine wöchentliche Erinnerung, die Sura Al-Kahf am Freitag zu rezitieren.",
                 icon: Heart,
+            },
+            {
+                key: "daily_learning",
+                title: "Tägliche Lern-Session",
+                description: "Eine Erinnerung, sich Zeit für das Studium des Islam zu nehmen.",
+                icon: BookText,
+            },
+            {
+                key: "jummah_prep",
+                title: "Jumu'ah-Vorbereitung",
+                description: "Erinnerung an Ghusl, Parfüm und den frühen Gang zur Moschee am Freitag.",
+                icon: ClipboardList,
             }
         ]
     },
@@ -96,6 +108,18 @@ const content = {
                 title: "Surah Al-Kahf on Friday",
                 description: "A weekly reminder to recite Surah Al-Kahf on Friday.",
                 icon: Heart,
+            },
+            {
+                key: "daily_learning",
+                title: "Daily Study Session",
+                description: "A reminder to set aside time for Islamic studies.",
+                icon: BookText,
+            },
+            {
+                key: "jummah_prep",
+                title: "Jumu'ah Preparation",
+                description: "Reminder for Ghusl, perfume, and going early to the mosque on Friday.",
+                icon: ClipboardList,
             }
         ]
     }
