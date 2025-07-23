@@ -23,34 +23,34 @@ const content = {
             {
                 name: "Unterstützer",
                 price: "2,99€",
-                description: "Für Nutzer, die werbefrei lernen und grundlegende KI-Tools nutzen möchten.",
+                description: "Für Nutzer, die werbefrei lernen und grundlegende KI-Tools mit bis zu 15 Anfragen/Monat nutzen möchten.",
                 features: [
                     "Werbefreie Erfahrung",
-                    "KI-Dua-Generator",
-                    "Sprachausgabe (Koran, Hadith etc.)",
                     "Lern-Werkzeug (Auswendiglernen)",
+                    "Sprachausgabe (Koran, Hadith etc.)",
+                    "15 KI-Anfragen / Monat (Dua, Gelehrter...)",
                 ]
             },
             {
                 name: "Pro",
                 price: "4,99€",
-                description: "Ideal für Wissbegierige, die das volle Potenzial der KI ausschöpfen möchten.",
+                description: "Ideal für Wissbegierige, die mit 40 KI-Anfragen/Monat das volle Potenzial der App ausschöpfen wollen.",
                 features: [
                     "Alle Funktionen des Unterstützer-Plans",
-                    "KI-Gelehrter (unbegrenzte Fragen)",
-                    "KI-Vers-Finder",
+                    "40 KI-Anfragen / Monat",
                     "Personalisierter Lernpfad-Generator",
+                    "Priorisierter Support",
                 ],
                 recommended: true
             },
             {
                 name: "Patron",
                 price: "9,99€",
-                description: "Für diejenigen, die maßgeblich zum Wachstum der Plattform beitragen möchten.",
+                description: "Für diejenigen, die mit 100 KI-Anfragen/Monat maßgeblich zum Wachstum der Plattform beitragen möchten.",
                 features: [
                     "Alle Funktionen des Pro-Plans",
+                    "100 KI-Anfragen / Monat",
                     "Frühzugang zu neuen Features",
-                    "Direkter Einfluss auf die Entwicklung",
                     "Exklusive Community-Abzeichen"
                 ]
             }
@@ -59,15 +59,17 @@ const content = {
             title: "Vergleiche die Pläne",
             feature: "Funktion",
             free: "Kostenlos",
+            supporter: "Unterstützer",
+            pro: "Pro",
+            patron: "Patron",
             featuresList: [
-                { name: "Zugang zu grundlegenden Lerninhalten", free: true, supporter: true, pro: true, patron: true },
-                { name: "Werbefreie Erfahrung", free: false, supporter: true, pro: true, patron: true },
-                { name: "Sprachausgabe für Koran, Hadith etc.", free: false, supporter: true, pro: true, patron: true },
-                { name: "Lern-Werkzeug (Auswendiglernen)", free: false, supporter: true, pro: true, patron: true },
-                { name: "KI-Dua-Generator", free: false, supporter: true, pro: true, patron: true },
-                { name: "KI-Gelehrter & Vers-Finder", free: false, supporter: false, pro: true, patron: true },
-                { name: "Personalisierter Lernpfad-Generator", free: false, supporter: false, pro: true, patron: true },
-                { name: "Frühzugang zu neuen Features", free: false, supporter: false, pro: false, patron: true },
+                { name: "Zugang zu grundlegenden Lerninhalten", value: "✓" },
+                { name: "Werbefreie Erfahrung", value: "✓" },
+                { name: "Lern-Werkzeug & Sprachausgabe", value: "✓" },
+                { name: "KI-Anfragen (Dua, Gelehrter, etc.)", free: "0", supporter: "15/Monat", pro: "40/Monat", patron: "100/Monat" },
+                { name: "Personalisierter Lernpfad-Generator", value: "✓" },
+                { name: "Priorisierter Support", value: "✓" },
+                { name: "Frühzugang & exklusive Features", value: "✓" },
             ]
         }
     },
@@ -82,34 +84,34 @@ const content = {
             {
                 name: "Supporter",
                 price: "€2.99",
-                description: "For users who want an ad-free experience and basic AI tools.",
+                description: "For users who want an ad-free experience and basic AI tools with up to 15 requests/month.",
                 features: [
                     "Ad-free experience",
-                    "AI Dua Generator",
+                    "Memorization Tool",
                     "Voice Output (Quran, Hadith etc.)",
-                    "Memorization Tool"
+                    "15 AI Requests / Month (Dua, Scholar...)",
                 ]
             },
             {
                 name: "Pro",
                 price: "€4.99",
-                description: "Ideal for eager learners who want to unlock the full potential of AI.",
+                description: "Ideal for eager learners who want to unlock the full potential of the app with 40 AI requests/month.",
                 features: [
                     "All features of the Supporter plan",
-                    "AI Scholar (unlimited questions)",
-                    "AI Verse Finder",
+                    "40 AI Requests / Month",
                     "Personalized Learning Path Generator",
+                    "Priority Support",
                 ],
                 recommended: true
             },
             {
                 name: "Patron",
                 price: "€9.99",
-                description: "For those who want to significantly contribute to the growth and future of the platform.",
+                description: "For those who want to significantly contribute to the platform's growth with 100 AI requests/month.",
                 features: [
                     "All features of the Pro plan",
+                    "100 AI Requests / Month",
                     "Early access to new features",
-                    "Direct influence on development",
                     "Exclusive community badges"
                 ]
             }
@@ -118,15 +120,17 @@ const content = {
             title: "Compare Plans",
             feature: "Feature",
             free: "Free",
+            supporter: "Supporter",
+            pro: "Pro",
+            patron: "Patron",
             featuresList: [
-                { name: "Access to basic learning content", free: true, supporter: true, pro: true, patron: true },
-                { name: "Ad-free experience", free: false, supporter: true, pro: true, patron: true },
-                { name: "Voice output for Quran, Hadith, etc.", free: false, supporter: true, pro: true, patron: true },
-                { name: "Memorization Tool", free: false, supporter: true, pro: true, patron: true },
-                { name: "AI Dua Generator", free: false, supporter: true, pro: true, patron: true },
-                { name: "AI Scholar & Verse Finder", free: false, supporter: false, pro: true, patron: true },
-                { name: "Personalized Learning Path Generator", free: false, supporter: false, pro: true, patron: true },
-                { name: "Early access to new features", free: false, supporter: false, pro: false, patron: true },
+                { name: "Access to basic learning content", value: "✓" },
+                { name: "Ad-free experience", value: "✓" },
+                { name: "Memorization Tool & Voice Output", value: "✓" },
+                { name: "AI Requests (Dua, Scholar, etc.)", free: "0", supporter: "15/month", pro: "40/month", patron: "100/month" },
+                { name: "Personalized Learning Path Generator", value: "✓" },
+                { name: "Priority Support", value: "✓" },
+                { name: "Early Access & Exclusive Features", value: "✓" },
             ]
         }
     }
@@ -136,6 +140,14 @@ const content = {
 export default function SubscribePage() {
   const { language } = useLanguage();
   const c = content[language] || content.de;
+  
+  const planAccess = {
+    free: { "Zugang zu grundlegenden Lerninhalten": true, "Werbefreie Erfahrung": false, "Lern-Werkzeug & Sprachausgabe": false, "Personalisierter Lernpfad-Generator": false, "Priorisierter Support": false, "Frühzugang & exklusive Features": false },
+    supporter: { "Zugang zu grundlegenden Lerninhalten": true, "Werbefreie Erfahrung": true, "Lern-Werkzeug & Sprachausgabe": true, "Personalisierter Lernpfad-Generator": false, "Priorisierter Support": false, "Frühzugang & exklusive Features": false },
+    pro: { "Zugang zu grundlegenden Lerninhalten": true, "Werbefreie Erfahrung": true, "Lern-Werkzeug & Sprachausgabe": true, "Personalisierter Lernpfad-Generator": true, "Priorisierter Support": true, "Frühzugang & exklusive Features": false },
+    patron: { "Zugang zu grundlegenden Lerninhalten": true, "Werbefreie Erfahrung": true, "Lern-Werkzeug & Sprachausgabe": true, "Personalisierter Lernpfad-Generator": true, "Priorisierter Support": true, "Frühzugang & exklusive Features": true },
+  };
+
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -201,21 +213,38 @@ export default function SubscribePage() {
                             <TableRow>
                                 <TableHead className="w-[40%] text-lg">{c.comparison.feature}</TableHead>
                                 <TableHead className="text-center text-lg">{c.comparison.free}</TableHead>
-                                <TableHead className="text-center text-lg">{c.plans[0].name}</TableHead>
-                                <TableHead className="text-center text-lg">{c.plans[1].name}</TableHead>
-                                <TableHead className="text-center text-lg">{c.plans[2].name}</TableHead>
+                                <TableHead className="text-center text-lg">{c.comparison.supporter}</TableHead>
+                                <TableHead className="text-center text-lg">{c.comparison.pro}</TableHead>
+                                <TableHead className="text-center text-lg">{c.comparison.patron}</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
-                            {c.comparison.featuresList.map((feature, index) => (
+                           {c.comparison.featuresList.map((feature, index) => {
+                                const hasAccess = (plan: 'free' | 'supporter' | 'pro' | 'patron') => {
+                                   if (feature.name === 'KI-Anfragen (Dua, Gelehrter, etc.)' || feature.name === 'AI Requests (Dua, Scholar, etc.)') return false;
+                                   return planAccess[plan][feature.name as keyof typeof planAccess['free']];
+                                }
+                                
+                                return (
                                 <TableRow key={index}>
                                     <TableCell className="font-medium">{feature.name}</TableCell>
-                                    <TableCell className="text-center">{feature.free ? <Check className="h-6 w-6 text-green-500 mx-auto" /> : <X className="h-6 w-6 text-muted-foreground mx-auto" />}</TableCell>
-                                    <TableCell className="text-center">{feature.supporter ? <Check className="h-6 w-6 text-green-500 mx-auto" /> : <X className="h-6 w-6 text-muted-foreground mx-auto" />}</TableCell>
-                                    <TableCell className="text-center">{feature.pro ? <Check className="h-6 w-6 text-green-500 mx-auto" /> : <X className="h-6 w-6 text-muted-foreground mx-auto" />}</TableCell>
-                                    <TableCell className="text-center">{feature.patron ? <Check className="h-6 w-6 text-green-500 mx-auto" /> : <X className="h-6 w-6 text-muted-foreground mx-auto" />}</TableCell>
+                                     { (feature.name.startsWith('KI-Anfragen') || feature.name.startsWith('AI Requests')) ? (
+                                        <>
+                                            <TableCell className="text-center font-medium">{feature.free}</TableCell>
+                                            <TableCell className="text-center font-medium">{feature.supporter}</TableCell>
+                                            <TableCell className="text-center font-medium">{feature.pro}</TableCell>
+                                            <TableCell className="text-center font-medium">{feature.patron}</TableCell>
+                                        </>
+                                     ) : (
+                                        <>
+                                            <TableCell className="text-center">{hasAccess('free') ? <Check className="h-6 w-6 text-green-500 mx-auto" /> : <X className="h-6 w-6 text-muted-foreground mx-auto" />}</TableCell>
+                                            <TableCell className="text-center">{hasAccess('supporter') ? <Check className="h-6 w-6 text-green-500 mx-auto" /> : <X className="h-6 w-6 text-muted-foreground mx-auto" />}</TableCell>
+                                            <TableCell className="text-center">{hasAccess('pro') ? <Check className="h-6 w-6 text-green-500 mx-auto" /> : <X className="h-6 w-6 text-muted-foreground mx-auto" />}</TableCell>
+                                            <TableCell className="text-center">{hasAccess('patron') ? <Check className="h-6 w-6 text-green-500 mx-auto" /> : <X className="h-6 w-6 text-muted-foreground mx-auto" />}</TableCell>
+                                        </>
+                                     )}
                                 </TableRow>
-                            ))}
+                           )})}
                         </TableBody>
                     </Table>
                 </Card>
@@ -224,5 +253,3 @@ export default function SubscribePage() {
     </div>
   );
 }
-
-    
