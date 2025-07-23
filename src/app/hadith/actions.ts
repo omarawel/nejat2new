@@ -32,12 +32,13 @@ export interface HadithApiResponse {
 }
 
 export interface HadithSearchApiResponse {
-    hadiths: Hadith[];
-    total: number;
-    next_page_url: string | null;
-    prev_page_url: string | null;
-    from: number;
-    to: number;
+    hadiths: {
+        data: Hadith[];
+        total: number;
+        next_page_url: string | null;
+        prev_page_url: string | null;
+        current_page: number;
+    };
 }
 
 
@@ -47,14 +48,15 @@ export async function getHadiths(page: number = 1, query: string = ''): Promise<
         
         let url;
         if (query) {
-            url = new URL(`https://hadithapi.com/api/hadiths/search`);
+            url = new URL(`https://hadithapi.com/api/search`);
             url.searchParams.append('query', query);
+            url.searchParams.append('page', page.toString());
         } else {
             url = new URL('https://hadithapi.com/api/hadiths');
+            url.searchParams.append('page', page.toString());
         }
         
         url.searchParams.append('apiKey', apiKey);
-        url.searchParams.append('page', page.toString());
 
         const response = await fetch(url.toString());
 
@@ -68,17 +70,16 @@ export async function getHadiths(page: number = 1, query: string = ''): Promise<
         
         const data = await response.json();
 
-        // The API returns different structures for general fetch and search
         if (query) {
             const searchData = data as HadithSearchApiResponse;
             return {
                 hadiths: {
-                    data: searchData.hadiths,
-                    next_page_url: searchData.next_page_url,
-                    prev_page_url: searchData.prev_page_url,
-                    from: searchData.from,
-                    to: searchData.to,
-                    total: searchData.total
+                    data: searchData.hadiths.data,
+                    next_page_url: searchData.hadiths.next_page_url,
+                    prev_page_url: searchData.hadiths.prev_page_url,
+                    from: (searchData.hadiths.current_page - 1) * 25 + 1,
+                    to: (searchData.hadiths.current_page - 1) * 25 + searchData.hadiths.data.length,
+                    total: searchData.hadiths.total
                 }
             };
         } else {
