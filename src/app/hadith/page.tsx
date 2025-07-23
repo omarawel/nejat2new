@@ -14,8 +14,8 @@ import {
 import { Skeleton } from "@/components/ui/skeleton"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Button } from "@/components/ui/button"
-import { Terminal, ChevronLeft, ChevronRight, Search } from "lucide-react"
-import { useEffect, useState, useMemo, FormEvent } from "react"
+import { Terminal, ChevronLeft, ChevronRight, Search, Eye, EyeOff, Play, Pause, Loader } from "lucide-react"
+import { useEffect, useState, useMemo, FormEvent, useRef } from "react"
 import { Hadith, getHadiths } from "./actions";
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -27,10 +27,18 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { cn } from "@/lib/utils"
+import { textToSpeech } from "@/ai/flows/text-to-speech"
+
 
 type Language = "eng" | "urd" | "ara";
 
 const HadithContent = ({ hadith, language }: { hadith: Hadith, language: Language }) => {
+  const [isHidden, setIsHidden] = useState(false);
+  const [playingAudio, setPlayingAudio] = useState<string | null>(null);
+  const [loadingAudio, setLoadingAudio] = useState<number | null>(null);
+  const [audioUrl, setAudioUrl] = useState<string | null>(null);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  
   const getText = () => {
     switch(language) {
       case "urd":
@@ -53,9 +61,57 @@ const HadithContent = ({ hadith, language }: { hadith: Hadith, language: Languag
     }
   }
 
+  const handlePlayAudio = async (hadithText: string, hadithId: number) => {
+    if (playingAudio === `hadith-${hadithId}`) {
+        audioRef.current?.pause();
+        setPlayingAudio(null);
+        return;
+    }
+    setLoadingAudio(hadithId);
+    setAudioUrl(null);
+    setPlayingAudio(null);
+
+    try {
+      const result = await textToSpeech(hadithText);
+      setAudioUrl(result.audio);
+      setPlayingAudio(`hadith-${hadithId}`);
+    } catch (err) {
+      console.error("Failed to get audio", err);
+    } finally {
+      setLoadingAudio(null);
+    }
+  };
+
+  useEffect(() => {
+    if (audioUrl && audioRef.current) {
+        audioRef.current.play().catch(e => console.error("Audio play failed", e));
+    }
+  }, [audioUrl]);
+
+  const hadithText = getText();
+  const isPlaying = playingAudio === `hadith-${hadith.id}`;
+  const isLoading = loadingAudio === hadith.id;
+
   return (
-    <div className="px-6 py-4 space-y-3">
-        <p className={cn("text-foreground/90", getLanguageDirection() === 'rtl' ? "text-right" : "")}>{getText()}</p>
+    <div className="px-6 py-4 space-y-3 relative">
+       {audioUrl && (
+        <audio
+          ref={audioRef}
+          src={audioUrl}
+          onEnded={() => setPlayingAudio(null)}
+        />
+      )}
+        <div className="flex justify-between items-start">
+            <p className={cn("text-foreground/90 flex-1", getLanguageDirection() === 'rtl' ? "text-right" : "", isHidden ? "opacity-0" : "opacity-100")}>{hadithText}</p>
+            <div className="flex items-center ml-4">
+                <Button variant="ghost" size="icon" onClick={() => handlePlayAudio(hadithText, hadith.id)} disabled={isLoading}>
+                    {isLoading ? <Loader className="h-5 w-5 animate-spin" /> : (isPlaying ? <Pause className="h-5 w-5" /> : <Play className="h-5 w-5" />)}
+                </Button>
+                <Button variant="ghost" size="icon" onClick={() => setIsHidden(!isHidden)}>
+                    {isHidden ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                </Button>
+            </div>
+        </div>
     </div>
   )
 }
@@ -95,7 +151,7 @@ export default function HadithPage() {
         setHadiths(hadithsData)
         
         const total = data.hadiths.total;
-        const perPage = hadithsData.length > 0 ? hadithsData.length : 25; // Default to 25 if data is empty
+        const perPage = hadithsData.length > 0 ? (data.hadiths.to - data.hadiths.from + 1) : 25;
         const lastPage = Math.ceil(total / perPage);
         const from = data.hadiths.from;
         const to = data.hadiths.to;
