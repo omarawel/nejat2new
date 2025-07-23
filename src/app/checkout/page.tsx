@@ -46,8 +46,9 @@ function CheckoutPageContent() {
     const c = content[language];
     const searchParams = useSearchParams();
     const planKey = searchParams.get('plan') as keyof typeof c.plans | null;
+    const priceId = searchParams.get('priceId');
 
-    if (!planKey || !c.plans[planKey]) {
+    if (!planKey || !c.plans[planKey] || !priceId) {
         return (
             <div className="text-center">
                 <p className="text-destructive mb-4">{c.invalidPlan}</p>
@@ -73,7 +74,7 @@ function CheckoutPageContent() {
                         <span className="font-bold text-primary">{selectedPlan.price}</span>
                     </div>
                 </div>
-                <StripeCheckoutWrapper />
+                <StripeCheckoutWrapper priceId={priceId} />
             </CardContent>
         </Card>
     );

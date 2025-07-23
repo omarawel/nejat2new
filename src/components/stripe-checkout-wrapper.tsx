@@ -3,7 +3,7 @@
 
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements, PaymentElement, useStripe, useElements } from '@stripe/react-stripe-js';
-import { useState, FormEvent } from 'react';
+import { useState, useEffect, FormEvent } from 'react';
 import { Button } from './ui/button';
 import { Loader2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
@@ -94,20 +94,19 @@ function CheckoutForm() {
 }
 
 
-export default function StripeCheckoutWrapper() {
+export default function StripeCheckoutWrapper({ priceId }: { priceId: string }) {
     const [clientSecret, setClientSecret] = useState("");
 
-    // In a real app, you'd get the amount based on the selected plan
-    const amount = 499; // Example: 4.99 EUR in cents
-
-    useState(() => {
-        createPaymentIntent({ amount })
-            .then(data => {
-                if (data.clientSecret) {
-                    setClientSecret(data.clientSecret)
-                }
-            });
-    });
+    useEffect(() => {
+        if (priceId) {
+            createPaymentIntent({ priceId })
+                .then(data => {
+                    if (data.clientSecret) {
+                        setClientSecret(data.clientSecret)
+                    }
+                });
+        }
+    }, [priceId]);
 
     const appearance = {
         theme: 'stripe',
