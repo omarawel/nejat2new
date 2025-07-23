@@ -9,7 +9,6 @@ import { LogIn, UserPlus, LogOut, UserCircle } from "lucide-react"
 
 import { ThemeToggle } from "@/components/theme-toggle"
 import { LanguageToggle } from "@/components/language-toggle"
-import { Logo } from "../icons"
 import { Button } from "../ui/button"
 import { auth } from "@/lib/firebase"
 import { useToast } from "@/hooks/use-toast"
@@ -62,7 +61,6 @@ export function AppHeader() {
   return (
     <header className="sticky top-0 z-10 flex h-20 items-center gap-4 border-b bg-background/80 px-4 backdrop-blur-sm sm:px-8">
       <Link href="/" className="flex items-center gap-2">
-        
         <span className="text-xl font-bold">nejat</span>
       </Link>
       <div className="flex-1" />
@@ -98,7 +96,18 @@ export function AppHeader() {
           </DropdownMenu>
         ) : (
           <>
-            {/* Login and Signup buttons removed for non-authenticated users */}
+            <Button asChild variant="ghost">
+                <Link href="/login">
+                    <LogIn />
+                    Anmelden
+                </Link>
+            </Button>
+            <Button asChild>
+                <Link href="/signup">
+                    <UserPlus />
+                    Konto erstellen
+                </Link>
+            </Button>
           </>
         )}
         <LanguageToggle />
