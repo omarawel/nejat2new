@@ -24,6 +24,8 @@ import { Terminal, Search, Eye, EyeOff, Play, Loader, Pause } from "lucide-react
 import { useEffect, useState, useMemo, FormEvent, useRef } from "react"
 import { cn } from "@/lib/utils"
 import { textToSpeech } from "@/ai/flows/text-to-speech"
+import type { TextToSpeechInput, TextToSpeechOutput } from "@/ai/flows/text-to-speech-types";
+
 
 interface Surah {
   number: number
@@ -200,7 +202,7 @@ const SurahDetailContent = ({ surahNumber, languageEdition }: { surahNumber: num
         return (
             <div key={ayahNumber} className="px-6 py-4 space-y-3 relative">
                 <div className="flex justify-between items-start">
-                    <p className="text-2xl font-quranic text-right tracking-wide leading-relaxed flex-1">{arabicText}</p>
+                    <p className={cn("text-2xl font-quranic text-right tracking-wide leading-relaxed flex-1", isHidden ? "opacity-0" : "opacity-100")}>{arabicText}</p>
                     <div className="flex items-center ml-4">
                         <Button variant="ghost" size="icon" onClick={() => handlePlayAudio(arabicText, ayahNumber)} disabled={isLoading}>
                             {isLoading ? <Loader className="h-5 w-5 animate-spin" /> : (isPlaying ? <Pause className="h-5 w-5" /> : <Play className="h-5 w-5" />)}
