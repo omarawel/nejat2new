@@ -5,7 +5,7 @@ import { useState, useEffect } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { User, onAuthStateChanged, signOut } from "firebase/auth"
-import { LogIn, UserPlus, LogOut, UserCircle } from "lucide-react"
+import { LogIn, UserPlus, LogOut, UserCircle, LayoutGrid } from "lucide-react"
 
 import { ThemeToggle } from "@/components/theme-toggle"
 import { LanguageToggle } from "@/components/language-toggle"
@@ -29,6 +29,7 @@ const content = {
     signup: "Konto erstellen",
     myAccount: "Mein Konto",
     profile: "Profil",
+    dashboard: "Mein Dashboard",
     logout: "Abmelden",
     loggedOut: "Abgemeldet",
     loggedOutSuccess: "Sie wurden erfolgreich abgemeldet.",
@@ -41,6 +42,7 @@ const content = {
     signup: "Create Account",
     myAccount: "My Account",
     profile: "Profile",
+    dashboard: "My Dashboard",
     logout: "Log out",
     loggedOut: "Logged Out",
     loggedOutSuccess: "You have been successfully logged out.",
@@ -114,10 +116,15 @@ export function AppHeader() {
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>{c.myAccount}</DropdownMenuLabel>
               <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={() => router.push('/dashboard')}>
+                <LayoutGrid className="mr-2 h-4 w-4" />
+                <span>{c.dashboard}</span>
+              </DropdownMenuItem>
               <DropdownMenuItem onClick={() => router.push('/profile')}>
                 <UserCircle className="mr-2 h-4 w-4" />
                 <span>{c.profile}</span>
               </DropdownMenuItem>
+              <DropdownMenuSeparator />
               <DropdownMenuItem onClick={handleLogout}>
                 <LogOut className="mr-2 h-4 w-4" />
                 <span>{c.logout}</span>

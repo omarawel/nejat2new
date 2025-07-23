@@ -6,6 +6,7 @@ import { Grid } from "lucide-react";
 import Link from "next/link";
 import { useLanguage } from "@/components/language-provider";
 import { useMemo } from "react";
+import { allTools } from "@/lib/tools";
 
 const FeatureCard = ({ icon, name }: { icon: string, name: string }) => {
   return (
@@ -15,73 +16,6 @@ const FeatureCard = ({ icon, name }: { icon: string, name: string }) => {
     </div>
   );
 };
-
-const tools = [
-    { key: "prophets", icon: "👨‍👩‍👧‍👦", de: "25 Propheten", en: "25 Prophets", href: "/prophets" },
-    { key: "arabic_basics", icon: "✍️", de: "Arabische Grundlagen", en: "Arabic Basics", href: "/arabic-basics" },
-    { key: "arabic_numbers", icon: "🔢", de: "Arabische Zahlen", en: "Arabic Numbers", href: "/arabic-numbers" },
-    { key: "asmaul_husna", icon: "🙌", de: "Asma-Ul Husna", en: "Asma-Ul Husna", href: "/asma-ul-husna" },
-    { key: "memorization", icon: "🧠", de: "Auswendiglernen", en: "Memorization", href: "/memorization" },
-    { key: "community", icon: "🎉", de: "Community & Events", en: "Community & Events", href: "/community" },
-    { key: "favorites", icon: "⭐", de: "Deine Favoriten", en: "Your Favorites", href: "/favorites" },
-    { key: "dhikr", icon: "🙏", de: "Dhikr & Bittgebete", en: "Dhikr & Supplications", href: "/dhikr" },
-    { key: "rays_of_islam", icon: "✨", de: "Die Strahlen Des Islam", en: "The Rays Of Islam", href: "/rays-of-islam" },
-    { key: "dua_generator", icon: "🤖", de: "Du'a-Generator", en: "Du'a Generator", href: "/dua-generator" },
-    { key: "dua", icon: "🤲", de: "Dua", en: "Dua", href: "/dua" },
-    { key: "nikah", icon: "💍", de: "Ehe (Nikah)", en: "Marriage (Nikah)", href: "/nikah" },
-    { key: "reminders", icon: "🔔", de: "Erinnerungen", en: "Reminders", href: "/reminders" },
-    { key: "food_rules", icon: "🍽️", de: "Essensregeln", en: "Food Rules", href: "/food-rules" },
-    { key: "finance", icon: "💰", de: "Finanzen", en: "Finances" },
-    { key: "jummah", icon: "🕌", de: "Freitagsgebet (Jumu'ah)", en: "Friday Prayer (Jumu'ah)" },
-    { key: "prayer_on_time", icon: "⏳", de: "Gebet auf Zeit", en: "Prayer on Time" },
-    { key: "wudu", icon: "💧", de: "Gebetswaschung (Wudu)", en: "Ablution (Wudu)", href: "/wudu" },
-    { key: "prayer_times", icon: "🌙", de: "Gebetszeiten", en: "Prayer Times", href: "/prayer-times" },
-    { key: "greeting_card", icon: "💌", de: "Grußkarte", en: "Greeting Card" },
-    { key: "akhlaq", icon: "😊", de: "Gute Manieren (Akhlaq)", en: "Good Manners (Akhlaq)" },
-    { key: "hadith", icon: "📚", de: "Hadith Sammlung", en: "Hadith Collection", href: "/hadith" },
-    { key: "hadith_of_day", icon: "📜", de: "Hadith des Tages", en: "Hadith of the Day" },
-    { key: "halal_haram_checker", icon: "✅", de: "Halal & Haram Checker", en: "Halal & Haram Checker" },
-    { key: "hatim", icon: "📖", de: "Hatim", en: "Hatim" },
-    { key: "quran", icon: "📖", de: "Heiliger Koran", en: "Holy Quran", href: "/quran" },
-    { key: "hijri_converter", icon: "🔄", de: "Hijri Konverter", en: "Hijri Converter" },
-    { key: "hisnul_muslim", icon: "🛡️", de: "Hisnul Muslim", en: "Hisnul Muslim" },
-    { key: "islamic_education", icon: "🎓", de: "Islamische Erziehung", en: "Islamic Education" },
-    { key: "islamic_stories", icon: "📜", de: "Islamische Geschichten", en: "Islamic Stories" },
-    { key: "islamic_art", icon: "🎨", de: "Islamische Kunst", en: "Islamic Art" },
-    { key: "islamic_fashion", icon: "👚", de: "Islamische Mode", en: "Islamic Fashion" },
-    { key: "islamic_months", icon: "🌙", de: "Islamische Monate", en: "Islamic Months" },
-    { key: "islamic_names", icon: "👶", de: "Islamische Namen", en: "Islamic Names" },
-    { key: "islamic_miracles", icon: "🌟", de: "Islamische Wunder", en: "Islamic Miracles" },
-    { key: "islamic_quotes", icon: "💬", de: "Islamische Zitate", en: "Islamic Quotes" },
-    { key: "islamic_calendar", icon: "📅", de: "Islamischer Kalender", en: "Islamic Calendar" },
-    { key: "khutbah_of_week", icon: "🎤", de: "Khutbah der Woche", en: "Khutbah of the Week" },
-    { key: "ai_scholar", icon: "🤖", de: "KI-Gelehrter", en: "AI Scholar", href: "/insights" },
-    { key: "compass", icon: "🧭", de: "Kompass", en: "Compass" },
-    { key: "reverts_corner", icon: "🤝", de: "Konvertiten-Ecke", en: "Revert's Corner" },
-    { key: "quran_recognizer", icon: "🔍", de: "Koran-Erkenner", en: "Quran Recognizer" },
-    { key: "verse_of_day", icon: "📜", de: "Koranvers des Tages", en: "Verse of the Day" },
-    { key: "ladies_special", icon: "👩", de: "Ladies Special", en: "Ladies Special" },
-    { key: "learning_path_generator", icon: "🗺️", de: "Lernpfad-Generator", en: "Learning Path Generator" },
-    { key: "mosque_finder", icon: "🕌", de: "Moscheefinder", en: "Mosque Finder" },
-    { key: "prophetic_medicine", icon: "🌿", de: "Prophetische Medizin", en: "Prophetic Medicine" },
-    { key: "qibla", icon: "🕋", de: "Qibla", en: "Qibla" },
-    { key: "quiz", icon: "❓", de: "Quiz", en: "Quiz" },
-    { key: "radio", icon: "📻", de: "Radio", en: "Radio" },
-    { key: "travel_etiquette", icon: "✈️", de: "Reise-Etikette", en: "Travel Etiquette" },
-    { key: "sahaba", icon: "👥", de: "Sahaba", en: "Sahaba" },
-    { key: "donations", icon: "💸", de: "Spenden", en: "Donations" },
-    { key: "tasbih_counter", icon: "📿", de: "Tasbih Zähler", en: "Tasbih Counter" },
-    { key: "janazah", icon: "⚰️", de: "Todesfall (Janazah)", en: "Death (Janazah)" },
-    { key: "dream_interpreter", icon: "🌙", de: "Traumdeuter", en: "Dream Interpreter" },
-    { key: "dreams_in_islam", icon: "💤", de: "Träume im Islam", en: "Dreams in Islam" },
-    { key: "support", icon: "❤️", de: "Unterstützung", en: "Support" },
-    { key: "missed_fasts", icon: "🗓️", de: "Verpasste Fastentage", en: "Missed Fasts" },
-    { key: "missed_prayers", icon: " نماز", de: "Verpasste Gebete", en: "Missed Prayers" },
-    { key: "verse_finder", icon: "🔎", de: "Vers-Finder", en: "Verse Finder" },
-    { key: "quran_miracles", icon: "✨", de: "Wunder des Korans", en: "Miracles of the Quran" },
-    { key: "zakat_calculator", icon: "💸", de: "Zakat-Rechner", en: "Zakat Calculator" },
-    { key: "civilization", icon: "🏛️", de: "Zivilisation", en: "Civilization" }
-];
 
 const content = {
   de: {
@@ -109,7 +43,7 @@ export default function Home() {
   const c = content[language as keyof typeof content] || content.de;
 
   const localizedTools = useMemo(() => {
-    return tools
+    return allTools
       .map(tool => ({ ...tool, name: tool[language as keyof typeof tool] || tool.en }))
       .sort((a, b) => a.name.localeCompare(b.name));
   }, [language]);
@@ -142,7 +76,7 @@ export default function Home() {
             if (tool.href) {
                 return <Link key={tool.key} href={tool.href}>{card}</Link>
             }
-            return <div key={tool.key}>{card}</div>;
+            return <div key={tool.key} className="opacity-50 cursor-not-allowed">{card}</div>;
           })}
         </div>
       </section>
