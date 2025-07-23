@@ -3,34 +3,55 @@
 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Handshake, BookHeart, DoorOpen, HelpCircle, ArrowLeft } from 'lucide-react';
+import { Handshake, BookHeart, DoorOpen, HelpCircle, ArrowLeft, Star, Users, Droplets } from 'lucide-react';
 import { useLanguage } from '@/components/language-provider';
 import Link from 'next/link';
 
 const content = {
     de: {
         pageTitle: "Ecke für Konvertiten",
-        pageDescription: "Herzlich willkommen in der Ummah! Hier findest du Ressourcen, die dir den Einstieg in den Islam erleichtern.",
+        pageDescription: "Herzlich willkommen in der Ummah! Hier findest du Ressourcen und Anleitungen, die dir den Einstieg in den Islam erleichtern.",
         backToFeatures: "Zurück zu den Funktionen",
         cards: [
             {
-                icon: BookHeart,
-                title: "Die Grundlagen des Glaubens",
-                description: "Verstehe die sechs Säulen des Iman (Glaube) und die fünf Säulen des Islam, die das Fundament deines neuen Lebensweges bilden.",
-                buttonText: "Mehr über die Säulen",
-                href: "/prophets" // Placeholder link
+                icon: Star,
+                title: "Die Schahada (Glaubensbekenntnis)",
+                description: "Der erste und wichtigste Schritt. Lerne die Bedeutung und Aussprache des Bekenntnisses, das dich zum Muslim macht: 'Aschhadu an la ilaha illallah, wa aschhadu anna Muhammadan abduhu wa rasuluh.'",
+                buttonText: "Mehr erfahren",
+                href: "/arkan-al-islam"
             },
             {
-                icon: DoorOpen,
-                title: "Deine ersten Schritte",
-                description: "Praktische Anleitungen für deine ersten Schritte, einschließlich der Schahada (Glaubensbekenntnis) und wie man die Gebetswaschung (Wudu) und das Gebet (Salah) lernt.",
-                buttonText: "Wudu & Gebet lernen",
+                icon: BookHeart,
+                title: "Die 5 Säulen des Islam",
+                description: "Die fünf Säulen sind das Fundament der gottesdienstlichen Handlungen eines Muslims. Lerne ihre Bedeutung und wie sie praktiziert werden.",
+                buttonText: "Zu den Säulen des Islam",
+                href: "/arkan-al-islam"
+            },
+            {
+                icon: BookHeart,
+                title: "Die 6 Säulen des Iman",
+                description: "Die sechs Glaubensartikel sind die grundlegenden Überzeugungen, die das Weltbild eines Muslims formen. Vertiefe dein Verständnis über Allah, die Engel, die Bücher, die Gesandten, den Jüngsten Tag und die Vorherbestimmung.",
+                buttonText: "Zu den Säulen des Iman",
+                href: "/arkan-al-iman"
+            },
+            {
+                icon: Droplets,
+                title: "Das Gebet lernen (Salah)",
+                description: "Das Gebet ist die direkte Verbindung zu Allah. Der erste Schritt ist die rituelle Waschung (Wudu). Hier findest du eine einfache Anleitung.",
+                buttonText: "Wudu lernen",
                 href: "/wudu"
+            },
+            {
+                icon: Users,
+                title: "Eine Gemeinschaft finden",
+                description: "Der Islam ist eine Gemeinschaft. Der Besuch einer lokalen Moschee kann dir helfen, andere Muslime kennenzulernen, Fragen zu stellen und Unterstützung zu finden.",
+                buttonText: "Moscheefinder nutzen",
+                href: "/mosque-finder"
             },
             {
                 icon: HelpCircle,
                 title: "Häufige Fragen",
-                description: "Antworten auf häufige Fragen, die neue Muslime oft haben, von sozialen Aspekten bis hin zu theologischen Details. Nutze auch unseren KI-Gelehrten.",
+                description: "Du hast sicher viele Fragen. Nutze unseren KI-Gelehrten, um Antworten zu finden, oder durchstöbere unsere Themen.",
                 buttonText: "KI-Gelehrten fragen",
                 href: "/insights"
             }
@@ -38,27 +59,48 @@ const content = {
     },
     en: {
         pageTitle: "Revert's Corner",
-        pageDescription: "Welcome to the Ummah! Here you will find resources to help you get started with Islam.",
+        pageDescription: "Welcome to the Ummah! Here you'll find resources and guidance to help you on your journey into Islam.",
         backToFeatures: "Back to Features",
         cards: [
             {
-                icon: BookHeart,
-                title: "The Foundations of Faith",
-                description: "Understand the six pillars of Iman (faith) and the five pillars of Islam, which form the foundation of your new path in life.",
-                buttonText: "Learn about the Pillars",
-                href: "/prophets" // Placeholder link
+                icon: Star,
+                title: "The Shahada (Testimony of Faith)",
+                description: "The first and most important step. Learn the meaning and pronunciation of the testimony that makes you a Muslim: 'Ashhadu an la ilaha illallah, wa ashhadu anna Muhammadan abduhu wa rasuluh.'",
+                buttonText: "Learn More",
+                href: "/arkan-al-islam"
             },
             {
-                icon: DoorOpen,
-                title: "Your First Steps",
-                description: "Practical guidance for your first steps, including the Shahada (testimony of faith) and how to learn ablution (Wudu) and prayer (Salah).",
-                buttonText: "Learn Wudu & Prayer",
+                icon: BookHeart,
+                title: "The 5 Pillars of Islam",
+                description: "The five pillars are the foundation of a Muslim's acts of worship. Learn their meaning and how they are practiced.",
+                buttonText: "To the Pillars of Islam",
+                href: "/arkan-al-islam"
+            },
+             {
+                icon: BookHeart,
+                title: "The 6 Pillars of Iman",
+                description: "The six articles of faith are the fundamental beliefs that shape a Muslim's worldview. Deepen your understanding of Allah, the angels, the books, the messengers, the Last Day, and divine decree.",
+                buttonText: "To the Pillars of Iman",
+                href: "/arkan-al-iman"
+            },
+            {
+                icon: Droplets,
+                title: "Learning to Pray (Salah)",
+                description: "Prayer is the direct connection to Allah. The first step is the ritual ablution (Wudu). Here you will find a simple guide.",
+                buttonText: "Learn Wudu",
                 href: "/wudu"
+            },
+            {
+                icon: Users,
+                title: "Finding a Community",
+                description: "Islam is a community. Visiting a local mosque can help you meet other Muslims, ask questions, and find support.",
+                buttonText: "Use Mosque Finder",
+                href: "/mosque-finder"
             },
             {
                 icon: HelpCircle,
                 title: "Common Questions",
-                description: "Answers to common questions that new Muslims often have, from social aspects to theological details. Feel free to use our AI Scholar.",
+                description: "You surely have many questions. Use our AI Scholar to find answers, or browse our topics.",
                 buttonText: "Ask the AI Scholar",
                 href: "/insights"
             }
@@ -87,7 +129,7 @@ export default function RevertsCornerPage() {
             <p className="text-muted-foreground mt-2 text-lg max-w-2xl mx-auto">{c.pageDescription}</p>
         </header>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
             {c.cards.map((card, index) => {
                 const Icon = card.icon;
                 return (
@@ -113,3 +155,5 @@ export default function RevertsCornerPage() {
     </div>
   );
 }
+
+    
