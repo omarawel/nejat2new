@@ -33,8 +33,9 @@ export interface HadithApiResponse {
 
 export async function getHadiths(page: number = 1): Promise<{ hadiths?: HadithApiResponse['hadiths'], error?: string }> {
     try {
-        const apiKey = process.env.HADITH_API_KEY;
+        const apiKey = "$2y$10$CyPRMBPY6e9ijyeQ6pvZgT8wmb5ptObUWWDEoJhKbXRDXfkUwJW";
         if (!apiKey) {
+            // This case should not be reached now.
             return { error: 'Hadith API key is not configured on the server.' };
         }
 
