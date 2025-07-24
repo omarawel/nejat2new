@@ -25,7 +25,7 @@ export const getSubscriptionPlans = (callback: (plans: SubscriptionPlan[]) => vo
         id: 'supporter',
         name: 'Supporter',
         price: '2,99€/Monat',
-        features: ['15 KI-Anfragen pro Monat', 'Unterstütze die Entwicklung'],
+        features: ['15 KI-Anfragen pro Monat', 'Entwicklung unterstützen'],
         priceId: 'price_1RltQWGXWEMb96gVAEDYSZay',
         stripeLink: 'https://buy.stripe.com/7sYfZham72z5bXm0BZabK02',
         aiRequestLimit: 15,
