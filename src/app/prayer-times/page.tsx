@@ -73,8 +73,8 @@ export default function PrayerTimesPage() {
     useEffect(() => {
         const fetchPrayerTimes = (latitude: number, longitude: number) => {
             const date = new Date();
-            // Method 3 is Diyanet İşleri Başkanlığı, Turkey - good for Germany/Europe
-            const url = `https://api.aladhan.com/v1/timings/${date.getTime()/1000}?latitude=${latitude}&longitude=${longitude}&method=3`;
+            // Custom Method: 18 degrees for Fajr, 17 for Isha. Common in Germany/Europe.
+            const url = `https://api.aladhan.com/v1/timings/${date.getTime()/1000}?latitude=${latitude}&longitude=${longitude}&method=99&methodSettings=18,null,17`;
 
             fetch(url)
                 .then(response => response.json())
