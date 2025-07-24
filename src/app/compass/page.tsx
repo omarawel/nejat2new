@@ -4,7 +4,7 @@
 import { useEffect, useState, useCallback } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Compass, ArrowLeft, MapPin, AlertTriangle, Loader2 } from 'lucide-react';
+import { Compass, ArrowLeft, MapPin, AlertTriangle, Loader2, CheckCircle } from 'lucide-react';
 import { useLanguage } from '@/components/language-provider';
 import Link from 'next/link';
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
@@ -22,7 +22,10 @@ const content = {
         permissionErrorDesc: "Zugriff auf Standort und/oder Gerätesensoren verweigert. Bitte aktiviere die Berechtigungen in deinen Browsereinstellungen und lade die Seite neu.",
         unsupportedError: "Nicht unterstützt",
         unsupportedErrorDesc: "Dein Browser oder Gerät unterstützt die erforderlichen Sensoren nicht.",
-        note: "Hinweis: Halte dein Gerät flach und fern von Metallgegenständen für eine bessere Genauigkeit."
+        note: "Hinweis: Halte dein Gerät flach und fern von Metallgegenständen für eine bessere Genauigkeit.",
+        qiblaDirection: "Qibla-Richtung",
+        yourDirection: "Deine Richtung",
+        qiblaFound: "Qibla gefunden!"
     },
     en: {
         pageTitle: "Qibla Compass",
@@ -35,7 +38,10 @@ const content = {
         permissionErrorDesc: "Location and/or device sensor access denied. Please enable permissions in your browser settings and reload the page.",
         unsupportedError: "Not Supported",
         unsupportedErrorDesc: "Your browser or device does not support the required sensors.",
-        note: "Note: For best accuracy, hold your device flat and away from metal objects."
+        note: "Note: For best accuracy, hold your device flat and away from metal objects.",
+        qiblaDirection: "Qibla Direction",
+        yourDirection: "Your Direction",
+        qiblaFound: "Qibla Found!"
     }
 }
 
@@ -47,7 +53,7 @@ export default function CompassPage() {
     const { language } = useLanguage();
     const c = content[language];
 
-    const [qiblaDirection, setQiblaDirection] = useState(0);
+    const [qiblaDirection, setQiblaDirection] = useState<number | null>(null);
     const [heading, setHeading] = useState(0);
     const [error, setError] = useState<string | null>(null);
     const [status, setStatus] = useState<string>(c.requestingPermissions);
@@ -78,6 +84,7 @@ export default function CompassPage() {
 
     const requestPermissions = useCallback(async () => {
         setStatus(c.requestingPermissions);
+        setError(null);
         try {
             // Request device orientation permission for iOS 13+
             if (typeof (DeviceOrientationEvent as any).requestPermission === 'function') {
@@ -124,7 +131,10 @@ export default function CompassPage() {
     }, []);
 
     const rotation = 360 - heading;
-    const qiblaRotation = rotation + qiblaDirection;
+    const qiblaRotation = qiblaDirection ? rotation + qiblaDirection : 0;
+    
+    // Check if the user is facing the Qibla direction (with a tolerance of 2 degrees)
+    const isQiblaAligned = qiblaDirection !== null && Math.abs(heading - qiblaDirection) < 2;
 
     return (
         <div className="container mx-auto px-4 py-8 flex-grow flex flex-col items-center justify-center">
@@ -161,14 +171,19 @@ export default function CompassPage() {
                                     </div>
                                     
                                     <div className="w-full h-full transition-transform duration-200" style={{ transform: `rotate(${rotation}deg)` }}>
-                                        <div className="absolute w-full h-full" style={{ transform: `rotate(${qiblaDirection}deg)` }}>
-                                             <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-0 h-0
-                                                border-l-[10px] border-l-transparent
-                                                border-r-[10px] border-r-transparent
-                                                border-b-[20px] border-b-primary">
-                                                <span className="absolute -bottom-6 -ml-2 text-primary font-bold">🕋</span>
+                                        {qiblaDirection !== null && (
+                                            <div className="absolute w-full h-full" style={{ transform: `rotate(${qiblaDirection}deg)` }}>
+                                                <div className={cn(
+                                                    "absolute -top-4 left-1/2 -translate-x-1/2 w-0 h-0 transition-colors",
+                                                    "border-l-[10px] border-l-transparent",
+                                                    "border-r-[10px] border-r-transparent",
+                                                    "border-b-[20px]",
+                                                    isQiblaAligned ? "border-b-green-500" : "border-b-primary"
+                                                )}>
+                                                    <span className="absolute -bottom-6 -ml-2 text-primary font-bold">🕋</span>
+                                                </div>
                                             </div>
-                                        </div>
+                                        )}
                                         <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-0 h-0
                                             border-l-[8px] border-l-transparent
                                             border-r-[8px] border-r-transparent
@@ -176,11 +191,27 @@ export default function CompassPage() {
                                         </div>
                                     </div>
                                 </div>
+
+                                <div className="grid grid-cols-2 gap-4 text-center">
+                                    <Card className="p-2">
+                                        <CardDescription>{c.yourDirection}</CardDescription>
+                                        <CardTitle>{Math.round(heading)}°</CardTitle>
+                                    </Card>
+                                     <Card className="p-2">
+                                        <CardDescription>{c.qiblaDirection}</CardDescription>
+                                        <CardTitle>{qiblaDirection !== null ? `${Math.round(qiblaDirection)}°` : '...'}</CardTitle>
+                                    </Card>
+                                </div>
                                 
-                                <Card className="bg-accent/50 p-3">
+                                <Card className={cn(
+                                    "p-3 transition-colors",
+                                    isQiblaAligned ? "bg-green-500/20 border-green-500/50" : "bg-accent/50"
+                                    )}>
                                     <CardTitle className="text-xl flex items-center justify-center gap-2">
-                                         {status === c.requestingPermissions || status === c.calculating ? <Loader2 className="h-5 w-5 animate-spin"/> : <Compass className="h-5 w-5" />}
-                                        {status}
+                                         {status === c.requestingPermissions || status === c.calculating ? <Loader2 className="h-5 w-5 animate-spin"/> : (
+                                             isQiblaAligned ? <CheckCircle className="h-5 w-5 text-green-600" /> : <Compass className="h-5 w-5" />
+                                         )}
+                                        {isQiblaAligned ? c.qiblaFound : status}
                                     </CardTitle>
                                 </Card>
                                 <p className="text-xs text-muted-foreground px-4">{c.note}</p>
