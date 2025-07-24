@@ -23,9 +23,7 @@ export default function AdminContentPage({ params }: { params: { slug: string } 
             </Button>
             <Card className="text-center">
                 <CardHeader>
-                     <div className="mx-auto bg-primary/10 rounded-full h-20 w-20 flex items-center justify-center mb-4">
-                        <Construction className="h-12 w-12 text-primary" />
-                    </div>
+                     
                     <CardTitle className="text-2xl">{pageTitle} Content</CardTitle>
                     <CardDescription>This feature is currently under construction.</CardDescription>
                 </CardHeader>

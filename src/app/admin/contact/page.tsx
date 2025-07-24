@@ -175,8 +175,7 @@ export default function AdminContactPage() {
                                 {c.backToDashboard}
                             </Link>
                         </Button>
-                        <h1 className="text-4xl font-bold tracking-tight text-primary flex items-center gap-3">
-                        
+                        <h1 className="text-4xl font-bold tracking-tight text-primary">
                         {c.title}
                         </h1>
                         <p className="text-muted-foreground mt-2 text-lg max-w-2xl">{c.description}</p>
