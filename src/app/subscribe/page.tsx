@@ -39,22 +39,25 @@ const defaultPlans: Omit<SubscriptionPlan, 'id' | 'createdAt' >[] = [
         name: "Supporter",
         price: "2,99€/Monat",
         priceId: "price_1PgK9qRx5XJz4yY5t0s5XJ8G",
-        features: ["Werbefreie Erfahrung", "Unterstütze die Entwicklung"],
-        active: true
+        features: ["15 KI-Anfragen pro Monat", "Werbefreie Erfahrung", "Unterstütze die Entwicklung"],
+        active: true,
+        aiRequestLimit: 15
     },
     {
         name: "Pro",
         price: "4,99€/Monat",
         priceId: "price_1PgKAERx5XJz4yY5j8g5gK5f",
-        features: ["Alle Supporter-Vorteile", "Exklusive KI-Funktionen", "Offline-Zugriff für Koran"],
-        active: true
+        features: ["30 KI-Anfragen pro Monat", "Alle Supporter-Vorteile", "Offline-Zugriff für Koran"],
+        active: true,
+        aiRequestLimit: 30
     },
     {
         name: "Patron",
         price: "9,99€/Monat",
         priceId: "price_1PgKARRx5XJz4yY5q5f8gS7a",
-        features: ["Alle Pro-Vorteile", "Früher Zugriff auf neue Features", "Direkter Einfluss auf die Entwicklung"],
-        active: true
+        features: ["75 KI-Anfragen pro Monat", "Alle Pro-Vorteile", "Früher Zugriff auf neue Features"],
+        active: true,
+        aiRequestLimit: 75
     }
 ]
 
