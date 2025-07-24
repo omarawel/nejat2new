@@ -2,20 +2,16 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { loadStripe } from '@stripe/stripe-js';
 import { getSubscriptionPlans, SubscriptionPlan } from '@/lib/subscriptions';
 import { useLanguage } from '@/components/language-provider';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
-import { Check, Star } from 'lucide-react';
+import { Check, Star, Loader2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '@/lib/firebase';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { createPaymentIntent } from '../checkout/actions';
-
-const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
 
 const content = {
     de: {
@@ -66,20 +62,18 @@ const SubscribePage: React.FC = () => {
             router.push('/login?redirect=/subscribe');
             return;
         }
-        setLoadingRedirect(plan.priceId);
-
-        try {
-            const planKey = Object.entries(c.plans || {}).find(([_, p]) => p.name === plan.name)?.[0];
-            router.push(`/checkout?plan=${planKey}&priceId=${plan.priceId}`);
-        } catch (error: any) {
+        
+        if (!plan.stripeLink) {
             toast({
                 variant: 'destructive',
                 title: 'Error',
-                description: c.errorRedirect
+                description: 'Payment link is not available for this plan yet.'
             });
-            console.error(error);
-            setLoadingRedirect(null);
+            return;
         }
+
+        setLoadingRedirect(plan.id);
+        window.location.href = plan.stripeLink;
     };
 
 
@@ -101,7 +95,7 @@ const SubscribePage: React.FC = () => {
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                     {subscriptionPlans.map((plan, index) => (
-                        <Card key={plan.id} className={cn("flex flex-col", { 'border-primary shadow-lg': index === 1 })}>
+                        <Card key={plan.id} className={cn("flex flex-col", { 'border-2 border-primary shadow-lg': index === 1 })}>
                             <CardHeader>
                                 <CardTitle className="text-2xl font-semibold text-primary">{plan.name}</CardTitle>
                                 <CardDescription className="text-3xl font-bold">{plan.price}</CardDescription>
@@ -122,7 +116,12 @@ const SubscribePage: React.FC = () => {
                                     className="w-full"
                                     disabled={!plan.active || !!loadingRedirect}
                                 >
-                                    {loadingRedirect === plan.priceId ? c.redirecting : c.choosePlan}
+                                    {loadingRedirect === plan.id ? (
+                                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                    ) : (
+                                       <Star className="mr-2 h-4 w-4" />
+                                    )}
+                                    {loadingRedirect === plan.id ? c.redirecting : c.choosePlan}
                                 </Button>
                             </CardFooter>
                         </Card>

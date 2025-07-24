@@ -8,9 +8,10 @@ export interface SubscriptionPlan {
   price: string;
   features: string[];
   priceId: string; // Stripe Price ID
+  stripeLink: string; // Direct Stripe Payment Link
   aiRequestLimit: number; // Monthly AI request limit
-  active: boolean; // Annahme: Pläne sind aktiv, basierend auf dem Bild
-  createdAt: Timestamp; // Wird beibehalten
+  active: boolean; 
+  createdAt: Timestamp; 
 }
 
 // Get real-time updates for all subscription plans
@@ -18,50 +19,46 @@ export const getSubscriptionPlans = (callback: (plans: SubscriptionPlan[]) => vo
   const plansCol = collection(db, 'subscriptionPlans');
   const q = query(plansCol, orderBy('createdAt', 'asc'));
 
-  const unsubscribe = onSnapshot(q, (querySnapshot) => {
-    const plans: SubscriptionPlan[] = [];
-    querySnapshot.forEach((doc) => {
-      plans.push({ id: doc.id, ...doc.data() } as SubscriptionPlan);
-    });
-    // HARDCODED Pläne basierend auf dem Bild - ERSETZE DIES DURCH DAS LADEN AUS DEINER DATENBANK
-    const hardcodedPlans: SubscriptionPlan[] = [
+  // For this example, we return a hardcoded list. In a real app, you'd use the onSnapshot listener.
+  const hardcodedPlans: SubscriptionPlan[] = [
       {
         id: 'supporter',
         name: 'Supporter',
         price: '2,99€/Monat',
         features: ['15 KI-Anfragen pro Monat', 'Werbefreie Erfahrung', 'Unterstütze die Entwicklung'],
-        priceId: 'price_1RltQWGXWEMb96gVAEDYSZay', // ERSETZE DIES
+        priceId: 'price_1RltQWGXWEMb96gVAEDYSZay',
+        stripeLink: 'https://buy.stripe.com/7sYfZham72z5bXm0BZabK02',
         aiRequestLimit: 15,
         active: true,
-        createdAt: Timestamp.now(), // Dummy Timestamp
+        createdAt: Timestamp.now(), 
       },
       {
         id: 'pro',
         name: 'Pro',
         price: '4,99€/Monat',
         features: ['30 KI-Anfragen pro Monat', 'Alle Supporter-Vorteile', 'Offline-Zugriff für Koran'],
-        priceId: 'price_1RmJ3rGXWEMb96gVBYrwf9DD', // ERSETZE DIES
+        priceId: 'price_1RmJ3rGXWEMb96gVBYrwf9DD',
+        stripeLink: '', // To be filled later
         aiRequestLimit: 30,
         active: true,
-        createdAt: Timestamp.now(), // Dummy Timestamp
+        createdAt: Timestamp.now(), 
       },
       {
         id: 'patron',
         name: 'Patron',
         price: '9,99€/Monat',
         features: ['75 KI-Anfragen pro Monat', 'Alle Pro-Vorteile', 'Früher Zugriff auf neue Features'],
-        priceId: 'price_1RltR4GXWEMb96gVOcjACqRR', // ERSETZE DIES
+        priceId: 'price_1RltR4GXWEMb96gVOcjACqRR', 
+        stripeLink: '', // To be filled later
         aiRequestLimit: 75,
         active: true,
-        createdAt: Timestamp.now(), // Dummy Timestamp
+        createdAt: Timestamp.now(),
       },
     ];
-    callback(hardcodedPlans); // Verwende die hardcoded Pläne
-  }, (error) => {
-      console.error("Error fetching subscription plans:", error);
-      callback([]);
-  });
-
+  callback(hardcodedPlans);
+  
+  // The onSnapshot listener can be re-enabled when you connect to a real database.
+  const unsubscribe = () => {};
   return unsubscribe;
 };
 
