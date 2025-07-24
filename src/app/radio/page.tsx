@@ -27,7 +27,7 @@ const stations = [
     {
         name: "Radio Coran - France",
         description: "Islamic programs and recitations in French.",
-        streamUrl: "https://radiocorran.ice.infomaniak.ch/radiocorran-128.mp3",
+        streamUrl: "https://listen.radioking.com/radio/353553/stream/417244",
         logo: "https://placehold.co/100x100.png",
         hint: "Eiffel Tower"
     },
