@@ -4,8 +4,11 @@
 import Link from "next/link";
 import { useLanguage } from "../language-provider";
 import { FacebookIcon, InstagramIcon, TwitterIcon, YouTubeIcon } from "../icons";
+import { useEffect, useState } from "react";
+import { getFooterContentOnce, type FooterContent, type SocialLink } from "@/lib/footer";
+import { Skeleton } from "../ui/skeleton";
 
-const content = {
+const staticContent = {
     de: {
         description: "Von präzisen Gebetszeiten und Qibla-Richtung bis hin zu interaktiven Lern-Tools wie dem Koran, Hadith-Sammlungen und KI-generierten Geschichten. Alles, was du für deine spirituelle Reise brauchst, in einer App.",
         company: "Unternehmen",
@@ -34,17 +37,40 @@ const content = {
     }
 }
 
-// These links would ideally come from a CMS or Firestore managed by an admin panel
-const socialLinks = [
-    { name: "Facebook", href: "https://facebook.com/nejatapp", icon: FacebookIcon },
-    { name: "Twitter", href: "https://twitter.com/nejatapp", icon: TwitterIcon },
-    { name: "Instagram", href: "#", icon: InstagramIcon },
-    { name: "YouTube", href: "#", icon: YouTubeIcon },
-];
+const iconMap: { [key: string]: React.ComponentType<any> } = {
+    FacebookIcon,
+    TwitterIcon,
+    InstagramIcon,
+    YouTubeIcon
+};
 
 export function Footer() {
     const { language } = useLanguage();
-    const c = content[language] || content.de;
+    const [content, setContent] = useState<FooterContent | null>(null);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        getFooterContentOnce().then(data => {
+            if (data) {
+                setContent(data);
+            }
+            setLoading(false);
+        });
+    }, []);
+    
+    const c = content ? content[language] : staticContent[language];
+    const socialLinks = content ? content.socialLinks : [];
+    const copyrightText = `© ${new Date().getFullYear()} Nejat Digital. Alle Rechte vorbehalten.`;
+
+    if (loading) {
+        return (
+            <footer className="bg-card text-card-foreground border-t">
+                 <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+                     <Skeleton className="h-8 w-1/2" />
+                 </div>
+            </footer>
+        )
+    }
 
     return (
         <footer className="bg-card text-card-foreground border-t">
@@ -74,16 +100,18 @@ export function Footer() {
                 </div>
 
                 <div className="mt-12 pt-8 border-t flex flex-col sm:flex-row justify-between items-center gap-4">
-                    <p className="text-sm text-muted-foreground order-2 sm:order-1">{c.copyright}</p>
+                    <p className="text-sm text-muted-foreground order-2 sm:order-1">{copyrightText}</p>
                     <div className="flex items-center gap-4 order-1 sm:order-2">
                         <p className="text-sm font-semibold">{c.followUs}:</p>
                         <div className="flex items-center gap-3">
-                           {socialLinks.map(social => (
-                             <Link key={social.name} href={social.href} className="text-muted-foreground hover:text-primary">
-                               <social.icon className="h-5 w-5" />
+                           {socialLinks.map(social => {
+                            const Icon = iconMap[social.icon] || 'div';
+                            return (
+                             <Link key={social.name} href={social.href} className="text-muted-foreground hover:text-primary" target="_blank" rel="noopener noreferrer">
+                               <Icon className="h-5 w-5" />
                                <span className="sr-only">{social.name}</span>
                              </Link>
-                           ))}
+                           )})}
                         </div>
                     </div>
                 </div>
