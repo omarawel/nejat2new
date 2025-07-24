@@ -1,9 +1,9 @@
 
 "use client"
 
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useLanguage } from '@/components/language-provider';
-import { CalendarDays, ArrowLeft } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 
@@ -61,8 +61,7 @@ export default function IslamicMonthsPage() {
                 </Link>
             </Button>
             <header className="text-center mb-12">
-                 <h1 className="text-4xl font-bold tracking-tight text-primary flex items-center justify-center gap-3">
-                    <CalendarDays className="h-10 w-10" />
+                 <h1 className="text-4xl font-bold tracking-tight text-primary">
                     {c.title}
                 </h1>
                 <p className="text-muted-foreground mt-2 text-lg max-w-3xl mx-auto">{c.description}</p>

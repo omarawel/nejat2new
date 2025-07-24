@@ -1,9 +1,9 @@
 
 "use client"
 
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { MapPin, ArrowLeft, Search, LocateFixed, Loader2 } from 'lucide-react';
+import { ArrowLeft, Search, LocateFixed, Loader2 } from 'lucide-react';
 import { useLanguage } from '@/components/language-provider';
 import Link from 'next/link';
 import { Input } from '@/components/ui/input';
@@ -89,7 +89,6 @@ export default function MosqueFinderPage() {
             </Button>
             <Card>
                 <CardHeader className="text-center">
-                     
                     <CardTitle className="text-3xl">{c.pageTitle}</CardTitle>
                     <CardDescription className="text-lg">{c.pageDescription}</CardDescription>
                 </CardHeader>

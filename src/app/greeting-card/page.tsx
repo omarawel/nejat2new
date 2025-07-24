@@ -8,7 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Download, Mail, Wand2, ArrowLeft, Loader2 } from 'lucide-react';
+import { Download, Wand2, ArrowLeft, Loader2 } from 'lucide-react';
 import { useLanguage } from '@/components/language-provider';
 import { toPng } from 'html-to-image';
 import { cn } from '@/lib/utils';
@@ -161,8 +161,7 @@ export default function GreetingCardPage() {
                 </Link>
             </Button>
             <header className="text-center mb-12">
-                 <h1 className="text-4xl font-bold tracking-tight text-primary flex items-center justify-center gap-3">
-                    <Mail className="h-10 w-10" />
+                 <h1 className="text-4xl font-bold tracking-tight text-primary">
                     {c.title}
                 </h1>
                 <p className="text-muted-foreground mt-2 text-lg max-w-2xl mx-auto">{c.description}</p>

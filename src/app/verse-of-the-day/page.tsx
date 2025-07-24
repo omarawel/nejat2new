@@ -4,7 +4,7 @@
 import { useEffect, useState, useCallback } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { RefreshCw, BookOpen, Loader2, ArrowLeft } from 'lucide-react';
+import { RefreshCw, Loader2, ArrowLeft } from 'lucide-react';
 import { useLanguage } from '@/components/language-provider';
 import Link from 'next/link';
 import { Metadata } from 'next';
@@ -122,7 +122,6 @@ export default function VerseOfTheDayPage() {
                 </header>
                 <Card className="w-full text-center shadow-xl">
                     <CardHeader>
-                        
                         <CardTitle className="text-3xl font-bold">{c.title}</CardTitle>
                         <CardDescription className="text-lg">{c.description}</CardDescription>
                     </CardHeader>

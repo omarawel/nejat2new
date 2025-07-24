@@ -3,7 +3,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { BookOpen, Users, PlusCircle, CheckCircle, Loader2, ArrowLeft, RefreshCw } from 'lucide-react';
+import { PlusCircle, Loader2, ArrowLeft } from 'lucide-react';
 import { Progress } from '@/components/ui/progress';
 import { useLanguage } from '@/components/language-provider';
 import { useState, useEffect } from 'react';
@@ -133,8 +133,7 @@ export default function HatimPage() {
                 </Link>
             </Button>
             <header className="text-center mb-12">
-                <h1 className="text-4xl font-bold tracking-tight text-primary flex items-center justify-center gap-3">
-                    <BookOpen className="h-10 w-10" />
+                <h1 className="text-4xl font-bold tracking-tight text-primary">
                     {c.title}
                 </h1>
                 <p className="text-muted-foreground mt-2 text-lg max-w-2xl mx-auto">{c.description}</p>
@@ -234,4 +233,3 @@ export default function HatimPage() {
         </div>
     );
 }
-

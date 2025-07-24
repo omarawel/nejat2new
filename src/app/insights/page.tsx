@@ -1,8 +1,9 @@
+
 "use client"
 
 import { InsightsForm } from "./insights-form";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Sparkles, ArrowLeft } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { useLanguage } from "@/components/language-provider";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -38,8 +39,7 @@ export default function InsightsPage() {
             </Link>
         </Button>
         <header className="text-center">
-          <h1 className="text-3xl font-bold tracking-tight text-primary flex items-center justify-center gap-2">
-            <Sparkles className="size-8" />
+          <h1 className="text-3xl font-bold tracking-tight text-primary">
             {c.title}
           </h1>
           <p className="text-muted-foreground mt-2">

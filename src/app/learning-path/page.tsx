@@ -1,9 +1,9 @@
 
 "use client"
 
-import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
+import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Map, ArrowLeft, Wand2, User, Target, ClipboardList } from 'lucide-react';
+import { ArrowLeft, User, Target, ClipboardList, Wand2 } from 'lucide-react';
 import { useLanguage } from '@/components/language-provider';
 import Link from 'next/link';
 import { Input } from '@/components/ui/input';

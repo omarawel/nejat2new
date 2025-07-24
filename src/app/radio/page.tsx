@@ -1,9 +1,9 @@
 
 "use client"
 
-import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Radio, Play, Pause, ArrowLeft, Volume2 } from 'lucide-react';
+import { Play, Pause, ArrowLeft, Volume2 } from 'lucide-react';
 import { useLanguage } from '@/components/language-provider';
 import Link from 'next/link';
 import { useState, useRef, useEffect } from 'react';
@@ -89,8 +89,7 @@ export default function RadioPage() {
             </Link>
         </Button>
         <header className="text-center mb-12">
-            <h1 className="text-4xl font-bold tracking-tight text-primary flex items-center justify-center gap-3">
-                <Radio className="h-10 w-10" />
+            <h1 className="text-4xl font-bold tracking-tight text-primary">
                 {c.pageTitle}
             </h1>
             <p className="text-muted-foreground mt-2 text-lg">{c.pageDescription}</p>

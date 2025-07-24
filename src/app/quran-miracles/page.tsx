@@ -8,7 +8,7 @@ import {
   AccordionTrigger,
 } from '@/components/ui/accordion';
 import { useLanguage } from '@/components/language-provider';
-import { Sparkle, ArrowLeft } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 
@@ -213,8 +213,7 @@ export default function QuranMiraclesPage() {
         </Link>
       </Button>
       <header className="text-center mb-12">
-        <h1 className="text-4xl font-bold tracking-tight text-primary flex items-center justify-center gap-3">
-            <Sparkle className="h-10 w-10" />
+        <h1 className="text-4xl font-bold tracking-tight text-primary">
             {c.title}
         </h1>
         <p className="text-muted-foreground mt-2 text-lg max-w-3xl mx-auto">{c.description}</p>

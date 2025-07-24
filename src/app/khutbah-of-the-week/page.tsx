@@ -3,7 +3,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Mic, User, Calendar, BookOpen, ArrowLeft } from 'lucide-react';
+import { User, Calendar, BookOpen, ArrowLeft } from 'lucide-react';
 import { useLanguage } from '@/components/language-provider';
 import Link from 'next/link';
 
@@ -60,8 +60,7 @@ export default function KhutbahOfTheWeekPage() {
             </Link>
         </Button>
         <header className="text-center mb-12">
-            <h1 className="text-4xl font-bold tracking-tight text-primary flex items-center justify-center gap-3">
-                <Mic className="h-10 w-10" />
+            <h1 className="text-4xl font-bold tracking-tight text-primary">
                 {c.pageTitle}
             </h1>
             <p className="text-muted-foreground mt-2 text-lg">{c.pageDescription}</p>

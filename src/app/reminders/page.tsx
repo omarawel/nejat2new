@@ -2,9 +2,9 @@
 "use client"
 
 import { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Bell, BellRing, BellOff, Sun, Moon, BookOpen, Heart, Calendar, BookText, ClipboardList, ArrowLeft } from 'lucide-react';
+import { Bell, Sun, Moon, BookOpen, Heart, Calendar, BookText, ClipboardList, ArrowLeft } from 'lucide-react';
 import { useLanguage } from '@/components/language-provider';
 import { useToast } from '@/hooks/use-toast';
 import { Switch } from '@/components/ui/switch';
@@ -172,8 +172,7 @@ export default function RemindersPage() {
                 </Link>
             </Button>
             <header className="text-center mb-12">
-                <h1 className="text-4xl font-bold tracking-tight text-primary flex items-center justify-center gap-3">
-                    <Bell className="h-10 w-10" />
+                <h1 className="text-4xl font-bold tracking-tight text-primary">
                     {c.title}
                 </h1>
                 <p className="text-muted-foreground mt-2 text-lg max-w-2xl mx-auto">{c.description}</p>

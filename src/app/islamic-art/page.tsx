@@ -1,7 +1,7 @@
 
 "use client"
 
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useLanguage } from '@/components/language-provider';
 import { Palette, PenTool, Gem, LandPlot, ArrowLeft, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -54,7 +54,6 @@ export default function IslamicArtPage() {
              <div className="container mx-auto px-4 py-8">
                 <Skeleton className="h-8 w-32 mb-8" />
                 <header className="text-center mb-12">
-                    <Skeleton className="h-10 w-10 mx-auto rounded-full" />
                     <Skeleton className="h-10 w-3/4 mx-auto mt-4" />
                     <Skeleton className="h-6 w-full max-w-3xl mx-auto mt-4" />
                 </header>
@@ -91,8 +90,7 @@ export default function IslamicArtPage() {
                 </Link>
             </Button>
             <header className="text-center mb-12">
-                 <h1 className="text-4xl font-bold tracking-tight text-primary flex items-center justify-center gap-3">
-                    <Palette className="h-10 w-10" />
+                 <h1 className="text-4xl font-bold tracking-tight text-primary">
                     {content.title}
                 </h1>
                 <p className="text-muted-foreground mt-2 text-lg max-w-3xl mx-auto">{content.description}</p>

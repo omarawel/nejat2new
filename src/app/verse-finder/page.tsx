@@ -3,7 +3,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Search, ArrowLeft, Wand2 } from 'lucide-react';
+import { ArrowLeft, Wand2 } from 'lucide-react';
 import { useLanguage } from '@/components/language-provider';
 import Link from 'next/link';
 import { Textarea } from '@/components/ui/textarea';
@@ -46,7 +46,6 @@ export default function VerseFinderPage() {
             </Button>
             <Card>
                 <CardHeader className="text-center">
-                    
                     <CardTitle className="text-3xl">{c.pageTitle}</CardTitle>
                     <CardDescription className="text-lg">{c.pageDescription}</CardDescription>
                 </CardHeader>
