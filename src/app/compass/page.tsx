@@ -4,7 +4,7 @@
 import { useEffect, useState, useCallback, useRef } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Compass, ArrowLeft, MapPin, AlertTriangle, Loader2, CheckCircle, VideoOff, NavigationArrow } from 'lucide-react';
+import { Compass, ArrowLeft, MapPin, AlertTriangle, Loader2, CheckCircle, VideoOff, Navigation } from 'lucide-react';
 import { useLanguage } from '@/components/language-provider';
 import Link from 'next/link';
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
@@ -58,6 +58,10 @@ function toRadians(degrees: number) {
     return degrees * Math.PI / 180;
 }
 
+function toDegrees(radians: number) {
+    return radians * 180 / Math.PI;
+}
+
 export default function CompassPage() {
     const { language } = useLanguage();
     const c = content[language];
@@ -81,7 +85,7 @@ export default function CompassPage() {
         const y = Math.sin(deltaLng) * Math.cos(kaabaLatRad);
         const x = Math.cos(userLatRad) * Math.sin(kaabaLatRad) - Math.sin(userLatRad) * Math.cos(kaabaLatRad) * Math.cos(deltaLng);
         
-        let bearing = Math.atan2(y, x) * (180 / Math.PI);
+        let bearing = toDegrees(Math.atan2(y, x));
         bearing = (bearing + 360) % 360; // Normalize to 0-360
 
         setQiblaDirection(bearing);
@@ -201,7 +205,7 @@ export default function CompassPage() {
                                 <>
                                     <div className="relative w-64 h-64 mx-auto rounded-full flex items-center justify-center" style={{
                                         border: '4px solid rgba(255,255,255,0.3)',
-                                        background: 'radial-gradient(circle, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.5) 100%)'
+                                        background: 'radial-gradient(circle, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.5) 100%)',
                                     }}>
                                         <div className="absolute w-full h-full font-bold text-lg text-white/70">
                                             <div className="absolute top-1 left-1/2 -translate-x-1/2">N</div>
@@ -210,25 +214,23 @@ export default function CompassPage() {
                                             <div className="absolute right-1 top-1/2 -translate-y-1/2">E</div>
                                         </div>
                                         
-                                        
                                         {qiblaDirection !== null && (
                                             <div className="absolute w-full h-full" style={{ transform: `rotate(${qiblaDirection}deg)` }}>
                                                 <div className={cn(
-                                                    "absolute -top-4 left-1/2 -translate-x-1/2 w-0 h-0 transition-colors",
+                                                    "absolute -top-4 left-1/2 -translate-x-1/2 transition-colors",
                                                     isQiblaAligned ? "text-green-400" : "text-primary"
                                                 )}>
                                                     <span className="text-3xl">🕋</span>
                                                 </div>
                                             </div>
                                         )}
-                                       
-                                        <div className="absolute w-full h-full transition-transform duration-200" style={{ transform: `rotate(${-heading}deg)` }}>
-                                           <NavigationArrow
-                                                className={cn(
-                                                    "absolute top-0 left-1/2 -translate-x-1/2 h-16 w-16 text-white/80 transition-colors",
-                                                     isQiblaAligned && "text-green-400"
-                                                )}
-                                                style={{transform: 'rotate(180deg) '}}
+
+                                        <div className="absolute w-full h-full" style={{ transform: `rotate(${heading}deg)`}}>
+                                           <Navigation 
+                                                className={cn("absolute -top-4 left-1/2 -translate-x-1/2 w-8 h-8 transition-colors",
+                                                isQiblaAligned ? "text-green-400" : "text-white/90"
+                                                )} 
+                                                style={{transform: 'rotate(180deg)'}}
                                            />
                                         </div>
                                     </div>
