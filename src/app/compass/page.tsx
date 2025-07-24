@@ -1,47 +1,52 @@
 
 "use client"
 
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, useRef } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Compass, ArrowLeft, MapPin, AlertTriangle, Loader2, CheckCircle } from 'lucide-react';
+import { Compass, ArrowLeft, MapPin, AlertTriangle, Loader2, CheckCircle, VideoOff } from 'lucide-react';
 import { useLanguage } from '@/components/language-provider';
 import Link from 'next/link';
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
 import { cn } from '@/lib/utils';
+import { useToast } from '@/hooks/use-toast';
 
 const content = {
     de: {
-        pageTitle: "Qibla-Kompass",
-        pageDescription: "Finde die Richtung nach Mekka für dein Gebet.",
+        pageTitle: "AR Qibla-Finder",
+        pageDescription: "Richte deine Kamera aus, um die Richtung nach Mekka zu finden.",
         backToFeatures: "Zurück zu den Funktionen",
         requestingPermissions: "Berechtigungen anfordern...",
         calculating: "Berechne Qibla-Richtung...",
         ready: "Bereit. Richte dein Gerät aus.",
         permissionError: "Fehler bei der Berechtigung",
-        permissionErrorDesc: "Zugriff auf Standort und/oder Gerätesensoren verweigert. Bitte aktiviere die Berechtigungen in deinen Browsereinstellungen und lade die Seite neu.",
+        permissionErrorDesc: "Zugriff auf Standort, Kamera und/oder Gerätesensoren verweigert. Bitte aktiviere die Berechtigungen in deinen Browsereinstellungen und lade die Seite neu.",
         unsupportedError: "Nicht unterstützt",
         unsupportedErrorDesc: "Dein Browser oder Gerät unterstützt die erforderlichen Sensoren nicht.",
         note: "Hinweis: Halte dein Gerät flach und fern von Metallgegenständen für eine bessere Genauigkeit.",
         qiblaDirection: "Qibla-Richtung",
         yourDirection: "Deine Richtung",
-        qiblaFound: "Qibla gefunden!"
+        qiblaFound: "Qibla gefunden!",
+        cameraError: "Kamerazugriff verweigert",
+        cameraErrorDesc: "Bitte erlaube den Kamerazugriff, um die AR-Funktion zu nutzen."
     },
     en: {
-        pageTitle: "Qibla Compass",
-        pageDescription: "Find the direction to Mecca for your prayer.",
+        pageTitle: "AR Qibla Finder",
+        pageDescription: "Point your camera to find the direction to Mecca.",
         backToFeatures: "Back to Features",
         requestingPermissions: "Requesting permissions...",
         calculating: "Calculating Qibla direction...",
         ready: "Ready. Align your device.",
         permissionError: "Permission Error",
-        permissionErrorDesc: "Location and/or device sensor access denied. Please enable permissions in your browser settings and reload the page.",
+        permissionErrorDesc: "Location, camera and/or device sensor access denied. Please enable permissions in your browser settings and reload the page.",
         unsupportedError: "Not Supported",
         unsupportedErrorDesc: "Your browser or device does not support the required sensors.",
         note: "Note: For best accuracy, hold your device flat and away from metal objects.",
         qiblaDirection: "Qibla Direction",
         yourDirection: "Your Direction",
-        qiblaFound: "Qibla Found!"
+        qiblaFound: "Qibla Found!",
+        cameraError: "Camera Access Denied",
+        cameraErrorDesc: "Please allow camera access to use the AR feature."
     }
 }
 
@@ -52,11 +57,14 @@ const KAABA_LNG = 39.8262;
 export default function CompassPage() {
     const { language } = useLanguage();
     const c = content[language];
+    const { toast } = useToast();
+    const videoRef = useRef<HTMLVideoElement>(null);
 
     const [qiblaDirection, setQiblaDirection] = useState<number | null>(null);
     const [heading, setHeading] = useState(0);
     const [error, setError] = useState<string | null>(null);
     const [status, setStatus] = useState<string>(c.requestingPermissions);
+    const [hasCameraPermission, setHasCameraPermission] = useState(true);
 
     const calculateQiblaDirection = useCallback((lat: number, lng: number) => {
         const phiK = KAABA_LAT * Math.PI / 180.0;
@@ -86,6 +94,21 @@ export default function CompassPage() {
         setStatus(c.requestingPermissions);
         setError(null);
         try {
+            // Request camera permission
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+                setHasCameraPermission(true);
+                if (videoRef.current) {
+                    videoRef.current.srcObject = stream;
+                }
+            } catch (cameraError) {
+                console.error('Camera access denied:', cameraError);
+                setHasCameraPermission(false);
+                setError(c.cameraErrorDesc);
+                setStatus(c.cameraError);
+                return;
+            }
+
             // Request device orientation permission for iOS 13+
             if (typeof (DeviceOrientationEvent as any).requestPermission === 'function') {
                 const permission = await (DeviceOrientationEvent as any).requestPermission();
@@ -126,100 +149,108 @@ export default function CompassPage() {
         requestPermissions();
         return () => {
             window.removeEventListener('deviceorientation', handleOrientation);
+             if (videoRef.current && videoRef.current.srcObject) {
+                const stream = videoRef.current.srcObject as MediaStream;
+                stream.getTracks().forEach(track => track.stop());
+            }
         };
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const rotation = 360 - heading;
-    const qiblaRotation = qiblaDirection ? rotation + qiblaDirection : 0;
-    
-    // Check if the user is facing the Qibla direction (with a tolerance of 2 degrees)
-    const isQiblaAligned = qiblaDirection !== null && Math.abs(heading - qiblaDirection) < 2;
+    const isQiblaAligned = qiblaDirection !== null && Math.abs(heading - qiblaDirection) < 2.5;
 
     return (
         <div className="container mx-auto px-4 py-8 flex-grow flex flex-col items-center justify-center">
             <div className="w-full max-w-sm text-center">
-                <Button asChild variant="ghost" className="mb-8">
+                 <Button asChild variant="ghost" className="mb-8">
                     <Link href="/">
                         <ArrowLeft className="mr-2 h-4 w-4" />
                         {c.backToFeatures}
                     </Link>
                 </Button>
-                <Card>
-                    <CardHeader>
+                <Card className="overflow-hidden">
+                    <CardHeader className="relative z-10 bg-background/50 backdrop-blur-sm">
                         <CardTitle className="text-3xl">{c.pageTitle}</CardTitle>
                         <CardDescription className="text-lg">{c.pageDescription}</CardDescription>
                     </CardHeader>
-                    <CardContent className="space-y-4">
-                        {error ? (
-                             <Alert variant="destructive">
-                                <AlertTriangle className="h-4 w-4" />
-                                <AlertTitle>{status}</AlertTitle>
-                                <AlertDescription>
-                                    {error}
-                                    <Button onClick={requestPermissions} className="w-full mt-4">Try Again</Button>
-                                </AlertDescription>
-                            </Alert>
-                        ) : (
-                            <>
-                                <div className="relative w-64 h-64 mx-auto rounded-full bg-muted border-4 border-accent flex items-center justify-center">
-                                    <div className="absolute w-full h-full text-muted-foreground font-bold">
-                                        <div className="absolute top-1 left-1/2 -translate-x-1/2">N</div>
-                                        <div className="absolute bottom-1 left-1/2 -translate-x-1/2">S</div>
-                                        <div className="absolute left-1 top-1/2 -translate-y-1/2">W</div>
-                                        <div className="absolute right-1 top-1/2 -translate-y-1/2">E</div>
-                                    </div>
-                                    
-                                    <div className="w-full h-full transition-transform duration-200" style={{ transform: `rotate(${rotation}deg)` }}>
-                                        {qiblaDirection !== null && (
-                                            <div className="absolute w-full h-full" style={{ transform: `rotate(${qiblaDirection}deg)` }}>
-                                                <div className={cn(
-                                                    "absolute -top-4 left-1/2 -translate-x-1/2 w-0 h-0 transition-colors",
-                                                    "border-l-[10px] border-l-transparent",
-                                                    "border-r-[10px] border-r-transparent",
-                                                    "border-b-[20px]",
-                                                    isQiblaAligned ? "border-b-green-500" : "border-b-primary"
-                                                )}>
-                                                    <span className="absolute -bottom-6 -ml-2 text-primary font-bold">🕋</span>
+                    <CardContent className="space-y-4 p-0 relative h-[500px] bg-black">
+                         <video ref={videoRef} className="absolute inset-0 w-full h-full object-cover" autoPlay muted playsInline />
+                         
+                         <div className="absolute inset-0 z-10 flex flex-col items-center justify-center p-4 bg-black/30 text-white">
+                             {error ? (
+                                <Alert variant="destructive" className="text-foreground">
+                                    <AlertTriangle className="h-4 w-4" />
+                                    <AlertTitle>{status}</AlertTitle>
+                                    <AlertDescription>
+                                        {error}
+                                        <Button onClick={requestPermissions} className="w-full mt-4">Try Again</Button>
+                                    </AlertDescription>
+                                </Alert>
+                            ) : (
+                                <>
+                                    <div className="relative w-64 h-64 mx-auto rounded-full flex items-center justify-center" style={{
+                                        border: '4px solid rgba(255,255,255,0.3)',
+                                        background: 'radial-gradient(circle, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.5) 100%)'
+                                    }}>
+                                        <div className="absolute w-full h-full font-bold text-lg text-white/70">
+                                            <div className="absolute top-1 left-1/2 -translate-x-1/2">N</div>
+                                            <div className="absolute bottom-1 left-1/2 -translate-x-1/2">S</div>
+                                            <div className="absolute left-1 top-1/2 -translate-y-1/2">W</div>
+                                            <div className="absolute right-1 top-1/2 -translate-y-1/2">E</div>
+                                        </div>
+                                        
+                                        <div className="w-full h-full transition-transform duration-200" style={{ transform: `rotate(${rotation}deg)` }}>
+                                            {qiblaDirection !== null && (
+                                                <div className="absolute w-full h-full" style={{ transform: `rotate(${qiblaDirection}deg)` }}>
+                                                    <div className={cn(
+                                                        "absolute -top-4 left-1/2 -translate-x-1/2 w-0 h-0 transition-colors",
+                                                        "border-l-[12px] border-l-transparent",
+                                                        "border-r-[12px] border-r-transparent",
+                                                        "border-b-[24px]",
+                                                        isQiblaAligned ? "border-b-green-400" : "border-b-primary"
+                                                    )}>
+                                                        <span className="absolute -bottom-7 left-1/2 -translate-x-1/2 text-2xl">🕋</span>
+                                                    </div>
                                                 </div>
+                                            )}
+                                            <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-0 h-0
+                                                border-l-[8px] border-l-transparent
+                                                border-r-[8px] border-r-transparent
+                                                border-b-[16px] border-b-white">
                                             </div>
-                                        )}
-                                        <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-0 h-0
-                                            border-l-[8px] border-l-transparent
-                                            border-r-[8px] border-r-transparent
-                                            border-b-[16px] border-b-foreground">
                                         </div>
                                     </div>
-                                </div>
 
-                                <div className="grid grid-cols-2 gap-4 text-center">
-                                    <Card className="p-2">
-                                        <CardDescription>{c.yourDirection}</CardDescription>
-                                        <CardTitle>{Math.round(heading)}°</CardTitle>
-                                    </Card>
-                                     <Card className="p-2">
-                                        <CardDescription>{c.qiblaDirection}</CardDescription>
-                                        <CardTitle>{qiblaDirection !== null ? `${Math.round(qiblaDirection)}°` : '...'}</CardTitle>
-                                    </Card>
-                                </div>
-                                
-                                <Card className={cn(
-                                    "p-3 transition-colors",
-                                    isQiblaAligned ? "bg-green-500/20 border-green-500/50" : "bg-accent/50"
-                                    )}>
-                                    <CardTitle className="text-xl flex items-center justify-center gap-2">
-                                         {status === c.requestingPermissions || status === c.calculating ? <Loader2 className="h-5 w-5 animate-spin"/> : (
-                                             isQiblaAligned ? <CheckCircle className="h-5 w-5 text-green-600" /> : <Compass className="h-5 w-5" />
-                                         )}
-                                        {isQiblaAligned ? c.qiblaFound : status}
-                                    </CardTitle>
-                                </Card>
-                                <p className="text-xs text-muted-foreground px-4">{c.note}</p>
-                            </>
-                        )}
+                                    <div className="grid grid-cols-2 gap-4 text-center mt-6 w-full">
+                                        <div className="p-2 rounded-lg bg-black/30">
+                                            <p className="text-sm opacity-80">{c.yourDirection}</p>
+                                            <p className="text-xl font-bold">{Math.round(heading)}°</p>
+                                        </div>
+                                        <div className="p-2 rounded-lg bg-black/30">
+                                            <p className="text-sm opacity-80">{c.qiblaDirection}</p>
+                                            <p className="text-xl font-bold">{qiblaDirection !== null ? `${Math.round(qiblaDirection)}°` : '...'}</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div className={cn(
+                                        "p-3 mt-4 rounded-lg transition-colors w-full",
+                                        isQiblaAligned ? "bg-green-500/70" : "bg-black/40"
+                                        )}>
+                                        <p className="text-xl font-semibold flex items-center justify-center gap-2">
+                                            {status === c.requestingPermissions || status === c.calculating ? <Loader2 className="h-5 w-5 animate-spin"/> : (
+                                                isQiblaAligned ? <CheckCircle className="h-5 w-5" /> : <Compass className="h-5 w-5" />
+                                            )}
+                                            {isQiblaAligned ? c.qiblaFound : status}
+                                        </p>
+                                    </div>
+                                </>
+                            )}
+                         </div>
                     </CardContent>
                 </Card>
             </div>
         </div>
     );
 }
+
