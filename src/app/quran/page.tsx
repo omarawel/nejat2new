@@ -20,7 +20,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { Button } from "@/components/ui/button"
-import { Terminal, Search, Eye, EyeOff, Play, Loader, Pause, ArrowLeft, Download, WifiOff } from "lucide-react"
+import { Terminal, Search, Eye, EyeOff, Play, Loader, Pause, ArrowLeft, Download, WifiOff, Star } from "lucide-react"
 import { useEffect, useState, useMemo, FormEvent, useRef, useCallback } from "react"
 import { cn } from "@/lib/utils"
 import { textToSpeech } from "@/ai/flows/text-to-speech"
@@ -29,6 +29,10 @@ import Link from "next/link"
 import { useLanguage } from "@/components/language-provider"
 import { getSurahList, storeSurahList, getSurahWithEditions, storeSurahEdition, isQuranDownloaded, clearOfflineQuranData } from "@/lib/quran-offline"
 import { Progress } from "@/components/ui/progress"
+import { useAuthState } from "react-firebase-hooks/auth"
+import { auth } from "@/lib/firebase"
+import { useToast } from "@/hooks/use-toast"
+import { addFavorite } from "@/lib/favorites"
 
 
 interface Surah {
@@ -113,6 +117,9 @@ const content = {
         downloadingSurah: "Lade Sure",
         downloaded: "Heruntergeladen",
         offlineReady: "Koran ist offline verfügbar.",
+        toastFavoriteSaved: "Favorit gespeichert!",
+        toastErrorSaving: "Fehler beim Speichern.",
+        loginToSave: "Anmelden zum Speichern",
     },
     en: {
         title: "The Holy Quran",
@@ -143,10 +150,16 @@ const content = {
         downloadingSurah: "Downloading Surah",
         downloaded: "Downloaded",
         offlineReady: "Quran is available offline.",
+        toastFavoriteSaved: "Favorite saved!",
+        toastErrorSaving: "Error saving favorite.",
+        loginToSave: "Login to save",
     }
 }
 
 const SurahDetailContent = ({ surahNumber, languageEdition, c }: { surahNumber: number, languageEdition: LanguageEdition, c: typeof content['de'] | typeof content['en'] }) => {
+  const { toast } = useToast();
+  const [user] = useAuthState(auth);
+
   const [detail, setDetail] = useState<{ arabic: SurahDetail, translation: SurahDetail, transliteration: SurahDetail } | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -154,6 +167,7 @@ const SurahDetailContent = ({ surahNumber, languageEdition, c }: { surahNumber: 
   
   const [playingAudio, setPlayingAudio] = useState<string | null>(null);
   const [loadingAudio, setLoadingAudio] = useState<number | null>(null);
+  const [isSaving, setIsSaving] = useState<number | null>(null);
   const [audioUrl, setAudioUrl] = useState<string | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
@@ -181,6 +195,22 @@ const SurahDetailContent = ({ surahNumber, languageEdition, c }: { surahNumber: 
       setError(c.errorAudio);
     } finally {
       setLoadingAudio(null);
+    }
+  };
+
+  const handleSaveFavorite = async (index: number) => {
+    if (!user || !detail) return;
+
+    setIsSaving(detail.arabic.ayahs[index].number);
+    const textToSave = `Surah ${detail.arabic.name} (${detail.arabic.englishName}), Ayah ${detail.arabic.ayahs[index].numberInSurah}\n\n${detail.arabic.ayahs[index].text}\n\n${detail.translation.ayahs[index].text}`;
+
+    try {
+        await addFavorite(user.uid, textToSave);
+        toast({ title: c.toastFavoriteSaved });
+    } catch (error) {
+        toast({ title: c.toastErrorSaving, variant: 'destructive' });
+    } finally {
+        setIsSaving(null);
     }
   };
 
@@ -278,18 +308,22 @@ const SurahDetailContent = ({ surahNumber, languageEdition, c }: { surahNumber: 
         const arabicText = detail.arabic.ayahs[index].text;
 
         const isPlaying = playingAudio === `ayah-${ayahNumber}`;
-        const isLoading = loadingAudio === ayahNumber;
+        const isLoadingAudio = loadingAudio === ayahNumber;
+        const isSavingFavorite = isSaving === ayahNumber;
 
         return (
             <div key={ayahNumber} className="px-6 py-4 space-y-3 relative">
                 <div className="flex justify-between items-start">
                     <p className={cn("text-2xl font-quranic text-right tracking-wide leading-relaxed flex-1", isHidden ? "opacity-0" : "opacity-100")}>{arabicText}</p>
                     <div className="flex items-center ml-4">
-                        <Button variant="ghost" size="icon" onClick={() => handlePlayAudio(arabicText, ayahNumber)} disabled={isLoading}>
-                            {isLoading ? <Loader className="h-5 w-5 animate-spin" /> : (isPlaying ? <Pause className="h-5 w-5" /> : <Play className="h-5 w-5" />)}
+                        <Button variant="ghost" size="icon" onClick={() => handlePlayAudio(arabicText, ayahNumber)} disabled={isLoadingAudio}>
+                            {isLoadingAudio ? <Loader className="h-5 w-5 animate-spin" /> : (isPlaying ? <Pause className="h-5 w-5" /> : <Play className="h-5 w-5" />)}
                         </Button>
                         <Button variant="ghost" size="icon" onClick={() => toggleAyahVisibility(ayahNumber)}>
                             {isHidden ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                        </Button>
+                         <Button variant="ghost" size="icon" onClick={() => handleSaveFavorite(index)} disabled={isSavingFavorite || !user}>
+                            {isSavingFavorite ? <Loader className="h-5 w-5 animate-spin" /> : <Star className="h-5 w-5" />}
                         </Button>
                     </div>
                 </div>

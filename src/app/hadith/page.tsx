@@ -14,7 +14,7 @@ import {
 import { Skeleton } from "@/components/ui/skeleton"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Button } from "@/components/ui/button"
-import { Terminal, ChevronLeft, ChevronRight, Search, Eye, EyeOff, Play, Pause, Loader, ArrowLeft } from "lucide-react"
+import { Terminal, ChevronLeft, ChevronRight, Search, Eye, EyeOff, Play, Pause, Loader, ArrowLeft, Star } from "lucide-react"
 import { useEffect, useState, useMemo, FormEvent, useRef } from "react"
 import { Hadith, getHadiths } from "./actions";
 import { Input } from "@/components/ui/input"
@@ -30,6 +30,10 @@ import { cn } from "@/lib/utils"
 import { textToSpeech } from "@/ai/flows/text-to-speech"
 import { useLanguage } from "@/components/language-provider"
 import Link from "next/link"
+import { useAuthState } from "react-firebase-hooks/auth"
+import { auth } from "@/lib/firebase"
+import { useToast } from "@/hooks/use-toast"
+import { addFavorite } from "@/lib/favorites"
 
 
 type Language = "eng" | "urd" | "ara";
@@ -57,6 +61,9 @@ const content = {
         german: "Deutsch",
         comingSoon: "(bald verfügbar)",
         backToFeatures: "Zurück zu den Funktionen",
+        toastFavoriteSaved: "Favorit gespeichert!",
+        toastErrorSaving: "Fehler beim Speichern.",
+        loginToSave: "Anmelden zum Speichern",
     },
     en: {
         title: "Collection of Hadith",
@@ -80,13 +87,22 @@ const content = {
         german: "German",
         comingSoon: "(coming soon)",
         backToFeatures: "Back to Features",
+        toastFavoriteSaved: "Favorite saved!",
+        toastErrorSaving: "Error saving favorite.",
+        loginToSave: "Login to save",
     }
 }
 
 const HadithContent = ({ hadith, language }: { hadith: Hadith, language: Language }) => {
+  const { language: currentLanguage, setLanguage } = useLanguage();
+  const c = content[currentLanguage] || content.de;
+  const { toast } = useToast();
+  const [user] = useAuthState(auth);
+  
   const [isHidden, setIsHidden] = useState(false);
   const [playingAudio, setPlayingAudio] = useState<string | null>(null);
   const [loadingAudio, setLoadingAudio] = useState<number | null>(null);
+  const [isSaving, setIsSaving] = useState(false);
   const [audioUrl, setAudioUrl] = useState<string | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   
@@ -133,6 +149,27 @@ const HadithContent = ({ hadith, language }: { hadith: Hadith, language: Languag
     }
   };
 
+  const handleSaveFavorite = async () => {
+      if (!user) {
+          toast({
+              title: c.loginToSave,
+              variant: 'destructive',
+              description: <Button variant="secondary" size="sm" asChild className="mt-2"><Link href="/login">Login</Link></Button>,
+          });
+          return;
+      }
+      setIsSaving(true);
+      const textToSave = `Hadith ${hadith.hadithNumber} (${hadith.book.bookName})\n\n${getText()}`;
+      try {
+          await addFavorite(user.uid, textToSave);
+          toast({ title: c.toastFavoriteSaved });
+      } catch (error) {
+          toast({ title: c.toastErrorSaving, variant: 'destructive' });
+      } finally {
+          setIsSaving(false);
+      }
+  }
+
   useEffect(() => {
     if (audioUrl && audioRef.current) {
         audioRef.current.play().catch(e => console.error("Audio play failed", e));
@@ -160,6 +197,9 @@ const HadithContent = ({ hadith, language }: { hadith: Hadith, language: Languag
                 </Button>
                 <Button variant="ghost" size="icon" onClick={() => setIsHidden(!isHidden)}>
                     {isHidden ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                </Button>
+                 <Button variant="ghost" size="icon" onClick={handleSaveFavorite} disabled={isSaving}>
+                    {isSaving ? <Loader className="h-5 w-5 animate-spin" /> : <Star className="h-5 w-5" />}
                 </Button>
             </div>
         </div>
