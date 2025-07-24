@@ -1,169 +1,96 @@
 
 "use client"
 
-import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, CheckCircle2, Check, X } from 'lucide-react';
+import { ArrowLeft, Heart, Copy } from 'lucide-react';
 import { useLanguage } from '@/components/language-provider';
 import Link from 'next/link';
-import { cn } from '@/lib/utils';
-import { Badge } from '@/components/ui/badge';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-
+import Image from 'next/image';
+import { useToast } from '@/hooks/use-toast';
 
 const content = {
     de: {
         pageTitle: "Unterstütze Nejat Digital",
-        pageDescription: "Wähle einen Plan, der zu dir passt, um exklusive Funktionen freizuschalten und unsere Mission zu unterstützen.",
+        pageDescription: "Deine Spende hilft uns, die App werbefrei zu halten, weiterzuentwickeln und neue nützliche Funktionen für die Ummah bereitzustellen.",
         backToFeatures: "Zurück zu den Funktionen",
-        monthly: "monatlich",
-        mostPopular: "Beliebteste Wahl",
-        choosePlan: "Plan wählen",
-        plans: [
-            {
-                name: "Unterstützer",
-                key: "supporter",
-                priceId: "price_1RltQWGXWEMb96gVAEDYSZay", // Your Stripe Price ID
-                price: "2,99€",
-                description: "Für Nutzer, die werbefrei lernen und grundlegende KI-Tools mit bis zu 15 Anfragen/Monat nutzen möchten.",
-                features: [
-                    "Werbefreie Erfahrung",
-                    "Lern-Werkzeug (Auswendiglernen)",
-                    "Sprachausgabe (Koran, Hadith etc.)",
-                    "15 KI-Anfragen / Monat (Dua, Gelehrter...)",
-                ]
-            },
-            {
-                name: "Pro",
-                key: "pro",
-                priceId: "price_1RmJ3rGXWEMb96gVBYrwf9DD", // Your Stripe Price ID
-                price: "4,99€",
-                description: "Ideal für Wissbegierige, die mit 30 KI-Anfragen/Monat das volle Potenzial der App ausschöpfen wollen.",
-                features: [
-                    "Alle Funktionen des Unterstützer-Plans",
-                    "30 KI-Anfragen / Monat",
-                    "Personalisierter Lernpfad-Generator",
-                    "Priorisierter Support",
-                ],
-                recommended: true
-            },
-            {
-                name: "Patron",
-                key: "patron",
-                priceId: "price_1RltR4GXWEMb96gVOcjACqRR", // Your Stripe Price ID
-                price: "9,99€",
-                description: "Für diejenigen, die mit 75 KI-Anfragen/Monat maßgeblich zum Wachstum der Plattform beitragen möchten.",
-                features: [
-                    "Alle Funktionen des Pro-Plans",
-                    "75 KI-Anfragen / Monat",
-                    "Frühzugang zu neuen Features",
-                    "Exklusive Community-Abzeichen"
-                ]
-            }
-        ],
-        comparison: {
-            title: "Vergleiche die Pläne",
-            feature: "Funktion",
-            free: "Kostenlos",
-            supporter: "Unterstützer",
-            pro: "Pro",
-            patron: "Patron",
-            featuresList: [
-                { name: "Zugang zu grundlegenden Lerninhalten", value: "✓" },
-                { name: "Werbefreie Erfahrung", value: "✓" },
-                { name: "Lern-Werkzeug & Sprachausgabe", value: "✓" },
-                { name: "KI-Anfragen (Dua, Gelehrter, etc.)", free: "0", supporter: "15/Monat", pro: "30/Monat", patron: "75/Monat" },
-                { name: "Personalisierter Lernpfad-Generator", value: "✓" },
-                { name: "Priorisierter Support", value: "✓" },
-                { name: "Frühzugang & exklusive Features", value: "✓" },
-            ]
+        bankTransferTitle: "Banküberweisung (QR-Code)",
+        bankTransferDescription: "Scanne den QR-Code mit deiner Banking-App, um direkt an uns zu spenden. Jeder Beitrag, groß oder klein, macht einen Unterschied.",
+        paypalTitle: "Spenden über PayPal",
+        paypalDescription: "Nutze den sicheren Weg über PayPal. Klicke auf den Button, um zu unserer Spendenseite zu gelangen.",
+        paypalButton: "Über PayPal spenden",
+        bankDetailsTitle: "Oder per manueller Überweisung",
+        recipientLabel: "Empfänger",
+        ibanLabel: "IBAN",
+        bicLabel: "BIC",
+        usageLabel: "Verwendungszweck",
+        copy: "Kopieren",
+        copied: "Kopiert!",
+        mockData: {
+            recipient: "Nejat FinTech",
+            iban: "DE89 3704 0044 0532 0130 00",
+            bic: "COBADEFFXXX",
+            usage: "Spende für Nejat Digital"
         }
     },
     en: {
         pageTitle: "Support Nejat Digital",
-        pageDescription: "Choose a plan that suits you to unlock exclusive features and support our mission.",
+        pageDescription: "Your donation helps us keep the app ad-free, continue its development, and provide new useful features for the Ummah.",
         backToFeatures: "Back to Features",
-        monthly: "monthly",
-        mostPopular: "Most Popular",
-        choosePlan: "Choose Plan",
-        plans: [
-            {
-                name: "Supporter",
-                key: "supporter",
-                priceId: "price_1RltQWGXWEMb96gVAEDYSZay", // Your Stripe Price ID
-                price: "€2.99",
-                description: "For users who want an ad-free experience and basic AI tools with up to 15 requests/month.",
-                features: [
-                    "Ad-free experience",
-                    "Memorization Tool",
-                    "Voice Output (Quran, Hadith etc.)",
-                    "15 AI Requests / Month (Dua, Scholar...)",
-                ]
-            },
-            {
-                name: "Pro",
-                key: "pro",
-                priceId: "price_1RmJ3rGXWEMb96gVBYrwf9DD", // Your Stripe Price ID
-                price: "€4.99",
-                description: "Ideal for eager learners who want to unlock the full potential of the app with 30 AI requests/month.",
-                features: [
-                    "All features of the Supporter plan",
-                    "30 AI Requests / Month",
-                    "Personalized Learning Path Generator",
-                    "Priority Support",
-                ],
-                recommended: true
-            },
-            {
-                name: "Patron",
-                key: "patron",
-                priceId: "price_1RltR4GXWEMb96gVOcjACqRR", // Your Stripe Price ID
-                price: "€9.99",
-                description: "For those who want to significantly contribute to the platform's growth with 75 AI requests/month.",
-                features: [
-                    "All features of the Pro plan",
-                    "75 AI Requests / Month",
-                    "Early access to new features",
-                    "Exclusive community badges"
-                ]
-            }
-        ],
-         comparison: {
-            title: "Compare Plans",
-            feature: "Feature",
-            free: "Free",
-            supporter: "Supporter",
-            pro: "Pro",
-            patron: "Patron",
-            featuresList: [
-                { name: "Access to basic learning content", value: "✓" },
-                { name: "Ad-free experience", value: "✓" },
-                { name: "Memorization Tool & Voice Output", value: "✓" },
-                { name: "AI Requests (Dua, Scholar, etc.)", free: "0", supporter: "15/month", pro: "30/month", patron: "75/month" },
-                { name: "Personalized Learning Path Generator", value: "✓" },
-                { name: "Priority Support", value: "✓" },
-                { name: "Early Access & Exclusive Features", value: "✓" },
-            ]
+        bankTransferTitle: "Bank Transfer (QR Code)",
+        bankTransferDescription: "Scan the QR code with your banking app to donate to us directly. Every contribution, big or small, makes a difference.",
+        paypalTitle: "Donate via PayPal",
+        paypalDescription: "Use the secure way via PayPal. Click the button to go to our donation page.",
+        paypalButton: "Donate with PayPal",
+        bankDetailsTitle: "Or via Manual Transfer",
+        recipientLabel: "Recipient",
+        ibanLabel: "IBAN",
+        bicLabel: "BIC",
+        usageLabel: "Reference",
+        copy: "Copy",
+        copied: "Copied!",
+        mockData: {
+            recipient: "Nejat FinTech",
+            iban: "DE89 3704 0044 0532 0130 00",
+            bic: "COBADEFFXXX",
+            usage: "Donation for Nejat Digital"
         }
     }
+}
+
+const DetailRow = ({ label, value }: { label: string, value: string }) => {
+    const { toast } = useToast()
+    const c = content[useLanguage().language];
+
+    const handleCopy = () => {
+        navigator.clipboard.writeText(value);
+        toast({
+            title: c.copied,
+            description: `${label}: ${value}`,
+        });
+    }
+    return (
+        <div className="flex justify-between items-center py-2 border-b">
+            <span className="text-sm text-muted-foreground">{label}</span>
+            <div className="flex items-center gap-2">
+                <span className="font-mono text-sm">{value}</span>
+                <Button variant="ghost" size="icon" className="h-6 w-6" onClick={handleCopy}>
+                    <Copy className="h-4 w-4" />
+                </Button>
+            </div>
+        </div>
+    )
 }
 
 
 export default function SubscribePage() {
   const { language } = useLanguage();
   const c = content[language] || content.de;
-  
-  const planAccess = {
-    free: { "Zugang zu grundlegenden Lerninhalten": true, "Werbefreie Erfahrung": false, "Lern-Werkzeug & Sprachausgabe": false, "Personalisierter Lernpfad-Generator": false, "Priorisierter Support": false, "Frühzugang & exklusive Features": false },
-    supporter: { "Zugang zu grundlegenden Lerninhalten": true, "Werbefreie Erfahrung": true, "Lern-Werkzeug & Sprachausgabe": true, "Personalisierter Lernpfad-Generator": false, "Priorisierter Support": false, "Frühzugang & exklusive Features": false },
-    pro: { "Zugang zu grundlegenden Lerninhalten": true, "Werbefreie Erfahrung": true, "Lern-Werkzeug & Sprachausgabe": true, "Personalisierter Lernpfad-Generator": true, "Priorisierter Support": true, "Frühzugang & exklusive Features": false },
-    patron: { "Zugang zu grundlegenden Lerninhalten": true, "Werbefreie Erfahrung": true, "Lern-Werkzeug & Sprachausgabe": true, "Personalisierter Lernpfad-Generator": true, "Priorisierter Support": true, "Frühzugang & exklusive Features": true },
-  };
-
+  const mock = c.mockData;
 
   return (
     <div className="container mx-auto px-4 py-8">
-        <div className="max-w-5xl mx-auto">
+        <div className="w-full max-w-lg mx-auto">
             <Button asChild variant="ghost" className="mb-8">
                 <Link href="/">
                     <ArrowLeft className="mr-2 h-4 w-4" />
@@ -171,99 +98,57 @@ export default function SubscribePage() {
                 </Link>
             </Button>
             <header className="text-center mb-12">
-                <h1 className="text-4xl font-bold tracking-tight text-primary">{c.pageTitle}</h1>
+                 <div className="flex justify-center mb-4">
+                    <div className="p-4 bg-primary/10 rounded-full">
+                        <Heart className="h-12 w-12 text-primary" />
+                    </div>
+                </div>
+                <h1 className="text-4xl font-bold tracking-tight">{c.pageTitle}</h1>
                 <p className="text-muted-foreground mt-2 text-lg max-w-2xl mx-auto">{c.pageDescription}</p>
             </header>
             
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
-                {c.plans.map((plan, index) => (
-                    <Card 
-                        key={index} 
-                        className={cn(
-                            "flex flex-col",
-                            plan.recommended && "border-primary border-2 shadow-lg"
-                        )}
-                    >
-                        {plan.recommended && (
-                            <Badge className="absolute -top-3 self-center">{c.mostPopular}</Badge>
-                        )}
-                        <CardHeader className="text-center">
-                            <CardTitle className="text-2xl">{plan.name}</CardTitle>
-                            <CardDescription>{plan.description}</CardDescription>
-                        </CardHeader>
-                        <CardContent className="flex-grow space-y-6">
-                            <div className="text-center">
-                                <span className="text-4xl font-bold">{plan.price}</span>
-                                <span className="text-muted-foreground">/{c.monthly}</span>
-                            </div>
-                            <ul className="space-y-3">
-                                {plan.features.map((feature, fIndex) => (
-                                    <li key={fIndex} className="flex items-start gap-3">
-                                        <CheckCircle2 className="h-5 w-5 text-green-500 mt-1 flex-shrink-0" />
-                                        <span className="text-muted-foreground">{feature}</span>
-                                    </li>
-                                ))}
-                            </ul>
-                        </CardContent>
-                        <CardFooter>
-                            <Button 
-                                asChild
-                                className="w-full"
-                                variant={plan.recommended ? 'default' : 'outline'}
-                            >
-                                <Link href={`/checkout?plan=${plan.key}&priceId=${plan.priceId}`}>
-                                    {c.choosePlan}
-                                </Link>
-                            </Button>
-                        </CardFooter>
-                    </Card>
-                ))}
-            </div>
+            <Card>
+                <CardHeader>
+                    <CardTitle>{c.bankTransferTitle}</CardTitle>
+                    <CardDescription>{c.bankTransferDescription}</CardDescription>
+                </CardHeader>
+                 <CardContent>
+                    <div className="flex justify-center">
+                        <Image 
+                            src="https://placehold.co/256x256.png" 
+                            alt="QR Code for Donation" 
+                            width={256} 
+                            height={256}
+                            className="rounded-lg border p-1"
+                            data-ai-hint="qr code"
+                        />
+                    </div>
+                 </CardContent>
+            </Card>
 
-            <div className="mt-20">
-                <h2 className="text-3xl font-bold text-center mb-8">{c.comparison.title}</h2>
-                <Card>
-                    <Table>
-                        <TableHeader>
-                            <TableRow>
-                                <TableHead className="w-[40%] text-lg">{c.comparison.feature}</TableHead>
-                                <TableHead className="text-center text-lg">{c.comparison.free}</TableHead>
-                                <TableHead className="text-center text-lg">{c.comparison.supporter}</TableHead>
-                                <TableHead className="text-center text-lg">{c.comparison.pro}</TableHead>
-                                <TableHead className="text-center text-lg">{c.comparison.patron}</TableHead>
-                            </TableRow>
-                        </TableHeader>
-                        <TableBody>
-                           {c.comparison.featuresList.map((feature, index) => {
-                                const hasAccess = (plan: 'free' | 'supporter' | 'pro' | 'patron') => {
-                                   if (feature.name === 'KI-Anfragen (Dua, Gelehrter, etc.)' || feature.name === 'AI Requests (Dua, Scholar, etc.)') return false;
-                                   return planAccess[plan][feature.name as keyof typeof planAccess['free']];
-                                }
-                                
-                                return (
-                                <TableRow key={index}>
-                                    <TableCell className="font-medium">{feature.name}</TableCell>
-                                     { (feature.name.startsWith('KI-Anfragen') || feature.name.startsWith('AI Requests')) ? (
-                                        <>
-                                            <TableCell className="text-center font-medium">{feature.free}</TableCell>
-                                            <TableCell className="text-center font-medium">{feature.supporter}</TableCell>
-                                            <TableCell className="text-center font-medium">{feature.pro}</TableCell>
-                                            <TableCell className="text-center font-medium">{feature.patron}</TableCell>
-                                        </>
-                                     ) : (
-                                        <>
-                                            <TableCell className="text-center">{hasAccess('free') ? <Check className="h-6 w-6 text-green-500 mx-auto" /> : <X className="h-6 w-6 text-muted-foreground mx-auto" />}</TableCell>
-                                            <TableCell className="text-center">{hasAccess('supporter') ? <Check className="h-6 w-6 text-green-500 mx-auto" /> : <X className="h-6 w-6 text-muted-foreground mx-auto" />}</TableCell>
-                                            <TableCell className="text-center">{hasAccess('pro') ? <Check className="h-6 w-6 text-green-500 mx-auto" /> : <X className="h-6 w-6 text-muted-foreground mx-auto" />}</TableCell>
-                                            <TableCell className="text-center">{hasAccess('patron') ? <Check className="h-6 w-6 text-green-500 mx-auto" /> : <X className="h-6 w-6 text-muted-foreground mx-auto" />}</TableCell>
-                                        </>
-                                     )}
-                                </TableRow>
-                           )})}
-                        </TableBody>
-                    </Table>
-                </Card>
-            </div>
+            <Card className="mt-8">
+                <CardHeader>
+                    <CardTitle>{c.bankDetailsTitle}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                    <DetailRow label={c.recipientLabel} value={mock.recipient} />
+                    <DetailRow label={c.ibanLabel} value={mock.iban} />
+                    <DetailRow label={c.bicLabel} value={mock.bic} />
+                    <DetailRow label={c.usageLabel} value={mock.usage} />
+                </CardContent>
+            </Card>
+
+            <Card className="mt-8">
+                <CardHeader>
+                    <CardTitle>{c.paypalTitle}</CardTitle>
+                    <CardDescription>{c.paypalDescription}</CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <Button className="w-full" disabled>
+                        {c.paypalButton}
+                    </Button>
+                </CardContent>
+            </Card>
         </div>
     </div>
   );
