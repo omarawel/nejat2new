@@ -39,7 +39,7 @@ const content = {
 
 const FeatureCard = ({ name, description }: { name: string, description: string }) => {
   return (
-    <div className="flex flex-col p-4 border border-border rounded-lg bg-card text-card-foreground hover:bg-accent/90 cursor-pointer transition-colors h-28">
+    <div className="flex flex-col p-4 border border-border rounded-lg bg-card text-card-foreground hover:bg-accent/90 cursor-pointer transition-colors h-full">
       <h3 className="text-lg font-semibold">{name}</h3>
       <p className="mt-2 text-sm text-muted-foreground flex-grow">{description}</p>
     </div>
@@ -145,13 +145,11 @@ export default function AdminDashboardPage() {
                 </div>
             ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-                     {displayedTools.map((tool) => {
-                        const card = <FeatureCard name={tool.name} description={tool.description} />;
-                        if (tool.href) {
-                            return <Link key={tool.key} href={tool.href}>{card}</Link>
-                        }
-                        return <div key={tool.key} className="opacity-50 cursor-not-allowed">{card}</div>;
-                    })}
+                     {displayedTools.map((tool) => (
+                        <Link key={tool.key} href={tool.href || '#'} className={!tool.href ? 'opacity-50 cursor-not-allowed pointer-events-none' : ''}>
+                           <FeatureCard name={tool.name} description={tool.description} />
+                        </Link>
+                    ))}
                 </div>
             )}
         </div>
