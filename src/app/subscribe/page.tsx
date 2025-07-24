@@ -21,6 +21,7 @@ const content = {
         currentPlan: "Aktueller Plan",
         choosePlan: "Plan wählen",
         loading: "Lade Pläne...",
+        loginToSubscribe: "Bitte melde dich an, um einen Plan zu wählen.",
     },
     en: {
         pageTitle: "Choose Your Plan",
@@ -29,6 +30,7 @@ const content = {
         currentPlan: "Current Plan",
         choosePlan: "Choose Plan",
         loading: "Loading plans...",
+        loginToSubscribe: "Please log in to choose a plan.",
     }
 }
 
@@ -57,7 +59,7 @@ export default function SubscribePage() {
                 </Link>
             </Button>
             <header className="text-center mb-12">
-                <h1 className="text-4xl font-bold tracking-tight">{c.pageTitle}</h1>
+                <h1 className="text-4xl font-bold tracking-tight text-primary">{c.pageTitle}</h1>
                 <p className="text-muted-foreground mt-2 text-lg max-w-2xl mx-auto">{c.pageDescription}</p>
             </header>
             
@@ -87,7 +89,7 @@ export default function SubscribePage() {
                                 <Button asChild className="w-full" disabled={!user}>
                                     <Link href={`/checkout?plan=${plan.name.toLowerCase()}&priceId=${plan.priceId}`}>{c.choosePlan}</Link>
                                 </Button>
-                                 {!user && <p className="text-xs text-center mt-2 text-muted-foreground">Please log in to subscribe</p>}
+                                 {!user && <p className="text-xs text-center mt-2 text-muted-foreground">{c.loginToSubscribe}</p>}
                             </div>
                         </Card>
                     ))}
