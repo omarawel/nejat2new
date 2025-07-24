@@ -27,16 +27,18 @@ const quotes: Quote[] = [
 
 const content = {
     de: {
-        title: "Inspirierendes Zitat",
-        description: "Eine tägliche Dosis Weisheit aus islamischen Lehren.",
+        title: "Inspirierende Zitate",
+        description: "Eine tägliche Dosis Weisheit von großen Gelehrten und Denkern des Islam, um die Seele zu nähren und den Geist zu inspirieren.",
         backToFeatures: "Zurück zu den Funktionen",
         newQuote: "Neues Zitat",
+        intro: "Worte haben die Macht, zu heilen, zu motivieren und unsere Perspektive zu verändern. Diese Sammlung von Zitaten von den Gefährten des Propheten, großen Imamen und Gelehrten dient als tägliche Erinnerung an die tiefen Weisheiten und die spirituelle Tiefe des islamischen Erbes."
     },
     en: {
-        title: "Inspirational Quote",
-        description: "A daily dose of wisdom from Islamic teachings.",
+        title: "Inspirational Quotes",
+        description: "A daily dose of wisdom from great scholars and thinkers of Islam to nourish the soul and inspire the mind.",
         backToFeatures: "Back to Features",
         newQuote: "New Quote",
+        intro: "Words have the power to heal, motivate, and change our perspective. This collection of quotes from the companions of the Prophet, great Imams, and scholars serves as a daily reminder of the profound wisdom and spiritual depth of the Islamic heritage."
     }
 }
 
@@ -45,14 +47,19 @@ export default function IslamicQuotesPage() {
     const c = content[language] || content.de;
 
     const [quote, setQuote] = useState<Quote | null>(null);
+    const [loading, setLoading] = useState(true);
 
     const getNewQuote = useCallback(() => {
-        const randomIndex = Math.floor(Math.random() * quotes.length);
-        let newQuote = quotes[randomIndex];
-        if (quote && newQuote.text_en === quote.text_en) {
-             newQuote = quotes[(randomIndex + 1) % quotes.length];
-        }
-        setQuote(newQuote);
+        setLoading(true);
+        setTimeout(() => {
+            const randomIndex = Math.floor(Math.random() * quotes.length);
+            let newQuote = quotes[randomIndex];
+            if (quote && newQuote.text_en === quote.text_en) {
+                 newQuote = quotes[(randomIndex + 1) % quotes.length];
+            }
+            setQuote(newQuote);
+            setLoading(false);
+        }, 300);
     }, [quote]);
 
     useEffect(() => {
@@ -69,6 +76,10 @@ export default function IslamicQuotesPage() {
                         {c.backToFeatures}
                     </Link>
                 </Button>
+                 <header className="text-center mb-6">
+                    <h1 className="text-4xl font-bold tracking-tight text-primary">{c.title}</h1>
+                    <p className="text-muted-foreground mt-2 text-lg max-w-2xl mx-auto">{c.intro}</p>
+                </header>
                 <Card className="w-full text-center shadow-xl">
                     <CardHeader>
                         <div className="flex justify-center mb-4">
@@ -80,16 +91,21 @@ export default function IslamicQuotesPage() {
                         <CardDescription className="text-lg">{c.description}</CardDescription>
                     </CardHeader>
                     <CardContent className="min-h-[150px] flex items-center justify-center">
-                        {quote && (
+                        {loading ? (
+                             <div className="space-y-4 w-full">
+                                <div className="h-6 bg-muted rounded w-3/4 mx-auto animate-pulse"></div>
+                                <div className="h-4 bg-muted rounded w-1/3 mx-auto animate-pulse"></div>
+                            </div>
+                        ) : quote ? (
                             <blockquote className="space-y-4">
                                 <p className="text-xl md:text-2xl leading-relaxed text-foreground/90">"{language === 'de' ? quote.text_de : quote.text_en}"</p>
                                 <footer className="text-base text-muted-foreground">- {language === 'de' ? quote.author_de : quote.author_en}</footer>
                             </blockquote>
-                        )}
+                        ) : null}
                     </CardContent>
                     <CardFooter className="flex justify-center p-6">
-                        <Button onClick={getNewQuote}>
-                            <RefreshCw className="mr-2 h-4 w-4" />
+                        <Button onClick={getNewQuote} disabled={loading}>
+                            <RefreshCw className={`mr-2 h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
                             {c.newQuote}
                         </Button>
                     </CardFooter>

@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { RefreshCw, BookOpen, Loader2, ArrowLeft } from 'lucide-react';
 import { useLanguage } from '@/components/language-provider';
 import Link from 'next/link';
+import { Metadata } from 'next';
 
 interface Verse {
   verse_en: string;
@@ -64,17 +65,19 @@ const verses: Verse[] = [
 const content = {
     de: {
         title: "Vers des Tages",
-        description: "Eine tägliche Inspiration aus dem Heiligen Koran.",
+        description: "Eine tägliche Inspiration aus dem Heiligen Koran, um den Glauben zu stärken und über die Worte Allahs nachzudenken.",
         backToFeatures: "Zurück zu den Funktionen",
         newVerse: "Neuer Vers",
-        surah: "Sure"
+        surah: "Sure",
+        intro: "Der Koran ist eine Quelle der Rechtleitung, Barmherzigkeit und Weisheit. Ein einziger Vers kann das Herz berühren, den Verstand erleuchten und den Weg für den Tag weisen. Diese Funktion bietet dir täglich einen neuen, inspirierenden Vers, um deine Verbindung zum Buch Allahs zu vertiefen."
     },
     en: {
         title: "Verse of the Day",
-        description: "A daily inspiration from the Holy Quran.",
+        description: "A daily inspiration from the Holy Quran to strengthen faith and reflect upon the words of Allah.",
         backToFeatures: "Back to Features",
         newVerse: "New Verse",
-        surah: "Surah"
+        surah: "Surah",
+        intro: "The Quran is a source of guidance, mercy, and wisdom. a single verse can touch the heart, enlighten the mind, and guide one's way for the day. This feature offers you a new, inspiring verse daily to deepen your connection with the Book of Allah."
     }
 }
 
@@ -113,6 +116,10 @@ export default function VerseOfTheDayPage() {
                         {c.backToFeatures}
                     </Link>
                 </Button>
+                <header className="text-center mb-6">
+                     <h1 className="text-4xl font-bold tracking-tight text-primary">{c.title}</h1>
+                     <p className="text-muted-foreground mt-2 text-lg max-w-2xl mx-auto">{c.intro}</p>
+                </header>
                 <Card className="w-full text-center shadow-xl">
                     <CardHeader>
                         <div className="flex justify-center mb-4">
@@ -120,7 +127,7 @@ export default function VerseOfTheDayPage() {
                                 <BookOpen className="h-10 w-10 text-primary" />
                             </div>
                         </div>
-                        <h1 className="text-3xl font-bold">{c.title}</h1>
+                        <CardTitle className="text-3xl font-bold">{c.title}</CardTitle>
                         <CardDescription className="text-lg">{c.description}</CardDescription>
                     </CardHeader>
                     <CardContent className="min-h-[250px] flex items-center justify-center">

@@ -58,17 +58,19 @@ const hadithCollection: Hadith[] = [
 const content = {
     de: {
         title: "Hadith des Tages",
-        description: "Eine tägliche Weisheit aus den Überlieferungen des Propheten Muhammad (ﷺ).",
+        description: "Eine tägliche Lehre und Weisheit aus den Überlieferungen des Propheten Muhammad (ﷺ), um den Alltag zu bereichern.",
         backToFeatures: "Zurück zu den Funktionen",
         newHadith: "Neuer Hadith",
-        narrated: "Überliefert von"
+        narrated: "Überliefert von",
+        intro: "Die Sunnah des Propheten Muhammad (ﷺ) ist nach dem Koran die zweite primäre Quelle der islamischen Rechtleitung. Seine Aussprüche, Taten und stillschweigenden Billigungen (Hadithe) bieten zeitlose Weisheit und praktische Anleitungen für alle Lebensbereiche. Ein täglicher Hadith kann uns inspirieren, unseren Charakter zu verbessern und unsere Taten zu verfeinern."
     },
     en: {
         title: "Hadith of the Day",
-        description: "A daily wisdom from the traditions of the Prophet Muhammad (ﷺ).",
+        description: "A daily teaching and wisdom from the traditions of the Prophet Muhammad (ﷺ) to enrich daily life.",
         backToFeatures: "Back to Features",
         newHadith: "New Hadith",
-        narrated: "Narrated by"
+        narrated: "Narrated by",
+        intro: "The Sunnah of the Prophet Muhammad (ﷺ) is the second primary source of Islamic guidance after the Quran. His sayings, actions, and tacit approvals (Hadith) offer timeless wisdom and practical guidance for all aspects of life. A daily Hadith can inspire us to improve our character and refine our actions."
     }
 }
 
@@ -108,6 +110,10 @@ export default function HadithOfTheDayPage() {
                         {c.backToFeatures}
                     </Link>
                 </Button>
+                <header className="text-center mb-6">
+                    <h1 className="text-4xl font-bold tracking-tight text-primary">{c.title}</h1>
+                    <p className="text-muted-foreground mt-2 text-lg max-w-2xl mx-auto">{c.intro}</p>
+                </header>
                 <Card className="w-full text-center shadow-xl">
                     <CardHeader>
                         <div className="flex justify-center mb-4">
@@ -115,7 +121,7 @@ export default function HadithOfTheDayPage() {
                                 <BookOpen className="h-10 w-10 text-primary" />
                             </div>
                         </div>
-                        <h1 className="text-3xl font-bold">{c.title}</h1>
+                        <CardTitle className="text-3xl font-bold">{c.title}</CardTitle>
                         <CardDescription className="text-lg">{c.description}</CardDescription>
                     </CardHeader>
                     <CardContent className="min-h-[250px] flex items-center justify-center">
