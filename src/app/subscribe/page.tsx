@@ -52,44 +52,54 @@ const content = {
 }
 
 const features = [
+    { key: 'quran_hadith_access', de: 'Vollständiger Koran & Hadith-Zugriff', en: 'Full Quran & Hadith Access' },
+    { key: 'qibla_prayer_times', de: 'Qibla-Kompass & Gebetszeiten', en: 'Qibla Compass & Prayer Times' },
     { key: 'ai_requests', de: 'KI-Anfragen / Monat', en: 'AI-Requests / Month' },
-    { key: 'ad_free', de: 'Werbefreie Erfahrung', en: 'Ad-free Experience' },
     { key: 'support_dev', de: 'Entwicklung unterstützen', en: 'Support Development' },
     { key: 'memorization_tool', de: 'Auswendiglernen-Tool', en: 'Memorization-Tool' },
+    { key: 'ad_free', de: 'Werbefreie Erfahrung', en: 'Ad-free Experience' },
     { key: 'quran_offline', de: 'Koran Offline-Zugriff', en: 'Quran Offline-Access' },
     { key: 'early_access', de: 'Früher Zugriff auf neue Features', en: 'Early Access to new Features' },
 ];
 
 const planFeatures: Record<string, Record<string, any>> = {
     free: {
+        quran_hadith_access: true,
+        qibla_prayer_times: true,
         ai_requests: 3,
-        ad_free: false,
         support_dev: false,
         memorization_tool: false,
+        ad_free: false,
         quran_offline: false,
         early_access: false,
     },
     supporter: {
+        quran_hadith_access: true,
+        qibla_prayer_times: true,
         ai_requests: 15,
-        ad_free: false,
         support_dev: true,
         memorization_tool: false,
+        ad_free: false,
         quran_offline: false,
         early_access: false,
     },
     pro: {
+        quran_hadith_access: true,
+        qibla_prayer_times: true,
         ai_requests: 30,
-        ad_free: true,
         support_dev: true,
         memorization_tool: true,
+        ad_free: true,
         quran_offline: true,
         early_access: false,
     },
     patron: {
+        quran_hadith_access: true,
+        qibla_prayer_times: true,
         ai_requests: 75,
-        ad_free: true,
         support_dev: true,
         memorization_tool: true,
+        ad_free: true,
         quran_offline: true,
         early_access: true,
     }
@@ -203,7 +213,7 @@ const SubscribePage: React.FC = () => {
                         <Table>
                             <TableHeader>
                                 <TableRow>
-                                    <TableHead className="w-1/3 text-base">{c.feature}</TableHead>
+                                    <TableHead className="w-1/3 text-base text-left">{c.feature}</TableHead>
                                     {plansInOrder.map(planKey => (
                                          <TableHead key={planKey} className={cn("text-center text-base", planKey === 'pro' && 'text-primary')}>
                                             {c[planKey as keyof typeof c]}
@@ -214,7 +224,7 @@ const SubscribePage: React.FC = () => {
                             <TableBody>
                                 {features.map(feature => (
                                     <TableRow key={feature.key}>
-                                        <TableCell className="font-medium">{feature[language]}</TableCell>
+                                        <TableCell className="font-medium text-left">{feature[language]}</TableCell>
                                         {plansInOrder.map(planKey => (
                                             <TableCell key={`${feature.key}-${planKey}`} className={cn("text-center", planKey === 'pro' && 'bg-primary/5')}>
                                                 {typeof planFeatures[planKey][feature.key] === 'boolean' ? (
