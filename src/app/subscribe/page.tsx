@@ -71,9 +71,9 @@ const planFeatures: Record<string, Record<string, any>> = {
     },
     supporter: {
         ai_requests: 15,
-        ad_free: true,
+        ad_free: false,
         support_dev: true,
-        memorization_tool: true,
+        memorization_tool: false,
         quran_offline: false,
         early_access: false,
     },

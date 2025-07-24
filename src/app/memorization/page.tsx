@@ -1,7 +1,7 @@
 
 "use client"
 
-import { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
@@ -93,7 +93,7 @@ function MemorizationTool() {
       const checkSubscription = async () => {
           if (user) {
               const sub = await getUserSubscription(user.uid);
-              setHasSubscription(sub?.status === 'active');
+              setHasSubscription(sub?.status === 'active' && (sub.planId === 'pro' || sub.planId === 'patron'));
           }
           setLoadingSubscription(false);
       }
