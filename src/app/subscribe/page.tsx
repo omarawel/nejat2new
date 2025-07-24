@@ -17,7 +17,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 const content = {
     de: {
         title: "Wähle deinen Plan",
-        description: "Unterstütze die Weiterentwicklung von Nejat Digital und erhalte Zugang zu exklusiven KI-Funktionen und einer werbefreien Erfahrung.",
+        description: "Schalte mit Nejat Pro exklusive KI-Funktionen und eine werbefreie Erfahrung frei und unterstütze die Weiterentwicklung der App.",
         choosePlan: "Plan wählen",
         loadingPlans: "Pläne werden geladen...",
         errorLoading: "Fehler beim Laden der Pläne:",
@@ -34,7 +34,7 @@ const content = {
     },
     en: {
         title: "Choose Your Plan",
-        description: "Support the continued development of Nejat Digital and get access to exclusive AI features and an ad-free experience.",
+        description: "Unlock exclusive AI features and an ad-free experience with Nejat Pro, and support the app's continued development.",
         choosePlan: "Choose Plan",
         loadingPlans: "Loading plans...",
         errorLoading: "Error loading plans:",
