@@ -14,6 +14,8 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Input } from '@/components/ui/input';
 import { generateQuiz, type GenerateQuizOutput, type QuizQuestion } from '@/ai/flows/generate-quiz';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { staticQuizData } from '@/lib/quiz-data';
+import { QuizSession } from '@/components/quiz/quiz-session';
 
 const quizTopics = {
     de: [
@@ -43,7 +45,8 @@ const content = {
         generateButton: "Quiz generieren",
         generatingButton: "Wird generiert...",
         aiError: "Fehler beim Generieren des Quiz.",
-        quizResults: "Dein KI-generiertes Quiz"
+        quizResults: "Dein KI-generiertes Quiz",
+        backToTopics: "Zurück zu den Themen"
     },
     en: {
         pageTitle: "Islamic Quiz",
@@ -59,7 +62,8 @@ const content = {
         generateButton: "Generate Quiz",
         generatingButton: "Generating...",
         aiError: "Error generating quiz.",
-        quizResults: "Your AI-Generated Quiz"
+        quizResults: "Your AI-Generated Quiz",
+        backToTopics: "Back to Topics"
     }
 }
 
@@ -72,7 +76,9 @@ export default function QuizPage() {
   const { language } = useLanguage();
   const c = content[language] || content.de;
   const topics = quizTopics[language] || quizTopics.de;
+  
   const [selectedTopic, setSelectedTopic] = useState<string | null>(null);
+  const [quizStarted, setQuizStarted] = useState(false);
 
   const [isLoading, setIsLoading] = useState(false);
   const [aiQuiz, setAiQuiz] = useState<QuizQuestion[] | null>(null);
@@ -92,12 +98,40 @@ export default function QuizPage() {
     try {
         const result = await generateQuiz({ topic: data.topic, count: 5 });
         setAiQuiz(result.questions);
+        setQuizStarted(true); // Start the AI quiz
+        setSelectedTopic('ai'); // Mark that an AI quiz is active
     } catch (e) {
         console.error(e);
         setAiError(c.aiError);
     } finally {
         setIsLoading(false);
     }
+  }
+  
+  const handleStartQuiz = () => {
+    if (selectedTopic && selectedTopic !== 'ai') {
+        setQuizStarted(true);
+    }
+  }
+
+  const handleFinishQuiz = () => {
+    setQuizStarted(false);
+    setSelectedTopic(null);
+    setAiQuiz(null);
+  }
+
+  const quizData = selectedTopic === 'ai' 
+    ? aiQuiz 
+    : staticQuizData[language][selectedTopic as keyof typeof staticQuizData['de']];
+
+
+  if (quizStarted && quizData) {
+    return <QuizSession 
+                quizTitle={topics.find(t => t.key === selectedTopic)?.title || form.getValues('topic')} 
+                questions={quizData} 
+                onFinish={handleFinishQuiz}
+                backButtonText={c.backToTopics}
+            />
   }
 
   return (
@@ -140,7 +174,7 @@ export default function QuizPage() {
                     </div>
                 </CardContent>
                 <CardFooter>
-                    <Button className="w-full" size="lg" disabled={!selectedTopic}>
+                    <Button className="w-full" size="lg" disabled={!selectedTopic || selectedTopic === 'ai'} onClick={handleStartQuiz}>
                         {c.startQuiz}
                     </Button>
                 </CardFooter>
@@ -195,32 +229,6 @@ export default function QuizPage() {
                 </CardContent>
             </Card>
         </div>
-
-        {aiQuiz && aiQuiz.length > 0 && (
-            <div className="max-w-4xl mx-auto mt-8">
-                <Card>
-                    <CardHeader>
-                        <CardTitle className="flex items-center gap-2">
-                           <Sparkles /> {c.quizResults}
-                        </CardTitle>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                        {aiQuiz.map((q, index) => (
-                            <div key={index} className="p-4 border rounded-lg">
-                                <p className="font-semibold">{index + 1}. {q.question}</p>
-                                <div className="mt-2 space-y-2">
-                                    {q.options.map(opt => (
-                                        <Button key={opt} variant="outline" className="w-full justify-start">{opt}</Button>
-                                    ))}
-                                </div>
-                                {/* In a real quiz, you would handle answers. For now, just showing the correct one. */}
-                                <p className="text-sm text-green-600 mt-2">Correct Answer: {q.correctAnswer}</p>
-                            </div>
-                        ))}
-                    </CardContent>
-                </Card>
-            </div>
-        )}
     </div>
   );
 }
