@@ -24,6 +24,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { useLanguage } from "../language-provider"
 import { isAdmin } from "@/lib/admin"
 import { QuotaDisplay } from "../quota-display"
+import { Badge } from "../ui/badge"
 
 const content = {
   de: {
@@ -105,6 +106,7 @@ export function AppHeader() {
     <header className="sticky top-0 z-10 flex h-20 items-center gap-4 border-b bg-background/80 px-4 backdrop-blur-sm sm:px-8">
       <Link href="/" className="flex items-center gap-2">
         <span className="text-xl font-bold">Nejat</span>
+        <Badge>Pro</Badge>
       </Link>
       <div className="flex-1" />
       <div className="flex items-center gap-2">

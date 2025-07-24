@@ -64,7 +64,7 @@ export function Footer() {
     
     const c = content ? content[language] : staticContent[language];
     const socialLinks = content ? content.socialLinks : [];
-    const copyrightText = `© ${new Date().getFullYear()} Nejat Digital. Alle Rechte vorbehalten.`;
+    const copyrightText = `© ${new Date().getFullYear()} Nejat Digital. All rights reserved.`;
 
     if (loading) {
         return (
@@ -83,7 +83,7 @@ export function Footer() {
                     <div className="md:col-span-2">
                         <div className="flex items-center gap-2 mb-2">
                             <h3 className="text-2xl font-bold">Nejat</h3>
-                            <Badge variant="default">Pro</Badge>
+                            <Badge>Pro</Badge>
                         </div>
                         <p className="text-muted-foreground max-w-md">{c.description}</p>
                     </div>
