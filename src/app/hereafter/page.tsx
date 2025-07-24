@@ -3,7 +3,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { useLanguage } from '@/components/language-provider';
-import { Scale, Bridge, Flame, Smile, Shield, ArrowLeft } from 'lucide-react';
+import { Scale, Milestone, Flame, Smile, Shield, ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 
@@ -24,7 +24,7 @@ const content = {
                 content: "An diesem gewaltigen Tag werden alle Menschen von Allah wiederauferweckt. Die Sonne wird nahe rücken, und die Menschen werden für ihre Taten zur Rechenschaft gezogen. Jedem wird sein Buch der Taten gegeben, entweder in die rechte Hand (Zeichen des Erfolgs) oder in die linke (Zeichen des Verlustes). Die Waage (Mizan) wird aufgestellt, um die guten und schlechten Taten abzuwägen."
             },
             {
-                icon: Bridge,
+                icon: Milestone,
                 title: "Die Brücke (As-Sirat)",
                 content: "Nach der Abrechnung müssen alle Menschen eine Brücke überqueren, die über die Hölle gespannt ist. Für die Gläubigen wird diese Überquerung je nach ihren Taten leicht und schnell sein – einige werden sie mit der Geschwindigkeit eines Blitzes überqueren. Für die Ungläubigen und Sünder wird die Brücke schärfer als ein Schwert und dünner als ein Haar sein, und viele werden von ihr in die Tiefen der Hölle stürzen."
             },
@@ -56,7 +56,7 @@ const content = {
                 content: "On this tremendous day, all people will be resurrected by Allah. The sun will draw near, and people will be held accountable for their deeds. Everyone will be given their book of deeds, either in their right hand (a sign of success) or in their left (a sign of loss). The scale (Mizan) will be set up to weigh the good and bad deeds."
             },
             {
-                icon: Bridge,
+                icon: Milestone,
                 title: "The Bridge (As-Sirat)",
                 content: "After the reckoning, all people must cross a bridge that is spanned over Hell. For the believers, this crossing will be easy and swift, depending on their deeds—some will cross it with the speed of lightning. For the disbelievers and sinners, the bridge will be sharper than a sword and thinner than a hair, and many will fall from it into the depths of Hell."
             },
