@@ -76,7 +76,7 @@ const hisnulMuslimData = {
         { id: 44, title: 'Bei Regen', duas: [{ arabic: 'اللَّهُمَّ صَيِّبًا نَافِعًا', transliteration: 'Allahumma sayyiban nafi`a.', translation: 'O Allah, (mache es zu) einem nützlichen Regen.' }] },
         { id: 45, title: 'Nach dem Regen', duas: [{ arabic: 'مُطِرْنَا بِفَضْلِ اللَّهِ وَرَحْمَتِهِ', transliteration: 'Mutirna bi-fadlillahi wa rahmatih.', translation: 'Wir wurden durch Allahs Gnade und Barmherzigkeit mit Regen beschenkt.' }] },
         { id: 46, title: 'Beim Anblick des Neumondes', duas: [{ arabic: 'اللَّهُ أَكْبَرُ، اللَّهُمَّ أَهِلَّهُ عَلَيْنَا بِالْأَمْنِ وَالْإِيمَانِ، وَالسَّلَامَةِ وَالْإِسْلَامِ، وَالتَّوْفِيقِ لِمَا تُحِبُّ رَبَّنَا وَتَرْضَى، رَبُّنَا وَرَبُّكَ اللَّهُ', transliteration: 'Allahu akbar, Allahumma ahillahu `alayna bil-amni wal-iman, was-salamati wal-islam, wat-tawfiqi lima tuhibbu rabbana wa tarda, rabbuna wa rabbukallah.', translation: 'Allah ist der Größte. O Allah, lass diesen Mond über uns aufgehen mit Sicherheit und Glauben, mit Frieden und Islam und mit Erfolg in dem, was Du, unser Herr, liebst und womit Du zufrieden bist. Unser Herr und dein Herr ist Allah.' }] },
-        { id: 47, title: 'Beim Fastenbrechen', duas: [{ arabic: 'ذَهَبَ الظَّمَأُ وَابْتَلَّتِ الْعُرُوقُ، وَثَبَتَ الْأَجْرُ إِنْ شَاءَ اللَّهُ', transliteration: 'Dhahabaz-zama`u wabtallatil-`uruq, wa thabatal-ajru in sha` Allah.', translation: 'Der Durst ist vergangen, die Adern sind befeuchtet, und die Belohnung ist sicher, so Allah will.' }] },
+        { id: 47, title: 'Beim Fastenbrechen', duas: [{ arabic: 'ذَهَبَ الظَّمَأُ وَابْتَلَّتِ الْعُرُوقُ، وَثَبَتَ الْأَjْرُ إِنْ شَاءَ اللَّهُ', transliteration: 'Dhahabaz-zama`u wabtallatil-`uruq, wa thabatal-ajru in sha` Allah.', translation: 'Der Durst ist vergangen, die Adern sind befeuchtet, und die Belohnung ist sicher, so Allah will.' }] },
         { id: 48, title: 'Vor dem Essen', duas: [{ arabic: 'بِسْمِ اللَّهِ', transliteration: 'Bismillah.', translation: 'Im Namen Allahs.' }] },
         { id: 49, title: 'Nach dem Essen', duas: [{ arabic: 'الْحَمْدُ لِلَّهِ الَّذِي أَطْعَمَنِي هَذَا وَرَزَقَنِيهِ مِنْ غَيْرِ حَوْلٍ مِنِّي وَلَا قُوَّةٍ', transliteration: 'Alhamdu lillahil-ladhi at`amani hadha wa razaqanihi min ghayri hawlin minni wa la quwwah.', translation: 'Alles Lob gebührt Allah, der mich dies hat essen lassen und mich damit versorgt hat, ohne Macht und Kraft meinerseits.' }] },
         { id: 50, title: 'Gebet eines Gastes für den Gastgeber', duas: [{ arabic: 'اللَّهُمَّ بَارِكْ لَهُمْ فِيمَا رَزَقْتَهُمْ، وَاغْفِرْ لَهُمْ وَارْحَمْهُمْ', transliteration: 'Allahumma barik lahum fima razaqtahum, waghfir lahum warhamhum.', translation: 'O Allah, segne sie in dem, was Du ihnen gegeben hast, vergib ihnen und erbarme Dich ihrer.' }] },
@@ -100,7 +100,7 @@ const hisnulMuslimData = {
         { id: 68, title: 'Beim Betreten eines Dorfes oder einer Stadt', duas: [{ arabic: 'اللَّهُمَّ رَبَّ السَّمَاوَاتِ السَّبْعِ وَمَا أَظْلَلْنَ، وَرَبَّ الْأَرَضِينَ السَّبْعِ وَمَا أَقْلَلْنَ، وَرَبَّ الشَّيَاطِينِ وَمَا أَضْلَلْنَ، وَرَبَّ الرِّيَاحِ وَمَا ذَرَيْنَ، أَسْأَلُكَ خَيْرَ هَذِهِ الْقَرْيَةِ وَخَيْرَ أَهْلِهَا وَخَيْرَ مَا فِيهَا، وَأَعُوذُ بِكَ مِنْ شَرِّهَا وَشَرِّ أَهْلِهَا وَشَرِّ مَا فِيهَا', transliteration: 'Allahumma rabbas-samawatis-sab`i wa ma azlaln, wa rabbal-aradinas-sab`i wa ma aqlaln, wa rabbash-shayatin wa ma adlaln, wa rabbar-riyahi wa ma dharayn, as`aluka khayra hadhihil-qaryah, wa khayra ahliha, wa khayra ma fiha, wa a`udhu bika min sharriha wa sharri ahliha, wa sharri ma fiha.', translation: 'O Allah, Herr der sieben Himmel und dessen, was sie beschatten, Herr der sieben Erden und dessen, was sie tragen, Herr der Satane und dessen, was sie in die Irre führen, und Herr der Winde und dessen, was sie verwehen. Ich bitte Dich um das Gute dieses Ortes, das Gute seiner Bewohner und das Gute, das in ihm ist. Und ich suche Zuflucht bei Dir vor seinem Übel, dem Übel seiner Bewohner und dem Übel, das in ihm ist.' }] },
         { id: 69, title: 'Beim Betreten eines Marktes', duas: [{ arabic: 'لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ، يُحْيِي وَيُمِيتُ، وَهُوَ حَيٌّ لَا يَمُوتُ، بِيَدِهِ الْخَيْرُ، وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ', transliteration: 'La ilaha illallahu wahdahu la sharika lah, lahul-mulku wa lahul-hamd, yuhyi wa yumit, wa huwa hayyun la yamut, bi-yadihil-khayr, wa huwa `ala kulli shay`in qadir.', translation: 'Es gibt keine Gottheit außer Allah allein, ohne Partner. Ihm gehört die Herrschaft und Ihm gehört alles Lob. Er gibt Leben und lässt sterben, und Er ist lebendig und stirbt nicht. In Seiner Hand ist alles Gute, und Er hat Macht über alle Dinge.' }] },
         { id: 70, title: 'Wenn man in einem Haus Rast macht', duas: [{ arabic: 'أَعُوذُ بِكَلِمَاتِ اللهِ التَّامَّاتِ مِنْ شَرِّ مَا خَلَقَ', transliteration: 'A`udhu bikalimatillahit-tammati min sharri ma khalaq.', translation: 'Ich suche Zuflucht bei den vollkommenen Worten Allahs vor dem Übel dessen, was Er erschaffen hat.' }] },
-        { id: 71, title: 'Bei der Rückkehr von einer Reise', duas: [{ arabic: 'آيِبُونَ، تَائِبُونَ، عَابِدُونَ، لِرَبِّنَا حَامِدُونَ', transliteration: 'A\'ibuna, ta\'ibuna, `abiduna, li-rabbina hamidun.', translation: 'Wir kehren zurück, bereuen, beten an und preisen unseren Herrn.' }] },
+        { id: 71, title: 'Bei der Rückkehr von einer Reise', duas: [{ arabic: 'آيِبُونَ، تَائِبُونَ، عَابِدُونَ، لِرَبِّنَا حَامِدُونَ', transliteration: 'A\'ibuna, ta\'ibuna, `abiduna, li-rabbina hamidun.', translation: 'Wir kehren zurück, bereuen, beten an und preisen unseren Herrn.' }] },
         { id: 72, title: 'Was man sagt, wenn man zufrieden oder unzufrieden ist', duas: [{ arabic: 'الْحَمْدُ لِلَّهِ عَلَى كُلِّ حَالٍ', transliteration: 'Alhamdulillah `ala kulli hal.', translation: 'Alles Lob gebührt Allah unter allen Umständen.' }] },
         { id: 73, title: 'Segenswünsche für den Propheten (ﷺ)', duas: [{ arabic: 'اللَّهُمَّ صَلِّ وَسَلِّمْ عَلَى نَبِيِّنَا مُحَمَّدٍ', transliteration: 'Allahumma salli wa sallim `ala nabiyyina Muhammad.', translation: 'O Allah, sende Deine Gebete und Deinen Frieden auf unseren Propheten Muhammad.' }] },
         { id: 74, title: 'Die Vorzüge des Friedensgrußes', duas: [{ arabic: 'أَفْشُوا السَّلَامَ بَيْنَكُمْ', transliteration: 'Afshus-salama baynakum.', translation: 'Verbreitet den Frieden unter euch.' }] },
@@ -187,29 +187,29 @@ const hisnulMuslimData = {
         { id: 155, title: 'Beim Hören des Krähens eines Hahns', duas: [{ arabic: 'إِذَا سَمِعْتُمْ صِيَاحَ الدِّيَكَةِ فَاسْأَلُوا اللَّهَ مِنْ فَضْلِهِ، فَإِنَّهَا رَأَتْ مَلَكًا', transliteration: 'Idha sami`tum siyaha-d-dikati fas`alul-laha min fadlihi, fa`innaha ra`at malakan.', translation: 'Wenn ihr das Krähen des Hahnes hört, bittet Allah um Seine Gnade, denn er hat einen Engel gesehen.' }] },
         { id: 156, title: 'Beim Hören des Schreiens eines Esels', duas: [{ arabic: 'إِذَا سَمِعْتُمْ نَهِيقَ الْحِمَارِ فَتَعَوَّذُوا بِاللَّهِ مِنَ الشَّيْطَانِ، فَإِنَّهُ رَأَى شَيْطَانًا', transliteration: 'Idha sami`tum nahiqal-himari fata`awwadhu billahi minash-shaytan, fa`innahu ra`a shaytanan.', translation: 'Wenn ihr das Geschrei des Esels hört, sucht Zuflucht bei Allah vor dem Satan, denn er hat einen Satan gesehen.' }] },
         { id: 157, title: 'Schutz vor dem Feuer', duas: [{ arabic: 'اللَّهُمَّ أَجِرْنِي مِنَ النَّارِ', transliteration: 'Allahumma ajirni minan-nar.', translation: 'O Allah, schütze mich vor dem Feuer.' }] },
-        { id: 158, title: 'Beim Abschluss des Korans', duas: [{ arabic: 'اللَّهُمَّ ارْحَمْنِي بِالْقُرْآنِ وَاجْعَلْهُ لِي إِمَامًا وَنُورًا وَهُدًى وَرَحْمَةً', transliteration: 'Allahummar-hamni bil-qur`an, waj`alhu li imaman wa nuran wa hudan wa rahmah.', translation: 'O Allah, erbarme Dich meiner durch den Koran und mache ihn zu einem Führer, einem Licht, einer Rechtleitung und einer Barmherzigkeit für mich.' }] },
+        { id: 158, title: 'Beim Abschluss des Korans', duas: [{ arabic: 'اللَّهُمَّ ارْحَمْنِي بِالْقُرْآنِ وَاجْعَلْهُ لِي إِمَامًا وَنُورًا وَهُدًى وَرَحْمَةً', transliteration: 'Allahummar-hamni bil-qur`an, waj`alhu li imaman wa nuran wa hudan wa rahmah.', translation: 'O Allah, habe Barmherzigkeit mit mir durch den Koran und mache ihn zu einem Führer, einem Licht, einer Rechtleitung und einer Barmherzigkeit für mich.' }] },
         { id: 159, title: 'Bei Furcht', duas: [{ arabic: 'لَا إِلَهَ إِلَّا اللَّهُ', transliteration: 'La ilaha illallah.', translation: 'Es gibt keine Gottheit außer Allah.' }] },
         { id: 160, title: 'Was man sagt, wenn man etwas mag', duas: [{ arabic: 'مَا شَاءَ اللَّهُ، لَا قُوَّةَ إِلَّا بِاللَّهِ', transliteration: 'Ma sha` Allah, la quwwata illa billah.', translation: 'Was Allah will, (geschieht). Es gibt keine Macht außer bei Allah.' }] },
-        { id: 161, title: 'Was man sagt, wenn man etwas nicht mag', duas: [{ arabic: 'قَدَرُ اللَّهِ وَمَا شَاءَ فَعَلَ', transliteration: 'Qadarul-lahi wa ma sha`a fa`al.', translation: 'Es ist das Schicksal Allahs, und was Er will, tut Er.' }] },
-        { id: 162, title: 'Wenn man ein Haus betritt', duas: [{ arabic: 'بِسْمِ اللهِ وَلَجْنَا، وَبِسْمِ اللهِ خَرَجْنَا، وَعَلَى رَبِّنَا تَوَكَّلْنَا', transliteration: 'Bismillahi walajna, wa bismillahi kharajna, wa `ala rabbina tawakkalna.', translation: 'Im Namen Allahs treten wir ein, im Namen Allahs treten wir aus, und auf unseren Herrn vertrauen wir.' }] },
-        { id: 163, title: 'Bei der Kondolenz', duas: [{ arabic: 'إِنَّ لِلَّهِ مَا أَخَذَ، وَلَهُ مَا أَعْطَى، وَكُلُّ شَيْءٍ عِنْدَهُ بِأَجَلٍ مُسَمًّى فَلْتَصْبِرْ وَلْتَحْتَسِبْ', transliteration: 'Inna lillahi ma akhadh, wa lahu ma a`ta, wa kullu shay`in `indahu bi-ajalin musamma... faltasbir waltahtasib.', translation: 'Wahrlich, Allah gehört, was Er genommen hat, und Ihm gehört, was Er gegeben hat, und alles bei Ihm hat eine festgesetzte Frist... So sei geduldig und hoffe auf Belohnung.' }] },
-        { id: 164, title: 'Gebet für die Krankenheilung', duas: [{ arabic: 'اللَّهُمَّ رَبَّ النَّاسِ، أَذْهِبِ الْبَأْسَ، اشْفِهِ وَأَنْتَ الشَّافِي، لاَ شِفَاءَ إِلاَّ شِفَاؤُكَ، شِفَاءً لاَ يُغَادِرُ سَقَمًا', transliteration: 'Allahumma rabban-nas, adhhibil-ba`s, ishfihi wa antash-shafi, la shifa`a illa shifa`uk, shifa`an la yughadiru saqama.', translation: 'O Allah, Herr der Menschen, entferne das Leid und heile ihn, denn Du bist der Heiler. Es gibt keine Heilung außer Deiner Heilung, eine Heilung, die keine Krankheit zurücklässt.' }] },
-        { id: 165, title: 'Wenn man Angst vor jemandem hat', duas: [{ arabic: 'اللَّهُمَّ اكْفِنِيهِمْ بِمَا شِئْتَ', transliteration: 'Allahumma-kfinihim bima shi`t.', translation: 'O Allah, genüge mir gegen sie, wie immer Du willst.' }] },
-        { id: 166, title: 'Wenn man einen Muslim glücklich macht', duas: [{ arabic: 'أَحَبُّ الأَعْمَالِ إِلَى اللَّهِ سُرُورٌ تُدْخِلُهُ عَلَى مُسْلِمٍ', transliteration: 'Ahabbul-a`mali ilal-lahi sururun tudkhiluhu `ala muslim.', translation: 'Die beliebteste Tat bei Allah ist die Freude, die du einem Muslim bringst.' }] },
-        { id: 167, title: 'Beim Anblick von Obst in der neuen Saison', duas: [{ arabic: 'اللَّهُمَّ بَارِكْ لَنَا فِي ثَمَرِنَا، وَبَارِكْ لَنَا فِي مَدِينَتِنَا، وَبَارِكْ لَنَا فِي صَاعِنَا، وَبَارِكْ لَنَا فِي مُدِّنَا', transliteration: 'Allahumma barik lana fi thamarina, wa barik lana fi madinatina, wa barik lana fi sa`ina, wa barik lana fi muddina.', translation: 'O Allah, segne uns in unseren Früchten, und segne uns in unserer Stadt, und segne uns in unserem Sa` und segne uns in unserem Mudd.' }] },
-        { id: 168, title: 'Gebet gegen Faulheit', duas: [{ arabic: 'اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْعَجْزِ وَالْكَسَلِ', transliteration: 'Allahumma inni a`udhu bika minal-`ajzi wal-kasal.', translation: 'O Allah, ich suche Zuflucht bei Dir vor Unfähigkeit und Faulheit.' }] },
-        { id: 169, title: 'Für das Wohl der Muslime', duas: [{ arabic: 'اللَّهُمَّ أَصْلِحْ ذَاتَ بَيْنِنَا، وَأَلِّفْ بَيْنَ قُلُوبِنَا', transliteration: 'Allahumma aslih dhata baynina, wa allif bayna qulubina.', translation: 'O Allah, verbessere unsere Beziehungen und einige unsere Herzen.' }] },
-        { id: 170, title: 'Beim Verlassen einer Versammlung', duas: [{ arabic: 'سُبْحَانَكَ اللَّهُمَّ وَبِحَمْدِكَ، أَشْهَدُ أَنْ لَا إِلَهَ إِلَّا أَنْتَ، أَسْتَغْفِرُكَ وَأَتُوبُ إِلَيْكَ', transliteration: 'Subhanakallahumma wa bihamdik, ashhadu an la ilaha illa ant, astaghfiruka wa atubu ilayk.', translation: 'Gepriesen seist Du, o Allah, und mit Deinem Lob. Ich bezeuge, dass es keine Gottheit gibt außer Dir. Ich bitte Dich um Vergebung und bereue vor Dir.' }] },
-        { id: 171, title: 'Opening of the Prayer', duas: [{ arabic: 'سُبْحَانَكَ اللَّهُمَّ وَبِحَمْدِكَ، وَتَبَارَكَ اسْمُكَ، وَتَعَالَى جَدُّكَ، وَلَا إِلَهَ غَيْرُكَ', transliteration: 'Subhanakallahumma wa bihamdik, wa tabarakasmuk, wa ta`ala jadduk, wa la ilaha ghayruk.', translation: 'Glory is to You, O Allah, and with Your praise. Blessed is Your name and exalted is Your majesty. And there is no deity other than You.' }] },
-        { id: 172, title: 'During Ruku (bowing)', duas: [{ arabic: 'سُبْحَانَ رَبِّيَ الْعَظِيمِ', transliteration: 'Subhana Rabbiyal-`Azim.', translation: 'Glory to my Lord, the Almighty (3 times).' }] },
-        { id: 173, title: 'When rising from Ruku', duas: [{ arabic: 'سَمِعَ اللَّهُ لِمَنْ حَمِدَهُ', transliteration: 'Sami`allahu liman hamidah.', translation: 'Allah hears him who praises Him.' }] },
-        { id: 174, title: 'After rising from Ruku', duas: [{ arabic: 'رَبَّنَا وَلَكَ الْحَمْدُ', transliteration: 'Rabbana wa lakal-hamd.', translation: 'Our Lord, and to You be all praise.' }] },
-        { id: 175, title: 'During Sujud (prostration)', duas: [{ arabic: 'سُبْحَانَ رَبِّيَ الْأَعْلَى', transliteration: 'Subhana Rabbiyal-A`la.', translation: 'Glory to my Lord, the Most High (3 times).' }] },
-        { id: 176, title: 'Between the two prostrations', duas: [{ arabic: 'رَبِّ اغْفِرْ لِي، رَبِّ اغْfِرْ لِي', transliteration: 'Rabbigh-fir li, Rabbigh-fir li.', translation: 'My Lord, forgive me. My Lord, forgive me.' }] },
-        { id: 177, title: 'During Tashahhud', duas: [{ arabic: 'التَّحِيَّاتُ لِلَّهِ وَالصَّلَوَاتُ وَالطَّيِّبَاتُ، السَّلَامُ عَلَيْكَ أَيُّهَا النَّبِيُّ وَرَحْمَةُ اللَّهِ وَبَرَكَاتُهُ، السَّلَامُ عَلَيْنَا وَعَلَى عِبَادِ اللَّهِ الصَّالِحِينَ، أَشْهَدُ أَنْ لَا إِلَهَ إِلَّا اللَّهُ وَأَشْهَدُ أَنَّ مُحَمَّدًا عَبْدُهُ وَرَسُولُهُ', transliteration: 'At-tahiyyatu lillahi was-salawatu wat-tayyibat, as-salamu `alayka ayyuhan-nabiyyu wa rahmatullahi wa barakatuh, as-salamu `alayna wa `ala `ibadillahis-salihin, ashhadu an la ilaha illallah, wa ashhadu anna Muhammadan `abduhu wa rasuluh.', translation: 'All greetings, prayers, and good things are for Allah. Peace be upon you, O Prophet, and the mercy of Allah and His blessings. Peace be upon us and upon the righteous servants of Allah. I bear witness that there is no deity but Allah, and I bear witness that Muhammad is His servant and His Messenger.' }] },
-        { id: 178, title: 'After Tashahhud', duas: [{ arabic: 'اللَّهُمَّ صَلِّ عَلَى مُحَمَّدٍ وَعَلَى آلِ مُحَمَّدٍ كَمَا صَلَّيْتَ عَلَى إِبْرَاهِيمَ وَعَلَى آلِ إِبْرَاهِيمَ إِنَّكَ حَمِيدٌ مَجِيدٌ، اللَّهُمَّ بَارِكْ عَلَى مُحَمَّدٍ وَعَلَى آلِ مُحَمَّدٍ كَمَا بَارَكْتَ عَلَى إِبْرَاهِيمَ وَعَلَى آلِ إِبْرَاهِيمَ إِنَّكَ حَمِيدٌ مَجِيدٌ', transliteration: 'Allahumma salli `ala Muhammadin wa `ala aali Muhammad, kama sallayta `ala Ibrahima wa `ala aali Ibrahim, innaka Hamidun Majid. Allahumma barik `ala Muhammadin wa `ala aali Muhammad, kama barakta `ala Ibrahima wa `ala aali Ibrahim, innaka Hamidun Majid.', translation: 'O Allah, send Your grace on Muhammad and the family of Muhammad, as You sent Your grace on Ibrahim and the family of Ibrahim. Verily, You are the Praiseworthy, the Glorious. O Allah, bless Muhammad and the family of Muhammad, as You blessed Ibrahim and the family of Ibrahim. Verily, You are the Praiseworthy, the Glorious.' }] },
-        { id: 179, title: 'Before Taslim', duas: [{ arabic: 'اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنْ عَذَابِ الْقَبْرِ، وَمِنْ عَذَابِ جَهَنَّمَ، وَمِنْ فِتْنَةِ الْمَحْيَا وَالْمَمَاتِ، وَمِنْ شَرِّ فِتْنَةِ الْمَسِيحِ الدَّجَّالِ', transliteration: 'Allahumma inni a`udhu bika min `adhabil-qabr, wa min `adhabi jahannam, wa min fitnatil-mahya wal-mamat, wa min sharri fitnatil-masihid-dajjal.', translation: 'O Allah, I seek refuge in You from the torment of the grave, from the torment of Hell, from the trials of life and death, and from the evil of the trial of the false Messiah (Dajjal).' }] },
-        { id: 180, title: 'After Prayer', duas: [{ arabic: 'أَسْتَغْفِرُ اللَّهَ (ثَلَاثًا) اللَّهُمَّ أَنْتَ السَّلَامُ وَمِنْكَ السَّلَامُ، تَبَارَكْتَ يَا ذَا الْجَلَالِ وَالْإِكْرَامِ', transliteration: 'Astaghfirullah (3 times). Allahumma antas-salam wa minkas-salam, tabarakta ya dhal-jalali wal-ikram.', translation: 'I ask Allah for forgiveness (3 times). O Allah, You are Peace and from You comes peace. Blessed are You, O Owner of Majesty and Honor.' }] },
+        { id: 161, title: 'Was man sagt, wenn man etwas nicht mag', duas: [{ arabic: 'قَدَرُ اللَّهِ وَمَا شَاءَ فَعَلَ', transliteration: 'Qadarul-lahi wa ma sha`a fa`al.', 'translation': 'Es ist das Schicksal Allahs, und was Er will, tut Er.' }] },
+        { id: 162, title: 'Wenn man ein Haus betritt', duas: [{ arabic: 'بِسْمِ اللهِ وَلَجْنَا، وَبِسْمِ اللهِ خَرَجْنَا، وَعَلَى رَبِّنَا تَوَكَّلْنَا', transliteration: 'Bismillahi walajna, wa bismillahi kharajna, wa `ala rabbina tawakkalna.', 'translation': 'Im Namen Allahs treten wir ein, im Namen Allahs treten wir aus, und auf unseren Herrn vertrauen wir.' }] },
+        { id: 163, title: 'Bei der Kondolenz', duas: [{ arabic: 'إِنَّ لِلَّهِ مَا أَخَذَ، وَلَهُ مَا أَعْطَى، وَكُلُّ شَيْءٍ عِنْدَهُ بِأَجَلٍ مُسَمًّى فَلْتَصْبِرْ وَلْتَحْتَسِبْ', transliteration: 'Inna lillahi ma akhadh, wa lahu ma a`ta, wa kullu shay`in `indahu bi-ajalin musamma... faltasbir waltahtasib.', 'translation': 'Wahrlich, Allah gehört, was Er genommen hat, und Ihm gehört, was Er gegeben hat, und alles bei Ihm hat eine festgesetzte Frist... So sei geduldig und hoffe auf Belohnung.' }] },
+        { id: 164, title: 'Gebet für die Krankenheilung', duas: [{ arabic: 'اللَّهُمَّ رَبَّ النَّاسِ، أَذْهِبِ الْبَأْسَ، اشْفِهِ وَأَنْتَ الشَّافِي، لاَ شِفَاءَ إِلاَّ شِفَاؤُكَ، شِفَاءً لاَ يُغَادِرُ سَقَمًا', transliteration: 'Allahumma rabban-nas, adhhibil-ba`s, ishfihi wa antash-shafi, la shifa`a illa shifa`uk, shifa`an la yughadiru saqama.', 'translation': 'O Allah, Herr der Menschen, entferne das Leid und heile ihn, denn Du bist der Heiler. Es gibt keine Heilung außer Deiner Heilung, eine Heilung, die keine Krankheit zurücklässt.' }] },
+        { id: 165, title: 'Wenn man Angst vor jemandem hat', duas: [{ arabic: 'اللَّهُمَّ اكْفِنِيهِمْ بِمَا شِئْتَ', transliteration: 'Allahumma-kfinihim bima shi`t.', 'translation': 'O Allah, genüge mir gegen sie, wie immer Du willst.' }] },
+        { id: 166, title: 'Wenn man einen Muslim glücklich macht', duas: [{ arabic: 'أَحَبُّ الأَعْمَالِ إِلَى اللَّهِ سُرُورٌ تُدْخِلُهُ عَلَى مُسْلِمٍ', transliteration: 'Ahabbul-a`mali ilal-lahi sururun tudkhiluhu `ala muslim.', 'translation': 'Die beliebteste Tat bei Allah ist die Freude, die du einem Muslim bringst.' }] },
+        { id: 167, title: 'Beim Anblick von Obst in der neuen Saison', duas: [{ arabic: 'اللَّهُمَّ بَارِكْ لَنَا فِي ثَمَرِنَا، وَبَارِكْ لَنَا فِي مَدِينَتِنَا، وَبَارِكْ لَنَا فِي صَاعِنَا، وَبَارِكْ لَنَا فِي مُدِّنَا', transliteration: 'Allahumma barik lana fi thamarina, wa barik lana fi madinatina, wa barik lana fi sa`ina, wa barik lana fi muddina.', 'translation': 'O Allah, segne uns in unseren Früchten, und segne uns in unserer Stadt, und segne uns in unserem Sa` und segne uns in unserem Mudd.' }] },
+        { id: 168, title: 'Gebet gegen Faulheit', duas: [{ arabic: 'اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْعَجْزِ وَالْكَسَلِ', transliteration: 'Allahumma inni a`udhu bika minal-`ajzi wal-kasal.', 'translation': 'O Allah, ich suche Zuflucht bei Dir vor Unfähigkeit und Faulheit.' }] },
+        { id: 169, title: 'Für das Wohl der Muslime', duas: [{ arabic: 'اللَّهُمَّ أَصْلِحْ ذَاتَ بَيْنِنَا، وَأَلِّفْ بَيْنَ قُلُوبِنَا', transliteration: 'Allahumma aslih dhata baynina, wa allif bayna qulubina.', 'translation': 'O Allah, verbessere unsere Beziehungen und einige unsere Herzen.' }] },
+        { id: 170, title: 'Beim Verlassen einer Versammlung', duas: [{ arabic: 'سُبْحَانَكَ اللَّهُمَّ وَبِحَمْدِكَ، أَشْهَدُ أَنْ لَا إِلَهَ إِلَّا أَنْتَ، أَسْتَغْفِرُكَ وَأَتُوبُ إِلَيْكَ', transliteration: 'Subhanakallahumma wa bihamdik, ashhadu an la ilaha illa ant, astaghfiruka wa atubu ilayk.', 'translation': 'Gepriesen seist Du, o Allah, und mit Deinem Lob. Ich bezeuge, dass es keine Gottheit gibt außer Dir. Ich bitte Dich um Vergebung und bereue vor Dir.' }] },
+        { id: 171, 'title': 'Opening of the Prayer', duas: [{ arabic: 'سُبْحَانَكَ اللَّهُمَّ وَبِحَمْدِكَ، وَتَبَارَكَ اسْمُكَ، وَتَعَالَى جَدُّكَ، وَلَا إِلَهَ غَيْرُكَ', transliteration: 'Subhanakallahumma wa bihamdik, wa tabarakasmuk, wa ta`ala jadduk, wa la ilaha ghayruk.', 'translation': 'Glory is to You, O Allah, and with Your praise. Blessed is Your name and exalted is Your majesty. And there is no deity other than You.' }] },
+        { id: 172, 'title': 'During Ruku (bowing)', duas: [{ arabic: 'سُبْحَانَ رَبِّيَ الْعَظِيمِ', transliteration: 'Subhana Rabbiyal-`Azim.', 'translation': 'Glory to my Lord, the Almighty (3 times).' }] },
+        { id: 173, 'title': 'When rising from Ruku', duas: [{ arabic: 'سَمِعَ اللَّهُ لِمَنْ حَمِدَهُ', transliteration: 'Sami`allahu liman hamidah.', 'translation': 'Allah hears him who praises Him.' }] },
+        { id: 174, 'title': 'After rising from Ruku', duas: [{ arabic: 'رَبَّنَا وَلَكَ الْحَمْدُ', transliteration: 'Rabbana wa lakal-hamd.', 'translation': 'Our Lord, and to You be all praise.' }] },
+        { id: 175, 'title': 'During Sujud (prostration)', duas: [{ arabic: 'سُبْحَانَ رَبِّيَ الْأَعْلَى', transliteration: 'Subhana Rabbiyal-A`la.', 'translation': 'Glory to my Lord, the Most High (3 times).' }] },
+        { id: 176, 'title': 'Between the two prostrations', duas: [{ arabic: 'رَبِّ اغْفِرْ لِي، رَبِّ اغْfِرْ لِي', transliteration: 'Rabbigh-fir li, Rabbigh-fir li.', 'translation': 'My Lord, forgive me. My Lord, forgive me.' }] },
+        { id: 177, 'title': 'During Tashahhud', duas: [{ arabic: 'التَّحِيَّاتُ لِلَّهِ وَالصَّلَوَاتُ وَالطَّيِّبَاتُ، السَّلَامُ عَلَيْكَ أَيُّهَا النَّبِيُّ وَرَحْمَةُ اللَّهِ وَبَرَكَاتُهُ، السَّلَامُ عَلَيْنَا وَعَلَى عِبَادِ اللَّهِ الصَّالِحِينَ، أَشْهَدُ أَنْ لَا إِلَهَ إِلَّا اللَّهُ وَأَشْهَدُ أَنَّ مُحَمَّدًا عَبْدُهُ وَرَسُولُهُ', transliteration: 'At-tahiyyatu lillahi was-salawatu wat-tayyibat, as-salamu `alayka ayyuhan-nabiyyu wa rahmatullahi wa barakatuh, as-salamu `alayna wa `ala `ibadillahis-salihin, ashhadu an la ilaha illallah, wa ashhadu anna Muhammadan `abduhu wa rasuluh.', 'translation': 'All greetings, prayers, and good things are for Allah. Peace be upon you, O Prophet, and the mercy of Allah and His blessings. Peace be upon us and upon the righteous servants of Allah. I bear witness that there is no deity but Allah, and I bear witness that Muhammad is His servant and His Messenger.' }] },
+        { id: 178, 'title': 'After Tashahhud', duas: [{ arabic: 'اللَّهُمَّ صَلِّ عَلَى مُحَمَّدٍ وَعَلَى آلِ مُحَمَّدٍ كَمَا صَلَّيْتَ عَلَى إِبْرَاهِيمَ وَعَلَى آلِ إِبْرَاهِيمَ إِنَّكَ حَمِيدٌ مَجِيدٌ، اللَّهُمَّ بَارِكْ عَلَى مُحَمَّدٍ وَعَلَى آلِ مُحَمَّدٍ كَمَا بَارَكْتَ عَلَى إِبْرَاهِيمَ وَعَلَى آلِ إِبْرَاهِيمَ إِنَّكَ حَمِيدٌ مَجِيدٌ', transliteration: 'Allahumma salli `ala Muhammadin wa `ala aali Muhammad, kama sallayta `ala Ibrahima wa `ala aali Ibrahim, innaka Hamidun Majid. Allahumma barik `ala Muhammadin wa `ala aali Muhammad, kama barakta `ala Ibrahima wa `ala aali Ibrahim, innaka Hamidun Majid.', 'translation': 'O Allah, send Your grace on Muhammad and the family of Muhammad, as You sent Your grace on Ibrahim and the family of Ibrahim. Verily, You are the Praiseworthy, the Glorious. O Allah, bless Muhammad and the family of Muhammad, as You blessed Ibrahim and the family of Ibrahim. Verily, You are the Praiseworthy, the Glorious.' }] },
+        { id: 179, 'title': 'Before Taslim', duas: [{ arabic: 'اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنْ عَذَابِ الْقَبْرِ، وَمِنْ عَذَابِ جَهَنَّمَ، وَمِنْ فِتْنَةِ الْمَحْيَا وَالْمَمَاتِ، وَمِنْ شَرِّ فِتْنَةِ الْمَسِيحِ الدَّجَّالِ', transliteration: 'Allahumma inni a`udhu bika min `adhabil-qabr, wa min `adhabi jahannam, wa min fitnatil-mahya wal-mamat, wa min sharri fitnatil-masihid-dajjal.', 'translation': 'O Allah, I seek refuge in You from the torment of the grave, from the torment of Hell, from the trials of life and death, and from the evil of the trial of the false Messiah (Dajjal).' }] },
+        { id: 180, 'title': 'After Prayer', duas: [{ arabic: 'أَسْتَغْفِرُ اللَّهَ (ثَلَاثًا) اللَّهُمَّ أَنْتَ السَّلَامُ وَمِنْكَ السَّلَامُ، تَبَارَكْتَ يَا ذَا الْجَلَالِ وَالْإِكْرَامِ', transliteration: 'Astaghfirullah (3 times). Allahumma antas-salam wa minkas-salam, tabarakta ya dhal-jalali wal-ikram.', 'translation': 'I ask Allah for forgiveness (3 times). O Allah, You are Peace and from You comes peace. Blessed are You, O Owner of Majesty and Honor.' }] },
         { id: 181, 'title': 'Prayer for Steadfastness', 'duas': [{'arabic': 'يَا مُقَلِّبَ الْقُلُوبِ ثَبِّتْ قَلْبِي عَلَى دِينِكَ', 'transliteration': 'Ya muqallibal-qulub, thabbit qalbi `ala dinik.', 'translation': 'O Turner of the hearts, make my heart firm upon Your religion.'}]},
         { id: 182, 'title': 'When wishing good for someone', 'duas': [{'arabic': 'بَارَكَ اللَّهُ فِيكَ', 'transliteration': 'Barakallahu fik.', 'translation': 'May Allah bless you.'}]},
         { id: 183, 'title': 'To seek protection from evil', 'duas': [{'arabic': 'أَعُوذُ بِكَلِمَاتِ اللَّهِ التَّامَّاتِ مِنْ شَرِّ مَا خَلَقَ', 'transliteration': 'A`udhu bikalimatil-lahit-tammati min sharri ma khalaq.', 'translation': 'I seek refuge in the perfect words of Allah from the evil of what He has created.'}]},
@@ -222,7 +222,7 @@ const hisnulMuslimData = {
         { id: 190, 'title': 'Gratitude for Allah\'s blessings', 'duas': [{'arabic': 'اللَّهُمَّ مَا أَصْبَحَ بِي مِنْ نِعْمَةٍ أَوْ بِأَحَدٍ مِنْ خَلْقِكَ فَمِنْكَ وَحْدَكَ لَا شَرِيكَ لَكَ، فَلَكَ الْحَمْدُ وَلَكَ الشُّكْرُ', 'transliteration': 'Allahumma ma asbaha bi min ni`matin aw bi-ahadin min khalqik, fa-minka wahdaka la sharika lak, fa-lakal-hamdu wa lakash-shukr.', 'translation': 'O Allah, whatever blessing has come to me or to any of Your creation this morning, it is from You alone, You have no partner. So to You be all praise and all thanks.'}]},
         { id: 191, 'title': 'Protection from hypocrisy', 'duas': [{'arabic': 'اللَّهُمَّ طَهِّرْ قَلْبِي مِنَ النِّفَاقِ، وَعَمَلِي مِنَ الرِّيَاءِ، وَلِسَانِي مِنَ الْكَذِبِ، وَعَيْنِي مِنَ الْخِيَانَةِ', 'transliteration': 'Allahumma tahhir qalbi minan-nifaq, wa `amali minar-riya, wa lisani minal-kadhib, wa `ayni minal-khiyanah.', 'translation': 'O Allah, purify my heart from hypocrisy, my deeds from showing off, my tongue from lying, and my eyes from treachery.'}]},
         { id: 192, 'title': 'Prayer for a good end', 'duas': [{'arabic': 'اللَّهُمَّ اجْعَلْ خَيْرَ عُمْرِي آخِرَهُ، وَخَيْرَ عَمَلِي خَوَاتِمَهُ، وَخَيْرَ أَيَّامِي يَوْمَ أَلْقَاكَ فِيهِ', 'transliteration': 'Allahummaj-`al khayra `umri akhirah, wa khayra `amali khawatimah, wa khayra ayyami yawma alqaka fih.', 'translation': 'O Allah, make the end of my life the best part of my life, my last deed my best deed, and my best day the day I meet You.'}]},
-        { id: 193, 'title': 'When leaving the market', 'duas': [{'arabic': 'لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ، يُحْيِي وَيُمِيتُ وَهُوَ حَيٌّ لَا يَمُوتُ، بِيَدِهِ الْخَيْرُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ', 'transliteration': 'La ilaha illallahu wahdahu la sharika lah, lahul-mulku wa lahul-hamd, yuhyi wa yumit, wa huwa hayyun la yamut, bi-yadihil-khayr, wa huwa `ala kulli shay\'in qadir.', 'translation': 'There is no deity but Allah alone, with no partner. His is the dominion and His is all praise. He gives life and causes death, and He is living and does not die. In His hand is all good, and He is over all things competent.'}]},
+        { id: 193, 'title': 'When leaving the market', 'duas': [{'arabic': 'لَا إِلَهَ إِلَّا اللَّهُ وَحْدَهُ لَا شَرِيكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ، يُحْيِي وَيُمِيتُ وَهُوَ حَيٌّ لَا يَمُوتُ، بِيَدِهِ الْخَيْرُ وَهُوَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ', 'transliteration': 'La ilaha illallahu wahdahu la sharika lah, lahul-mulku wa lahul-hamd, yuhyi wa yumit, wa huwa hayyun la yamut, bi-yadihil-khayr, wa huwa `ala kulli shay\'in qadir.', 'translation': 'There is no god but Allah alone, with no partner. His is the dominion and His is all praise. He gives life and causes death, and He is living and does not die. In His hand is all good, and He is over all things competent.'}]},
         { id: 194, 'title': 'To seek protection from the evil of creation', 'duas': [{'arabic': 'أَعُوذُ بِكَلِمَاتِ اللَّهِ التَّامَّاتِ مِنْ شَرِّ مَا خَلَقَ', 'transliteration': 'A`udhu bikalimatil-lahit-tammati min sharri ma khalaq.', 'translation': 'I seek refuge in the perfect words of Allah from the evil of what He has created.'}]},
         { id: 195, 'title': 'When one loses something', 'duas': [{'arabic': 'يَا جَامِعَ النَّاسِ لِيَوْمٍ لَا رَيْبَ فِيهِ، اجْمَعْ عَلَيَّ ضَالَّتِي', 'transliteration': 'Ya jami`an-nasi li-yawmin la rayba fih, ijma` `alayya dallati.', 'translation': 'O Gatherer of mankind for a Day about which there is no doubt, bring back to me my lost item.'}]},
         { id: 196, 'title': 'For healing the sick', 'duas': [{'arabic': 'أَسْأَلُ اللَّهَ الْعَظِيمَ رَبَّ الْعَرْشِ الْعَظِيمِ أَنْ يَشْفِيَكَ', 'transliteration': 'As`alullahal-`azim, rabbal-`arshil-`azim, an yashfiyak.', 'translation': 'I ask Allah, the Mighty, the Lord of the Mighty Throne, to cure you.'}]},
@@ -245,9 +245,134 @@ const hisnulMuslimData = {
         { id: 213, 'title': 'To seek protection from Hell', 'duas': [{'arabic': 'اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنْ عَذَابِ جَهَنَّمَ', 'transliteration': 'Allahumma inni a`udhu bika min `adhabi jahannam.', 'translation': 'O Allah, I seek refuge in You from the torment of Hell.'}]},
         { id: 214, 'title': 'To ask for Paradise', 'duas': [{'arabic': 'اللَّهُمَّ إِنِّي أَسْأَلُكَ الْجَنَّةَ وَمَا قَرَّبَ إِلَيْهَا مِنْ قَوْلٍ أَوْ عَمَلٍ', 'transliteration': 'Allahumma inni as`alukal-jannata wa ma qarraba ilayha min qawlin aw `amal.', 'translation': 'O Allah, I ask You for Paradise and for that which brings me closer to it of speech or action.'}]},
         { id: 215, 'title': 'When performing a good deed', 'duas': [{'arabic': 'اللَّهُمَّ تَقَبَّلْ مِنَّا إِنَّكَ أَنْتَ السَّمِيعُ الْعَلِيمُ', 'transliteration': 'Allahumma taqabbal minna, innaka antas-sami`ul-`alim.', 'translation': 'O Allah, accept from us. Verily, You are the All-Hearing, the All-Knowing.'}]}
+    ]
+  }
+}
 
-Relevant files:
+export default function HisnulMuslimPage() {
+    const { language } = useLanguage();
+    const c = hisnulMuslimData[language] || hisnulMuslimData.de;
+    const { toast } = useToast();
 
-And change it as follows:
-  
-Gesamtzahl muss 215 sein , die fehlenden hinzufügen
+    const [user] = useAuthState(auth);
+    const [searchTerm, setSearchTerm] = useState('');
+    const [filteredChapters, setFilteredChapters] = useState(c.chapters);
+    const [isLoading, setIsLoading] = useState(false);
+
+    useEffect(() => {
+        const results = c.chapters.filter(chapter => {
+            const searchTermLower = searchTerm.toLowerCase();
+            const titleMatch = chapter.title.toLowerCase().includes(searchTermLower);
+            const duaMatch = chapter.duas.some(dua => 
+                dua.arabic.toLowerCase().includes(searchTermLower) ||
+                dua.transliteration.toLowerCase().includes(searchTermLower) ||
+                dua.translation.toLowerCase().includes(searchTermLower)
+            );
+            return titleMatch || duaMatch;
+        });
+        setFilteredChapters(results);
+    }, [searchTerm, c.chapters]);
+
+    const handleSaveFavorite = async (textToSave: string) => {
+        if (!user) {
+            toast({
+                title: c.loginToSave,
+                variant: 'destructive',
+                description: (
+                    <Button variant="secondary" size="sm" asChild className="mt-2">
+                        <Link href="/login">Login</Link>
+                    </Button>
+                ),
+            });
+            return;
+        }
+
+        setIsLoading(true);
+        try {
+            await addFavorite(user.uid, textToSave);
+            toast({
+                title: c.toastFavoriteSaved,
+                description: (
+                     <Button variant="link" asChild className="p-0">
+                        <Link href="/favorites">View Favorites</Link>
+                    </Button>
+                )
+            });
+        } catch (error) {
+            console.error("Error saving favorite:", error);
+            toast({
+                title: c.toastErrorSaving,
+                variant: 'destructive',
+            });
+        } finally {
+            setIsLoading(false);
+        }
+    }
+
+
+  return (
+    <div className="container mx-auto px-4 py-8">
+      <Button asChild variant="ghost" className="mb-8">
+        <Link href="/">
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            {c.backToFeatures}
+        </Link>
+      </Button>
+      <header className="text-center mb-12">
+        <h1 className="text-4xl font-bold tracking-tight text-primary flex items-center justify-center gap-3">
+            <Shield className="h-10 w-10" />
+            {c.title}
+        </h1>
+        <p className="text-muted-foreground mt-2 text-lg max-w-2xl mx-auto">{c.description}</p>
+      </header>
+       <div className="max-w-3xl mx-auto mb-8">
+            <Input 
+                type="search"
+                placeholder={c.searchPlaceholder}
+                value={searchTerm}
+                onChange={e => setSearchTerm(e.target.value)}
+                className="w-full"
+            />
+        </div>
+      <div className="max-w-3xl mx-auto">
+         <Accordion type="single" collapsible className="w-full">
+              {filteredChapters.map((chapter) => (
+                <AccordionItem key={chapter.id} value={`item-${chapter.id}`}>
+                  <AccordionTrigger className="text-lg text-left hover:no-underline">
+                     <span className="text-primary font-bold mr-2">{chapter.id}.</span> {chapter.title}
+                  </AccordionTrigger>
+                  <AccordionContent className="px-2 space-y-4">
+                    {chapter.duas.map((dua, duaIndex) => (
+                         <Card key={duaIndex} className="bg-muted/50">
+                            <CardContent className="p-4 space-y-3">
+                                <p className="text-xl font-quranic text-right tracking-wide leading-relaxed">{dua.arabic}</p>
+                                <p className="text-muted-foreground italic text-sm">{dua.transliteration}</p>
+                                <p className="text-foreground/90">"{dua.translation}"</p>
+                                <div className="flex justify-end gap-2 pt-2 border-t">
+                                     <Button variant="ghost" size="sm" asChild>
+                                        <Link href={{
+                                            pathname: '/memorization',
+                                            query: { text: `${dua.arabic}\n\n${dua.translation}` }
+                                        }}>
+                                            <BrainCircuit className="mr-2 h-4 w-4" />
+                                            {c.memorize}
+                                        </Link>
+                                    </Button>
+                                    <Button variant="ghost" size="sm" onClick={() => handleSaveFavorite(`${chapter.title}\n\n${dua.arabic}\n\n${dua.translation}`)} disabled={isLoading}>
+                                       {isLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin"/> : <Star className="mr-2 h-4 w-4" />}
+                                       Favorit
+                                    </Button>
+                                </div>
+                            </CardContent>
+                        </Card>
+                    ))}
+                  </AccordionContent>
+                </AccordionItem>
+              ))}
+            </Accordion>
+      </div>
+    </div>
+  );
+}
+
+    
