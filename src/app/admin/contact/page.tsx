@@ -17,6 +17,8 @@ import { useToast } from '@/hooks/use-toast';
 import { Badge } from '@/components/ui/badge';
 import { format } from 'date-fns';
 import { de, enUS } from 'date-fns/locale';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 
 const content = {
     de: {
@@ -44,7 +46,10 @@ const content = {
         confirm: "Bestätigen",
         submissionDeleted: "Nachricht gelöscht.",
         errorDeleting: "Fehler beim Löschen der Nachricht.",
-        viewMessage: "Nachricht ansehen"
+        viewMessage: "Nachricht ansehen",
+        replyViaEmail: "Per E-Mail antworten",
+        close: "Schließen",
+        fullMessage: "Vollständige Nachricht"
     },
     en: {
         title: "Contact & Feedback",
@@ -71,7 +76,10 @@ const content = {
         confirm: "Confirm",
         submissionDeleted: "Message deleted.",
         errorDeleting: "Error deleting message.",
-        viewMessage: "View Message"
+        viewMessage: "View Message",
+        replyViaEmail: "Reply via Email",
+        close: "Close",
+        fullMessage: "Full Message"
     }
 };
 
@@ -85,6 +93,7 @@ export default function AdminContactPage() {
     const [userIsAdmin, setUserIsAdmin] = useState(false);
     const [loading, setLoading] = useState(true);
     const [submissions, setSubmissions] = useState<ContactSubmission[]>([]);
+    const [selectedSubmission, setSelectedSubmission] = useState<ContactSubmission | null>(null);
     
     useEffect(() => {
         if (loadingAuth) return;
@@ -156,73 +165,114 @@ export default function AdminContactPage() {
     }
 
     return (
-        <div className="container mx-auto px-4 py-8">
-            <header className="flex flex-col sm:flex-row justify-between sm:items-center mb-12 gap-4">
-                <div>
-                    <Button asChild variant="ghost" className="mb-4">
-                        <Link href="/admin/dashboard">
-                            <ArrowLeft className="mr-2 h-4 w-4" />
-                            {c.backToDashboard}
-                        </Link>
-                    </Button>
-                    <h1 className="text-4xl font-bold tracking-tight text-primary flex items-center gap-3">
-                       <MessageSquare className="h-10 w-10" />
-                       {c.title}
-                    </h1>
-                    <p className="text-muted-foreground mt-2 text-lg max-w-2xl">{c.description}</p>
-                </div>
-            </header>
+        <Dialog open={!!selectedSubmission} onOpenChange={(isOpen) => !isOpen && setSelectedSubmission(null)}>
+            <div className="container mx-auto px-4 py-8">
+                <header className="flex flex-col sm:flex-row justify-between sm:items-center mb-12 gap-4">
+                    <div>
+                        <Button asChild variant="ghost" className="mb-4">
+                            <Link href="/admin/dashboard">
+                                <ArrowLeft className="mr-2 h-4 w-4" />
+                                {c.backToDashboard}
+                            </Link>
+                        </Button>
+                        <h1 className="text-4xl font-bold tracking-tight text-primary flex items-center gap-3">
+                        <MessageSquare className="h-10 w-10" />
+                        {c.title}
+                        </h1>
+                        <p className="text-muted-foreground mt-2 text-lg max-w-2xl">{c.description}</p>
+                    </div>
+                </header>
 
-            <Card>
-                <CardContent className="p-0">
-                    <Table>
-                        <TableHeader>
-                            <TableRow>
-                                <TableHead className="w-[150px]">{c.date}</TableHead>
-                                <TableHead className="w-[200px]">{c.from}</TableHead>
-                                <TableHead>{c.subject}</TableHead>
-                                <TableHead className="w-[100px]">{c.status}</TableHead>
-                                <TableHead className="text-right w-[150px]">{c.actions}</TableHead>
-                            </TableRow>
-                        </TableHeader>
-                         <TableBody>
-                            {submissions.length > 0 ? (
-                                submissions.map(sub => (
-                                    <TableRow key={sub.id} className={!sub.isRead ? 'bg-accent/50' : ''}>
-                                        <TableCell>
-                                            {format(sub.createdAt.toDate(), 'PP', { locale: language === 'de' ? de : enUS })}
-                                        </TableCell>
-                                        <TableCell className="font-medium">{sub.name}<br/><span className="text-xs text-muted-foreground">{sub.email}</span></TableCell>
-                                        <TableCell>{sub.subject}</TableCell>
-                                        <TableCell>
-                                            <Badge variant={sub.isRead ? 'secondary' : 'default'}>
-                                                {sub.isRead ? c.read : c.unread}
-                                            </Badge>
-                                        </TableCell>
-                                        <TableCell className="text-right">
-                                             <Button variant="ghost" size="icon" title={c.viewMessage}>
-                                                <Mail className="h-4 w-4" />
-                                            </Button>
-                                            <Button variant="ghost" size="icon" onClick={() => handleToggleRead(sub)} title={sub.isRead ? c.markAsUnread : c.markAsRead}>
-                                                {sub.isRead ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                                            </Button>
-                                            <Button variant="ghost" size="icon" title={c.delete}>
-                                                <Trash2 className="h-4 w-4 text-destructive" />
-                                            </Button>
+                <Card>
+                    <CardContent className="p-0">
+                        <Table>
+                            <TableHeader>
+                                <TableRow>
+                                    <TableHead className="w-[150px]">{c.date}</TableHead>
+                                    <TableHead className="w-[200px]">{c.from}</TableHead>
+                                    <TableHead>{c.subject}</TableHead>
+                                    <TableHead className="w-[100px]">{c.status}</TableHead>
+                                    <TableHead className="text-right w-[150px]">{c.actions}</TableHead>
+                                </TableRow>
+                            </TableHeader>
+                            <TableBody>
+                                {submissions.length > 0 ? (
+                                    submissions.map(sub => (
+                                        <TableRow key={sub.id} className={!sub.isRead ? 'bg-accent/50' : ''}>
+                                            <TableCell>
+                                                {format(sub.createdAt.toDate(), 'PP', { locale: language === 'de' ? de : enUS })}
+                                            </TableCell>
+                                            <TableCell className="font-medium">{sub.name}<br/><span className="text-xs text-muted-foreground">{sub.email}</span></TableCell>
+                                            <TableCell>{sub.subject}</TableCell>
+                                            <TableCell>
+                                                <Badge variant={sub.isRead ? 'secondary' : 'default'}>
+                                                    {sub.isRead ? c.read : c.unread}
+                                                </Badge>
+                                            </TableCell>
+                                            <TableCell className="text-right space-x-1">
+                                                <Button variant="ghost" size="icon" title={c.viewMessage} onClick={() => setSelectedSubmission(sub)}>
+                                                    <Mail className="h-4 w-4" />
+                                                </Button>
+                                                <Button variant="ghost" size="icon" onClick={() => handleToggleRead(sub)} title={sub.isRead ? c.markAsUnread : c.markAsRead}>
+                                                    {sub.isRead ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                                                </Button>
+                                                <AlertDialog>
+                                                    <AlertDialogTrigger asChild>
+                                                        <Button variant="ghost" size="icon" title={c.delete}>
+                                                            <Trash2 className="h-4 w-4 text-destructive" />
+                                                        </Button>
+                                                    </AlertDialogTrigger>
+                                                    <AlertDialogContent>
+                                                        <AlertDialogHeader>
+                                                        <AlertDialogTitle>{c.confirmDeleteTitle}</AlertDialogTitle>
+                                                        <AlertDialogDescription>{c.confirmDeleteDesc}</AlertDialogDescription>
+                                                        </AlertDialogHeader>
+                                                        <AlertDialogFooter>
+                                                        <AlertDialogCancel>{c.cancel}</AlertDialogCancel>
+                                                        <AlertDialogAction onClick={() => handleDelete(sub.id!)}>{c.confirm}</AlertDialogAction>
+                                                        </AlertDialogFooter>
+                                                    </AlertDialogContent>
+                                                </AlertDialog>
+                                            </TableCell>
+                                        </TableRow>
+                                    ))
+                                ) : (
+                                    <TableRow>
+                                        <TableCell colSpan={5} className="h-24 text-center">
+                                            {c.noSubmissions}
                                         </TableCell>
                                     </TableRow>
-                                ))
-                            ) : (
-                                <TableRow>
-                                    <TableCell colSpan={5} className="h-24 text-center">
-                                        {c.noSubmissions}
-                                    </TableCell>
-                                </TableRow>
-                            )}
-                        </TableBody>
-                    </Table>
-                </CardContent>
-            </Card>
-        </div>
+                                )}
+                            </TableBody>
+                        </Table>
+                    </CardContent>
+                </Card>
+            </div>
+            
+            <DialogContent className="sm:max-w-xl">
+                 {selectedSubmission && (
+                    <>
+                        <DialogHeader>
+                            <DialogTitle>{selectedSubmission.subject}</DialogTitle>
+                            <DialogDescription>
+                                Von: {selectedSubmission.name} &lt;{selectedSubmission.email}&gt; am {format(selectedSubmission.createdAt.toDate(), 'PPP p', { locale: language === 'de' ? de : enUS })}
+                            </DialogDescription>
+                        </DialogHeader>
+                        <div className="py-4 whitespace-pre-wrap bg-muted p-4 rounded-md">
+                            {selectedSubmission.message}
+                        </div>
+                        <div className="flex justify-end gap-2">
+                             <Button variant="outline" onClick={() => setSelectedSubmission(null)}>{c.close}</Button>
+                             <Button asChild>
+                                <a href={`mailto:${selectedSubmission.email}?subject=Re: ${selectedSubmission.subject}`}>
+                                    <Mail className="mr-2 h-4 w-4" />
+                                    {c.replyViaEmail}
+                                </a>
+                             </Button>
+                        </div>
+                    </>
+                 )}
+            </DialogContent>
+        </Dialog>
     );
 }
