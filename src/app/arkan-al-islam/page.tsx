@@ -1,9 +1,9 @@
 
 "use client"
 
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { useLanguage } from '@/components/language-provider';
-import { Hand, Landmark, Star, Moon, Plane, ArrowLeft } from 'lucide-react';
+import { Hand, Landmark, Star, Moon, Plane, ArrowLeft, BrainCircuit } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 
@@ -12,30 +12,36 @@ const content = {
         title: "Die 5 Säulen des Islam",
         description: "Die fünf Säulen des Islam sind die grundlegenden gottesdienstlichen Handlungen, die für jeden Muslim verpflichtend sind.",
         backToFeatures: "Zurück zu den Funktionen",
+        memorize: "Lernen",
         pillars: [
             {
                 icon: Hand,
                 title: "Schahada (Glaubensbekenntnis)",
+                arabic: "الشهادة",
                 content: "Das Bekenntnis, dass es keine Gottheit außer Allah gibt und dass Muhammad Sein Gesandter ist. Es ist der Schlüssel zum Islam und muss mit Aufrichtigkeit und Überzeugung ausgesprochen werden."
             },
             {
                 icon: Landmark,
                 title: "Salah (Gebet)",
+                arabic: "الصلاة",
                 content: "Die fünf täglichen Pflichtgebete, die zu bestimmten Zeiten verrichtet werden. Sie sind die direkte Verbindung zwischen dem Diener und seinem Herrn und ein Mittel zur spirituellen Reinigung und Besinnung."
             },
             {
                 icon: Star,
                 title: "Zakat (Pflichtabgabe)",
+                arabic: "الزكاة",
                 content: "Die jährliche Abgabe von 2,5% des eigenen Vermögens, das einen bestimmten Schwellenwert (Nisab) überschreitet. Sie dient der Reinigung des Besitzes und der Unterstützung der Armen und Bedürftigen."
             },
             {
                 icon: Moon,
                 title: "Sawm (Fasten im Ramadan)",
+                arabic: "الصوم",
                 content: "Das Fasten von der Morgendämmerung bis zum Sonnenuntergang während des gesamten Monats Ramadan. Es ist eine Zeit der Geduld, der Selbstbeherrschung, der Empathie und der verstärkten Anbetung."
             },
             {
                 icon: Plane,
                 title: "Haddsch (Pilgerfahrt)",
+                arabic: "الحج",
                 content: "Die Pilgerfahrt nach Mekka, die jeder Muslim, der körperlich und finanziell dazu in der Lage ist, mindestens einmal im Leben unternehmen sollte. Sie ist ein Symbol der Einheit und Gleichheit aller Muslime."
             }
         ]
@@ -44,30 +50,36 @@ const content = {
         title: "The 5 Pillars of Islam",
         description: "The five pillars of Islam are the fundamental acts of worship that are obligatory for every Muslim.",
         backToFeatures: "Back to Features",
+        memorize: "Memorize",
         pillars: [
             {
                 icon: Hand,
                 title: "Shahada (Testimony of Faith)",
+                arabic: "Ash-Shahada",
                 content: "The declaration that there is no deity but Allah and that Muhammad is His Messenger. It is the key to Islam and must be uttered with sincerity and conviction."
             },
             {
                 icon: Landmark,
                 title: "Salah (Prayer)",
+                arabic: "As-Salah",
                 content: "The five daily obligatory prayers performed at specific times. They are the direct connection between the servant and their Lord and a means of spiritual purification and reflection."
             },
             {
                 icon: Star,
                 title: "Zakat (Obligatory Charity)",
+                arabic: "Az-Zakat",
                 content: "The annual levy of 2.5% on one's wealth that exceeds a certain threshold (Nisab). It serves to purify one's possessions and to support the poor and needy."
             },
             {
                 icon: Moon,
                 title: "Sawm (Fasting in Ramadan)",
+                arabic: "As-Sawm",
                 content: "Fasting from dawn to sunset throughout the entire month of Ramadan. It is a time of patience, self-control, empathy, and increased worship."
             },
             {
                 icon: Plane,
                 title: "Hajj (Pilgrimage)",
+                arabic: "Al-Hajj",
                 content: "The pilgrimage to Mecca, which every Muslim who is physically and financially able should undertake at least once in their lifetime. It is a symbol of the unity and equality of all Muslims."
             }
         ]
@@ -99,10 +111,19 @@ export default function ArkanAlIslamPage() {
                                 <pillar.icon className="h-8 w-8 text-primary" />
                             </div>
                             <CardTitle className="mt-4">{pillar.title}</CardTitle>
+                             <CardDescription className="font-quranic text-lg">{pillar.arabic}</CardDescription>
                         </CardHeader>
                         <CardContent className="flex-grow">
                              <p className="text-muted-foreground">{pillar.content}</p>
                         </CardContent>
+                        <CardFooter>
+                            <Button variant="ghost" size="sm" asChild className="w-full">
+                                <Link href={{ pathname: '/memorization', query: { text: `${pillar.title}\n${pillar.arabic}` } }}>
+                                    <BrainCircuit className="mr-2 h-4 w-4" />
+                                    {c.memorize}
+                                </Link>
+                            </Button>
+                        </CardFooter>
                     </Card>
                 ))}
             </div>
