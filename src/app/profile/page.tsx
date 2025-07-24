@@ -3,25 +3,27 @@
 
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '@/lib/firebase';
-import { Loader2, UserCircle, KeyRound, Save, Mail } from 'lucide-react';
+import { Loader2, UserCircle, KeyRound, Save, Mail, Palette } from 'lucide-react';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Separator } from '@/components/ui/separator';
 import { useLanguage } from '@/components/language-provider';
 import { useState, useEffect } from 'react';
 import { updateProfile, updatePassword, reauthenticateWithCredential, EmailAuthProvider } from "firebase/auth";
 import { useToast } from '@/hooks/use-toast';
 import { useRouter } from 'next/navigation';
+import { useTheme } from '@/components/theme-provider';
+import { cn } from '@/lib/utils';
 
 const content = {
     de: {
         title: "Dein Profil",
-        description: "Verwalte hier deine Kontoinformationen.",
+        description: "Verwalte hier deine Kontoinformationen und personalisiere dein Erlebnis.",
         loading: "Profil wird geladen...",
         updateProfile: "Profil aktualisieren",
         name: "Name",
+        email: "E-Mail",
         update: "Aktualisieren",
         profileUpdated: "Profil aktualisiert",
         profileUpdateSuccess: "Dein Name wurde erfolgreich geändert.",
@@ -37,13 +39,23 @@ const content = {
         reAuthRequired: "Bitte gib dein aktuelles Passwort ein, um diese Aktion zu bestätigen.",
         loginRequired: "Du musst angemeldet sein, um dein Profil zu sehen.",
         login: "Anmelden",
+        themeSettings: "Theme-Einstellungen",
+        themeDescription: "Wähle dein bevorzugtes Farbschema für die App.",
+        themes: {
+            light: "Hell",
+            dark: "Dunkel",
+            rose: "Rose",
+            blue: "Blau",
+            black: "Schwarz",
+        }
     },
     en: {
         title: "Your Profile",
-        description: "Manage your account information here.",
+        description: "Manage your account information and personalize your experience here.",
         loading: "Loading profile...",
         updateProfile: "Update Profile",
         name: "Name",
+        email: "Email",
         update: "Update",
         profileUpdated: "Profile Updated",
         profileUpdateSuccess: "Your name has been successfully updated.",
@@ -59,6 +71,15 @@ const content = {
         reAuthRequired: "Please enter your current password to confirm this action.",
         loginRequired: "You need to be logged in to view your profile.",
         login: "Login",
+        themeSettings: "Theme Settings",
+        themeDescription: "Choose your preferred color scheme for the app.",
+         themes: {
+            light: "Light",
+            dark: "Dark",
+            rose: "Rose",
+            blue: "Blue",
+            black: "Black",
+        }
     }
 }
 
@@ -68,6 +89,7 @@ export default function ProfilePage() {
     const c = content[language];
     const { toast } = useToast();
     const router = useRouter();
+    const { theme, setTheme } = useTheme();
 
     const [user, loadingAuth] = useAuthState(auth);
     const [name, setName] = useState('');
@@ -154,7 +176,7 @@ export default function ProfilePage() {
                     <CardContent>
                         <form onSubmit={handleNameUpdate} className="space-y-4">
                              <div className="space-y-2">
-                                <Label htmlFor="email">{c.name}</Label>
+                                <Label htmlFor="email">{c.email}</Label>
                                 <Input id="email" type="text" value={user.email ?? ''} disabled />
                             </div>
                             <div className="space-y-2">
@@ -194,6 +216,31 @@ export default function ProfilePage() {
                                {c.update}
                             </Button>
                         </form>
+                    </CardContent>
+                </Card>
+                
+                <Card>
+                    <CardHeader>
+                        <CardTitle className="flex items-center gap-2"><Palette /> {c.themeSettings}</CardTitle>
+                        <CardDescription>{c.themeDescription}</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                        <div className="flex flex-wrap gap-4">
+                            {(['light', 'dark', 'rose', 'blue', 'black'] as const).map((themeKey) => (
+                                <Button
+                                    key={themeKey}
+                                    variant={theme === themeKey ? 'default' : 'outline'}
+                                    onClick={() => setTheme(themeKey)}
+                                    className={cn("capitalize", 
+                                        themeKey === 'rose' && 'bg-rose-900 text-white hover:bg-rose-800',
+                                        themeKey === 'blue' && 'bg-blue-900 text-white hover:bg-blue-800',
+                                        themeKey === 'black' && 'bg-black text-white hover:bg-gray-800',
+                                    )}
+                                >
+                                    {c.themes[themeKey]}
+                                </Button>
+                            ))}
+                        </div>
                     </CardContent>
                 </Card>
 
