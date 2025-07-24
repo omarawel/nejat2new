@@ -8,19 +8,22 @@ import { useLanguage } from '@/components/language-provider';
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
+import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 
 const content = {
     de: {
         pageTitle: "Digitaler Tasbih-Zähler",
         pageDescription: "Zähle dein Dhikr und deine Lobpreisungen mit diesem einfachen Werkzeug.",
         backToFeatures: "Zurück zu den Funktionen",
-        reset: "Zurücksetzen"
+        reset: "Zurücksetzen",
+        target: "Ziel"
     },
     en: {
         pageTitle: "Digital Tasbih Counter",
         pageDescription: "Count your dhikr and praises with this simple tool.",
         backToFeatures: "Back to Features",
-        reset: "Reset"
+        reset: "Reset",
+        target: "Target"
     }
 }
 
@@ -29,18 +32,17 @@ export default function TasbihCounterPage() {
   const { language } = useLanguage();
   const c = content[language] || content.de;
   const [count, setCount] = useState(0);
+  const [target, setTarget] = useState(33);
   const [animate, setAnimate] = useState(false);
 
   const handleCount = () => {
-    if (count === 100) {
-        setCount(0);
-        return;
-    }
     const newCount = count + 1;
-    setCount(newCount);
-    if (newCount === 33 || newCount === 99 || newCount === 100) {
+    if (newCount >= target) {
+        setCount(0);
         setAnimate(true);
-        setTimeout(() => setAnimate(false), 300); // Animation duration
+        setTimeout(() => setAnimate(false), 300);
+    } else {
+        setCount(newCount);
     }
   }
 
@@ -48,7 +50,7 @@ export default function TasbihCounterPage() {
       setCount(0);
   }
 
-  const isMilestone = count === 33 || count === 99 || count === 100;
+  const isMilestone = count + 1 === target;
 
   return (
     <div className="container mx-auto px-4 py-8 flex-grow flex flex-col items-center justify-center">
@@ -64,6 +66,15 @@ export default function TasbihCounterPage() {
                     <CardTitle className="text-3xl">{c.pageTitle}</CardTitle>
                     <CardDescription className="text-lg">{c.pageDescription}</CardDescription>
                 </CardHeader>
+
+                <div className="mb-8">
+                     <ToggleGroup type="single" defaultValue="33" value={target.toString()} onValueChange={(value) => { if(value) setTarget(Number(value))}}>
+                        <ToggleGroupItem value="33" aria-label="Set target to 33">33</ToggleGroupItem>
+                        <ToggleGroupItem value="99" aria-label="Set target to 99">99</ToggleGroupItem>
+                        <ToggleGroupItem value="100" aria-label="Set target to 100">100</ToggleGroupItem>
+                    </ToggleGroup>
+                </div>
+
                 <div className="w-64 h-64 my-8">
                      <button
                         onClick={handleCount}
@@ -72,7 +83,7 @@ export default function TasbihCounterPage() {
                             "bg-muted text-foreground shadow-inner",
                             "hover:bg-accent",
                             "active:bg-primary/20",
-                             isMilestone && animate && "bg-primary text-primary-foreground"
+                             animate && "bg-primary text-primary-foreground"
                         )}
                         style={{
                             boxShadow: 'inset 0 6px 12px rgba(0,0,0,0.1)'
