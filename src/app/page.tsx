@@ -54,8 +54,7 @@ export default function Home() {
   return (
     <div className="flex flex-col items-center justify-center text-center flex-grow py-12 px-4 sm:px-6 lg:px-8">
       <main className="max-w-4xl mx-auto">
-        <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-foreground">
-          {c.title.replace("islamischen Alltag", `<span class="text-primary">islamischen Alltag</span>`)}
+        <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-foreground" dangerouslySetInnerHTML={{ __html: c.title.replace("islamischen Alltag", `<span class="text-primary">islamischen Alltag</span>`) }}>
         </h1>
         <p className="mt-6 text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto">
           {c.description}
