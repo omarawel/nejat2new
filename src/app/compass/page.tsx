@@ -54,6 +54,10 @@ const content = {
 const KAABA_LAT = 21.4225;
 const KAABA_LNG = 39.8262;
 
+function toRadians(degrees: number) {
+    return degrees * Math.PI / 180;
+}
+
 export default function CompassPage() {
     const { language } = useLanguage();
     const c = content[language];
@@ -67,13 +71,20 @@ export default function CompassPage() {
     const [hasCameraPermission, setHasCameraPermission] = useState(true);
 
     const calculateQiblaDirection = useCallback((lat: number, lng: number) => {
-        const phiK = KAABA_LAT * Math.PI / 180.0;
-        const lambdaK = KAABA_LNG * Math.PI / 180.0;
-        const phi = lat * Math.PI / 180.0;
-        const lambda = lng * Math.PI / 180.0;
-        const psi = 180.0 / Math.PI * Math.atan2(Math.sin(lambdaK - lambda),
-            Math.cos(phi) * Math.tan(phiK) - Math.sin(phi) * Math.cos(lambdaK - lambda));
-        setQiblaDirection(psi);
+        const userLatRad = toRadians(lat);
+        const userLngRad = toRadians(lng);
+        const kaabaLatRad = toRadians(KAABA_LAT);
+        const kaabaLngRad = toRadians(KAABA_LNG);
+
+        const deltaLng = kaabaLngRad - userLngRad;
+        
+        const y = Math.sin(deltaLng) * Math.cos(kaabaLatRad);
+        const x = Math.cos(userLatRad) * Math.sin(kaabaLatRad) - Math.sin(userLatRad) * Math.cos(kaabaLatRad) * Math.cos(deltaLng);
+        
+        let bearing = Math.atan2(y, x) * (180 / Math.PI);
+        bearing = (bearing + 360) % 360; // Normalize to 0-360
+
+        setQiblaDirection(bearing);
         setStatus(c.ready);
     }, [c.ready]);
 
