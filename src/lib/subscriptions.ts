@@ -49,7 +49,7 @@ export const getSubscriptionPlans = (callback: (plans: SubscriptionPlan[]) => vo
         price: '9,99€/Monat',
         features: ['75 KI-Anfragen pro Monat', 'Alle Pro-Vorteile', 'Früher Zugriff auf neue Features'],
         priceId: 'price_1RltR4GXWEMb96gVOcjACqRR', 
-        stripeLink: '', // To be filled later
+        stripeLink: 'https://buy.stripe.com/28E14n0Lx4Hdf9y2K7abK04',
         aiRequestLimit: 75,
         active: true,
         createdAt: Timestamp.now(),
