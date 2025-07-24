@@ -10,7 +10,7 @@ import Link from 'next/link';
 const content = {
     de: {
         pageTitle: "Ecke für Konvertiten",
-        pageDescription: "Herzlich willkommen in der Ummah! Hier findest du Ressourcen und Anleitungen, die dir den Einstieg in den Islam erleichtern.",
+        description: "Herzlich willkommen in der Ummah! Hier findest du Ressourcen und Anleitungen, die dir den Einstieg in den Islam erleichtern.",
         backToFeatures: "Zurück zu den Funktionen",
         cards: [
             {
@@ -123,7 +123,7 @@ export default function RevertsCornerPage() {
         </Button>
         <header className="text-center mb-12">
             <h1 className="text-4xl font-bold tracking-tight text-primary flex items-center justify-center gap-3">
-                <Handshake className="h-10 w-10" />
+                
                 {c.pageTitle}
             </h1>
             <p className="text-muted-foreground mt-2 text-lg max-w-2xl mx-auto">{c.pageDescription}</p>
@@ -135,9 +135,7 @@ export default function RevertsCornerPage() {
                 return (
                     <Card key={index} className="flex flex-col text-center">
                         <CardHeader>
-                             <div className="mx-auto bg-primary/10 rounded-full h-16 w-16 flex items-center justify-center">
-                                <Icon className="h-8 w-8 text-primary" />
-                            </div>
+                             
                             <CardTitle className="mt-4">{card.title}</CardTitle>
                         </CardHeader>
                         <CardContent className="flex-grow">
@@ -155,5 +153,3 @@ export default function RevertsCornerPage() {
     </div>
   );
 }
-
-    

@@ -108,7 +108,7 @@ export default function ZakatCalculatorPage() {
             </Button>
             <header className="text-center mb-12">
                  <h1 className="text-4xl font-bold tracking-tight text-primary flex items-center justify-center gap-3">
-                    <Calculator className="h-10 w-10" />
+                    
                     {c.pageTitle}
                 </h1>
                 <p className="text-muted-foreground mt-2 text-lg">{c.pageDescription}</p>

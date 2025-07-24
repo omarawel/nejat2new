@@ -1,3 +1,4 @@
+
 "use client"
 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
@@ -54,7 +55,7 @@ export default function DonationsPage() {
       </Button>
       <header className="text-center mb-12">
         <h1 className="text-4xl font-bold tracking-tight text-primary flex items-center justify-center gap-3">
-            <HandCoins className="h-10 w-10" />
+            
             {c.pageTitle}
         </h1>
         <p className="text-muted-foreground mt-2 text-lg max-w-2xl mx-auto">{c.pageDescription}</p>

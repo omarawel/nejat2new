@@ -46,11 +46,7 @@ export default function VerseFinderPage() {
             </Button>
             <Card>
                 <CardHeader className="text-center">
-                    <div className="flex justify-center mb-4">
-                        <div className="p-4 bg-primary/10 rounded-full">
-                            <Search className="h-12 w-12 text-primary" />
-                        </div>
-                    </div>
+                    
                     <CardTitle className="text-3xl">{c.pageTitle}</CardTitle>
                     <CardDescription className="text-lg">{c.pageDescription}</CardDescription>
                 </CardHeader>

@@ -116,11 +116,7 @@ export default function HadithOfTheDayPage() {
                 </header>
                 <Card className="w-full text-center shadow-xl">
                     <CardHeader>
-                        <div className="flex justify-center mb-4">
-                            <div className="p-4 bg-primary/10 rounded-full">
-                                <BookOpen className="h-10 w-10 text-primary" />
-                            </div>
-                        </div>
+                        
                         <CardTitle className="text-3xl font-bold">{c.title}</CardTitle>
                         <CardDescription className="text-lg">{c.description}</CardDescription>
                     </CardHeader>
@@ -130,7 +126,7 @@ export default function HadithOfTheDayPage() {
                         ) : hadith ? (
                             <div className="space-y-6">
                                 <p className="text-3xl font-quranic text-right tracking-wide leading-relaxed">{hadith.hadith_arabic}</p>
-                                <p className="text-lg leading-relaxed text-foreground/90">"{hadith.hadith_english}"</p>
+                                <p className="text-lg leading-relaxed text-foreground/90">"{language === 'de' ? hadith.hadith_english : hadith.hadith_english}"</p>
                                 <p className="text-sm text-muted-foreground">{c.narrated} {hadith.narrator} [{hadith.book}, {hadith.chapter}]</p>
                             </div>
                         ) : null}

@@ -98,11 +98,7 @@ export default function SubscribePage() {
                 </Link>
             </Button>
             <header className="text-center mb-12">
-                 <div className="flex justify-center mb-4">
-                    <div className="p-4 bg-primary/10 rounded-full">
-                        <Heart className="h-12 w-12 text-primary" />
-                    </div>
-                </div>
+                 
                 <h1 className="text-4xl font-bold tracking-tight">{c.pageTitle}</h1>
                 <p className="text-muted-foreground mt-2 text-lg max-w-2xl mx-auto">{c.pageDescription}</p>
             </header>

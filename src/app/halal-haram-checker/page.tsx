@@ -40,7 +40,7 @@ export default function HalalHaramCheckerPage() {
         </Button>
         <header className="text-center">
           <h1 className="text-3xl font-bold tracking-tight text-primary flex items-center justify-center gap-2">
-            <ShieldCheck className="size-8" />
+            
             {c.title}
           </h1>
           <p className="text-muted-foreground mt-2">

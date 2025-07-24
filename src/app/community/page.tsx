@@ -62,9 +62,7 @@ export default function CommunityPage() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <Card className="text-center">
             <CardHeader>
-              <div className="mx-auto bg-primary/10 rounded-full h-16 w-16 flex items-center justify-center">
-                  <Calendar className="h-8 w-8 text-primary" />
-              </div>
+              
               <CardTitle className="mt-4">{c.upcomingEvents}</CardTitle>
             </CardHeader>
             <CardContent>
@@ -75,9 +73,7 @@ export default function CommunityPage() {
 
           <Card className="text-center">
             <CardHeader>
-                <div className="mx-auto bg-primary/10 rounded-full h-16 w-16 flex items-center justify-center">
-                    <Users className="h-8 w-8 text-primary" />
-                </div>
+                
               <CardTitle className="mt-4">{c.studyGroups}</CardTitle>
             </CardHeader>
             <CardContent>
@@ -88,9 +84,7 @@ export default function CommunityPage() {
 
           <Card className="text-center">
             <CardHeader>
-                <div className="mx-auto bg-primary/10 rounded-full h-16 w-16 flex items-center justify-center">
-                    <MessageSquare className="h-8 w-8 text-primary" />
-                </div>
+                
               <CardTitle className="mt-4">{c.discussionForums}</CardTitle>
             </CardHeader>
             <CardContent>

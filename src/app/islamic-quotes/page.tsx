@@ -82,11 +82,7 @@ export default function IslamicQuotesPage() {
                 </header>
                 <Card className="w-full text-center shadow-xl">
                     <CardHeader>
-                        <div className="flex justify-center mb-4">
-                            <div className="p-4 bg-primary/10 rounded-full">
-                                <MessageSquareQuote className="h-10 w-10 text-primary" />
-                            </div>
-                        </div>
+                        
                         <CardTitle className="text-3xl font-bold">{c.title}</CardTitle>
                         <CardDescription className="text-lg">{c.description}</CardDescription>
                     </CardHeader>

@@ -176,7 +176,7 @@ export default function AdminContactPage() {
                             </Link>
                         </Button>
                         <h1 className="text-4xl font-bold tracking-tight text-primary flex items-center gap-3">
-                        <MessageSquare className="h-10 w-10" />
+                        
                         {c.title}
                         </h1>
                         <p className="text-muted-foreground mt-2 text-lg max-w-2xl">{c.description}</p>
