@@ -58,7 +58,7 @@ const features = [
     { key: 'basic_tools', de: 'Grundlegende Tools (Tasbih, Tracker)', en: 'Basic Tools (Tasbih, Trackers)' },
     { key: 'ai_requests', de: 'KI-Anfragen / Monat', en: 'AI Requests / Month' },
     { key: 'support_dev', de: 'Entwicklung unterstützen', en: 'Support Development' },
-    { key: 'memorization_tool', de: 'Auswendiglernen-Tool', en: 'Memorization Tool' },
+    { key: 'memorization_tool', de: 'auswendiglernen begrenzt', en: 'Memorization Tool' },
     { key: 'ad_free', de: 'Werbefreie Erfahrung', en: 'Ad-free Experience' },
     { key: 'quran_offline', de: 'Koran Offline-Zugriff', en: 'Quran Offline Access' },
     { key: 'early_access', de: 'Früher Zugriff auf neue Features', en: 'Early Access to new Features' },
