@@ -15,9 +15,9 @@ export const metadata: Metadata = {
 const themeScript = `
   (function() {
     try {
-      const theme = localStorage.getItem('nejat-digital-theme') || 'dark';
+      const theme = localStorage.getItem('nejat-digital-theme') || 'teal';
       const root = document.documentElement;
-      root.classList.remove('light', 'dark', 'rose', 'blue', 'black');
+      root.classList.remove('light', 'dark', 'rose', 'blue', 'black', 'teal');
       root.classList.add(theme);
     } catch (e) {
       console.error("Failed to set theme from localStorage", e);

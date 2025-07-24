@@ -1,8 +1,9 @@
+
 "use client"
 
 import React, { createContext, useContext, useEffect, useState } from "react"
 
-type Theme = "dark" | "light" | "rose" | "blue" | "black";
+type Theme = "dark" | "light" | "rose" | "blue" | "black" | "teal";
 
 type ThemeProviderProps = {
   children: React.ReactNode
@@ -16,7 +17,7 @@ type ThemeProviderState = {
 }
 
 const initialState: ThemeProviderState = {
-  theme: "dark",
+  theme: "teal",
   setTheme: () => null,
 }
 
@@ -24,7 +25,7 @@ const ThemeProviderContext = createContext<ThemeProviderState>(initialState)
 
 export function ThemeProvider({
   children,
-  defaultTheme = "dark",
+  defaultTheme = "teal",
   storageKey = "nejat-digital-theme",
   ...props
 }: ThemeProviderProps) {
@@ -37,7 +38,7 @@ export function ThemeProvider({
 
   useEffect(() => {
     const root = window.document.documentElement;
-    root.classList.remove("light", "dark", "rose", "blue", "black");
+    root.classList.remove("light", "dark", "rose", "blue", "black", "teal");
     root.classList.add(theme);
     localStorage.setItem(storageKey, theme);
   }, [theme, storageKey]);

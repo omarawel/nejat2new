@@ -77,6 +77,27 @@ body {
     --sidebar-border: 16 31% 28%;
     --sidebar-ring: 16 84% 48%;
   }
+  .teal {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 8%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 172 65% 50%;
+    --primary-foreground: 222.2 84% 4.9%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 22.5%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 172 65% 50%;
+  }
   .rose {
     --background: 350 60% 15%;
     --foreground: 350 10% 98%;
@@ -152,7 +173,7 @@ body {
 }
 
 @layer components {
-    .dark .card-animated, .rose .card-animated, .blue .card-animated, .black .card-animated {
+    .dark .card-animated, .rose .card-animated, .blue .card-animated, .black .card-animated, .teal .card-animated {
         background-color: hsla(var(--card), 0.85);
         backdrop-filter: blur(4px);
         animation: fadeIn 0.5s ease-in-out;
