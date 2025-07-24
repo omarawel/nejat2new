@@ -115,7 +115,7 @@ export default function HadithOfTheDayPage() {
                                 <BookOpen className="h-10 w-10 text-primary" />
                             </div>
                         </div>
-                        <CardTitle className="text-3xl font-bold">{c.title}</CardTitle>
+                        <h1 className="text-3xl font-bold">{c.title}</h1>
                         <CardDescription className="text-lg">{c.description}</CardDescription>
                     </CardHeader>
                     <CardContent className="min-h-[250px] flex items-center justify-center">
