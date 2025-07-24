@@ -17,7 +17,6 @@ import { format } from 'date-fns';
 import { getHijriDate } from '@/ai/flows/get-hijri-date';
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
 
-
 const content = {
     de: {
         pageTitle: "Hijri-Datum-Konverter",
@@ -53,25 +52,30 @@ export default function HijriConverterPage() {
     const c = content[language];
     const { toast } = useToast();
 
-    const [date, setDate] = useState<Date | undefined>(new Date());
+    const [gregorianDate, setGregorianDate] = useState<Date | undefined>(new Date());
     const [hijriResult, setHijriResult] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     
     const handleConvert = async () => {
-        if (!date) return;
+        if (!gregorianDate) return;
         
         setIsLoading(true);
         setError(null);
         setHijriResult(null);
 
         try {
-            const formattedDate = format(date, 'yyyy-MM-dd');
-            const result = await getHijriDate({ date: formattedDate, language: language as 'de' | 'en' });
+            const dateString = format(gregorianDate, 'yyyy-MM-dd');
+            const result = await getHijriDate({ date: dateString, language });
             setHijriResult(result.hijriDate);
         } catch(e) {
             console.error(e);
             setError(c.errorDescription);
+            toast({
+                variant: 'destructive',
+                title: c.errorTitle,
+                description: c.errorDescription
+            })
         } finally {
             setIsLoading(false);
         }
@@ -101,20 +105,20 @@ export default function HijriConverterPage() {
                                     className={"w-full justify-start text-left font-normal mt-1"}
                                 >
                                     <CalendarIcon className="mr-2 h-4 w-4" />
-                                    {date ? format(date, "PPP") : <span>{c.pickDate}</span>}
+                                    {gregorianDate ? format(gregorianDate, "PPP") : <span>{c.pickDate}</span>}
                                 </Button>
                                 </PopoverTrigger>
                                 <PopoverContent className="w-auto p-0">
                                 <CalendarComponent
                                     mode="single"
-                                    selected={date}
-                                    onSelect={setDate}
+                                    selected={gregorianDate}
+                                    onSelect={setGregorianDate}
                                     initialFocus
                                 />
                                 </PopoverContent>
                             </Popover>
                         </div>
-                        <Button className="w-full" onClick={handleConvert} disabled={isLoading || !date}>
+                        <Button className="w-full" onClick={handleConvert} disabled={!gregorianDate || isLoading}>
                             {isLoading ? (
                                 <>
                                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
