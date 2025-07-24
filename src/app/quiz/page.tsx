@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { HelpCircle, ArrowLeft, BookOpen, User, Users, Wand2, Loader2, AlertTriangle, Sparkles } from 'lucide-react';
 import { useLanguage } from '@/components/language-provider';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -16,6 +16,11 @@ import { generateQuiz, type GenerateQuizOutput, type QuizQuestion } from '@/ai/f
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { staticQuizData } from '@/lib/quiz-data';
 import { QuizSession } from '@/components/quiz/quiz-session';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { auth } from '@/lib/firebase';
+import { checkAndDecrementQuota, getUserQuota, UserQuota } from '@/lib/user-usage';
+import { UpgradeInlineAlert } from '@/components/upgrade-inline-alert';
+
 
 const quizTopics = {
     de: [
@@ -76,6 +81,9 @@ export default function QuizPage() {
   const { language } = useLanguage();
   const c = content[language] || content.de;
   const topics = quizTopics[language] || quizTopics.de;
+
+  const [user, authLoading] = useAuthState(auth);
+  const [quota, setQuota] = useState<UserQuota | null>(null);
   
   const [selectedTopic, setSelectedTopic] = useState<string | null>(null);
   const [quizStarted, setQuizStarted] = useState(false);
@@ -83,6 +91,14 @@ export default function QuizPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [aiQuiz, setAiQuiz] = useState<QuizQuestion[] | null>(null);
   const [aiError, setAiError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!authLoading && user) {
+        getUserQuota(user.uid).then(setQuota);
+    } else if (!authLoading && !user) {
+        setQuota({ limit: 3, remaining: 3});
+    }
+  }, [user, authLoading]);
 
   const form = useForm<z.infer<typeof aiFormSchema>>({
     resolver: zodResolver(aiFormSchema),
@@ -95,6 +111,15 @@ export default function QuizPage() {
     setIsLoading(true);
     setAiError(null);
     setAiQuiz(null);
+
+    const quotaResult = await checkAndDecrementQuota(user?.uid || null);
+    if (!quotaResult.success) {
+        setQuota(quotaResult.quota);
+        setIsLoading(false);
+        return;
+    }
+    setQuota(quotaResult.quota);
+
     try {
         const result = await generateQuiz({ topic: data.topic, count: 5 });
         setAiQuiz(result.questions);
@@ -123,6 +148,8 @@ export default function QuizPage() {
   const quizData = selectedTopic === 'ai' 
     ? aiQuiz 
     : staticQuizData[language][selectedTopic as keyof typeof staticQuizData['de']];
+
+    const canSubmitAi = quota ? quota.remaining > 0 : !user;
 
 
   if (quizStarted && quizData) {
@@ -206,7 +233,8 @@ export default function QuizPage() {
                                     </FormItem>
                                 )}
                             />
-                            <Button type="submit" className="w-full" disabled={isLoading}>
+                            <UpgradeInlineAlert quota={quota} isLoggedIn={!!user} />
+                            <Button type="submit" className="w-full" disabled={isLoading || !canSubmitAi}>
                                 {isLoading ? (
                                     <>
                                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />

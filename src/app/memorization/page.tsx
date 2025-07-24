@@ -14,6 +14,9 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { addFavorite } from '@/lib/favorites';
 import { useToast } from '@/hooks/use-toast';
 import Link from 'next/link';
+import { UpgradeInlineAlert } from '@/components/upgrade-inline-alert';
+import { getUserSubscription } from '@/lib/user-usage';
+
 
 const content = {
     de: {
@@ -31,7 +34,10 @@ const content = {
         loginToSave: "Anmelden, um Favoriten zu speichern",
         favoriteSaved: "Favorit gespeichert",
         viewFavorites: "Favoriten ansehen",
-        errorSaving: "Fehler beim Speichern des Favoriten."
+        errorSaving: "Fehler beim Speichern des Favoriten.",
+        proFeature: "Diese Funktion ist für Pro-Abonnenten verfügbar.",
+        upgradeButton: "Jetzt upgraden",
+        loginRequired: "Anmeldung erforderlich"
     },
     en: {
         title: "Memorization Tool",
@@ -48,7 +54,10 @@ const content = {
         loginToSave: "Login to save favorites",
         favoriteSaved: "Favorite saved",
         viewFavorites: "View Favorites",
-        errorSaving: "Error saving favorite."
+        errorSaving: "Error saving favorite.",
+        proFeature: "This feature is available for Pro subscribers.",
+        upgradeButton: "Upgrade Now",
+        loginRequired: "Login Required"
     }
 }
 
@@ -57,7 +66,10 @@ export default function MemorizationPage() {
   const c = content[language] || content.de;
   const { toast } = useToast();
 
-  const [user] = useAuthState(auth);
+  const [user, authLoading] = useAuthState(auth);
+  const [hasSubscription, setHasSubscription] = useState(false);
+  const [loadingSubscription, setLoadingSubscription] = useState(true);
+
   const [inputText, setInputText] = useState('');
   const [learningText, setLearningText] = useState('');
   const [isHidden, setIsHidden] = useState(false);
@@ -67,6 +79,20 @@ export default function MemorizationPage() {
   const [audioUrl, setAudioUrl] = useState<string | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [isSaving, setIsSaving] = useState(false);
+
+  useEffect(() => {
+      const checkSubscription = async () => {
+          if (user) {
+              const sub = await getUserSubscription(user.uid);
+              setHasSubscription(sub?.status === 'active');
+          }
+          setLoadingSubscription(false);
+      }
+      if (!authLoading) {
+        checkSubscription();
+      }
+  }, [user, authLoading]);
+
 
   const handleStartLearning = () => {
     setLearningText(inputText);
@@ -131,6 +157,50 @@ export default function MemorizationPage() {
         setPlayingAudio(true);
     }
   }, [audioUrl, playingAudio]);
+
+  if (authLoading || loadingSubscription) {
+      return (
+          <div className="flex-grow flex items-center justify-center">
+              <Loader2 className="h-8 w-8 animate-spin" />
+          </div>
+      )
+  }
+
+  if (!user) {
+       return (
+        <div className="container mx-auto px-4 py-8 flex-grow flex items-center justify-center">
+            <Card className="max-w-md text-center">
+                <CardHeader>
+                    <CardTitle>{c.loginRequired}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                     <Button asChild>
+                        <Link href="/login">{c.loginToSave}</Link>
+                    </Button>
+                </CardContent>
+            </Card>
+        </div>
+       )
+  }
+  
+  if (!hasSubscription) {
+       return (
+        <div className="container mx-auto px-4 py-8 flex-grow flex items-center justify-center">
+            <Card className="max-w-md text-center">
+                <CardHeader>
+                    <CardTitle>{c.proFeature}</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                    <p className="text-muted-foreground">{c.proFeature}</p>
+                    <Button asChild>
+                        <Link href="/subscribe">{c.upgradeButton}</Link>
+                    </Button>
+                </CardContent>
+            </Card>
+        </div>
+       )
+  }
+
 
   return (
     <div className="container mx-auto px-4 py-8">

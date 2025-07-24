@@ -6,7 +6,7 @@ import { useLanguage } from '@/components/language-provider';
 import { ArrowLeft, Wand2, Loader2, AlertTriangle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Input } from '@/components/ui/input';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -16,6 +16,11 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { generateIslamicName } from '@/ai/flows/generate-islamic-name';
 import type { GenerateIslamicNameOutput } from '@/ai/flows/generate-islamic-name-types';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { auth } from '@/lib/firebase';
+import { checkAndDecrementQuota, getUserQuota, UserQuota } from '@/lib/user-usage';
+import { UpgradeInlineAlert } from '@/components/upgrade-inline-alert';
+
 
 const names = {
   male: [
@@ -103,10 +108,21 @@ export default function IslamicNamesPage() {
     const { language } = useLanguage();
     const c = content[language] || content.de;
     const [searchTerm, setSearchTerm] = useState('');
+
+    const [user, authLoading] = useAuthState(auth);
+    const [quota, setQuota] = useState<UserQuota | null>(null);
     
     const [isLoading, setIsLoading] = useState(false);
     const [aiResults, setAiResults] = useState<GenerateIslamicNameOutput | null>(null);
     const [aiError, setAiError] = useState<string | null>(null);
+
+    useEffect(() => {
+        if (!authLoading && user) {
+            getUserQuota(user.uid).then(setQuota);
+        } else if (!authLoading && !user) {
+            setQuota({ limit: 3, remaining: 3});
+        }
+    }, [user, authLoading]);
 
     const form = useForm<z.infer<typeof aiFormSchema>>({
         resolver: zodResolver(aiFormSchema),
@@ -120,6 +136,15 @@ export default function IslamicNamesPage() {
         setIsLoading(true);
         setAiError(null);
         setAiResults(null);
+
+        const quotaResult = await checkAndDecrementQuota(user?.uid || null);
+        if (!quotaResult.success) {
+            setQuota(quotaResult.quota);
+            setIsLoading(false);
+            return;
+        }
+        setQuota(quotaResult.quota);
+
         try {
             const result = await generateIslamicName({ ...data, count: 5 });
             setAiResults(result);
@@ -138,6 +163,7 @@ export default function IslamicNamesPage() {
 
     const filteredMaleNames = filterNames(names.male);
     const filteredFemaleNames = filterNames(names.female);
+    const canSubmit = quota ? quota.remaining > 0 : !user;
 
     return (
         <div className="container mx-auto px-4 py-8">
@@ -202,7 +228,8 @@ export default function IslamicNamesPage() {
                                         )}
                                     />
                                 </div>
-                                <Button type="submit" className="w-full" disabled={isLoading}>
+                                <UpgradeInlineAlert quota={quota} isLoggedIn={!!user} />
+                                <Button type="submit" className="w-full" disabled={isLoading || !canSubmit}>
                                      {isLoading ? (
                                         <>
                                             <Loader2 className="mr-2 h-4 w-4 animate-spin" />

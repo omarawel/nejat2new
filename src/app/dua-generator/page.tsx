@@ -1,7 +1,7 @@
 
 "use client"
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -17,6 +17,11 @@ import { useLanguage } from "@/components/language-provider";
 import { generateDua } from "@/ai/flows/generate-dua";
 import type { GenerateDuaInput } from "@/ai/flows/generate-dua-types";
 import Link from 'next/link';
+
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { auth } from '@/lib/firebase';
+import { checkAndDecrementQuota, getUserQuota, UserQuota } from '@/lib/user-usage';
+import { UpgradeInlineAlert } from '@/components/upgrade-inline-alert';
 
 
 const content = {
@@ -70,11 +75,22 @@ const FormSchema = z.object({
 export default function DuaGeneratorPage() {
     const { language } = useLanguage();
     const c = content[language] || content.de;
+    
+    const [user, authLoading] = useAuthState(auth);
+    const [quota, setQuota] = useState<UserQuota | null>(null);
 
     const [generatedDua, setGeneratedDua] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [copied, setCopied] = useState(false);
+
+    useEffect(() => {
+        if (!authLoading && user) {
+            getUserQuota(user.uid).then(setQuota);
+        } else if (!authLoading && !user) {
+            setQuota({ limit: 3, remaining: 3});
+        }
+    }, [user, authLoading]);
 
     const form = useForm<z.infer<typeof FormSchema>>({
         resolver: zodResolver(FormSchema),
@@ -90,6 +106,14 @@ export default function DuaGeneratorPage() {
         setIsLoading(true);
         setError(null);
         setGeneratedDua("");
+
+        const quotaResult = await checkAndDecrementQuota(user?.uid || null);
+        if (!quotaResult.success) {
+            setQuota(quotaResult.quota);
+            setIsLoading(false);
+            return;
+        }
+        setQuota(quotaResult.quota);
 
         try {
             const duaInput: GenerateDuaInput = {
@@ -113,6 +137,8 @@ export default function DuaGeneratorPage() {
         setCopied(true);
         setTimeout(() => setCopied(false), 2000);
     };
+
+    const canSubmit = quota ? quota.remaining > 0 : !user;
 
     return (
         <div className="container mx-auto px-4 py-8">
@@ -197,7 +223,9 @@ export default function DuaGeneratorPage() {
                                     )}
                                 />
 
-                                <Button type="submit" className="w-full" disabled={isLoading}>
+                                <UpgradeInlineAlert quota={quota} isLoggedIn={!!user} />
+
+                                <Button type="submit" className="w-full" disabled={isLoading || !canSubmit}>
                                     {isLoading ? (
                                         <>
                                             <Loader2 className="mr-2 h-4 w-4 animate-spin" />

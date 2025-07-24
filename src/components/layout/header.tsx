@@ -23,6 +23,7 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { useLanguage } from "../language-provider"
 import { isAdmin } from "@/lib/admin"
+import { QuotaDisplay } from "../quota-display"
 
 const content = {
   de: {
@@ -113,6 +114,8 @@ export function AppHeader() {
             <div className="h-9 w-36 animate-pulse rounded-md bg-muted" />
           </>
         ) : user ? (
+            <>
+            <QuotaDisplay />
            <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" className="flex items-center gap-2">
@@ -147,6 +150,7 @@ export function AppHeader() {
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
+          </>
         ) : (
           <>
             <Button variant="ghost" asChild className="hidden sm:inline-flex">

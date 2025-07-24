@@ -1,8 +1,7 @@
+
 "use client"
 
-import { useState } from "react"
-import type { FormEvent } from "react"
-
+import { useState, useEffect, FormEvent } from "react"
 import { getHalalHaramRuling, type HalalHaramRuling } from "@/ai/flows/get-halal-haram-ruling"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -11,6 +10,10 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { ShieldCheck, Sparkles, Terminal, Loader2, MinusCircle, CheckCircle, AlertTriangle } from "lucide-react"
 import { useLanguage } from "@/components/language-provider"
 import { cn } from "@/lib/utils"
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { auth } from '@/lib/firebase';
+import { checkAndDecrementQuota, getUserQuota, UserQuota } from '@/lib/user-usage';
+import { UpgradeInlineAlert } from '@/components/upgrade-inline-alert';
 
 const content = {
     de: {
@@ -87,11 +90,22 @@ const RulingDisplay = ({ ruling }: { ruling: HalalHaramRuling }) => {
 export function HalalHaramForm() {
   const { language } = useLanguage();
   const c = content[language] || content.de;
+
+  const [user, authLoading] = useAuthState(auth);
+  const [quota, setQuota] = useState<UserQuota | null>(null);
   
   const [topic, setTopic] = useState("")
   const [ruling, setRuling] = useState<HalalHaramRuling | null>(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    if (!authLoading && user) {
+        getUserQuota(user.uid).then(setQuota);
+    } else if (!authLoading && !user) {
+        setQuota({ limit: 3, remaining: 3});
+    }
+  }, [user, authLoading]);
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
@@ -100,6 +114,14 @@ export function HalalHaramForm() {
     setLoading(true)
     setError(null)
     setRuling(null)
+
+    const quotaResult = await checkAndDecrementQuota(user?.uid || null);
+    if (!quotaResult.success) {
+        setQuota(quotaResult.quota);
+        setLoading(false);
+        return;
+    }
+    setQuota(quotaResult.quota);
 
     try {
       const result = await getHalalHaramRuling({ topic })
@@ -112,6 +134,8 @@ export function HalalHaramForm() {
     }
   }
 
+  const canSubmit = quota ? quota.remaining > 0 : !user;
+
   return (
     <div className="space-y-6">
       <form onSubmit={onSubmit} className="space-y-4">
@@ -121,7 +145,8 @@ export function HalalHaramForm() {
           onChange={(e) => setTopic(e.target.value)}
           disabled={loading}
         />
-        <Button type="submit" className="w-full" disabled={loading || !topic.trim()}>
+        <UpgradeInlineAlert quota={quota} isLoggedIn={!!user} />
+        <Button type="submit" className="w-full" disabled={loading || !topic.trim() || !canSubmit}>
           {loading ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />

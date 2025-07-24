@@ -1,8 +1,7 @@
+
 "use client"
 
-import { useState } from "react"
-import type { FormEvent } from "react"
-
+import { useState, useEffect, FormEvent } from "react"
 import { getIslamicInsight } from "@/ai/flows/get-islamic-insight"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
@@ -10,6 +9,11 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Card, CardContent } from "@/components/ui/card"
 import { Sparkles, Terminal, Loader2 } from "lucide-react"
 import { useLanguage } from "@/components/language-provider"
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { auth } from '@/lib/firebase';
+import { checkAndDecrementQuota, getUserQuota, UserQuota } from '@/lib/user-usage';
+import { UpgradeInlineAlert } from '@/components/upgrade-inline-alert';
+
 
 const content = {
     de: {
@@ -31,11 +35,22 @@ const content = {
 export function InsightsForm() {
   const { language } = useLanguage();
   const c = content[language] || content.de;
+
+  const [user, authLoading] = useAuthState(auth);
+  const [quota, setQuota] = useState<UserQuota | null>(null);
   
   const [question, setQuestion] = useState("")
   const [insight, setInsight] = useState("")
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    if (!authLoading && user) {
+        getUserQuota(user.uid).then(setQuota);
+    } else if (!authLoading && !user) {
+        setQuota({ limit: 3, remaining: 3});
+    }
+  }, [user, authLoading]);
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
@@ -44,6 +59,14 @@ export function InsightsForm() {
     setLoading(true)
     setError(null)
     setInsight("")
+
+    const quotaResult = await checkAndDecrementQuota(user?.uid || null);
+    if (!quotaResult.success) {
+        setQuota(quotaResult.quota);
+        setLoading(false);
+        return;
+    }
+    setQuota(quotaResult.quota);
 
     try {
       const result = await getIslamicInsight({ question })
@@ -55,6 +78,8 @@ export function InsightsForm() {
       setLoading(false)
     }
   }
+  
+  const canSubmit = quota ? quota.remaining > 0 : !user;
 
   return (
     <div className="space-y-6">
@@ -67,7 +92,8 @@ export function InsightsForm() {
           className="resize-none"
           disabled={loading}
         />
-        <Button type="submit" className="w-full" disabled={loading || !question.trim()}>
+        <UpgradeInlineAlert quota={quota} isLoggedIn={!!user} />
+        <Button type="submit" className="w-full" disabled={loading || !question.trim() || !canSubmit}>
           {loading ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
