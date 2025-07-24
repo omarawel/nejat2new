@@ -1,4 +1,3 @@
-
 "use client"
 
 import { Button } from "@/components/ui/button";
@@ -53,7 +52,23 @@ export default function Home() {
   }, [language]);
 
   return (
-    <div className="flex flex-col items-center justify-center text-center flex-grow py-12 px-4">
+    <div className="flex flex-col items-center justify-center text-center flex-grow py-12 px-4 sm:px-6 lg:px-8">
+       <section className="w-full max-w-4xl mx-auto mb-16">
+        <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-primary">
+          {c.title}
+        </h1>
+        <p className="mt-4 text-lg md:text-xl max-w-3xl mx-auto text-muted-foreground">
+          {c.description}
+        </p>
+        <div className="mt-8">
+          <Button size="lg" asChild>
+            <Link href="/#features">
+              <Grid className="mr-2 h-5 w-5" />
+              {c.button}
+            </Link>
+          </Button>
+        </div>
+      </section>
       
       <section id="features" className="w-full max-w-6xl mx-auto">
         <h2 className="text-2xl sm:text-3xl font-bold">{c.sectionTitle}</h2>
