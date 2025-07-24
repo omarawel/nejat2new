@@ -2,7 +2,7 @@
 "use client"
 
 import { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { CheckCircle, XCircle, Award, ArrowLeft } from 'lucide-react';
@@ -118,4 +118,3 @@ export function QuizSession({ quizTitle, questions, onFinish, backButtonText }: 
         </div>
     );
 }
-
