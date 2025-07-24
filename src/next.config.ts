@@ -23,6 +23,12 @@ const nextConfig: NextConfig = {
         port: '',
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'dl.dropboxusercontent.com',
+        port: '',
+        pathname: '/**',
+      }
     ],
   },
   experimental: {
@@ -34,4 +40,3 @@ const nextConfig: NextConfig = {
 };
 
 export default nextConfig;
-
