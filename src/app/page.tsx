@@ -55,25 +55,7 @@ export default function Home() {
   return (
     <div className="flex flex-col items-center justify-center text-center flex-grow py-12 px-4">
       
-      <AdBanner slotId="homepage-top-banner" className="w-full max-w-2xl mx-auto mb-12" />
-
-      <main className="max-w-4xl mx-auto">
-        <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-foreground" dangerouslySetInnerHTML={{ __html: c.title.replace("islamischen Alltag", `<span class="text-primary">islamischen Alltag</span>`) }}>
-        </h1>
-        <p className="mt-6 text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto">
-          {c.description}
-        </p>
-        <div className="mt-8">
-          <Button size="lg" asChild>
-            <Link href="#features">
-              <Grid className="mr-2 h-5 w-5" />
-              {c.button}
-            </Link>
-          </Button>
-        </div>
-      </main>
-
-      <section id="features" className="mt-20 w-full max-w-6xl mx-auto">
+      <section id="features" className="w-full max-w-6xl mx-auto">
         <h2 className="text-2xl sm:text-3xl font-bold">{c.sectionTitle}</h2>
         <p className="mt-2 text-md sm:text-lg text-muted-foreground">{c.sectionDescription}</p>
         <div className="mt-8 grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-7 xl:grid-cols-8 gap-4">
@@ -87,8 +69,6 @@ export default function Home() {
         </div>
       </section>
       
-      <AdBanner slotId="homepage-bottom" className="w-full max-w-2xl mx-auto mt-20" />
-
       <section className="mt-20 w-full max-w-2xl mx-auto">
         <Card className="bg-gradient-to-br from-primary/10 to-accent/20">
           <CardHeader className="items-center text-center p-8">
