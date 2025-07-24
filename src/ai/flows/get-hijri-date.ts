@@ -30,8 +30,16 @@ const getHijriDatePrompt = ai.definePrompt({
     Instructions:
     1.  Calculate the precise Hijri date (day, month, year).
     2.  Format the output as a string: "[Day] [Month Name] [Year] AH".
-    3.  The month name should be in the language specified: {{{language}}}. For 'de', use German month names (e.g., "Muharram", "Safar", "Dschumada al-ula"). For 'en', use English month names (e.g., "Muharram", "Safar", "Jumada al-ula").
+    3.  The month name should be in the language specified: {{{language}}}.
     4.  The final output must be only the formatted string.
+    
+    Example for language 'de' and date '2024-07-24':
+    Input: { date: '2024-07-24', language: 'de' }
+    Output: { hijriDate: '18 Muharram 1446 AH' }
+
+    Example for language 'en' and date '2024-07-24':
+    Input: { date: '2024-07-24', language: 'en' }
+    Output: { hijriDate: '18 Muharram 1446 AH' }
     `,
 });
 
