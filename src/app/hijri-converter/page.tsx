@@ -4,7 +4,6 @@
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { CalendarIcon, ArrowRightLeft, ArrowLeft } from 'lucide-react';
@@ -12,7 +11,7 @@ import { format } from 'date-fns';
 import { useLanguage } from '@/components/language-provider';
 import HijriDate from 'hijri-date/lib/safe';
 import { cn } from '@/lib/utils';
-import { de } from 'date-fns/locale';
+import { de, enUS } from 'date-fns/locale';
 import Link from 'next/link';
 
 const content = {
@@ -21,11 +20,7 @@ const content = {
         description: "Wandle Daten zwischen dem gregorianischen und dem islamischen Kalender um.",
         backToFeatures: "Zurück zu den Funktionen",
         gregorianToHijri: "Gregorianisch zu Hijri",
-        hijriToGregorian: "Hijri zu Gregorianisch",
         selectDate: "Wähle ein Datum",
-        day: "Tag",
-        month: "Monat",
-        year: "Jahr",
         result: "Ergebnis",
         gregorianDate: "Gregorianisches Datum",
         hijriDate: "Hijri-Datum",
@@ -35,11 +30,7 @@ const content = {
         description: "Convert dates between the Gregorian and Islamic calendars.",
         backToFeatures: "Back to Features",
         gregorianToHijri: "Gregorian to Hijri",
-        hijriToGregorian: "Hijri to Gregorian",
         selectDate: "Select a date",
-        day: "Day",
-        month: "Month",
-        year: "Year",
         result: "Result",
         gregorianDate: "Gregorian Date",
         hijriDate: "Hijri Date",
@@ -62,7 +53,7 @@ const hijriMonths_de = [
 export default function HijriConverterPage() {
     const { language } = useLanguage();
     const c = content[language] || content.de;
-    const locale = language === 'de' ? de : undefined;
+    const locale = language === 'de' ? de : enUS;
 
     const [gregorianDate, setGregorianDate] = useState<Date | undefined>(new Date());
     const [hijriResult, setHijriResult] = useState<string>('');
@@ -72,6 +63,8 @@ export default function HijriConverterPage() {
             const hijri = new HijriDate(gregorianDate);
             const months = language === 'de' ? hijriMonths_de : hijriMonths_en;
             setHijriResult(`${hijri.getDate()} ${months[hijri.getMonth()]} ${hijri.getFullYear()} AH`);
+        } else {
+            setHijriResult('');
         }
     }, [gregorianDate, language]);
 

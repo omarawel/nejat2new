@@ -37,7 +37,7 @@ export const allTools = [
     { key: "islamic_months", icon: "🌙", de: "Islamische Monate", en: "Islamic Months", href: "/islamic-months" },
     { key: "islamic_names", icon: "👶", de: "Islamische Namen", en: "Islamic Names", href: "/islamic-names" },
     { key: "islamic_quotes", icon: "💬", de: "Islamische Zitate", en: "Islamic Quotes", href: "/islamic-quotes" },
-    { key: "islamic_calendar", icon: "📅", de: "Islamischer Kalender", en: "Islamic Calendar", href: "/islamic-calendar" },
+    { key: "islamic_calendar", icon: "📅", de: "Hijri-Konverter", en: "Hijri Converter", href: "/hijri-converter" },
     { key: "insights", icon: "🤖", de: "KI-Gelehrter", en: "AI Scholar", href: "/insights" },
     { key: "khutbah_of_week", icon: "🎤", de: "Khutbah der Woche", en: "Khutbah of the Week", href: "/khutbah-of-the-week" },
     { key: "compass", icon: "🧭", de: "Kompass", en: "Compass", href: "/compass" },
