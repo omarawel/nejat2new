@@ -22,10 +22,10 @@ const content = {
                 icon: HandHeart,
                 title: "Allgemeine Richtlinien für bescheidene Kleidung",
                 points: [
-                    "**Bedeckung (Satr):** Die Kleidung sollte die vorgeschriebenen Körperteile (Aurah) bedecken. Für Männer ist dies in der Regel der Bereich vom Nabel bis zu den Knien, für Frauen der gesamte Körper außer Gesicht und Händen, wobei es hier unterschiedliche Gelehrtenmeinungen gibt.",
-                    "**Nicht durchsichtig oder eng:** Die Kleidung sollte nicht so dünn sein, dass die Haut durchscheint, oder so eng, dass sie die Körperform detailliert nachzeichnet.",
-                    "**Keine Nachahmung:** Die Kleidung sollte nicht der des anderen Geschlechts ähneln oder spezifische Kleidung von Nicht-Muslimen imitieren, die mit deren religiösen Praktiken verbunden ist.",
-                    "**Keine Prahlerei:** Kleidung sollte nicht aus Arroganz oder zur Angeberei getragen werden."
+                    "Bedeckung (Satr): Die Kleidung sollte die vorgeschriebenen Körperteile (Aurah) bedecken. Für Männer ist dies in der Regel der Bereich vom Nabel bis zu den Knien, für Frauen der gesamte Körper außer Gesicht und Händen, wobei es hier unterschiedliche Gelehrtenmeinungen gibt.",
+                    "Nicht durchsichtig oder eng: Die Kleidung sollte nicht so dünn sein, dass die Haut durchscheint, oder so eng, dass sie die Körperform detailliert nachzeichnet.",
+                    "Keine Nachahmung: Die Kleidung sollte nicht der des anderen Geschlechts ähneln oder spezifische Kleidung von Nicht-Muslimen imitieren, die mit deren religiösen Praktiken verbunden ist.",
+                    "Keine Prahlerei: Kleidung sollte nicht aus Arroganz oder zur Angeberei getragen werden."
                 ]
             },
             {
@@ -43,9 +43,9 @@ const content = {
                 title: "Bescheidenheit ist mehr als nur Kleidung",
                 content: "Wahre Bescheidenheit (Haya') ist eine innere Eigenschaft, die sich im gesamten Verhalten widerspiegelt:",
                 points: [
-                   "**Senken des Blicks:** Sowohl Männer als auch Frauen sind angewiesen, ihre Blicke zu senken und nicht lüstern auf das andere Geschlecht zu starren.",
-                   "**Zurückhaltung in der Sprache:** Vermeiden von vulgärer, anzüglicher oder nutzloser Rede.",
-                   "**Würde im Gang und Verhalten:** Ein würdevolles und respektvolles Auftreten in der Öffentlichkeit."
+                   "Senken des Blicks: Sowohl Männer als auch Frauen sind angewiesen, ihre Blicke zu senken und nicht lüstern auf das andere Geschlecht zu starren.",
+                   "Zurückhaltung in der Sprache: Vermeiden von vulgärer, anzüglicher oder nutzloser Rede.",
+                   "Würde im Gang und Verhalten: Ein würdevolles und respektvolles Auftreten in der Öffentlichkeit."
                 ]
             },
             {
@@ -69,10 +69,10 @@ const content = {
                 icon: HandHeart,
                 title: "General Guidelines for Modest Dress",
                 points: [
-                    "**Coverage (Satr):** Clothing should cover the prescribed parts of the body (Aurah). For men, this is typically the area from the navel to the knees; for women, the entire body except for the face and hands, though there are differing scholarly opinions on this.",
-                    "**Not Transparent or Tight:** The clothing should not be so thin that the skin shows through, or so tight that it details the shape of the body.",
-                    "**No Imitation:** Clothing should not resemble that of the opposite sex or imitate specific clothing of non-Muslims associated with their religious practices.",
-                    "**No Ostentation:** Clothing should not be worn out of arrogance or for showing off."
+                    "Coverage (Satr): Clothing should cover the prescribed parts of the body (Aurah). For men, this is typically the area from the navel to the knees; for women, the entire body except for the face and hands, though there are differing scholarly opinions on this.",
+                    "Not Transparent or Tight: The clothing should not be so thin that the skin shows through, or so tight that it details the shape of the body.",
+                    "No Imitation: Clothing should not resemble that of the opposite sex or imitate specific clothing of non-Muslims associated with their religious practices.",
+                    "No Ostentation: Clothing should not be worn out of arrogance or for showing off."
                 ]
             },
             {
@@ -90,9 +90,9 @@ const content = {
                 title: "Modesty is More Than Just Clothing",
                 content: "True modesty (Haya') is an inner quality that is reflected in one's entire conduct:",
                  points: [
-                   "**Lowering the Gaze:** Both men and women are instructed to lower their gaze and not to stare lustfully at the opposite sex.",
-                   "**Restraint in Speech:** Avoiding vulgar, suggestive, or useless talk.",
-                   "**Dignity in Gait and Behavior:** Maintaining a dignified and respectful demeanor in public."
+                   "Lowering the Gaze: Both men and women are instructed to lower their gaze and not to stare lustfully at the opposite sex.",
+                   "Restraint in Speech: Avoiding vulgar, suggestive, or useless talk.",
+                   "Dignity in Gait and Behavior: Maintaining a dignified and respectful demeanor in public."
                 ]
             },
              {
@@ -137,7 +137,7 @@ export default function IslamicFashionPage() {
                             {section.points && (
                                 <ul className="list-disc list-inside space-y-2 text-muted-foreground mt-4">
                                     {section.points.map((point, pIndex) => 
-                                        <li key={pIndex} dangerouslySetInnerHTML={{ __html: point }} />
+                                        <li key={pIndex}>{point}</li>
                                     )}
                                 </ul>
                             )}
