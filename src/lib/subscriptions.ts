@@ -36,7 +36,13 @@ export const getSubscriptionPlans = (callback: (plans: SubscriptionPlan[]) => vo
         id: 'pro',
         name: 'Pro',
         price: '4,99€/Monat',
-        features: ['30 KI-Anfragen pro Monat', 'Werbefreie Erfahrung', 'Unterstütze die Entwicklung', 'Auswendiglernen-Tool', 'Koran Offline-Zugriff'],
+        features: [
+            '30 KI-Anfragen pro Monat',
+            'Werbefreie Erfahrung',
+            'Unterstütze die Entwicklung',
+            'Auswendiglernen-Tool',
+            'Koran Offline-Zugriff'
+        ],
         priceId: 'price_1RmJ3rGXWEMb96gVBYrwf9DD',
         stripeLink: 'https://buy.stripe.com/7sY5kD3XJddJaTifwTabK03',
         aiRequestLimit: 30,
@@ -47,7 +53,14 @@ export const getSubscriptionPlans = (callback: (plans: SubscriptionPlan[]) => vo
         id: 'patron',
         name: 'Patron',
         price: '9,99€/Monat',
-        features: ['75 KI-Anfragen pro Monat', 'Alle Pro-Vorteile', 'Früher Zugriff auf neue Features'],
+        features: [
+            '75 KI-Anfragen pro Monat',
+            'Werbefreie Erfahrung',
+            'Unterstütze die Entwicklung',
+            'Auswendiglernen-Tool',
+            'Koran Offline-Zugriff',
+            'Früher Zugriff auf neue Features'
+        ],
         priceId: 'price_1RltR4GXWEMb96gVOcjACqRR', 
         stripeLink: 'https://buy.stripe.com/28E14n0Lx4Hdf9y2K7abK04',
         aiRequestLimit: 75,
