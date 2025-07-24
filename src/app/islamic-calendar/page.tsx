@@ -74,6 +74,13 @@ export default function IslamicCalendarPage() {
 
     useEffect(() => {
         setIsClient(true);
+        // Initial calculation on mount
+        const today = new HijriDate();
+        setTodayHijri(formatHijriDate(today, language));
+        if (selectedDate) {
+             const hijri = new HijriDate(selectedDate);
+             setConversionResult(formatHijriDate(hijri, language));
+        }
     }, []);
 
     useEffect(() => {
@@ -84,6 +91,8 @@ export default function IslamicCalendarPage() {
             if (selectedDate) {
                 const hijri = new HijriDate(selectedDate);
                 setConversionResult(formatHijriDate(hijri, language));
+            } else {
+                setConversionResult('');
             }
         }
     }, [selectedDate, language, isClient]);
