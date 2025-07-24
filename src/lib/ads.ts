@@ -33,16 +33,28 @@ export const getAds = (callback: (ads: Ad[]) => void) => {
 };
 
 // Add a new ad
-export const addAd = (ad: Omit<Ad, 'id' | 'createdAt'>) => {
-  if (!ad.slotId || !ad.imageUrl || !ad.linkUrl || !ad.title) {
-    throw new Error('Ad data is incomplete');
+export const addAd = async (ad: Omit<Ad, 'id' | 'createdAt'>) => {
+  try {
+    if (!ad.slotId || !ad.imageUrl || !ad.linkUrl || !ad.title) {
+      console.error("Ad data is incomplete:", ad);
+      throw new Error('Ad data is incomplete');
+    }
+    
+    console.log("Attempting to add ad:", ad);
+    const adsCol = collection(db, 'ads');
+    const docRef = await addDoc(adsCol, {
+      ...ad,
+      createdAt: Timestamp.now(),
+    });
+    console.log("Ad created successfully with ID:", docRef.id);
+    return docRef;
+  } catch (error) {
+    console.error("Firestore error while adding ad:", error);
+    // This will re-throw the error so the calling component can catch it.
+    throw error;
   }
-  const adsCol = collection(db, 'ads');
-  return addDoc(adsCol, {
-    ...ad,
-    createdAt: Timestamp.now(),
-  });
 };
+
 
 // Update an existing ad
 export const updateAd = (adId: string, data: Partial<Omit<Ad, 'id' | 'createdAt'>>) => {
