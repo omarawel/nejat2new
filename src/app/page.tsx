@@ -12,9 +12,9 @@ import { AdBanner } from "@/components/ad-banner";
 
 const FeatureCard = ({ icon, name }: { icon: string, name: string }) => {
   return (
-    <div className="flex flex-col justify-center items-center p-2 border border-border rounded-lg bg-accent text-accent-foreground hover:bg-accent/90 cursor-pointer transition-colors h-20">
-      <span className="text-2xl">{icon}</span>
-      <span className="mt-1 text-xs text-center font-medium leading-tight">{name}</span>
+    <div className="flex flex-col justify-center items-center p-2 border border-border rounded-lg bg-card text-card-foreground hover:bg-accent/90 cursor-pointer transition-colors h-24">
+      <span className="text-3xl">{icon}</span>
+      <span className="mt-2 text-sm text-center font-medium leading-tight">{name}</span>
     </div>
   );
 };
@@ -53,7 +53,7 @@ export default function Home() {
   }, [language]);
 
   return (
-    <div className="flex flex-col items-center justify-center text-center flex-grow py-12 px-4 sm:px-6 lg:px-8">
+    <div className="flex flex-col items-center justify-center text-center flex-grow py-12 px-4">
       
       <AdBanner slotId="homepage-top-banner" className="w-full max-w-2xl mx-auto mb-12" />
 
