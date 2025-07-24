@@ -73,8 +73,8 @@ export default function PrayerTimesPage() {
     useEffect(() => {
         const fetchPrayerTimes = (latitude: number, longitude: number) => {
             const date = new Date();
-            // Method 3: Diyanet İşleri Başkanlığı, Turkey. Widely used in Germany.
-            const url = `https://api.aladhan.com/v1/timings/${date.getTime()/1000}?latitude=${latitude}&longitude=${longitude}&method=3`;
+            // Method 4: Muslim World League. A widely used method.
+            const url = `https://api.aladhan.com/v1/timings/${date.getTime()/1000}?latitude=${latitude}&longitude=${longitude}&method=4`;
 
             fetch(url)
                 .then(response => response.json())
