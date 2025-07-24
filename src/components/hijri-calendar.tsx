@@ -8,16 +8,18 @@ import { Card, CardContent } from './ui/card';
 import { cn } from '@/lib/utils';
 import { Skeleton } from './ui/skeleton';
 import { Button } from './ui/button';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, WifiOff } from 'lucide-react';
 
 const content = {
     de: {
         weekdays: ["So", "Mo", "Di", "Mi", "Do", "Fr", "Sa"],
-        hijriMonths: [ "Muharram", "Safar", "Rabi' al-awwal", "Rabi' al-thani", "Dschumada al-ula", "Dschumada al-uchra", "Radschab", "Scha'ban", "Ramadan", "Schawwal", "Dhu l-qaʿda", "Dhu l-hiddscha"]
+        hijriMonths: [ "Muharram", "Safar", "Rabi' al-awwal", "Rabi' al-thani", "Dschumada al-ula", "Dschumada al-uchra", "Radschab", "Scha'ban", "Ramadan", "Schawwal", "Dhu l-qaʿda", "Dhu l-hiddscha"],
+        error: "Kalender konnte nicht geladen werden"
     },
     en: {
         weekdays: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
-        hijriMonths: [ "Muharram", "Safar", "Rabi' al-awwal", "Rabi' al-thani", "Jumada al-ula", "Jumada al-ukhra", "Rajab", "Sha'ban", "Ramadan", "Shawwal", "Dhu al-Qi'dah", "Dhu al-Hijjah"]
+        hijriMonths: [ "Muharram", "Safar", "Rabi' al-awwal", "Rabi' al-thani", "Jumada al-ula", "Jumada al-ukhra", "Rajab", "Sha'ban", "Ramadan", "Shawwal", "Dhu al-Qi'dah", "Dhu al-Hijjah"],
+        error: "Could not load calendar"
     }
 }
 
@@ -51,18 +53,22 @@ export const HijriCalendar = ({ year, month, onMonthChange, currentDate }: { yea
 
     const [calendarData, setCalendarData] = useState<DayData[]>([]);
     const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
         const fetchCalendar = async () => {
             setLoading(true);
+            setError(null);
             const data = await getHijriCalendar(month, year);
             if (data?.data) {
                 setCalendarData(data.data);
+            } else {
+                setError(c.error);
             }
             setLoading(false);
         };
         fetchCalendar();
-    }, [year, month]);
+    }, [year, month, c.error]);
 
     const changeMonth = (amount: number) => {
         const newDate = new Date(currentDate);
@@ -72,14 +78,14 @@ export const HijriCalendar = ({ year, month, onMonthChange, currentDate }: { yea
 
     const today = new Date();
     const todayString = `${String(today.getDate()).padStart(2, '0')}-${String(today.getMonth() + 1).padStart(2, '0')}-${today.getFullYear()}`;
-    const firstDayOfMonth = new Date(year, month - 1, 1).getDay(); // 0=Sun, 1=Mon, ...
+    const firstDayOfMonth = calendarData.length > 0 ? new Date(year, month - 1, 1).getDay() : 0; // 0=Sun, 1=Mon, ...
     
     const getCalendarHeader = () => {
-        if (!calendarData || calendarData.length === 0) return { month: "", year: ""};
-        const hijriMonthsInView = [...new Set(calendarData.map(d => d.date.hijri.month.en))];
-        const hijriYearsInView = [...new Set(calendarData.map(d => d.date.hijri.year))];
+        if (!calendarData || calendarData.length === 0) return "";
         
-        const primaryHijriMonthIndex = calendarData[15].date.hijri.month.number - 1;
+        const primaryHijriMonthIndex = calendarData[15]?.date.hijri.month.number - 1;
+        if (primaryHijriMonthIndex === undefined || primaryHijriMonthIndex < 0) return "";
+        
         const primaryHijriMonth = c.hijriMonths[primaryHijriMonthIndex];
         const primaryHijriYear = calendarData[15].date.hijri.year;
 
@@ -109,6 +115,11 @@ export const HijriCalendar = ({ year, month, onMonthChange, currentDate }: { yea
                 {loading ? (
                      <div className="grid grid-cols-7 gap-2">
                         {[...Array(35)].map((_, i) => <Skeleton key={i} className="h-28" />)}
+                    </div>
+                ) : error ? (
+                    <div className="col-span-7 flex flex-col items-center justify-center p-8 text-destructive">
+                        <WifiOff className="h-8 w-8 mb-2" />
+                        <p>{error}</p>
                     </div>
                 ) : (
                     <div className="grid grid-cols-7 gap-2">
