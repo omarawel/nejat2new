@@ -53,7 +53,7 @@ export default function Home() {
   }, [language]);
 
   return (
-    <div className="flex flex-col items-center justify-center text-center flex-grow py-12 px-4">
+    <div className="flex flex-col items-center justify-center text-center flex-grow py-12 px-4 sm:px-6 lg:px-8">
       
       <AdBanner slotId="homepage-top-banner" className="w-full max-w-2xl mx-auto mb-12" />
 
