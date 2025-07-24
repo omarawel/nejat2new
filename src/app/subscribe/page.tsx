@@ -9,6 +9,8 @@ import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { getSubscriptionPlans, type SubscriptionPlan } from '@/lib/subscriptions';
 import { Loader2 } from 'lucide-react';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { auth } from '@/lib/firebase';
 
 
 const content = {
@@ -35,10 +37,11 @@ export default function SubscribePage() {
   const c = content[language];
   const [plans, setPlans] = useState<SubscriptionPlan[]>([]);
   const [loading, setLoading] = useState(true);
+  const [user, loadingAuth] = useAuthState(auth);
 
   useEffect(() => {
     const unsubscribe = getSubscriptionPlans((fetchedPlans) => {
-        setPlans(fetchedPlans.filter(p => p.active));
+        setPlans(fetchedPlans.filter(p => p.active).sort((a,b) => a.createdAt.toMillis() - b.createdAt.toMillis()));
         setLoading(false);
     });
     return () => unsubscribe();
@@ -58,7 +61,7 @@ export default function SubscribePage() {
                 <p className="text-muted-foreground mt-2 text-lg max-w-2xl mx-auto">{c.pageDescription}</p>
             </header>
             
-            {loading ? (
+            {loading || loadingAuth ? (
                 <div className="flex justify-center items-center h-64">
                     <Loader2 className="h-12 w-12 animate-spin text-primary" />
                 </div>
@@ -81,9 +84,10 @@ export default function SubscribePage() {
                                 </ul>
                             </CardContent>
                             <div className="p-6">
-                                <Button asChild className="w-full">
+                                <Button asChild className="w-full" disabled={!user}>
                                     <Link href={`/checkout?plan=${plan.name.toLowerCase()}&priceId=${plan.priceId}`}>{c.choosePlan}</Link>
                                 </Button>
+                                 {!user && <p className="text-xs text-center mt-2 text-muted-foreground">Please log in to subscribe</p>}
                             </div>
                         </Card>
                     ))}
