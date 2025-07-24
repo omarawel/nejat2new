@@ -3,7 +3,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { useLanguage } from '@/components/language-provider';
-import { Scale, Bridge, Cross, Smile, Shield, ArrowLeft } from 'lucide-react';
+import { Scale, Bridge, Flame, Smile, Shield, ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 
@@ -34,7 +34,7 @@ const content = {
                 content: "Jannah ist der ewige Wohnort der Gläubigen, ein Ort unvorstellbarer Schönheit, des Friedens und des Glücks. Es gibt dort keine Krankheit, keinen Schmerz, keinen Tod und keine Sorgen. Die Bewohner des Paradieses werden alles haben, was ihre Herzen begehren, und ihre größte Freude wird es sein, das Angesicht Allahs zu sehen. Es gibt verschiedene Stufen des Paradieses, wobei die höchste Stufe Firdaws ist."
             },
             {
-                icon: Cross,
+                icon: Flame,
                 title: "Die Hölle (Jahannam)",
                 content: "Jahannam ist der Ort der ewigen Bestrafung für diejenigen, die Allah verleugnet und Seine Gebote missachtet haben. Es ist ein Ort des unvorstellbaren Leidens, mit loderndem Feuer, kochendem Wasser und bitterer Nahrung. Es ist eine Manifestation des Zorns Allahs über die Ungläubigen. Möge Allah uns davor bewahren."
             }
@@ -66,7 +66,7 @@ const content = {
                 content: "Jannah is the eternal abode of the believers, a place of unimaginable beauty, peace, and happiness. There is no sickness, no pain, no death, and no sorrow. The inhabitants of Paradise will have everything their hearts desire, and their greatest joy will be to see the face of Allah. There are different levels of Paradise, with the highest level being Firdaws."
             },
             {
-                icon: Cross,
+                icon: Flame,
                 title: "Hell (Jahannam)",
                 content: "Jahannam is the place of eternal punishment for those who denied Allah and disobeyed His commandments. It is a place of unimaginable suffering, with blazing fire, boiling water, and bitter food. It is a manifestation of Allah's wrath upon the disbelievers. May Allah protect us from it."
             }
