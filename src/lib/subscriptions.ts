@@ -63,6 +63,7 @@ export const getSubscriptionPlans = (callback: (plans: SubscriptionPlan[]) => vo
         features: [
             '75 KI-Anfragen pro Monat',
             'Alle Pro-Vorteile',
+            'Unbegrenztes Auswendiglernen',
             'Früher Zugriff auf neue Features'
         ],
         priceId: 'price_1RltR4GXWEMb96gVOcjACqRR', 
