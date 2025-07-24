@@ -1,4 +1,3 @@
-
 "use client"
 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
@@ -87,7 +86,7 @@ export default function DonationsPage() {
                         <div className="aspect-video relative w-full mb-4">
                              <Image 
                                 src={project.image} 
-                                alt={project.name} 
+                                alt={project.description} 
                                 fill
                                 className="rounded-md object-cover"
                                 data-ai-hint={project.hint}

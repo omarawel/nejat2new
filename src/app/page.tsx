@@ -20,9 +20,7 @@ const FeatureCard = ({ icon, name }: { icon: string, name: string }) => {
 
 const content = {
   de: {
-    title1: "Dein digitaler Begleiter",
-    title2: "für den",
-    title3: "islamischen Alltag",
+    title: "Dein digitaler Begleiter für den islamischen Alltag",
     description: "Finde alles, was du für deine spirituelle Reise brauchst: präzise Gebetszeiten, den gesamten Koran, eine umfassende Hadith-Sammlung und einzigartige KI-Tools, die dein Wissen erweitern.",
     button: "Funktionen entdecken",
     sectionTitle: "Entdecke mehr",
@@ -32,9 +30,7 @@ const content = {
     premiumButton: "Jetzt upgraden",
   },
   en: {
-    title1: "Your Digital Companion",
-    title2: "for your",
-    title3: "daily Islamic life",
+    title: "Your Digital Companion for your daily Islamic life",
     description: "Find everything you need for your spiritual journey: precise prayer times, the entire Quran, a comprehensive Hadith collection, and unique AI tools to expand your knowledge.",
     button: "Discover Features",
     sectionTitle: "Discover More",
@@ -59,9 +55,7 @@ export default function Home() {
     <div className="flex flex-col items-center justify-center text-center flex-grow py-12 px-4 sm:px-6 lg:px-8">
       <main className="max-w-4xl mx-auto">
         <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-foreground">
-          {c.title1}
-          <br />
-          {c.title2} <span className="text-primary">{c.title3}</span>
+          {c.title.replace("islamischen Alltag", `<span class="text-primary">islamischen Alltag</span>`)}
         </h1>
         <p className="mt-6 text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto">
           {c.description}

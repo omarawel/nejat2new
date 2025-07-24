@@ -119,7 +119,7 @@ export default function RadioPage() {
         <div className="max-w-2xl mx-auto grid grid-cols-1 gap-4">
             {stations.map(station => (
                  <Card key={station.name} className="flex items-center p-4">
-                     <Image src={station.logo} alt={station.name} width={60} height={60} className="rounded-md mr-4" data-ai-hint={station.hint} />
+                     <Image src={station.logo} alt={station.description} width={60} height={60} className="rounded-md mr-4" data-ai-hint={station.hint} />
                      <div className="flex-grow">
                          <h3 className="font-semibold">{station.name}</h3>
                          <p className="text-sm text-muted-foreground">{station.description}</p>

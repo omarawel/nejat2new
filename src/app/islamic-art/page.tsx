@@ -117,7 +117,7 @@ export default function IslamicArtPage() {
                             <div className="h-64 md:h-full w-full relative">
                                 <Image 
                                     src={section.image} 
-                                    alt={section.title} 
+                                    alt={section.content} 
                                     fill
                                     className="object-cover"
                                     data-ai-hint={section.hint}
