@@ -77,6 +77,9 @@ const defaultPlans: Omit<SubscriptionPlan, 'id' | 'createdAt' >[] = [
 
 const allFeatures = {
     de: [
+        { feature: "Wissensseiten (Propheten, Sahaba etc.)", free: true, supporter: true, pro: true, patron: true },
+        { feature: "Gebetszeiten & Qibla Kompass", free: true, supporter: true, pro: true, patron: true },
+        { feature: "Dhikr, Dua & Tasbih Zähler", free: true, supporter: true, pro: true, patron: true },
         { feature: "KI-Anfragen / Monat", free: "3", supporter: "15", pro: "30", patron: "75" },
         { feature: "Werbefreie Erfahrung", free: false, supporter: true, pro: true, patron: true },
         { feature: "Entwicklung unterstützen", free: false, supporter: true, pro: true, patron: true },
@@ -85,6 +88,9 @@ const allFeatures = {
         { feature: "Früher Zugriff auf neue Features", free: false, supporter: false, pro: false, patron: true },
     ],
     en: [
+        { feature: "Knowledge Pages (Prophets, Sahaba etc.)", free: true, supporter: true, pro: true, patron: true },
+        { feature: "Prayer Times & Qibla Compass", free: true, supporter: true, pro: true, patron: true },
+        { feature: "Dhikr, Dua & Tasbih Counter", free: true, supporter: true, pro: true, patron: true },
         { feature: "AI Requests / Month", free: "3", supporter: "15", pro: "30", patron: "75" },
         { feature: "Ad-free Experience", free: false, supporter: true, pro: true, patron: true },
         { feature: "Support Development", free: false, supporter: true, pro: true, patron: true },
