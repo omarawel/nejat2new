@@ -157,7 +157,7 @@ export default function CompassPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const rotation = 360 - heading;
+    const rotation = -heading;
     const isQiblaAligned = qiblaDirection !== null && Math.abs(heading - qiblaDirection) < 2.5;
 
     return (
