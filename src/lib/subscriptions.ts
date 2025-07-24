@@ -1,3 +1,4 @@
+
 import { db } from './firebase';
 import { collection, addDoc, onSnapshot, query, doc, deleteDoc, updateDoc, Timestamp, orderBy } from 'firebase/firestore';
 
@@ -29,7 +30,7 @@ export const getSubscriptionPlans = (callback: (plans: SubscriptionPlan[]) => vo
         name: 'Supporter',
         price: '2,99€/Monat',
         features: ['15 KI-Anfragen pro Monat', 'Werbefreie Erfahrung', 'Unterstütze die Entwicklung'],
-        priceId: 'YOUR_STRIPE_SUPPORTER_PRICE_ID', // ERSETZE DIES
+        priceId: 'price_1RltQWGXWEMb96gVAEDYSZay', // ERSETZE DIES
         aiRequestLimit: 15,
         active: true,
         createdAt: Timestamp.now(), // Dummy Timestamp
