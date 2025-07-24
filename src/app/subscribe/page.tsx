@@ -77,17 +77,17 @@ const defaultPlans: Omit<SubscriptionPlan, 'id' | 'createdAt' >[] = [
 
 const allFeatures = {
     de: [
+        { feature: "KI-Anfragen / Monat", free: "3", supporter: "15", pro: "30", patron: "75" },
         { feature: "Werbefreie Erfahrung", free: false, supporter: true, pro: true, patron: true },
         { feature: "Entwicklung unterstützen", free: false, supporter: true, pro: true, patron: true },
-        { feature: "KI-Anfragen / Monat", free: "3", supporter: "15", pro: "30", patron: "75" },
         { feature: "Auswendiglernen-Tool", free: false, supporter: true, pro: true, patron: true },
         { feature: "Koran Offline-Zugriff", free: false, supporter: false, pro: true, patron: true },
         { feature: "Früher Zugriff auf neue Features", free: false, supporter: false, pro: false, patron: true },
     ],
     en: [
+        { feature: "AI Requests / Month", free: "3", supporter: "15", pro: "30", patron: "75" },
         { feature: "Ad-free Experience", free: false, supporter: true, pro: true, patron: true },
         { feature: "Support Development", free: false, supporter: true, pro: true, patron: true },
-        { feature: "AI Requests / Month", free: "3", supporter: "15", pro: "30", patron: "75" },
         { feature: "Memorization Tool", free: false, supporter: true, pro: true, patron: true },
         { feature: "Quran Offline Access", free: false, supporter: false, pro: true, patron: true },
         { feature: "Early Access to New Features", free: false, supporter: false, pro: false, patron: true },
