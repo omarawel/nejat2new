@@ -9,4 +9,4 @@ import '@/ai/flows/generate-greeting-card';
 import '@/ai/flows/get-halal-haram-ruling';
 import '@/ai/flows/generate-islamic-name';
 import '@/ai/flows/generate-quiz';
-
+import '@/ai/flows/get-hijri-date';

@@ -6,13 +6,15 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { CalendarIcon, ArrowRightLeft, ArrowLeft } from 'lucide-react';
+import { CalendarIcon, ArrowLeft, Loader2 } from 'lucide-react';
 import { format } from 'date-fns';
 import { useLanguage } from '@/components/language-provider';
-import HijriDate from 'hijri-date/lib/safe';
 import { cn } from '@/lib/utils';
 import { de, enUS } from 'date-fns/locale';
 import Link from 'next/link';
+import { getHijriDate } from '@/ai/flows/get-hijri-date';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+
 
 const content = {
     de: {
@@ -24,6 +26,9 @@ const content = {
         result: "Ergebnis",
         gregorianDate: "Gregorianisches Datum",
         hijriDate: "Hijri-Datum",
+        errorTitle: "Fehler",
+        errorDescription: "Das Hijri-Datum konnte nicht berechnet werden. Bitte versuche es später erneut.",
+        calculating: "Berechne...",
     },
     en: {
         title: "Hijri Calendar Converter",
@@ -34,20 +39,11 @@ const content = {
         result: "Result",
         gregorianDate: "Gregorian Date",
         hijriDate: "Hijri Date",
+        errorTitle: "Error",
+        errorDescription: "Could not calculate the Hijri date. Please try again later.",
+        calculating: "Calculating...",
     }
 }
-
-const hijriMonths_en = [
-    "Muharram", "Safar", "Rabi' al-awwal", "Rabi' al-thani",
-    "Jumada al-ula", "Jumada al-ukhra", "Rajab", "Sha'ban",
-    "Ramadan", "Shawwal", "Dhu al-Qi'dah", "Dhu al-Hijjah"
-];
-
-const hijriMonths_de = [
-    "Muharram", "Safar", "Rabi' al-awwal", "Rabi' al-thani",
-    "Dschumada al-ula", "Dschumada al-uchra", "Radschab", "Scha'ban",
-    "Ramadan", "Schawwal", "Dhu l-qaʿda", "Dhu l-hiddscha"
-];
 
 
 export default function HijriConverterPage() {
@@ -57,16 +53,33 @@ export default function HijriConverterPage() {
 
     const [gregorianDate, setGregorianDate] = useState<Date | undefined>(new Date());
     const [hijriResult, setHijriResult] = useState<string>('');
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
         if (gregorianDate) {
-            const hijri = new HijriDate(gregorianDate);
-            const months = language === 'de' ? hijriMonths_de : hijriMonths_en;
-            setHijriResult(`${hijri.getDate()} ${months[hijri.getMonth()]} ${hijri.getFullYear()} AH`);
+            const calculateHijri = async () => {
+                setLoading(true);
+                setError(null);
+                try {
+                    const result = await getHijriDate({ 
+                        date: gregorianDate.toISOString().split('T')[0],
+                        language: language,
+                     });
+                    setHijriResult(result.hijriDate);
+                } catch (e) {
+                    console.error(e);
+                    setError(c.errorDescription);
+                    setHijriResult('');
+                } finally {
+                    setLoading(false);
+                }
+            }
+            calculateHijri();
         } else {
             setHijriResult('');
         }
-    }, [gregorianDate, language]);
+    }, [gregorianDate, language, c.errorDescription]);
 
     return (
         <div className="container mx-auto px-4 py-8">
@@ -111,12 +124,27 @@ export default function HijriConverterPage() {
                                     onSelect={setGregorianDate}
                                     initialFocus
                                     locale={locale}
+                                    disabled={(date) => date > new Date() || date < new Date("1900-01-01")}
                                 />
                                 </PopoverContent>
                             </Popover>
                         </div>
                        
-                        {hijriResult && (
+                        {loading && (
+                            <div className="flex items-center justify-center p-4">
+                                <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                                {c.calculating}
+                            </div>
+                        )}
+
+                        {error && (
+                            <Alert variant="destructive">
+                                <AlertTitle>{c.errorTitle}</AlertTitle>
+                                <AlertDescription>{error}</AlertDescription>
+                            </Alert>
+                        )}
+
+                        {hijriResult && !loading && (
                              <Card className="bg-accent/50">
                                 <CardHeader>
                                     <CardTitle className="text-lg">{c.result}</CardTitle>
