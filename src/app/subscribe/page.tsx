@@ -16,7 +16,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 
 const content = {
     de: {
-        title: "Vergleiche die Pläne",
+        title: "Wähle deinen Plan",
         description: "Unterstütze die Weiterentwicklung von Nejat Digital und erhalte Zugang zu exklusiven KI-Funktionen und einer werbefreien Erfahrung.",
         choosePlan: "Plan wählen",
         loadingPlans: "Pläne werden geladen...",
@@ -29,9 +29,11 @@ const content = {
         supporter: "Unterstützer",
         pro: "Pro",
         patron: "Patron",
+        compareTitle: "Vergleiche die Pläne",
+        compareDescription: "Finde den perfekten Plan für deine Bedürfnisse.",
     },
     en: {
-        title: "Compare the Plans",
+        title: "Choose Your Plan",
         description: "Support the continued development of Nejat Digital and get access to exclusive AI features and an ad-free experience.",
         choosePlan: "Choose Plan",
         loadingPlans: "Loading plans...",
@@ -44,6 +46,8 @@ const content = {
         supporter: "Supporter",
         pro: "Pro",
         patron: "Patron",
+        compareTitle: "Compare the Plans",
+        compareDescription: "Find the perfect plan for your needs.",
     }
 }
 
@@ -146,10 +150,52 @@ const SubscribePage: React.FC = () => {
 
     return (
         <div className="container mx-auto px-4 py-8">
-            <div className="max-w-4xl mx-auto text-center">
-                <h1 className="text-3xl md:text-4xl font-bold mb-4">{c.title}</h1>
-                <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
+            <div className="max-w-5xl mx-auto text-center">
+                 <h1 className="text-3xl md:text-4xl font-bold mb-4">{c.title}</h1>
+                <p className="text-lg text-muted-foreground mb-12 max-w-2xl mx-auto">
                     {c.description}
+                </p>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+                    {subscriptionPlans.map((plan) => (
+                        <Card key={plan.id} className={cn("flex flex-col", plan.id === 'pro' && "border-primary border-2 shadow-lg")}>
+                            <CardHeader>
+                                <CardTitle className="text-2xl">{plan.name}</CardTitle>
+                                <CardDescription className="text-4xl font-bold text-primary">{plan.price}</CardDescription>
+                            </CardHeader>
+                            <CardContent className="flex-grow">
+                                <ul className="space-y-2 text-left">
+                                    {plan.features.map(feature => (
+                                        <li key={feature} className="flex items-start gap-2">
+                                            <Check className="h-5 w-5 text-green-500 mt-1 flex-shrink-0" />
+                                            <span>{feature}</span>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </CardContent>
+                            <CardFooter>
+                                <Button
+                                    onClick={() => handleSubscribe(plan.id)}
+                                    className="w-full"
+                                    variant={plan.id === 'pro' ? 'default' : 'outline'}
+                                    disabled={!!loadingRedirect}
+                                >
+                                    {loadingRedirect === plan.id ? (
+                                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                    ) : (
+                                       <Star className="mr-2 h-4 w-4" />
+                                    )}
+                                    {c.choosePlan}
+                                </Button>
+                            </CardFooter>
+                        </Card>
+                    ))}
+                </div>
+
+
+                <h2 className="text-3xl md:text-4xl font-bold mb-4">{c.compareTitle}</h2>
+                <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
+                    {c.compareDescription}
                 </p>
 
                 <Card>
