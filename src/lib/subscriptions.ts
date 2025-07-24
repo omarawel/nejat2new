@@ -40,7 +40,7 @@ export const getSubscriptionPlans = (callback: (plans: SubscriptionPlan[]) => vo
         name: 'Pro',
         price: '4,99€/Monat',
         features: ['30 KI-Anfragen pro Monat', 'Alle Supporter-Vorteile', 'Offline-Zugriff für Koran'],
-        priceId: 'YOUR_STRIPE_PRO_PRICE_ID', // ERSETZE DIES
+        priceId: 'price_1RmJ3rGXWEMb96gVBYrwf9DD', // ERSETZE DIES
         aiRequestLimit: 30,
         active: true,
         createdAt: Timestamp.now(), // Dummy Timestamp
