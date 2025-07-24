@@ -3,7 +3,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { useLanguage } from '@/components/language-provider';
-import { Heart, Smile, Users, MessageSquare, Hand, Brain, Shield, ArrowLeft } from 'lucide-react';
+import { Heart, Smile, Users, MessageSquare, Hand, Brain, Shield, ArrowLeft, Handshake, Scale, History, UserCheck } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 
@@ -47,6 +47,26 @@ const content = {
                 icon: Shield,
                 title: "Vertrauen auf Allah (Tawakkul)",
                 content: "Tawakkul bedeutet, sein Bestes zu geben und alle Anstrengungen zu unternehmen, aber das Ergebnis vollständig in Allahs Hände zu legen. Es ist das Vertrauen, dass Allahs Plan immer der beste ist."
+            },
+            {
+                icon: Handshake,
+                title: "Vergebung (Afw)",
+                content: "Anderen zu vergeben, auch wenn man im Recht ist, ist ein Zeichen großer Stärke und Frömmigkeit. Allah liebt diejenigen, die vergeben. Es reinigt das Herz von Groll und Hass."
+            },
+            {
+                icon: Scale,
+                title: "Gerechtigkeit (Adl)",
+                content: "Gerecht zu sein in allen Angelegenheiten, sei es im Handel, im Urteil oder im Umgang mit der Familie, ist eine grundlegende Forderung des Islam. Ungerechtigkeit ist eine der größten Sünden."
+            },
+             {
+                icon: UserCheck,
+                title: "Versprechen halten (Al-Wafa bil-Ahd)",
+                content: "Ein Versprechen im Islam ist ein bindender Vertrag. Das Einhalten von Versprechen und Abmachungen ist ein Zeichen von Vertrauenswürdigkeit und ein Merkmal eines wahren Gläubigen."
+            },
+            {
+                icon: Users,
+                title: "Respekt vor Älteren",
+                content: "Ältere Menschen in der Gesellschaft zu ehren und zu respektieren, ist eine wichtige islamische Lehre. Der Prophet (ﷺ) sagte: 'Wer unseren Jüngeren nicht barmherzig ist und unsere Älteren nicht ehrt, gehört nicht zu uns.'"
             }
         ],
         quote: "Der Prophet (ﷺ) sagte: „Die besten unter euch sind diejenigen mit dem besten Charakter und Benehmen.“ (Sahih al-Bukhari)"
@@ -90,6 +110,26 @@ const content = {
                 icon: Shield,
                 title: "Trust in Allah (Tawakkul)",
                 content: "Tawakkul means doing one's best and making all efforts, but leaving the outcome entirely in Allah's hands. It is the trust that Allah's plan is always the best."
+            },
+            {
+                icon: Handshake,
+                title: "Forgiveness (Afw)",
+                content: "Forgiving others, even when you are in the right, is a sign of great strength and piety. Allah loves those who forgive. It cleanses the heart of resentment and hatred."
+            },
+            {
+                icon: Scale,
+                title: "Justice (Adl)",
+                content: "Being just in all matters, whether in trade, judgment, or dealing with family, is a fundamental requirement of Islam. Injustice is one of the greatest sins."
+            },
+            {
+                icon: UserCheck,
+                title: "Keeping Promises (Al-Wafa bil-Ahd)",
+                content: "A promise in Islam is a binding contract. Fulfilling promises and agreements is a sign of trustworthiness and a characteristic of a true believer."
+            },
+            {
+                icon: Users,
+                title: "Respect for Elders",
+                content: "Honoring and respecting the elderly in society is an important Islamic teaching. The Prophet (ﷺ) said, 'He is not one of us who is not merciful to our young and respectful to our elders.'"
             }
         ],
         quote: "The Prophet (ﷺ) said, 'The best among you are those who have the best character and manners.' (Sahih al-Bukhari)"
