@@ -16,7 +16,7 @@ export interface SubscriptionPlan {
 // Get real-time updates for all subscription plans
 export const getSubscriptionPlans = (callback: (plans: SubscriptionPlan[]) => void) => {
   const plansCol = collection(db, 'subscriptionPlans');
-  const q = query(plansCol, orderBy('createdAt', 'desc'));
+  const q = query(plansCol, orderBy('createdAt', 'asc'));
 
   const unsubscribe = onSnapshot(q, (querySnapshot) => {
     const plans: SubscriptionPlan[] = [];

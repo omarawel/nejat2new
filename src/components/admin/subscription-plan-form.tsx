@@ -81,7 +81,7 @@ export function SubscriptionPlanForm({ plan, onFinished }: SubscriptionPlanFormP
             price: plan?.price || "",
             priceId: plan?.priceId || "",
             features: plan?.features.join('\n') || "",
-            aiRequestLimit: plan?.aiRequestLimit || 0,
+            aiRequestLimit: plan?.aiRequestLimit ?? 0,
             active: plan?.active ?? true,
         },
     });
