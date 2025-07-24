@@ -150,10 +150,10 @@ export default function CompassPage() {
 
 
     return (
-        <div className="flex-grow flex flex-col items-center justify-center bg-gray-900 text-white p-4">
+        <div className="flex-grow flex flex-col items-center justify-center bg-background text-foreground p-4">
             <div className="w-full max-w-sm text-center">
                 <div className="absolute top-4 left-4 flex items-center gap-2">
-                    <Button asChild variant="ghost" className="text-white hover:bg-white/10 hover:text-white">
+                    <Button asChild variant="ghost" className="text-foreground hover:bg-accent hover:text-accent-foreground">
                         <Link href="/">
                             <ArrowLeft className="mr-2 h-4 w-4" />
                             {c.backToFeatures}
@@ -162,7 +162,7 @@ export default function CompassPage() {
                 </div>
                 
                  <div className="absolute top-4 right-4">
-                    <Button asChild variant="outline" className="bg-white/10 text-white border-white/20 hover:bg-white/20">
+                    <Button asChild variant="outline" className="bg-background/50 hover:bg-accent hover:text-accent-foreground">
                         <Link href="/ar-qibla">
                             <Camera className="mr-2 h-4 w-4" />
                             {c.arQibla}
@@ -172,13 +172,13 @@ export default function CompassPage() {
 
                 <header className="my-8">
                     <h1 className="text-3xl font-bold">{c.pageTitle}</h1>
-                    <p className="text-gray-400 mt-1">{c.pageDescription}</p>
+                    <p className="text-muted-foreground mt-1">{c.pageDescription}</p>
                 </header>
 
                 <main className="flex-grow flex flex-col items-center justify-center gap-8">
                     {error ? (
-                         <Alert variant="destructive" className="bg-red-900/50 border-red-500 text-white">
-                            <AlertTriangle className="h-4 w-4 text-red-500" />
+                         <Alert variant="destructive">
+                            <AlertTriangle className="h-4 w-4" />
                             <AlertTitle>{status}</AlertTitle>
                             <AlertDescription>
                                 {error}
@@ -198,27 +198,27 @@ export default function CompassPage() {
                             
                             <div className="relative">
                                 {/* Top fixed pointer */}
-                                <div className="absolute -top-2 left-1/2 -translate-x-1/2 z-10">
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="hsl(var(--primary))">
-                                        <path d="M12 2L2 22h20L12 2z"/>
+                                <div className="absolute -top-3 left-1/2 -translate-x-1/2 z-10 text-primary">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M12 0L22 22H2L12 0z" transform="rotate(180 12 12)"/>
                                     </svg>
                                 </div>
                                 
                                 <div className="relative w-64 h-64 sm:w-80 sm:h-80 transition-transform duration-200" style={{ transform: `rotate(${-heading}deg)` }}>
                                     <svg viewBox="0 0 200 200" className="w-full h-full">
-                                        <circle cx="100" cy="100" r="98" fill="#1f1f1f" stroke="#444" strokeWidth="1" />
+                                        <circle cx="100" cy="100" r="98" fill="hsl(var(--muted))" stroke="hsl(var(--border))" strokeWidth="1" />
                                         {Array.from({ length: 120 }).map((_, i) => (
                                             <line
                                                 key={i}
                                                 x1="100" y1="2" x2="100"
                                                 y2={i % 30 === 0 ? "14" : (i % 5 === 0 ? "10" : "6")}
-                                                stroke="#888"
+                                                stroke="hsl(var(--muted-foreground))"
                                                 strokeWidth={i % 30 === 0 ? "1.5" : (i % 5 === 0 ? "1" : "0.5")}
                                                 transform={`rotate(${i * 3}, 100, 100)`}
                                             />
                                         ))}
                                     </svg>
-                                    <div className="absolute inset-0 flex items-center justify-center text-xl font-bold text-gray-400">
+                                    <div className="absolute inset-0 flex items-center justify-center text-lg font-bold text-muted-foreground">
                                         <span className="absolute top-4">N</span>
                                         <span className="absolute bottom-4">S</span>
                                         <span className="absolute left-4">W</span>
@@ -227,20 +227,21 @@ export default function CompassPage() {
                                     <div className="absolute w-full h-full" style={{ transform: `rotate(${qiblaDirection}deg)` }}>
                                         <div
                                             className="absolute top-1/2 left-1/2 -translate-y-[calc(50%_+_1rem)] -translate-x-1/2 text-primary"
+                                            title="Kaaba"
                                         >
-                                            <svg
+                                           <svg
                                                 xmlns="http://www.w3.org/2000/svg"
-                                                width="24"
-                                                height="24"
+                                                width="32"
+                                                height="32"
                                                 viewBox="0 0 24 24"
                                                 fill="none"
                                                 stroke="currentColor"
-                                                strokeWidth="2"
+                                                strokeWidth="1.5"
                                                 strokeLinecap="round"
                                                 strokeLinejoin="round"
                                             >
-                                                <path d="M12 2L2 22h20L12 2z" transform="rotate(180 12 12)"/>
-                                                <circle cx="12" cy="12" r="2" fill="currentColor"/>
+                                                <path d="M4 10.13V21a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-10.87M2 10.13l10 7.88L22 10.13M18.5 3.19 5.5 12.81"/>
+                                                <path d="M12 22V18"/>
                                             </svg>
                                         </div>
                                     </div>
