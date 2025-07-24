@@ -11,7 +11,7 @@ import { Badge } from "../ui/badge";
 
 const staticContent = {
     de: {
-        description: "Von präzisen Gebetszeiten und Qibla-Richtung bis hin zu interaktiven Lern-Tools wie dem Koran, Hadith-Sammlungen und KI-generierten Geschichten. Alles, was du für deine spirituelle Reise brauchst, in einer App.",
+        description: "Erkunde eine umfassende Suite von Tools für deine spirituelle Reise: präzise Gebetszeiten, Qibla-Kompass, Koran- und Hadith-Sammlungen, ein Auswendiglern-Werkzeug, einen Zakat-Rechner und KI-gestützte Funktionen wie einen Dua-Generator und einen Gelehrten, der deine Fragen beantwortet.",
         company: "Unternehmen",
         about: "Über uns",
         contact: "Kontakt",
@@ -24,7 +24,7 @@ const staticContent = {
         copyright: `© ${new Date().getFullYear()} Nejat Digital. Alle Rechte vorbehalten.`
     },
     en: {
-        description: "From precise prayer times and Qibla direction to interactive learning tools like the Quran, Hadith collections, and AI-generated stories. Everything you need for your spiritual journey, in one app.",
+        description: "Explore a comprehensive suite of tools for your spiritual journey: precise prayer times, Qibla compass, Quran and Hadith collections, a memorization tool, a Zakat calculator, and AI-powered features like a Dua generator and a scholar to answer your questions.",
         company: "Company",
         about: "About Us",
         contact: "Contact",
