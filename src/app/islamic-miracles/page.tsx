@@ -97,10 +97,10 @@ export default function IslamicMiraclesPage() {
         </h1>
         <p className="text-muted-foreground mt-2 text-lg max-w-2xl mx-auto">{c.description}</p>
       </header>
-      <Accordion type="single" collapsible className="w-full max-w-3xl mx-auto">
+      <Accordion type="single" collapsible className="w-full max-w-3xl mx-auto" defaultValue='item-0'>
         {c.miracles.map((item, index) => (
           <AccordionItem key={index} value={`item-${index}`}>
-            <AccordionTrigger className="text-xl text-left">{item.title}</AccordionTrigger>
+            <AccordionTrigger className="text-xl text-left hover:no-underline">{item.title}</AccordionTrigger>
             <AccordionContent className="text-base text-foreground/80 px-4">
               {item.story}
             </AccordionContent>
@@ -110,3 +110,5 @@ export default function IslamicMiraclesPage() {
     </div>
   );
 }
+
+    
