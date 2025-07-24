@@ -20,10 +20,15 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
 
 const adPlacements = [
     'homepage-top-banner',
+    'homepage-bottom',
     'homepage-sidebar',
     'quran-page-bottom',
     'hadith-page-bottom',
-    'feature-page-sidebar'
+    'feature-page-sidebar',
+    'feature-page-top-banner',
+    'feature-page-bottom',
+    'profile-page-sidebar',
+    'dashboard-page-banner',
 ];
 
 const content = {
@@ -88,11 +93,11 @@ const formSchema = z.object({
   imageUrl: z.string().url().optional().or(z.literal('')),
 }).refine(data => {
     if (data.imageSource === 'upload') return !!data.imageFile;
-    if (data.imageSource === 'url') return !!data.imageUrl;
+    if (data.imageSource === 'url') return !!data.imageUrl && data.imageUrl.length > 0;
     return false;
 }, {
     message: "Please provide a valid image file or URL.",
-    path: ['imageFile']
+    path: ['imageFile'] // You can choose where to show the error
 });
 
 
