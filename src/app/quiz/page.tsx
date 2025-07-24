@@ -3,10 +3,17 @@
 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { HelpCircle, ArrowLeft, BookOpen, User, Users } from 'lucide-react';
+import { HelpCircle, ArrowLeft, BookOpen, User, Users, Wand2, Loader2, AlertTriangle, Sparkles } from 'lucide-react';
 import { useLanguage } from '@/components/language-provider';
 import Link from 'next/link';
 import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import * as z from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { generateQuiz, type GenerateQuizOutput, type QuizQuestion } from '@/ai/flows/generate-quiz';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
 const quizTopics = {
     de: [
@@ -27,16 +34,38 @@ const content = {
         pageDescription: "Teste und erweitere dein Wissen über den Islam auf spielerische Weise.",
         backToFeatures: "Zurück zu den Funktionen",
         chooseTopic: "Wähle eine Kategorie, um zu beginnen:",
-        startQuiz: "Quiz starten"
+        startQuiz: "Quiz starten",
+        aiTitle: "KI-Quiz-Generator",
+        aiDescription: "Gib ein beliebiges Thema ein und lass die KI ein Quiz für dich erstellen.",
+        proFeature: "Pro-Funktion",
+        topicLabel: "Thema",
+        topicPlaceholder: "z.B. Das Leben von Prophet Musa",
+        generateButton: "Quiz generieren",
+        generatingButton: "Wird generiert...",
+        aiError: "Fehler beim Generieren des Quiz.",
+        quizResults: "Dein KI-generiertes Quiz"
     },
     en: {
         pageTitle: "Islamic Quiz",
         pageDescription: "Test and expand your knowledge of Islam in a fun way.",
         backToFeatures: "Back to Features",
         chooseTopic: "Choose a category to start:",
-        startQuiz: "Start Quiz"
+        startQuiz: "Start Quiz",
+        aiTitle: "AI Quiz Generator",
+        aiDescription: "Enter any topic and let the AI create a quiz for you.",
+        proFeature: "Pro Feature",
+        topicLabel: "Topic",
+        topicPlaceholder: "e.g., The life of Prophet Musa",
+        generateButton: "Generate Quiz",
+        generatingButton: "Generating...",
+        aiError: "Error generating quiz.",
+        quizResults: "Your AI-Generated Quiz"
     }
 }
+
+const aiFormSchema = z.object({
+  topic: z.string().min(3, "Topic must be at least 3 characters long."),
+});
 
 
 export default function QuizPage() {
@@ -45,27 +74,54 @@ export default function QuizPage() {
   const topics = quizTopics[language] || quizTopics.de;
   const [selectedTopic, setSelectedTopic] = useState<string | null>(null);
 
+  const [isLoading, setIsLoading] = useState(false);
+  const [aiQuiz, setAiQuiz] = useState<QuizQuestion[] | null>(null);
+  const [aiError, setAiError] = useState<string | null>(null);
+
+  const form = useForm<z.infer<typeof aiFormSchema>>({
+    resolver: zodResolver(aiFormSchema),
+    defaultValues: {
+      topic: "",
+    },
+  });
+
+  const onAiSubmit = async (data: z.infer<typeof aiFormSchema>) => {
+    setIsLoading(true);
+    setAiError(null);
+    setAiQuiz(null);
+    try {
+        const result = await generateQuiz({ topic: data.topic, count: 5 });
+        setAiQuiz(result.questions);
+    } catch (e) {
+        console.error(e);
+        setAiError(c.aiError);
+    } finally {
+        setIsLoading(false);
+    }
+  }
+
   return (
-    <div className="container mx-auto px-4 py-8 flex-grow flex flex-col items-center justify-center">
-        <div className="w-full max-w-md">
-            <Button asChild variant="ghost" className="mb-8">
-                <Link href="/">
-                    <ArrowLeft className="mr-2 h-4 w-4" />
-                    {c.backToFeatures}
-                </Link>
-            </Button>
-            <Card className="text-center">
+    <div className="container mx-auto px-4 py-8">
+        <Button asChild variant="ghost" className="mb-8">
+            <Link href="/">
+                <ArrowLeft className="mr-2 h-4 w-4" />
+                {c.backToFeatures}
+            </Link>
+        </Button>
+        <header className="text-center mb-12">
+            <h1 className="text-4xl font-bold tracking-tight text-primary flex items-center justify-center gap-3">
+                <HelpCircle className="h-10 w-10" />
+                {c.pageTitle}
+            </h1>
+            <p className="text-muted-foreground mt-2 text-lg">{c.pageDescription}</p>
+        </header>
+
+        <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+             <Card>
                 <CardHeader>
-                    <div className="flex justify-center mb-4">
-                        <div className="p-4 bg-primary/10 rounded-full">
-                            <HelpCircle className="h-12 w-12 text-primary" />
-                        </div>
-                    </div>
-                    <CardTitle className="text-3xl">{c.pageTitle}</CardTitle>
-                    <CardDescription className="text-lg">{c.pageDescription}</CardDescription>
+                    <CardTitle>{c.chooseTopic}</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                    <h3 className="font-semibold">{c.chooseTopic}</h3>
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                         {topics.map(topic => {
                             const Icon = topic.icon;
@@ -89,7 +145,82 @@ export default function QuizPage() {
                     </Button>
                 </CardFooter>
             </Card>
+
+            <Card className="border-primary/50 shadow-lg">
+                 <CardHeader>
+                    <CardTitle className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                            <Wand2 />
+                            {c.aiTitle}
+                        </div>
+                        <span className="text-sm font-semibold bg-primary text-primary-foreground px-2 py-1 rounded-full">{c.proFeature}</span>
+                    </CardTitle>
+                    <CardDescription>{c.aiDescription}</CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <Form {...form}>
+                        <form onSubmit={form.handleSubmit(onAiSubmit)} className="space-y-4">
+                            <FormField
+                                control={form.control}
+                                name="topic"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>{c.topicLabel}</FormLabel>
+                                        <FormControl>
+                                            <Input placeholder={c.topicPlaceholder} {...field} />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <Button type="submit" className="w-full" disabled={isLoading}>
+                                {isLoading ? (
+                                    <>
+                                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                        {c.generatingButton}
+                                    </>
+                                ) : (
+                                    c.generateButton
+                                )}
+                            </Button>
+                        </form>
+                    </Form>
+                     {aiError && (
+                        <Alert variant="destructive" className="mt-4">
+                            <AlertTriangle className="h-4 w-4" />
+                            <AlertTitle>Error</AlertTitle>
+                            <AlertDescription>{aiError}</AlertDescription>
+                        </Alert>
+                    )}
+                </CardContent>
+            </Card>
         </div>
+
+        {aiQuiz && aiQuiz.length > 0 && (
+            <div className="max-w-4xl mx-auto mt-8">
+                <Card>
+                    <CardHeader>
+                        <CardTitle className="flex items-center gap-2">
+                           <Sparkles /> {c.quizResults}
+                        </CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                        {aiQuiz.map((q, index) => (
+                            <div key={index} className="p-4 border rounded-lg">
+                                <p className="font-semibold">{index + 1}. {q.question}</p>
+                                <div className="mt-2 space-y-2">
+                                    {q.options.map(opt => (
+                                        <Button key={opt} variant="outline" className="w-full justify-start">{opt}</Button>
+                                    ))}
+                                </div>
+                                {/* In a real quiz, you would handle answers. For now, just showing the correct one. */}
+                                <p className="text-sm text-green-600 mt-2">Correct Answer: {q.correctAnswer}</p>
+                            </div>
+                        ))}
+                    </CardContent>
+                </Card>
+            </div>
+        )}
     </div>
   );
 }
