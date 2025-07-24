@@ -2,6 +2,8 @@
 import { db } from './firebase';
 import { doc, getDoc, setDoc, Timestamp, increment } from 'firebase/firestore';
 import { getSubscriptionPlans, type SubscriptionPlan } from './subscriptions';
+import { isAdmin } from './admin';
+
 
 export interface UserUsage {
   aiRequestCount: number;
@@ -63,6 +65,10 @@ export const getUserUsage = async (userId: string): Promise<UserUsage> => {
 
 // This is the main function to check and update a user's quota
 export const checkAndDecrementQuota = async (userId: string | null): Promise<{ success: boolean; quota: UserQuota }> => {
+    if (userId && await isAdmin(userId)) {
+        return { success: true, quota: { limit: Infinity, remaining: Infinity } };
+    }
+    
     if (!userId) {
         // Not logged in, check free tier quota from local storage or session
         // For simplicity, we'll give 3 requests to non-logged-in users.
@@ -123,6 +129,11 @@ export const getUserQuota = async (userId: string | null): Promise<UserQuota> =>
         let sessionRequests = parseInt(sessionStorage.getItem('freeRequests') || '0', 10);
         return { limit: FREE_TIER_LIMIT, remaining: Math.max(0, FREE_TIER_LIMIT - sessionRequests) };
     }
+
+    if (await isAdmin(userId)) {
+        return { limit: Infinity, remaining: Infinity };
+    }
+
     const allPlans = await getPlans();
     const subscription = await getUserSubscription(userId);
     const usage = await getUserUsage(userId);
@@ -146,3 +157,27 @@ export const getUserQuota = async (userId: string | null): Promise<UserQuota> =>
 
     return { limit, remaining: Math.max(0, limit - currentCount) };
 }
+
+// Check for specific feature access
+export const canAccessFeature = async (userId: string | null, featureKey: 'memorization_tool' | 'quran_offline'): Promise<boolean> => {
+    if (!userId) return false;
+    if (await isAdmin(userId)) return true;
+
+    const subscription = await getUserSubscription(userId);
+    if (!subscription || subscription.status !== 'active') return false;
+    
+    const allPlans = await getPlans();
+    const currentPlan = allPlans.find(p => p.id === subscription.planId);
+
+    if (!currentPlan) return false;
+
+    // This logic needs to align with your `planFeatures` in `subscribe/page.tsx`
+    switch(featureKey) {
+        case 'memorization_tool':
+            return currentPlan.id === 'pro' || currentPlan.id === 'patron';
+        case 'quran_offline':
+             return currentPlan.id === 'pro' || currentPlan.id === 'patron';
+        default:
+            return false;
+    }
+};

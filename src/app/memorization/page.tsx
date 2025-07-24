@@ -14,7 +14,7 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { addFavorite } from '@/lib/favorites';
 import { useToast } from '@/hooks/use-toast';
 import Link from 'next/link';
-import { getUserSubscription } from '@/lib/user-usage';
+import { canAccessFeature } from '@/lib/user-usage';
 import { useSearchParams } from 'next/navigation';
 
 
@@ -68,8 +68,8 @@ function MemorizationTool() {
   const searchParams = useSearchParams();
 
   const [user, authLoading] = useAuthState(auth);
-  const [hasSubscription, setHasSubscription] = useState(false);
-  const [loadingSubscription, setLoadingSubscription] = useState(true);
+  const [hasAccess, setHasAccess] = useState(false);
+  const [loadingAccess, setLoadingAccess] = useState(true);
 
   const [inputText, setInputText] = useState('');
   const [learningText, setLearningText] = useState('');
@@ -90,15 +90,11 @@ function MemorizationTool() {
   }, [searchParams]);
 
   useEffect(() => {
-      const checkSubscription = async () => {
-          if (user) {
-              const sub = await getUserSubscription(user.uid);
-              setHasSubscription(sub?.status === 'active' && (sub.planId === 'pro' || sub.planId === 'patron'));
-          }
-          setLoadingSubscription(false);
-      }
       if (!authLoading) {
-        checkSubscription();
+        canAccessFeature(user?.uid || null, 'memorization_tool').then(access => {
+            setHasAccess(access);
+            setLoadingAccess(false);
+        });
       }
   }, [user, authLoading]);
 
@@ -167,7 +163,7 @@ function MemorizationTool() {
     }
   }, [audioUrl, playingAudio]);
 
-  if (authLoading || loadingSubscription) {
+  if (authLoading || loadingAccess) {
       return (
           <div className="flex-grow flex items-center justify-center">
               <Loader2 className="h-8 w-8 animate-spin" />
@@ -192,7 +188,7 @@ function MemorizationTool() {
        )
   }
   
-  if (!hasSubscription) {
+  if (!hasAccess) {
        return (
         <div className="container mx-auto px-4 py-8 flex-grow flex items-center justify-center">
             <Card className="max-w-md text-center">

@@ -33,6 +33,7 @@ import { useAuthState } from "react-firebase-hooks/auth"
 import { auth } from "@/lib/firebase"
 import { useToast } from "@/hooks/use-toast"
 import { addFavorite } from "@/lib/favorites"
+import { canAccessFeature } from "@/lib/user-usage"
 
 
 interface Surah {
@@ -365,8 +366,18 @@ export default function QuranPage() {
   const [isDownloading, setIsDownloading] = useState(false);
   const [downloadProgress, setDownloadProgress] = useState(0);
 
-  const [user] = useAuthState(auth);
+  const [user, authLoading] = useAuthState(auth);
+  const [hasAccess, setHasAccess] = useState(false);
+  const [loadingAccess, setLoadingAccess] = useState(true);
 
+  useEffect(() => {
+    if (!authLoading) {
+      canAccessFeature(user?.uid || null, 'quran_offline').then(access => {
+        setHasAccess(access);
+        setLoadingAccess(false);
+      });
+    }
+  }, [user, authLoading]);
 
   const checkDownloadStatus = useCallback(async () => {
     const status = await isQuranDownloaded();
@@ -526,7 +537,8 @@ export default function QuranPage() {
             </CardTitle>
         </CardHeader>
         <CardContent>
-             {user ? (
+            {loadingAccess ? <Loader2 className="h-5 w-5 animate-spin" /> :
+             hasAccess ? (
                 isDownloading ? (
                     <div className="space-y-2">
                         <p>{c.downloadingQuran}</p>
