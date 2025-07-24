@@ -7,6 +7,7 @@ import { FacebookIcon, InstagramIcon, TwitterIcon, YouTubeIcon, XIcon, TikTokIco
 import { useEffect, useState } from "react";
 import { getFooterContentOnce, type FooterContent, type SocialLink } from "@/lib/footer";
 import { Skeleton } from "../ui/skeleton";
+import { Badge } from "../ui/badge";
 
 const staticContent = {
     de: {
@@ -80,7 +81,10 @@ export function Footer() {
             <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
                     <div className="md:col-span-2">
-                        <h3 className="text-2xl font-bold mb-2">Nejat Pro</h3>
+                        <div className="flex items-center gap-2 mb-2">
+                            <h3 className="text-2xl font-bold">Nejat</h3>
+                            <Badge variant="default">Pro</Badge>
+                        </div>
                         <p className="text-muted-foreground max-w-md">{c.description}</p>
                     </div>
 
