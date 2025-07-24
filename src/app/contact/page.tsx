@@ -14,6 +14,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { useState } from "react";
+import { addContactSubmission } from "@/lib/contact-submissions";
 
 const formSchema = z.object({
   name: z.string().min(2, { message: "Name must be at least 2 characters." }),
@@ -81,18 +82,23 @@ export default function ContactPage() {
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
         setIsLoading(true);
-        // Simulate an API call
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        
-        console.log("Form submitted:", values);
-
-        toast({
-            title: c.successTitle,
-            description: c.successDescription,
-        });
-        
-        form.reset();
-        setIsLoading(false);
+        try {
+            await addContactSubmission(values);
+            toast({
+                title: c.successTitle,
+                description: c.successDescription,
+            });
+            form.reset();
+        } catch (error) {
+             toast({
+                variant: 'destructive',
+                title: c.errorTitle,
+                description: c.errorDescription,
+            });
+            console.error(error);
+        } finally {
+            setIsLoading(false);
+        }
     }
 
     return (

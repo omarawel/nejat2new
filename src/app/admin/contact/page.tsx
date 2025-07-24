@@ -4,38 +4,74 @@
 import { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useRouter } from 'next/navigation';
-import { auth, db } from '@/lib/firebase';
+import { auth } from '@/lib/firebase';
 import { Button } from '@/components/ui/button';
-import { Loader2, ArrowLeft, Mail, MessageSquare } from 'lucide-react';
+import { Loader2, ArrowLeft, Mail, MessageSquare, Trash2, Eye, EyeOff } from 'lucide-react';
 import { useLanguage } from '@/components/language-provider';
 import Link from 'next/link';
 import { isAdmin } from '@/lib/admin';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
-
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { getSubmissions, updateSubmission, deleteSubmission, type ContactSubmission } from '@/lib/contact-submissions';
+import { useToast } from '@/hooks/use-toast';
+import { Badge } from '@/components/ui/badge';
+import { format } from 'date-fns';
+import { de, enUS } from 'date-fns/locale';
 
 const content = {
     de: {
         title: "Kontakt & Feedback",
-        description: "Verwalte Nutzeranfragen und sende Nachrichten.",
+        description: "Verwalte Nutzeranfragen und sieh dir Feedback an.",
         backToDashboard: "Zurück zum Admin Dashboard",
         accessDenied: "Zugriff verweigert",
         noAccess: "Du hast keine Berechtigung, auf diese Seite zuzugreifen.",
         goHome: "Zur Startseite",
-        loading: "Lade...",
-        inDevelopment: "Funktion in Entwicklung",
-        inDevelopmentDesc: "Diese Funktion wird derzeit entwickelt. In Kürze kannst du hier Nutzeranfragen einsehen und direkt mit Nutzern kommunizieren.",
+        loading: "Nachrichten werden geladen...",
+        date: "Datum",
+        from: "Von",
+        subject: "Betreff",
+        status: "Status",
+        actions: "Aktionen",
+        noSubmissions: "Keine Einsendungen gefunden.",
+        unread: "Ungelesen",
+        read: "Gelesen",
+        markAsRead: "Als gelesen markieren",
+        markAsUnread: "Als ungelesen markieren",
+        delete: "Löschen",
+        confirmDeleteTitle: "Bist du sicher?",
+        confirmDeleteDesc: "Diese Aktion kann nicht rückgängig gemacht werden. Dadurch wird die Nachricht dauerhaft gelöscht.",
+        cancel: "Abbrechen",
+        confirm: "Bestätigen",
+        submissionDeleted: "Nachricht gelöscht.",
+        errorDeleting: "Fehler beim Löschen der Nachricht.",
+        viewMessage: "Nachricht ansehen"
     },
     en: {
         title: "Contact & Feedback",
-        description: "Manage user inquiries and send messages.",
+        description: "Manage user inquiries and view feedback.",
         backToDashboard: "Back to Admin Dashboard",
         accessDenied: "Access Denied",
         noAccess: "You do not have permission to access this page.",
         goHome: "Go to Homepage",
-        loading: "Loading...",
-        inDevelopment: "Feature in Development",
-        inDevelopmentDesc: "This feature is currently under development. Soon, you will be able to view user inquiries and communicate directly with users here.",
+        loading: "Loading messages...",
+        date: "Date",
+        from: "From",
+        subject: "Subject",
+        status: "Status",
+        actions: "Actions",
+        noSubmissions: "No submissions found.",
+        unread: "Unread",
+        read: "Read",
+        markAsRead: "Mark as read",
+        markAsUnread: "Mark as unread",
+        delete: "Delete",
+        confirmDeleteTitle: "Are you sure?",
+        confirmDeleteDesc: "This action cannot be undone. This will permanently delete the message.",
+        cancel: "Cancel",
+        confirm: "Confirm",
+        submissionDeleted: "Message deleted.",
+        errorDeleting: "Error deleting message.",
+        viewMessage: "View Message"
     }
 };
 
@@ -43,10 +79,12 @@ export default function AdminContactPage() {
     const { language } = useLanguage();
     const c = content[language];
     const router = useRouter();
+    const { toast } = useToast();
 
     const [user, loadingAuth] = useAuthState(auth);
     const [userIsAdmin, setUserIsAdmin] = useState(false);
     const [loading, setLoading] = useState(true);
+    const [submissions, setSubmissions] = useState<ContactSubmission[]>([]);
     
     useEffect(() => {
         if (loadingAuth) return;
@@ -57,10 +95,39 @@ export default function AdminContactPage() {
 
         isAdmin(user.uid).then(isAdm => {
             setUserIsAdmin(isAdm);
-            setLoading(false);
+            if (isAdm) {
+                 const unsubscribe = getSubmissions((submissions) => {
+                    setSubmissions(submissions);
+                    setLoading(false);
+                });
+                return () => unsubscribe();
+            } else {
+                setLoading(false);
+            }
         });
     }, [user, loadingAuth, router]);
 
+    const handleToggleRead = async (submission: ContactSubmission) => {
+        try {
+            await updateSubmission(submission.id!, { isRead: !submission.isRead });
+        } catch (e) {
+            console.error(e);
+        }
+    }
+    
+    const handleDelete = async (submissionId: string) => {
+        try {
+            await deleteSubmission(submissionId);
+            toast({ title: c.submissionDeleted });
+        } catch(e) {
+            console.error(e);
+            toast({
+                variant: 'destructive',
+                title: 'Error',
+                description: c.errorDeleting
+            })
+        }
+    }
 
     if (loadingAuth || loading) {
         return (
@@ -106,15 +173,54 @@ export default function AdminContactPage() {
                 </div>
             </header>
 
-            <Card className="max-w-2xl mx-auto">
-                <CardContent className="p-6">
-                     <Alert>
-                        <Mail className="h-4 w-4" />
-                        <AlertTitle>{c.inDevelopment}</AlertTitle>
-                        <AlertDescription>
-                          {c.inDevelopmentDesc}
-                        </AlertDescription>
-                    </Alert>
+            <Card>
+                <CardContent className="p-0">
+                    <Table>
+                        <TableHeader>
+                            <TableRow>
+                                <TableHead className="w-[150px]">{c.date}</TableHead>
+                                <TableHead className="w-[200px]">{c.from}</TableHead>
+                                <TableHead>{c.subject}</TableHead>
+                                <TableHead className="w-[100px]">{c.status}</TableHead>
+                                <TableHead className="text-right w-[150px]">{c.actions}</TableHead>
+                            </TableRow>
+                        </TableHeader>
+                         <TableBody>
+                            {submissions.length > 0 ? (
+                                submissions.map(sub => (
+                                    <TableRow key={sub.id} className={!sub.isRead ? 'bg-accent/50' : ''}>
+                                        <TableCell>
+                                            {format(sub.createdAt.toDate(), 'PP', { locale: language === 'de' ? de : enUS })}
+                                        </TableCell>
+                                        <TableCell className="font-medium">{sub.name}<br/><span className="text-xs text-muted-foreground">{sub.email}</span></TableCell>
+                                        <TableCell>{sub.subject}</TableCell>
+                                        <TableCell>
+                                            <Badge variant={sub.isRead ? 'secondary' : 'default'}>
+                                                {sub.isRead ? c.read : c.unread}
+                                            </Badge>
+                                        </TableCell>
+                                        <TableCell className="text-right">
+                                             <Button variant="ghost" size="icon" title={c.viewMessage}>
+                                                <Mail className="h-4 w-4" />
+                                            </Button>
+                                            <Button variant="ghost" size="icon" onClick={() => handleToggleRead(sub)} title={sub.isRead ? c.markAsUnread : c.markAsRead}>
+                                                {sub.isRead ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                                            </Button>
+                                            <Button variant="ghost" size="icon" title={c.delete}>
+                                                <Trash2 className="h-4 w-4 text-destructive" />
+                                            </Button>
+                                        </TableCell>
+                                    </TableRow>
+                                ))
+                            ) : (
+                                <TableRow>
+                                    <TableCell colSpan={5} className="h-24 text-center">
+                                        {c.noSubmissions}
+                                    </TableCell>
+                                </TableRow>
+                            )}
+                        </TableBody>
+                    </Table>
                 </CardContent>
             </Card>
         </div>
