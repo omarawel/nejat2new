@@ -3,11 +3,17 @@
 
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, User, Target, ClipboardList, Wand2 } from 'lucide-react';
+import { ArrowLeft, User, Target, ClipboardList, Wand2, Loader2 } from 'lucide-react';
 import { useLanguage } from '@/components/language-provider';
 import Link from 'next/link';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+import { useState, useEffect } from 'react';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { auth } from '@/lib/firebase';
+import { checkAndDecrementQuota, getUserQuota, UserQuota } from '@/lib/user-usage';
+import { UpgradeInlineAlert } from '@/components/upgrade-inline-alert';
+
 
 const content = {
     de: {
@@ -20,6 +26,7 @@ const content = {
         goalsLabel: "Meine Lernziele",
         goalsPlaceholder: "z.B. Ich möchte das Gebet lernen, die Geschichte der Propheten verstehen, mein Wissen über Fiqh vertiefen...",
         generateButton: "Meinen Lernpfad erstellen",
+        generatingButton: "Wird erstellt...",
         resultTitle: "Dein personalisierter Lernpfad",
         resultDescription: "Die KI hat basierend auf deinen Eingaben den folgenden Lernpfad erstellt:",
         step: "Schritt"
@@ -34,6 +41,7 @@ const content = {
         goalsLabel: "My Learning Goals",
         goalsPlaceholder: "e.g., I want to learn the prayer, understand the stories of the prophets, deepen my knowledge of Fiqh...",
         generateButton: "Create My Learning Path",
+        generatingButton: "Generating...",
         resultTitle: "Your Personalized Learning Path",
         resultDescription: "Based on your input, the AI has created the following learning path:",
         step: "Step"
@@ -44,6 +52,33 @@ const content = {
 export default function LearningPathPage() {
   const { language } = useLanguage();
   const c = content[language] || content.de;
+
+  const [user, authLoading] = useAuthState(auth);
+  const [quota, setQuota] = useState<UserQuota | null>(null);
+
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    if (!authLoading) {
+        getUserQuota(user?.uid || null).then(setQuota);
+    }
+  }, [user, authLoading]);
+  
+  const canSubmit = quota ? quota.remaining > 0 : true;
+
+  const handleGenerate = async () => {
+      setIsLoading(true);
+      const quotaResult = await checkAndDecrementQuota(user?.uid || null);
+       if (!quotaResult.success) {
+            setQuota(quotaResult.quota);
+            setIsLoading(false);
+            return;
+        }
+      setQuota(quotaResult.quota);
+      // AI generation logic would go here
+      setTimeout(() => setIsLoading(false), 2000); // Simulate AI call
+  }
+
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -74,11 +109,21 @@ export default function LearningPathPage() {
                         <label htmlFor="goals" className="flex items-center gap-2 font-medium"><Target /> {c.goalsLabel}</label>
                         <Textarea id="goals" placeholder={c.goalsPlaceholder} rows={5} />
                     </div>
+                    <UpgradeInlineAlert quota={quota} isLoggedIn={!!user} />
                 </CardContent>
                 <CardFooter>
-                     <Button className="w-full" disabled>
-                        <Wand2 className="mr-2 h-4 w-4" />
-                        {c.generateButton}
+                     <Button className="w-full" disabled={isLoading || !canSubmit} onClick={handleGenerate}>
+                        {isLoading ? (
+                           <>
+                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                            {c.generatingButton}
+                           </>
+                        ) : (
+                           <>
+                             <Wand2 className="mr-2 h-4 w-4" />
+                             {c.generateButton}
+                           </>
+                        )}
                     </Button>
                 </CardFooter>
             </Card>
@@ -89,7 +134,13 @@ export default function LearningPathPage() {
                     <CardDescription>{c.resultDescription}</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                    <p className="text-sm text-center text-muted-foreground">Die Ergebnisse der KI werden hier angezeigt.</p>
+                     {isLoading ? (
+                        <div className="flex justify-center items-center h-full">
+                            <Loader2 className="h-8 w-8 animate-spin text-primary"/>
+                        </div>
+                    ) : (
+                        <p className="text-sm text-center text-muted-foreground">Die Ergebnisse der KI werden hier angezeigt.</p>
+                    )}
                 </CardContent>
             </Card>
         </div>

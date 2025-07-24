@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Calendar, ArrowLeft, Loader2, AlertTriangle, Wand2, CalendarCheck2 } from 'lucide-react';
 import { useLanguage } from '@/components/language-provider';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -16,6 +16,11 @@ import { Calendar as CalendarComponent } from '@/components/ui/calendar';
 import { format } from 'date-fns';
 import { getHijriDate } from '@/ai/flows/get-hijri-date';
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { auth } from '@/lib/firebase';
+import { checkAndDecrementQuota, getUserQuota, UserQuota } from '@/lib/user-usage';
+import { UpgradeInlineAlert } from '@/components/upgrade-inline-alert';
+
 
 const content = {
     de: {
@@ -52,10 +57,19 @@ export default function HijriConverterPage() {
     const c = content[language];
     const { toast } = useToast();
 
+    const [user, authLoading] = useAuthState(auth);
+    const [quota, setQuota] = useState<UserQuota | null>(null);
+
     const [gregorianDate, setGregorianDate] = useState<Date | undefined>(new Date());
     const [hijriResult, setHijriResult] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
+
+    useEffect(() => {
+        if (!authLoading) {
+            getUserQuota(user?.uid || null).then(setQuota);
+        }
+    }, [user, authLoading]);
     
     const handleConvert = async () => {
         if (!gregorianDate) return;
@@ -63,6 +77,14 @@ export default function HijriConverterPage() {
         setIsLoading(true);
         setError(null);
         setHijriResult(null);
+
+        const quotaResult = await checkAndDecrementQuota(user?.uid || null);
+        if (!quotaResult.success) {
+            setQuota(quotaResult.quota);
+            setIsLoading(false);
+            return;
+        }
+        setQuota(quotaResult.quota);
 
         try {
             const dateString = format(gregorianDate, 'yyyy-MM-dd');
@@ -81,6 +103,8 @@ export default function HijriConverterPage() {
         }
     }
     
+    const canSubmit = quota ? quota.remaining > 0 : true;
+
     return (
         <div className="container mx-auto px-4 py-8 flex-grow flex flex-col items-center justify-center">
             <div className="w-full max-w-md">
@@ -118,7 +142,8 @@ export default function HijriConverterPage() {
                                 </PopoverContent>
                             </Popover>
                         </div>
-                        <Button className="w-full" onClick={handleConvert} disabled={!gregorianDate || isLoading}>
+                        <UpgradeInlineAlert quota={quota} isLoggedIn={!!user} />
+                        <Button className="w-full" onClick={handleConvert} disabled={!gregorianDate || isLoading || !canSubmit}>
                             {isLoading ? (
                                 <>
                                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
