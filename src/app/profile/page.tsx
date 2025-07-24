@@ -3,7 +3,7 @@
 
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '@/lib/firebase';
-import { Loader2, UserCircle, KeyRound, Save, Mail, Palette } from 'lucide-react';
+import { Loader2, UserCircle, KeyRound, Save, Mail, Palette, Star, LifeBuoy } from 'lucide-react';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -15,6 +15,7 @@ import { useToast } from '@/hooks/use-toast';
 import { useRouter } from 'next/navigation';
 import { useTheme } from '@/components/theme-provider';
 import { cn } from '@/lib/utils';
+import Link from 'next/link';
 
 const content = {
     de: {
@@ -49,7 +50,13 @@ const content = {
             rose: "Rose",
             blue: "Blau",
             black: "Schwarz",
-        }
+        },
+        manageSubscription: "Abonnement verwalten",
+        subscriptionDescription: "Zeige deinen aktuellen Plan an, ändere dein Abonnement oder kündige es.",
+        manageSubButton: "Abonnement verwalten",
+        contactSupport: "Support kontaktieren",
+        contactSupportDescription: "Brauchst du Hilfe? Wende dich an unser Support-Team.",
+        contactButton: "Zur Kontaktseite"
     },
     en: {
         title: "Your Profile",
@@ -83,7 +90,13 @@ const content = {
             rose: "Rose",
             blue: "Blue",
             black: "Black",
-        }
+        },
+        manageSubscription: "Manage Subscription",
+        subscriptionDescription: "View your current plan, change your subscription, or cancel it.",
+        manageSubButton: "Manage Subscription",
+        contactSupport: "Contact Support",
+        contactSupportDescription: "Need help? Contact our support team.",
+        contactButton: "Go to Contact Page"
     }
 }
 
@@ -255,6 +268,30 @@ export default function ProfilePage() {
                          <Button onClick={handleThemeSave} disabled={selectedTheme === theme}>
                             <Save className="mr-2 h-4 w-4" />
                             {c.saveTheme}
+                        </Button>
+                    </CardContent>
+                </Card>
+
+                <Card>
+                    <CardHeader>
+                        <CardTitle className="flex items-center gap-2"><Star /> {c.manageSubscription}</CardTitle>
+                        <CardDescription>{c.subscriptionDescription}</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                        <Button asChild>
+                            <Link href="/subscribe">{c.manageSubButton}</Link>
+                        </Button>
+                    </CardContent>
+                </Card>
+
+                <Card>
+                    <CardHeader>
+                        <CardTitle className="flex items-center gap-2"><LifeBuoy /> {c.contactSupport}</CardTitle>
+                        <CardDescription>{c.contactSupportDescription}</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                        <Button asChild variant="outline">
+                            <Link href="/contact">{c.contactButton}</Link>
                         </Button>
                     </CardContent>
                 </Card>
