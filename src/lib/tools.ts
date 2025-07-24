@@ -53,7 +53,7 @@ export const allTools = [
     { key: "travel_etiquette", icon: "✈️", de: "Reise-Etikette", en: "Travel Etiquette", href: "/travel-etiquette" },
     { key: "sahaba", icon: "👥", de: "Sahaba", en: "Sahaba", href: "/sahaba" },
     { key: "donations", icon: "💸", de: "Spenden", en: "Donations", href: "/donations" },
-    { key: "support", icon: "❤️", de: "Diese Plattform unterstützen", en: "Support This Platform", href: "/subscribe" },
+    { key: "support", icon: "❤️", de: "Plattform unterstützen", en: "Support Platform", href: "/subscribe" },
     { key: "tasbih_counter", icon: "📿", de: "Tasbih Zähler", en: "Tasbih Counter", href: "/tasbih-counter" },
     { key: "janazah", icon: "⚰️", de: "Todesfall (Janazah)", en: "Death (Janazah)", href: "/janazah" },
     { key: "dreams_in_islam", icon: "💤", de: "Träume im Islam", en: "Dreams in Islam", href: "/dreams-in-islam" },
