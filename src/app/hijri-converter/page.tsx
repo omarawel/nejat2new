@@ -1,163 +1,135 @@
+import React, { useState } from 'react';
+import { DateObject } from 'react-date-object';
+import islamic from 'react-date-object/calendars/islamic';
+import islamic_ar from 'react-date-object/locales/islamic_ar';
 
-"use client"
+const HijriConverterPage: React.FC = () => {
+  const [gregorianDate, setGregorianDate] = useState('');
+  const [hijriDate, setHijriDate] = useState('');
+  const [convertedDate, setConvertedDate] = useState('');
+  const [isGregorianInput, setIsGregorianInput] = useState(true);
 
-import { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Calendar } from '@/components/ui/calendar';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { CalendarIcon, ArrowLeft, Loader2 } from 'lucide-react';
-import { format } from 'date-fns';
-import { useLanguage } from '@/components/language-provider';
-import { cn } from '@/lib/utils';
-import { de, enUS } from 'date-fns/locale';
-import Link from 'next/link';
-import { getHijriDate } from '@/ai/flows/get-hijri-date';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+  const handleGregorianInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setGregorianDate(event.target.value);
+    setHijriDate(''); // Clear Hijri input when Gregorian changes
+    setConvertedDate('');
+    setIsGregorianInput(true);
+  };
 
+  const handleHijriInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setHijriDate(event.target.value);
+    setGregorianDate(''); // Clear Gregorian input when Hijri changes
+    setConvertedDate('');
+    setIsGregorianInput(false);
+  };
 
-const content = {
-    de: {
-        title: "Hijri-Kalender Konverter",
-        description: "Wandle Daten zwischen dem gregorianischen und dem islamischen Kalender um.",
-        backToFeatures: "Zurück zu den Funktionen",
-        gregorianToHijri: "Gregorianisch zu Hijri",
-        selectDate: "Wähle ein Datum",
-        result: "Ergebnis",
-        gregorianDate: "Gregorianisches Datum",
-        hijriDate: "Hijri-Datum",
-        errorTitle: "Fehler",
-        errorDescription: "Das Hijri-Datum konnte nicht berechnet werden. Bitte versuche es später erneut.",
-        calculating: "Berechne...",
-    },
-    en: {
-        title: "Hijri Calendar Converter",
-        description: "Convert dates between the Gregorian and Islamic calendars.",
-        backToFeatures: "Back to Features",
-        gregorianToHijri: "Gregorian to Hijri",
-        selectDate: "Select a date",
-        result: "Result",
-        gregorianDate: "Gregorian Date",
-        hijriDate: "Hijri Date",
-        errorTitle: "Error",
-        errorDescription: "Could not calculate the Hijri date. Please try again later.",
-        calculating: "Calculating...",
+  const convertDate = () => {
+    if (isGregorianInput && gregorianDate) {
+      try {
+        const date = new DateObject(gregorianDate);
+        const hijri = date.convert(islamic, islamic_ar);
+        setConvertedDate(`Hijri: ${hijri.format('YYYY/MM/DD')}`);
+      } catch (error) {
+        setConvertedDate('Invalid Gregorian date');
+      }
+    } else if (!isGregorianInput && hijriDate) {
+      try {
+        const date = new DateObject({ date: hijriDate, calendar: islamic, locale: islamic_ar });
+        const gregorian = date.convert();
+        setConvertedDate(`Gregorian: ${gregorian.format('YYYY/MM/DD')}`);
+      } catch (error) {
+        setConvertedDate('Invalid Hijri date');
+      }
+    } else {
+      setConvertedDate('Please enter a date');
     }
-}
+  };
 
-
-export default function HijriConverterPage() {
-    const { language } = useLanguage();
-    const c = content[language] || content.de;
-    const locale = language === 'de' ? de : enUS;
-
-    const [gregorianDate, setGregorianDate] = useState<Date | undefined>(new Date());
-    const [hijriResult, setHijriResult] = useState<string>('');
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState<string | null>(null);
-
-    useEffect(() => {
-        if (gregorianDate) {
-            const calculateHijri = async () => {
-                setLoading(true);
-                setError(null);
-                try {
-                    const result = await getHijriDate({ 
-                        date: gregorianDate.toISOString().split('T')[0],
-                        language: language,
-                     });
-                    setHijriResult(result.hijriDate);
-                } catch (e) {
-                    console.error(e);
-                    setError(c.errorDescription);
-                    setHijriResult('');
-                } finally {
-                    setLoading(false);
-                }
-            }
-            calculateHijri();
-        } else {
-            setHijriResult('');
-        }
-    }, [gregorianDate, language, c.errorDescription]);
-
-    return (
-        <div className="container mx-auto px-4 py-8">
-            <Button asChild variant="ghost" className="mb-8">
-                <Link href="/">
-                    <ArrowLeft className="mr-2 h-4 w-4" />
-                    {c.backToFeatures}
-                </Link>
-            </Button>
-            <header className="text-center mb-12">
-                <h1 className="text-4xl font-bold tracking-tight text-primary">
-                    {c.title}
-                </h1>
-                <p className="text-muted-foreground mt-2 text-lg max-w-2xl mx-auto">{c.description}</p>
-            </header>
-
-            <div className="max-w-md mx-auto">
-                <Card>
-                    <CardHeader>
-                        <CardTitle>{c.gregorianToHijri}</CardTitle>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                        <div className="space-y-2">
-                             <label className="text-sm font-medium">{c.gregorianDate}</label>
-                            <Popover>
-                                <PopoverTrigger asChild>
-                                <Button
-                                    variant={"outline"}
-                                    className={cn(
-                                    "w-full justify-start text-left font-normal",
-                                    !gregorianDate && "text-muted-foreground"
-                                    )}
-                                >
-                                    <CalendarIcon className="mr-2 h-4 w-4" />
-                                    {gregorianDate ? format(gregorianDate, "PPP", { locale }) : <span>{c.selectDate}</span>}
-                                </Button>
-                                </PopoverTrigger>
-                                <PopoverContent className="w-auto p-0">
-                                <Calendar
-                                    mode="single"
-                                    selected={gregorianDate}
-                                    onSelect={setGregorianDate}
-                                    initialFocus
-                                    locale={locale}
-                                    disabled={(date) => date > new Date() || date < new Date("1900-01-01")}
-                                />
-                                </PopoverContent>
-                            </Popover>
-                        </div>
-                       
-                        {loading && (
-                            <div className="flex items-center justify-center p-4">
-                                <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                                {c.calculating}
-                            </div>
-                        )}
-
-                        {error && (
-                            <Alert variant="destructive">
-                                <AlertTitle>{c.errorTitle}</AlertTitle>
-                                <AlertDescription>{error}</AlertDescription>
-                            </Alert>
-                        )}
-
-                        {hijriResult && !loading && (
-                             <Card className="bg-accent/50">
-                                <CardHeader>
-                                    <CardTitle className="text-lg">{c.result}</CardTitle>
-                                </CardHeader>
-                                <CardContent>
-                                    <p className="font-semibold">{c.hijriDate}:</p>
-                                    <p className="text-2xl text-primary font-bold">{hijriResult}</p>
-                                </CardContent>
-                             </Card>
-                        )}
-                    </CardContent>
-                </Card>
-            </div>
+  return (
+    <div className="hijri-converter-container">
+      <h1>Hijri Date Converter</h1>
+      <div className="input-group">
+        <label>
+          Gregorian Date:
+          <input type="text" value={gregorianDate} onChange={handleGregorianInputChange} placeholder="YYYY/MM/DD" />
+        </label>
+      </div>
+      <div className="input-group">
+        <label>
+          Hijri Date:
+          <input type="text" value={hijriDate} onChange={handleHijriInputChange} placeholder="YYYY/MM/DD" />
+        </label>
+      </div>
+      <button onClick={convertDate}>Convert</button>
+      {convertedDate && (
+        <div className="conversion-result">
+          <h2>Converted Date:</h2>
+          <p>{convertedDate}</p>
         </div>
-    );
-}
+      )}
+      <style jsx>{`
+        .hijri-converter-container {
+          font-family: sans-serif;
+          padding: 20px;
+          max-width: 500px;
+          margin: 0 auto;
+          border: 1px solid #ccc;
+          border-radius: 8px;
+        }
+        
+        h1 {
+          text-align: center;
+          margin-bottom: 20px;
+        }
+
+        .input-group {
+          margin-bottom: 15px;
+        }
+
+        .input-group label {
+          display: block;
+          margin-bottom: 5px;
+          font-weight: bold;
+        }
+
+        .input-group input[type="text"] {
+          width: 100%;
+          padding: 8px;
+          border: 1px solid #ccc;
+          border-radius: 4px;
+        }
+
+        button {
+          display: block;
+          width: 100%;
+          padding: 10px;
+          background-color: #007bff;
+          color: white;
+          border: none;
+          border-radius: 4px;
+          cursor: pointer;
+          font-size: 1.1em;
+        }
+
+        button:hover {
+          background-color: #0056b3;
+        }
+
+        .conversion-result {
+          margin-top: 20px;
+          padding: 15px;
+          border: 1px solid #eee;
+          border-radius: 4px;
+          background-color: #f9f9f9;
+        }
+
+        .conversion-result h2 {
+          margin-top: 0;
+          font-size: 1.2em;
+        }
+      `}</style>
+    </div>
+  );
+};
+
+export default HijriConverterPage;
