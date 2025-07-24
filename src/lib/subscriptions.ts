@@ -50,7 +50,7 @@ export const getSubscriptionPlans = (callback: (plans: SubscriptionPlan[]) => vo
         name: 'Patron',
         price: '9,99€/Monat',
         features: ['75 KI-Anfragen pro Monat', 'Alle Pro-Vorteile', 'Früher Zugriff auf neue Features'],
-        priceId: 'YOUR_STRIPE_PATRON_PRICE_ID', // ERSETZE DIES
+        priceId: 'price_1RltR4GXWEMb96gVOcjACqRR', // ERSETZE DIES
         aiRequestLimit: 75,
         active: true,
         createdAt: Timestamp.now(), // Dummy Timestamp
