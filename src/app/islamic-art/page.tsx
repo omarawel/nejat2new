@@ -3,116 +3,129 @@
 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { useLanguage } from '@/components/language-provider';
-import { Palette, PenTool, Gem, LandPlot, ArrowLeft } from 'lucide-react';
+import { Palette, PenTool, Gem, LandPlot, ArrowLeft, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useEffect, useState } from 'react';
+import { getPageContent } from '@/lib/content';
+import { Skeleton } from '@/components/ui/skeleton';
 
-const content = {
-    de: {
-        title: "Islamische Kunst",
-        description: "Entdecke die Schönheit und Vielfalt islamischer Kunstformen, die von einem tiefen Glauben und einer reichen Geschichte geprägt sind.",
-        backToFeatures: "Zurück zu den Funktionen",
-        sections: [
-            {
-                icon: PenTool,
-                title: "Kalligrafie: Die Kunst der schönen Schrift",
-                content: "Die Kalligrafie ist die am höchsten geschätzte Kunstform im Islam. Sie dient der kunstvollen Darstellung des Wortes Allahs aus dem Koran. Stile wie Kufi, Naskh und Thuluth schmücken Moscheen, Manuskripte und Alltagsgegenstände und verwandeln Text in visuelle Poesie.",
-                image: "https://placehold.co/600x400.png",
-                hint: "islamic calligraphy",
-            },
-            {
-                icon: Gem,
-                title: "Geometrische Muster (Arabeske)",
-                content: "Islamische Künstler schufen komplexe geometrische Muster, um die Unendlichkeit und die transzendente Natur Allahs darzustellen. Diese Muster, die auf mathematischen Prinzipien basieren, finden sich in Fliesenarbeiten, Holzschnitzereien und Metallarbeiten und symbolisieren die göttliche Ordnung im Universum.",
-                image: "https://placehold.co/600x400.png",
-                hint: "islamic pattern",
-            },
-            {
-                icon: LandPlot,
-                title: "Architektur: Bauten für die Gemeinschaft",
-                content: "Die islamische Architektur, von den majestätischen Moscheen mit ihren Kuppeln und Minaretten bis hin zu prächtigen Palästen und Gärten, ist darauf ausgelegt, ein Gefühl der Ehrfurcht und Gemeinschaft zu schaffen. Merkmale wie der Innenhof (Sahn) und die Gebetsnische (Mihrab) sind zentral für das funktionale und spirituelle Design.",
-                image: "https://placehold.co/600x400.png",
-                hint: "islamic architecture",
-            }
-        ]
-    },
-    en: {
-        title: "Islamic Art",
-        description: "Discover the beauty and diversity of Islamic art forms, shaped by a deep faith and a rich history.",
-        backToFeatures: "Back to Features",
-        sections: [
-            {
-                icon: PenTool,
-                title: "Calligraphy: The Art of Beautiful Writing",
-                content: "Calligraphy is the most highly regarded art form in Islam. It is used to artistically represent the word of Allah from the Quran. Styles like Kufi, Naskh, and Thuluth adorn mosques, manuscripts, and everyday objects, transforming text into visual poetry.",
-                image: "https://placehold.co/600x400.png",
-                hint: "islamic calligraphy",
-            },
-            {
-                icon: Gem,
-                title: "Geometric Patterns (Arabesque)",
-                content: "Islamic artists created complex geometric patterns to represent the infinite and transcendent nature of Allah. These patterns, based on mathematical principles, are found in tilework, woodcarvings, and metalwork, symbolizing the divine order in the universe.",
-                image: "https://placehold.co/600x400.png",
-                hint: "islamic pattern",
-            },
-            {
-                icon: LandPlot,
-                title: "Architecture: Buildings for the Community",
-                content: "Islamic architecture, from the majestic mosques with their domes and minarets to magnificent palaces and gardens, is designed to create a sense of awe and community. Features like the courtyard (Sahn) and the prayer niche (Mihrab) are central to the functional and spiritual design.",
-                image: "https://placehold.co/600x400.png",
-                hint: "islamic architecture",
-            }
-        ]
-    }
+// Define the structure of the content for type safety
+interface Section {
+    key: string;
+    title: string;
+    content: string;
+    image: string;
+    hint: string;
+    icon: React.ComponentType<{ className?: string }>;
+}
+
+interface PageContent {
+    title: string;
+    description: string;
+    sections: Omit<Section, 'icon'>[];
+}
+
+const iconMap: { [key: string]: React.ComponentType<{ className?: string }> } = {
+    calligraphy: PenTool,
+    geometry: Gem,
+    architecture: LandPlot
 };
+
 
 export default function IslamicArtPage() {
     const { language } = useLanguage();
-    const c = content[language] || content.de;
+    const [content, setContent] = useState<PageContent | null>(null);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchContent = async () => {
+            setLoading(true);
+            const pageContent = await getPageContent('islamic-art', language);
+            setContent(pageContent);
+            setLoading(false);
+        };
+        fetchContent();
+    }, [language]);
+    
+    if (loading) {
+        return (
+             <div className="container mx-auto px-4 py-8">
+                <Skeleton className="h-8 w-32 mb-8" />
+                <header className="text-center mb-12">
+                    <Skeleton className="h-10 w-10 mx-auto rounded-full" />
+                    <Skeleton className="h-10 w-3/4 mx-auto mt-4" />
+                    <Skeleton className="h-6 w-full max-w-3xl mx-auto mt-4" />
+                </header>
+                 <div className="max-w-4xl mx-auto space-y-12">
+                    {[...Array(3)].map((_, i) => (
+                         <Card key={i} className="overflow-hidden md:grid md:grid-cols-2 md:gap-8 items-center">
+                            <div className="p-6 space-y-4">
+                               <Skeleton className="h-7 w-48" />
+                               <Skeleton className="h-20 w-full" />
+                            </div>
+                            <Skeleton className="h-64 md:h-full w-full" />
+                        </Card>
+                    ))}
+                 </div>
+             </div>
+        )
+    }
+
+    if (!content) {
+        return <div className="container mx-auto p-8 text-center">Failed to load content.</div>;
+    }
+
+    const sectionsWithIcons: Section[] = content.sections.map(section => ({
+        ...section,
+        icon: iconMap[section.key] || Palette
+    }));
 
     return (
         <div className="container mx-auto px-4 py-8">
             <Button asChild variant="ghost" className="mb-8">
                 <Link href="/">
                     <ArrowLeft className="mr-2 h-4 w-4" />
-                    {c.backToFeatures}
+                    {language === 'de' ? 'Zurück zu den Funktionen' : 'Back to Features'}
                 </Link>
             </Button>
             <header className="text-center mb-12">
                  <h1 className="text-4xl font-bold tracking-tight text-primary flex items-center justify-center gap-3">
                     <Palette className="h-10 w-10" />
-                    {c.title}
+                    {content.title}
                 </h1>
-                <p className="text-muted-foreground mt-2 text-lg max-w-3xl mx-auto">{c.description}</p>
+                <p className="text-muted-foreground mt-2 text-lg max-w-3xl mx-auto">{content.description}</p>
             </header>
             
             <div className="max-w-4xl mx-auto space-y-12">
-                {c.sections.map((section, index) => (
-                    <Card key={index} className="overflow-hidden md:grid md:grid-cols-2 md:gap-8 items-center">
-                        <div className="p-6">
-                            <CardHeader className="p-0">
-                                <CardTitle className="flex items-center gap-3">
-                                    <section.icon className="h-7 w-7 text-primary" />
-                                    {section.title}
-                                </CardTitle>
-                            </CardHeader>
-                            <CardContent className="p-0 mt-4">
-                                <p className="text-muted-foreground">{section.content}</p>
-                            </CardContent>
-                        </div>
-                         <div className="h-64 md:h-full w-full">
-                            <Image 
-                                src={section.image} 
-                                alt={section.title} 
-                                width={600} 
-                                height={400} 
-                                className="w-full h-full object-cover"
-                                data-ai-hint={section.hint}
-                             />
-                        </div>
-                    </Card>
-                ))}
+                {sectionsWithIcons.map((section, index) => {
+                    const Icon = section.icon;
+                    return (
+                         <Card key={index} className="overflow-hidden md:grid md:grid-cols-2 md:gap-8 items-center">
+                            <div className="p-6">
+                                <CardHeader className="p-0">
+                                    <CardTitle className="flex items-center gap-3">
+                                        <Icon className="h-7 w-7 text-primary" />
+                                        {section.title}
+                                    </CardTitle>
+                                </CardHeader>
+                                <CardContent className="p-0 mt-4">
+                                    <p className="text-muted-foreground">{section.content}</p>
+                                </CardContent>
+                            </div>
+                            <div className="h-64 md:h-full w-full relative">
+                                <Image 
+                                    src={section.image} 
+                                    alt={section.title} 
+                                    fill
+                                    className="object-cover"
+                                    data-ai-hint={section.hint}
+                                />
+                            </div>
+                        </Card>
+                    )
+                })}
             </div>
         </div>
     );
