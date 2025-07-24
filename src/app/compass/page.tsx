@@ -4,7 +4,7 @@
 import { useEffect, useState, useCallback, useRef } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Compass, ArrowLeft, MapPin, AlertTriangle, Loader2, CheckCircle, VideoOff } from 'lucide-react';
+import { Compass, ArrowLeft, MapPin, AlertTriangle, Loader2, CheckCircle, VideoOff, NavigationArrow } from 'lucide-react';
 import { useLanguage } from '@/components/language-provider';
 import Link from 'next/link';
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
@@ -168,7 +168,6 @@ export default function CompassPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const rotation = -heading;
     const isQiblaAligned = qiblaDirection !== null && Math.abs(heading - qiblaDirection) < 2.5;
 
     return (
@@ -211,25 +210,26 @@ export default function CompassPage() {
                                             <div className="absolute right-1 top-1/2 -translate-y-1/2">E</div>
                                         </div>
                                         
-                                        <div className="w-full h-full transition-transform duration-200" style={{ transform: `rotate(${rotation}deg)` }}>
-                                            {qiblaDirection !== null && (
-                                                <div className="absolute w-full h-full" style={{ transform: `rotate(${qiblaDirection}deg)` }}>
-                                                    <div className={cn(
-                                                        "absolute -top-4 left-1/2 -translate-x-1/2 w-0 h-0 transition-colors",
-                                                        "border-l-[12px] border-l-transparent",
-                                                        "border-r-[12px] border-r-transparent",
-                                                        "border-b-[24px]",
-                                                        isQiblaAligned ? "border-b-green-400" : "border-b-primary"
-                                                    )}>
-                                                        <span className="absolute -bottom-7 left-1/2 -translate-x-1/2 text-2xl">🕋</span>
-                                                    </div>
+                                        
+                                        {qiblaDirection !== null && (
+                                            <div className="absolute w-full h-full" style={{ transform: `rotate(${qiblaDirection}deg)` }}>
+                                                <div className={cn(
+                                                    "absolute -top-4 left-1/2 -translate-x-1/2 w-0 h-0 transition-colors",
+                                                    isQiblaAligned ? "text-green-400" : "text-primary"
+                                                )}>
+                                                    <span className="text-3xl">🕋</span>
                                                 </div>
-                                            )}
-                                            <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-0 h-0
-                                                border-l-[8px] border-l-transparent
-                                                border-r-[8px] border-r-transparent
-                                                border-b-[16px] border-b-white">
                                             </div>
+                                        )}
+                                       
+                                        <div className="absolute w-full h-full transition-transform duration-200" style={{ transform: `rotate(${-heading}deg)` }}>
+                                           <NavigationArrow
+                                                className={cn(
+                                                    "absolute top-0 left-1/2 -translate-x-1/2 h-16 w-16 text-white/80 transition-colors",
+                                                     isQiblaAligned && "text-green-400"
+                                                )}
+                                                style={{transform: 'rotate(180deg) '}}
+                                           />
                                         </div>
                                     </div>
 
