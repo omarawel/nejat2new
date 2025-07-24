@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Grid, Star } from "lucide-react";
+import { Grid, Star, LogIn } from "lucide-react";
 import Link from "next/link";
 import { useLanguage } from "@/components/language-provider";
 import { useMemo } from "react";
@@ -22,7 +22,7 @@ const content = {
   de: {
     title: "Dein digitaler Begleiter für den islamischen Alltag",
     description: "Finde alles, was du für deine spirituelle Reise brauchst: präzise Gebetszeiten, den gesamten Koran, eine umfassende Hadith-Sammlung und einzigartige KI-Tools, die dein Wissen erweitern.",
-    button: "Funktionen entdecken",
+    button: "Anmelden",
     sectionTitle: "Entdecke mehr",
     sectionDescription: "Nützliche Werkzeuge für deinen Alltag.",
     premiumTitle: "Mehr freischalten mit Premium",
@@ -32,7 +32,7 @@ const content = {
   en: {
     title: "Your Digital Companion for your daily Islamic life",
     description: "Find everything you need for your spiritual journey: precise prayer times, the entire Quran, a comprehensive Hadith collection, and unique AI tools to expand your knowledge.",
-    button: "Discover Features",
+    button: "Login",
     sectionTitle: "Discover More",
     sectionDescription: "Useful tools for your daily life.",
     premiumTitle: "Unlock More with Premium",
@@ -52,7 +52,7 @@ export default function Home() {
   }, [language]);
 
   return (
-    <div className="flex flex-col items-center justify-center text-center flex-grow py-12 px-4 sm:px-6 lg:px-8">
+    <div className="flex flex-col items-center justify-center text-center flex-grow py-12 px-4">
        <section className="w-full max-w-4xl mx-auto mb-16">
         <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-primary">
           {c.title}
@@ -62,8 +62,8 @@ export default function Home() {
         </p>
         <div className="mt-8">
           <Button size="lg" asChild>
-            <Link href="/#features">
-              <Grid className="mr-2 h-5 w-5" />
+            <Link href="/login">
+              <LogIn className="mr-2 h-5 w-5" />
               {c.button}
             </Link>
           </Button>
