@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Grid, Star, LogIn } from "lucide-react";
+import { Grid, Star, UserPlus } from "lucide-react";
 import Link from "next/link";
 import { useLanguage } from "@/components/language-provider";
 import { useMemo } from "react";
@@ -22,7 +22,7 @@ const content = {
   de: {
     title: "Dein digitaler Begleiter für den islamischen Alltag",
     description: "Finde alles, was du für deine spirituelle Reise brauchst: präzise Gebetszeiten, den gesamten Koran, eine umfassende Hadith-Sammlung und einzigartige KI-Tools, die dein Wissen erweitern.",
-    button: "Anmelden",
+    button: "Registrieren",
     sectionTitle: "Entdecke mehr",
     sectionDescription: "Nützliche Werkzeuge für deinen Alltag.",
     premiumTitle: "Mehr freischalten mit Premium",
@@ -32,7 +32,7 @@ const content = {
   en: {
     title: "Your Digital Companion for your daily Islamic life",
     description: "Find everything you need for your spiritual journey: precise prayer times, the entire Quran, a comprehensive Hadith collection, and unique AI tools to expand your knowledge.",
-    button: "Login",
+    button: "Sign Up",
     sectionTitle: "Discover More",
     sectionDescription: "Useful tools for your daily life.",
     premiumTitle: "Unlock More with Premium",
@@ -62,8 +62,8 @@ export default function Home() {
         </p>
         <div className="mt-8">
           <Button size="lg" asChild>
-            <Link href="/login">
-              <LogIn className="mr-2 h-5 w-5" />
+            <Link href="/signup">
+              <UserPlus className="mr-2 h-5 w-5" />
               {c.button}
             </Link>
           </Button>
