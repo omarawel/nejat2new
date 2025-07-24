@@ -26,7 +26,7 @@ export const getSubscriptionPlans = (callback: (plans: SubscriptionPlan[]) => vo
         name: 'Supporter',
         price: '2,99€/Monat',
         features: [
-            '15 KI-Anfragen pro Monat', 
+            '15 KI-Anfragen pro Monat',
             'Entwicklung unterstützen',
             'Vollständiger Koran & Hadith-Zugriff',
             'Qibla-Kompass & Gebetszeiten'
@@ -43,8 +43,8 @@ export const getSubscriptionPlans = (callback: (plans: SubscriptionPlan[]) => vo
         price: '4,99€/Monat',
         features: [
             '30 KI-Anfragen pro Monat',
+            'Alle kostenlosen Features',
             'Werbefreie Erfahrung',
-            'Unterstütze die Entwicklung',
             'Auswendiglernen-Tool',
             'Koran Offline-Zugriff'
         ],
@@ -60,10 +60,7 @@ export const getSubscriptionPlans = (callback: (plans: SubscriptionPlan[]) => vo
         price: '9,99€/Monat',
         features: [
             '75 KI-Anfragen pro Monat',
-            'Werbefreie Erfahrung',
-            'Unterstütze die Entwicklung',
-            'Auswendiglernen-Tool',
-            'Koran Offline-Zugriff',
+            'Alle Pro-Vorteile',
             'Früher Zugriff auf neue Features'
         ],
         priceId: 'price_1RltR4GXWEMb96gVOcjACqRR', 
