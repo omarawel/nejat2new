@@ -18,6 +18,7 @@ const content = {
         locationNeeded: "Standort benötigt",
         locationDescription: "Für genaue Gebetszeiten aktiviere bitte die Ortungsdienste in deinem Browser und lade die Seite neu.",
         todaysSchedule: "Heutiger Zeitplan",
+        imsak: "Imsak",
         fajr: "Fajr",
         sunrise: "Sonnenaufgang",
         dhuhr: "Dhuhr",
@@ -38,6 +39,7 @@ const content = {
         locationNeeded: "Location Needed",
         locationDescription: "For accurate prayer times, please enable location services in your browser and reload the page.",
         todaysSchedule: "Today's Schedule",
+        imsak: "Imsak",
         fajr: "Fajr",
         sunrise: "Sunrise",
         dhuhr: "Dhuhr",
@@ -71,7 +73,8 @@ export default function PrayerTimesPage() {
     useEffect(() => {
         const fetchPrayerTimes = (latitude: number, longitude: number) => {
             const date = new Date();
-            const url = `https://api.aladhan.com/v1/timings/${date.getTime()/1000}?latitude=${latitude}&longitude=${longitude}&method=4`;
+            // Method 3 is Diyanet İşleri Başkanlığı, Turkey - good for Germany/Europe
+            const url = `https://api.aladhan.com/v1/timings/${date.getTime()/1000}?latitude=${latitude}&longitude=${longitude}&method=3`;
 
             fetch(url)
                 .then(response => response.json())
@@ -79,6 +82,7 @@ export default function PrayerTimesPage() {
                     if (data.code === 200) {
                         const times = data.data.timings;
                         const prayerIcons = {
+                            Imsak: Sparkles,
                             Fajr: Sunrise,
                             Sunrise: Sunrise,
                             Dhuhr: Sun,
@@ -87,6 +91,7 @@ export default function PrayerTimesPage() {
                             Isha: Moon
                         };
                          const prayerNames: Record<string, string> = {
+                            Imsak: c.imsak,
                             Fajr: c.fajr,
                             Sunrise: c.sunrise,
                             Dhuhr: c.dhuhr,
