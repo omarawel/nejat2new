@@ -72,6 +72,41 @@ const content = {
                 icon: Utensils,
                 title: "Kürbis (Dabba')",
                 content: "Es wird überliefert, dass der Kürbis eines der Lieblingsgemüse des Propheten Muhammad (ﷺ) war. Er ist reich an Vitaminen und Wasser und gilt als leicht und nahrhaft für den Körper."
+            },
+            {
+                icon: Leaf,
+                title: "Costus (Qust al-Hindi)",
+                content: "Der Prophet (ﷺ) empfahl Costus als Behandlung für sieben Krankheiten, einschließlich Mandelentzündung und Pleuritis. Es wird als Pulver inhaliert oder mit Öl vermischt verwendet und ist für seine starken antibakteriellen Eigenschaften bekannt."
+            },
+            {
+                icon: Sprout,
+                title: "Senna (Sana Makki)",
+                content: "Senna wurde vom Propheten (ﷺ) als mildes und effektives Abführmittel empfohlen. Er sagte: 'Wenn es etwas gäbe, das den Tod heilen könnte, wäre es Senna.' (Tirmidhi). Es wird zur Reinigung des Verdauungssystems verwendet."
+            },
+            {
+                icon: Sprout,
+                title: "Trüffel (Kam'ah)",
+                content: "Der Prophet (ﷺ) lehrte, dass Trüffel eine Art von 'Manna' sind (eine himmlische Gabe) und dass ihr Saft eine Heilung für die Augen ist. Die moderne Forschung untersucht ihre potenziellen medizinischen Vorteile."
+            },
+            {
+                icon: Droplets,
+                title: "Essig (Khall)",
+                content: "Der Prophet Muhammad (ﷺ) lobte Essig und sagte: 'Welch gutes Gewürz ist Essig.' (Muslim). Er wurde nicht nur zum Würzen verwendet, sondern auch als einfaches Heilmittel zur Förderung der Verdauung."
+            },
+            {
+                icon: Leaf,
+                title: "Henna (Hina')",
+                content: "Henna wurde nicht nur zum Färben von Haar und Bart verwendet, sondern auch medizinisch. Bei Kopfschmerzen wurde eine Paste auf die Schläfen aufgetragen, und es wurde zur Heilung von kleinen Wunden und Entzündungen an Händen und Füßen genutzt."
+            },
+            {
+                icon: Sprout,
+                title: "Granatapfel (Rumman)",
+                content: "Im Koran wird der Granatapfel als eine der Früchte des Paradieses erwähnt. Er ist reich an Antioxidantien, Vitaminen und wird in der traditionellen Medizin zur Stärkung des Herzens und zur Verbesserung der Verdauung geschätzt."
+            },
+            {
+                icon: Sprout,
+                title: "Weintrauben & Rosinen (Inab & Zabib)",
+                content: "Weintrauben und ihre getrocknete Form, die Rosinen, waren beliebte Früchte des Propheten (ﷺ). Sie sind eine gute Energiequelle und reich an Eisen und anderen wichtigen Nährstoffen. Rosinen wurden oft in Wasser eingeweicht, um ein nahrhaftes Getränk namens Nabidh herzustellen."
             }
         ]
     },
@@ -139,6 +174,41 @@ const content = {
                 icon: Utensils,
                 title: "Pumpkin (Dabba')",
                 content: "It is narrated that pumpkin was one of the favorite vegetables of the Prophet Muhammad (ﷺ). It is rich in vitamins and water and is considered light and nutritious for the body."
+            },
+            {
+                icon: Leaf,
+                title: "Costus (Qust al-Hindi)",
+                content: "The Prophet (ﷺ) recommended Costus as a treatment for seven ailments, including tonsillitis and pleurisy. It is used as an inhaled powder or mixed with oil and is known for its potent antibacterial properties."
+            },
+            {
+                icon: Sprout,
+                title: "Senna (Sana Makki)",
+                content: "Senna was recommended by the Prophet (ﷺ) as a gentle and effective laxative. He said: 'If there were anything that could cure death, it would be senna.' (Tirmidhi). It is used to cleanse the digestive system."
+            },
+            {
+                icon: Sprout,
+                title: "Truffles (Kam'ah)",
+                content: "The Prophet (ﷺ) taught that truffles are a type of 'manna' (a heavenly gift) and that their juice is a cure for the eyes. Modern research is exploring their potential medicinal benefits."
+            },
+            {
+                icon: Droplets,
+                title: "Vinegar (Khall)",
+                content: "Prophet Muhammad (ﷺ) praised vinegar, saying: 'What a good condiment vinegar is.' (Muslim). It was used not only for seasoning but also as a simple remedy to aid digestion."
+            },
+            {
+                icon: Leaf,
+                title: "Henna (Hina')",
+                content: "Henna was not only used for dyeing hair and beards but also medicinally. A paste was applied to the temples for headaches, and it was used to heal minor wounds and inflammations on the hands and feet."
+            },
+            {
+                icon: Sprout,
+                title: "Pomegranate (Rumman)",
+                content: "The Quran mentions the pomegranate as one of the fruits of Paradise. It is rich in antioxidants, vitamins, and is valued in traditional medicine for strengthening the heart and improving digestion."
+            },
+            {
+                icon: Sprout,
+                title: "Grapes & Raisins (Inab & Zabib)",
+                content: "Grapes and their dried form, raisins, were beloved fruits of the Prophet (ﷺ). They are a good source of energy and are rich in iron and other essential nutrients. Raisins were often soaked in water to create a nutritious drink called Nabidh."
             }
         ]
     }

@@ -6,6 +6,7 @@ import islamic_ar from 'react-date-object/locales/islamic_ar';
 const IslamicCalendar: React.FC = () => {
   const [currentDate, setCurrentDate] = useState(new DateObject({ calendar: islamic, locale: islamic_ar }));
   const [calendarDays, setCalendarDays] = useState<DateObject[]>([]);
+  const [selectedDate, setSelectedDate] = useState<DateObject | null>(null);
 
   useEffect(() => {
     generateCalendarDays(currentDate);
@@ -41,6 +42,14 @@ const IslamicCalendar: React.FC = () => {
     setCurrentDate(new DateObject(currentDate).add(1, 'month'));
   };
 
+  const handleDayClick = (day: DateObject) => {
+    if (day.isValid) {
+      setSelectedDate(day);
+      // You can add more logic here, e.g., open a modal to add/view events for this day
+      console.log('Selected day:', day.format('YYYY/MM/DD'));
+    }
+  };
+
   const isWhiteDay = (day: DateObject) => {
     if (!day.isValid) return false;
     const dayOfMonth = day.day;
@@ -49,11 +58,45 @@ const IslamicCalendar: React.FC = () => {
 
   const daysOfWeek = ['الأحد', 'الاثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
 
+  // Placeholder for event data (you would fetch this from your backend)
+  const events = [
+    { date: '1445/09/15', title: 'Start of Ramadan' },
+    { date: '1445/10/01', title: 'Eid al-Fitr' },
+  ];
+
+  const getEventsForDay = (day: DateObject) => {
+    if (!day.isValid) return [];
+    const dayString = day.format('YYYY/MM/DD');
+    return events.filter(event => event.date === dayString);
+  };
+
+  const handleMonthYearChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const [month, year] = event.target.value.split('-').map(Number);
+    setCurrentDate(new DateObject({ year, month, day: 1, calendar: islamic, locale: islamic_ar }));
+  };
+
+  const renderMonthYearSelect = () => {
+    const years = Array.from({ length: 10 }, (_, i) => currentDate.year - 5 + i);
+    const months = currentDate.calendar.months.map((month: any, index: number) => ({ value: index + 1, name: month.name }));
+
+    return (
+      <select value={`${currentDate.month.number}-${currentDate.year}`} onChange={handleMonthYearChange}>
+        {years.map(year => (
+          months.map(month => (
+            <option key={`${month.value}-${year}`} value={`${month.value}-${year}`}>
+              {month.name} {year}
+            </option>
+          ))
+        ))}
+      </select>
+    );
+  };
+
   return (
     <div className="islamic-calendar">
       <div className="calendar-header">
         <button onClick={goToPreviousMonth}>&lt;</button>
-        <h2>{currentDate.month.name} {currentDate.year}</h2>
+        {renderMonthYearSelect()}
         <button onClick={goToNextMonth}>&gt;</button>
       </div>
       <div className="calendar-grid">
@@ -63,9 +106,22 @@ const IslamicCalendar: React.FC = () => {
         {calendarDays.map((day, index) => (
           <div
             key={index}
-            className={`calendar-day ${day.isValid ? 'valid-day' : 'empty-day'} ${isWhiteDay(day) ? 'white-day' : ''}`}
+            className={`calendar-day ${day.isValid ? 'valid-day' : 'empty-day'} ${isWhiteDay(day) ? 'white-day' : ''} ${selectedDate && day.format() === selectedDate.format() ? 'selected-day' : ''}`}
+            onClick={() => handleDayClick(day)}
           >
-            {day.isValid ? day.day : ''}
+            {day.isValid ? (
+              <>
+                <div className="day-number">{day.day}</div>
+                {/* Display Gregorian date */}
+                <div className="gregorian-date">{day.convert(undefined, undefined, true).format('MM/DD')}</div>
+                {/* Display events */}
+                {getEventsForDay(day).map(event => (
+                  <div key={event.title} className="event">{event.title}</div>
+                ))}
+              </>
+            ) : (
+              ''
+            )}
           </div>
         ))}
       </div>
@@ -106,6 +162,7 @@ const IslamicCalendar: React.FC = () => {
         .calendar-day {
           padding: 5px;
           border: 1px solid #eee;
+          cursor: pointer;
         }
 
         .empty-day {
@@ -115,8 +172,28 @@ const IslamicCalendar: React.FC = () => {
         .white-day {
           background-color: #ffeeba; /* Highlight color for white days */
         }
+
+        .selected-day {
+          background-color: #a0c4ff; /* Highlight color for selected day */
+        }
+
+        .day-number {
+          font-size: 1.2em;
+          font-weight: bold;
+        }
+
+        .gregorian-date {
+          font-size: 0.8em;
+          color: #555;
+        }
+
+        .event {
+          font-size: 0.7em;
+          color: #007bff;
+          margin-top: 2px;
+        }
       `}</style>
-all 4    </div>
+    </div>
   );
 };
 
