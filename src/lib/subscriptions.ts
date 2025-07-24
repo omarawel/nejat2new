@@ -1,4 +1,3 @@
-
 import { db } from './firebase';
 import { collection, addDoc, onSnapshot, query, doc, deleteDoc, updateDoc, Timestamp, orderBy } from 'firebase/firestore';
 
@@ -9,8 +8,8 @@ export interface SubscriptionPlan {
   features: string[];
   priceId: string; // Stripe Price ID
   aiRequestLimit: number; // Monthly AI request limit
-  active: boolean;
-  createdAt: Timestamp;
+  active: boolean; // Annahme: Pläne sind aktiv, basierend auf dem Bild
+  createdAt: Timestamp; // Wird beibehalten
 }
 
 // Get real-time updates for all subscription plans
@@ -23,7 +22,40 @@ export const getSubscriptionPlans = (callback: (plans: SubscriptionPlan[]) => vo
     querySnapshot.forEach((doc) => {
       plans.push({ id: doc.id, ...doc.data() } as SubscriptionPlan);
     });
-    callback(plans);
+    // HARDCODED Pläne basierend auf dem Bild - ERSETZE DIES DURCH DAS LADEN AUS DEINER DATENBANK
+    const hardcodedPlans: SubscriptionPlan[] = [
+      {
+        id: 'supporter',
+        name: 'Supporter',
+        price: '2,99€/Monat',
+        features: ['15 KI-Anfragen pro Monat', 'Werbefreie Erfahrung', 'Unterstütze die Entwicklung'],
+        priceId: 'YOUR_STRIPE_SUPPORTER_PRICE_ID', // ERSETZE DIES
+        aiRequestLimit: 15,
+        active: true,
+        createdAt: Timestamp.now(), // Dummy Timestamp
+      },
+      {
+        id: 'pro',
+        name: 'Pro',
+        price: '4,99€/Monat',
+        features: ['30 KI-Anfragen pro Monat', 'Alle Supporter-Vorteile', 'Offline-Zugriff für Koran'],
+        priceId: 'YOUR_STRIPE_PRO_PRICE_ID', // ERSETZE DIES
+        aiRequestLimit: 30,
+        active: true,
+        createdAt: Timestamp.now(), // Dummy Timestamp
+      },
+      {
+        id: 'patron',
+        name: 'Patron',
+        price: '9,99€/Monat',
+        features: ['75 KI-Anfragen pro Monat', 'Alle Pro-Vorteile', 'Früher Zugriff auf neue Features'],
+        priceId: 'YOUR_STRIPE_PATRON_PRICE_ID', // ERSETZE DIES
+        aiRequestLimit: 75,
+        active: true,
+        createdAt: Timestamp.now(), // Dummy Timestamp
+      },
+    ];
+    callback(hardcodedPlans); // Verwende die hardcoded Pläne
   }, (error) => {
       console.error("Error fetching subscription plans:", error);
       callback([]);
