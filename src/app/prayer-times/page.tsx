@@ -71,7 +71,7 @@ export default function PrayerTimesPage() {
     useEffect(() => {
         const fetchPrayerTimes = (latitude: number, longitude: number) => {
             const date = new Date();
-            const url = `https://api.aladhan.com/v1/timings/${date.getTime()/1000}?latitude=${latitude}&longitude=${longitude}&method=2`;
+            const url = `https://api.aladhan.com/v1/timings/${date.getTime()/1000}?latitude=${latitude}&longitude=${longitude}&method=4`;
 
             fetch(url)
                 .then(response => response.json())
