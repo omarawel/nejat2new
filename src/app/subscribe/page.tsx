@@ -34,16 +34,46 @@ const content = {
     }
 }
 
+const defaultPlans: Omit<SubscriptionPlan, 'id' | 'createdAt' >[] = [
+    {
+        name: "Supporter",
+        price: "2,99€/Monat",
+        priceId: "price_1PgK9qRx5XJz4yY5t0s5XJ8G",
+        features: ["Werbefreie Erfahrung", "Unterstütze die Entwicklung"],
+        active: true
+    },
+    {
+        name: "Pro",
+        price: "4,99€/Monat",
+        priceId: "price_1PgKAERx5XJz4yY5j8g5gK5f",
+        features: ["Alle Supporter-Vorteile", "Exklusive KI-Funktionen", "Offline-Zugriff für Koran"],
+        active: true
+    },
+    {
+        name: "Patron",
+        price: "9,99€/Monat",
+        priceId: "price_1PgKARRx5XJz4yY5q5f8gS7a",
+        features: ["Alle Pro-Vorteile", "Früher Zugriff auf neue Features", "Direkter Einfluss auf die Entwicklung"],
+        active: true
+    }
+]
+
+
 export default function SubscribePage() {
   const { language } = useLanguage();
   const c = content[language];
-  const [plans, setPlans] = useState<SubscriptionPlan[]>([]);
+  const [plans, setPlans] = useState<Omit<SubscriptionPlan, 'id' | 'createdAt' >[]>([]);
   const [loading, setLoading] = useState(true);
   const [user, loadingAuth] = useAuthState(auth);
 
   useEffect(() => {
     const unsubscribe = getSubscriptionPlans((fetchedPlans) => {
-        setPlans(fetchedPlans.filter(p => p.active).sort((a,b) => a.createdAt.toMillis() - b.createdAt.toMillis()));
+        const activePlans = fetchedPlans.filter(p => p.active).sort((a,b) => a.createdAt.toMillis() - b.createdAt.toMillis());
+        if (activePlans.length > 0) {
+            setPlans(activePlans);
+        } else {
+            setPlans(defaultPlans);
+        }
         setLoading(false);
     });
     return () => unsubscribe();
@@ -70,7 +100,7 @@ export default function SubscribePage() {
             ) : (
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                     {plans.map(plan => (
-                         <Card key={plan.id} className="flex flex-col">
+                         <Card key={plan.name} className="flex flex-col">
                             <CardHeader className="text-center">
                                 <CardTitle className="text-2xl text-primary">{plan.name}</CardTitle>
                                 <CardDescription className="text-4xl font-bold">{plan.price}</CardDescription>
