@@ -28,6 +28,12 @@ const nextConfig: NextConfig = {
         hostname: 'dl.dropboxusercontent.com',
         port: '',
         pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'www.dropbox.com',
+        port: '',
+        pathname: '/**',
       }
     ],
   },

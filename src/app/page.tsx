@@ -8,6 +8,7 @@ import Link from "next/link";
 import { useLanguage } from "@/components/language-provider";
 import { useMemo } from "react";
 import { allTools } from "@/lib/tools";
+import { AdBanner } from "@/components/ad-banner";
 
 const FeatureCard = ({ icon, name }: { icon: string, name: string }) => {
   return (
@@ -53,6 +54,9 @@ export default function Home() {
 
   return (
     <div className="flex flex-col items-center justify-center text-center flex-grow py-12 px-4 sm:px-6 lg:px-8">
+      
+      <AdBanner slotId="homepage-top-banner" className="w-full max-w-4xl mx-auto mb-12" />
+
       <main className="max-w-4xl mx-auto">
         <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-foreground" dangerouslySetInnerHTML={{ __html: c.title.replace("islamischen Alltag", `<span class="text-primary">islamischen Alltag</span>`) }}>
         </h1>
@@ -82,6 +86,8 @@ export default function Home() {
           })}
         </div>
       </section>
+      
+      <AdBanner slotId="homepage-bottom" className="w-full max-w-4xl mx-auto mt-20" />
 
       <section className="mt-20 w-full max-w-2xl mx-auto">
         <Card className="bg-gradient-to-br from-primary/10 to-accent/20">
