@@ -1,7 +1,7 @@
 
 "use client"
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -15,6 +15,11 @@ import { cn } from '@/lib/utils';
 import Link from 'next/link';
 import { generateGreetingCard } from '@/ai/flows/generate-greeting-card';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { auth } from '@/lib/firebase';
+import { checkAndDecrementQuota, getUserQuota, UserQuota } from '@/lib/user-usage';
+import { UpgradeInlineAlert } from '@/components/upgrade-inline-alert';
+
 
 const themes = {
     'emerald': { bg: 'bg-emerald-800', text: 'text-white', border: 'border-emerald-600', pattern: 'bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-emerald-700 to-emerald-800' },
@@ -113,6 +118,15 @@ export default function GreetingCardPage() {
     const [isGenerating, setIsGenerating] = useState(false);
     const [aiError, setAiError] = useState<string | null>(null);
 
+    const [user, authLoading] = useAuthState(auth);
+    const [quota, setQuota] = useState<UserQuota | null>(null);
+
+     useEffect(() => {
+        if (!authLoading) {
+            getUserQuota(user?.uid || null).then(setQuota);
+        }
+    }, [user, authLoading]);
+
     const handleDownload = () => {
         if (cardRef.current === null) return;
 
@@ -131,6 +145,15 @@ export default function GreetingCardPage() {
     const handleAiGenerate = async () => {
         setIsGenerating(true);
         setAiError(null);
+
+         const quotaResult = await checkAndDecrementQuota(user?.uid || null);
+        if (!quotaResult.success) {
+            setQuota(quotaResult.quota);
+            setIsGenerating(false);
+            return;
+        }
+        setQuota(quotaResult.quota);
+
         try {
             const result = await generateGreetingCard({ occasion, customPrompt: aiPrompt });
             setCustomMessage(result.message);
@@ -143,13 +166,15 @@ export default function GreetingCardPage() {
         }
     }
 
-    const message = customMessage || greetings[language][occasion];
+    const message = customMessage || greetings[language as keyof typeof greetings][occasion];
     const selectedTheme = themes[theme];
 
     const cardStyle = generatedImage ? { backgroundImage: `url(${generatedImage})` } : {};
     const cardClasses = generatedImage
         ? 'bg-cover bg-center'
         : cn(selectedTheme.bg, selectedTheme.pattern);
+
+    const canSubmit = quota ? quota.remaining > 0 : true;
 
 
     return (
@@ -227,7 +252,8 @@ export default function GreetingCardPage() {
                                     <Label htmlFor="ai-prompt">{c.aiPromptLabel}</Label>
                                     <Textarea id="ai-prompt" value={aiPrompt} onChange={(e) => setAiPrompt(e.target.value)} placeholder={c.aiPromptPlaceholder} />
                                 </div>
-                                <Button onClick={handleAiGenerate} disabled={isGenerating} className="w-full">
+                                 <UpgradeInlineAlert quota={quota} isLoggedIn={!!user} />
+                                <Button onClick={handleAiGenerate} disabled={isGenerating || !canSubmit} className="w-full">
                                     {isGenerating ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Wand2 className="mr-2 h-4 w-4" />}
                                     {isGenerating ? c.aiGenerating : c.aiGenerate}
                                 </Button>

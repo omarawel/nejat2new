@@ -95,7 +95,7 @@ export default function DuaGeneratorPage() {
         defaultValues: {
             topic: "",
             length: "medium",
-            language: language,
+            language: language as "de" | "en" | "ar",
         },
     });
 

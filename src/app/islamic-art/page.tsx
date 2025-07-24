@@ -42,7 +42,7 @@ export default function IslamicArtPage() {
     useEffect(() => {
         const fetchContent = async () => {
             setLoading(true);
-            const pageContent = await getPageContent('islamic-art', language);
+            const pageContent = await getPageContent('islamic-art', language as 'de' | 'en');
             setContent(pageContent);
             setLoading(false);
         };

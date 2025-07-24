@@ -77,7 +77,7 @@ export function InsightsForm() {
     }
   }
   
-  const canSubmit = quota ? quota.remaining > 0 : true;
+  const canSubmit = !authLoading && quota ? quota.remaining > 0 : true;
 
   return (
     <div className="space-y-6">
