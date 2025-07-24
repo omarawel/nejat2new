@@ -26,6 +26,12 @@ export const allAdminTools: AdminTool[] = [
         href: "/admin/donations"
     },
     {
+        key: "subscription_management",
+        name: "Subscription Management",
+        description: "Manage subscription plans, pricing, and features.",
+        href: "/admin/subscriptions"
+    },
+    {
         key: "quran_wonders",
         name: "Quran Wonders Content",
         description: "Content for the Quran Wonders page.",
