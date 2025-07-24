@@ -3,7 +3,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, CheckCircle } from 'lucide-react';
+import { ArrowLeft, CheckCircle, Check, X } from 'lucide-react';
 import { useLanguage } from '@/components/language-provider';
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
@@ -11,6 +11,8 @@ import { getSubscriptionPlans, type SubscriptionPlan } from '@/lib/subscriptions
 import { Loader2 } from 'lucide-react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '@/lib/firebase';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { cn } from '@/lib/utils';
 
 
 const content = {
@@ -22,6 +24,11 @@ const content = {
         choosePlan: "Plan wählen",
         loading: "Lade Pläne...",
         loginToSubscribe: "Bitte melde dich an, um einen Plan zu wählen.",
+        compareTitle: "Vergleiche die Pläne",
+        compareFeature: "Feature",
+        compareSupporter: "Unterstützer",
+        comparePro: "Pro",
+        comparePatron: "Patron",
     },
     en: {
         pageTitle: "Choose Your Plan",
@@ -31,6 +38,11 @@ const content = {
         choosePlan: "Choose Plan",
         loading: "Loading plans...",
         loginToSubscribe: "Please log in to choose a plan.",
+        compareTitle: "Compare Plans",
+        compareFeature: "Feature",
+        compareSupporter: "Supporter",
+        comparePro: "Pro",
+        comparePatron: "Patron",
     }
 }
 
@@ -61,10 +73,31 @@ const defaultPlans: Omit<SubscriptionPlan, 'id' | 'createdAt' >[] = [
     }
 ]
 
+const allFeatures = {
+    de: [
+        { feature: "Werbefreie Erfahrung", supporter: true, pro: true, patron: true },
+        { feature: "Entwicklung unterstützen", supporter: true, pro: true, patron: true },
+        { feature: "KI-Anfragen / Monat", supporter: "15", pro: "30", patron: "75" },
+        { feature: "Auswendiglernen-Tool", supporter: true, pro: true, patron: true },
+        { feature: "Koran Offline-Zugriff", supporter: false, pro: true, patron: true },
+        { feature: "Früher Zugriff auf neue Features", supporter: false, pro: false, patron: true },
+    ],
+    en: [
+        { feature: "Ad-free Experience", supporter: true, pro: true, patron: true },
+        { feature: "Support Development", supporter: true, pro: true, patron: true },
+        { feature: "AI Requests / Month", supporter: "15", pro: "30", patron: "75" },
+        { feature: "Memorization Tool", supporter: true, pro: true, patron: true },
+        { feature: "Quran Offline Access", supporter: false, pro: true, patron: true },
+        { feature: "Early Access to New Features", supporter: false, pro: false, patron: true },
+    ]
+}
+
 
 export default function SubscribePage() {
   const { language } = useLanguage();
   const c = content[language];
+  const featuresList = allFeatures[language];
+
   const [plans, setPlans] = useState<Omit<SubscriptionPlan, 'id' | 'createdAt' >[]>([]);
   const [loading, setLoading] = useState(true);
   const [user, loadingAuth] = useAuthState(auth);
@@ -84,7 +117,7 @@ export default function SubscribePage() {
 
   return (
     <div className="container mx-auto px-4 py-8">
-        <div className="w-full max-w-4xl mx-auto">
+        <div className="w-full max-w-5xl mx-auto">
             <Button asChild variant="ghost" className="mb-8">
                 <Link href="/">
                     <ArrowLeft className="mr-2 h-4 w-4" />
@@ -101,6 +134,7 @@ export default function SubscribePage() {
                     <Loader2 className="h-12 w-12 animate-spin text-primary" />
                 </div>
             ) : (
+                <>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                     {plans.map(plan => (
                          <Card key={plan.name} className="flex flex-col">
@@ -127,6 +161,48 @@ export default function SubscribePage() {
                         </Card>
                     ))}
                 </div>
+
+                <div className="mt-20">
+                    <h2 className="text-3xl font-bold text-center mb-8">{c.compareTitle}</h2>
+                    <Card>
+                        <Table>
+                            <TableHeader>
+                                <TableRow>
+                                    <TableHead className="w-[40%] text-lg">{c.compareFeature}</TableHead>
+                                    <TableHead className="text-center text-lg">{c.compareSupporter}</TableHead>
+                                    <TableHead className="text-center text-lg text-primary">{c.comparePro}</TableHead>
+                                    <TableHead className="text-center text-lg">{c.comparePatron}</TableHead>
+                                </TableRow>
+                            </TableHeader>
+                            <TableBody>
+                                {featuresList.map((item, index) => (
+                                    <TableRow key={index} className="hover:bg-muted/50">
+                                        <TableCell className="font-semibold">{item.feature}</TableCell>
+                                        <TableCell className="text-center">
+                                            {typeof item.supporter === 'boolean' ? 
+                                                item.supporter ? <Check className="mx-auto h-6 w-6 text-green-500" /> : <X className="mx-auto h-6 w-6 text-muted-foreground" />
+                                                : <span className="font-bold">{item.supporter}</span>
+                                            }
+                                        </TableCell>
+                                        <TableCell className="text-center bg-primary/10">
+                                            {typeof item.pro === 'boolean' ? 
+                                                item.pro ? <Check className="mx-auto h-6 w-6 text-primary" /> : <X className="mx-auto h-6 w-6 text-muted-foreground" />
+                                                : <span className="font-bold text-primary">{item.pro}</span>
+                                            }
+                                        </TableCell>
+                                        <TableCell className="text-center">
+                                            {typeof item.patron === 'boolean' ? 
+                                                item.patron ? <Check className="mx-auto h-6 w-6 text-green-500" /> : <X className="mx-auto h-6 w-6 text-muted-foreground" />
+                                                : <span className="font-bold">{item.patron}</span>
+                                            }
+                                        </TableCell>
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
+                    </Card>
+                </div>
+                </>
             )}
         </div>
     </div>
