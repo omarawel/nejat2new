@@ -124,25 +124,19 @@ export function AddAdForm({ onFinished }: { onFinished: () => void }) {
        let finalImageUrl = "";
 
        try {
-           console.log("Starting ad creation process..."); // Log 1
-
            if (values.imageSource === 'upload' && values.imageFile) {
-               console.log("Uploading image..."); // Log 2
                const imageFile = values.imageFile;
                const storageRef = ref(storage, `ads/${Date.now()}-${imageFile.name}`);
                const uploadResult = await uploadBytes(storageRef, imageFile);
                finalImageUrl = await getDownloadURL(uploadResult.ref);
-               console.log("Image uploaded, download URL:", finalImageUrl); // Log 3
            } else if (values.imageSource === 'url' && values.imageUrl) {
                finalImageUrl = values.imageUrl;
-               console.log("Using image URL:", finalImageUrl); // Log 4
            }
 
            if (!finalImageUrl) {
                throw new Error("Image URL could not be determined.");
            }
 
-           console.log("Adding ad data to database..."); // Log 5
            await addAd({
                slotId: values.slotId,
                title: values.title,
@@ -151,15 +145,13 @@ export function AddAdForm({ onFinished }: { onFinished: () => void }) {
                imageUrl: finalImageUrl,
                actionButtonText: values.actionButtonText,
            });
-           console.log("Ad data added successfully."); // Log 6
 
            toast({ title: c.adCreated });
            form.reset();
            onFinished();
-           console.log("Process finished successfully."); // Log 7
 
        } catch (error) {
-           console.error("Error creating ad:", error); // Log 8
+           console.error("Error creating ad:", error);
            toast({
                variant: 'destructive',
                title: 'Error',
@@ -167,7 +159,6 @@ export function AddAdForm({ onFinished }: { onFinished: () => void }) {
            });
        } finally {
            setIsSubmitting(false);
-           console.log("setIsSubmitting(false) called."); // Log 9
        }
    };
 
