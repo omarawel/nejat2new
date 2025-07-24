@@ -20,8 +20,6 @@ const transformDropboxUrl = (url: string): string => {
         const urlObject = new URL(url);
         if (urlObject.hostname === 'www.dropbox.com') {
             urlObject.hostname = 'dl.dropboxusercontent.com';
-            // Remove parameters like 'rlkey', 'st', 'dl=0' which are for the preview page
-            urlObject.search = ''; 
         }
         return urlObject.toString();
     } catch (e) {
