@@ -65,16 +65,23 @@ export default function IslamicCalendarPage() {
     const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());
     const [conversionResult, setConversionResult] = useState<string>('');
     const [todayHijri, setTodayHijri] = useState<string>('');
+    const [isClient, setIsClient] = useState(false);
 
     useEffect(() => {
-        const today = new HijriDate();
-        setTodayHijri(formatHijriDate(today, language));
-        
-        if (selectedDate) {
-            const hijri = new HijriDate(selectedDate);
-            setConversionResult(formatHijriDate(hijri, language));
+        setIsClient(true);
+    }, []);
+
+    useEffect(() => {
+        if (isClient) {
+            const today = new HijriDate();
+            setTodayHijri(formatHijriDate(today, language));
+            
+            if (selectedDate) {
+                const hijri = new HijriDate(selectedDate);
+                setConversionResult(formatHijriDate(hijri, language));
+            }
         }
-    }, [selectedDate, language]);
+    }, [selectedDate, language, isClient]);
 
     return (
         <div className="container mx-auto px-4 py-8">
@@ -98,8 +105,8 @@ export default function IslamicCalendarPage() {
                         <CardTitle>{c.today}</CardTitle>
                     </CardHeader>
                     <CardContent className="text-center">
-                        <p className="text-lg font-semibold">{format(new Date(), 'PPP', { locale })}</p>
-                        <p className="text-2xl text-primary font-bold">{todayHijri}</p>
+                        <p className="text-lg font-semibold">{isClient ? format(new Date(), 'PPP', { locale }) : '...'}</p>
+                        <p className="text-2xl text-primary font-bold">{isClient ? todayHijri : '...'}</p>
                     </CardContent>
                 </Card>
                 <Card>
