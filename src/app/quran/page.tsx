@@ -20,7 +20,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { Button } from "@/components/ui/button"
-import { Terminal, Search, Eye, EyeOff, Play, Loader, Pause, ArrowLeft, Download, WifiOff, Star } from "lucide-react"
+import { Terminal, Search, Eye, EyeOff, Play, Loader, Pause, ArrowLeft, Download, WifiOff, Star, Sparkles } from "lucide-react"
 import { useEffect, useState, useMemo, FormEvent, useRef, useCallback } from "react"
 import { cn } from "@/lib/utils"
 import { textToSpeech } from "@/ai/flows/text-to-speech"
@@ -120,6 +120,9 @@ const content = {
         toastFavoriteSaved: "Favorit gespeichert!",
         toastErrorSaving: "Fehler beim Speichern.",
         loginToSave: "Anmelden zum Speichern",
+        proFeature: "Pro-Funktion",
+        proFeatureDescription: "Erhalte Offline-Zugriff und unterstütze die App mit einem Upgrade.",
+        upgradeNow: "Jetzt upgraden",
     },
     en: {
         title: "The Holy Quran",
@@ -153,6 +156,9 @@ const content = {
         toastFavoriteSaved: "Favorite saved!",
         toastErrorSaving: "Error saving favorite.",
         loginToSave: "Login to save",
+        proFeature: "Pro Feature",
+        proFeatureDescription: "Get offline access and support the app by upgrading.",
+        upgradeNow: "Upgrade Now",
     }
 }
 
@@ -359,6 +365,8 @@ export default function QuranPage() {
   const [isDownloading, setIsDownloading] = useState(false);
   const [downloadProgress, setDownloadProgress] = useState(0);
 
+  const [user] = useAuthState(auth);
+
 
   const checkDownloadStatus = useCallback(async () => {
     const status = await isQuranDownloaded();
@@ -512,29 +520,44 @@ export default function QuranPage() {
       
       <Card>
         <CardHeader>
-            <CardTitle>{c.offlineAccess}</CardTitle>
+            <CardTitle className="flex items-center justify-between">
+                {c.offlineAccess}
+                <span className="text-xs font-semibold bg-primary text-primary-foreground px-2 py-0.5 rounded-full">{c.proFeature}</span>
+            </CardTitle>
         </CardHeader>
         <CardContent>
-            {isDownloading ? (
-                <div className="space-y-2">
-                    <p>{c.downloadingQuran}</p>
-                    <Progress value={downloadProgress} />
-                    <p className="text-sm text-muted-foreground">{c.downloadingSurah} {Math.ceil(downloadProgress / 100 * 114)}/114</p>
-                </div>
-            ) : isDownloaded ? (
-                 <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2 text-green-600">
-                        <WifiOff className="h-5 w-5" />
-                        <p className="font-semibold">{c.offlineReady}</p>
+             {user ? (
+                isDownloading ? (
+                    <div className="space-y-2">
+                        <p>{c.downloadingQuran}</p>
+                        <Progress value={downloadProgress} />
+                        <p className="text-sm text-muted-foreground">{c.downloadingSurah} {Math.ceil(downloadProgress / 100 * 114)}/114</p>
                     </div>
-                    <Button variant="destructive" size="sm" onClick={handleClearOfflineData}>{c.clearOfflineData}</Button>
+                ) : isDownloaded ? (
+                    <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2 text-green-600">
+                            <WifiOff className="h-5 w-5" />
+                            <p className="font-semibold">{c.offlineReady}</p>
+                        </div>
+                        <Button variant="destructive" size="sm" onClick={handleClearOfflineData}>{c.clearOfflineData}</Button>
+                    </div>
+                ) : (
+                    <Button onClick={handleDownloadQuran} disabled={isDownloading}>
+                        <Download className="mr-2 h-4 w-4" />
+                        {c.downloadQuran}
+                    </Button>
+                )
+             ) : (
+                <div className="text-center p-4 bg-muted rounded-md">
+                    <p className="font-semibold">{c.proFeatureDescription}</p>
+                    <Button asChild className="mt-2">
+                        <Link href="/subscribe">
+                            <Sparkles className="mr-2 h-4 w-4" />
+                            {c.upgradeNow}
+                        </Link>
+                    </Button>
                 </div>
-            ) : (
-                <Button onClick={handleDownloadQuran} disabled={isDownloading}>
-                    <Download className="mr-2 h-4 w-4" />
-                    {c.downloadQuran}
-                </Button>
-            )}
+             )}
         </CardContent>
       </Card>
 
