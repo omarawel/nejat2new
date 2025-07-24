@@ -11,26 +11,33 @@ import { Skeleton } from './ui/skeleton';
 const content = {
     de: {
         weekdays: ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"],
+        hijriMonths: [ "Muharram", "Safar", "Rabi' al-awwal", "Rabi' al-thani", "Dschumada al-ula", "Dschumada al-uchra", "Radschab", "Scha'ban", "Ramadan", "Schawwal", "Dhu l-qaʿda", "Dhu l-hiddscha"]
     },
     en: {
         weekdays: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+        hijriMonths: [ "Muharram", "Safar", "Rabi' al-awwal", "Rabi' al-thani", "Jumada al-ula", "Jumada al-ukhra", "Rajab", "Sha'ban", "Ramadan", "Shawwal", "Dhu al-Qi'dah", "Dhu al-Hijjah"]
     }
 }
 
 const DayCard = ({ dayData, isToday }: { dayData: DayData | null, isToday: boolean }) => {
+    const { language } = useLanguage();
+    const c = content[language];
+    
     if (!dayData) {
         return <div className="p-2 border border-transparent"></div>;
     }
 
     const { gregorian, hijri } = dayData.date;
+    const hijriMonthName = c.hijriMonths[hijri.month.number - 1];
 
     return (
-        <Card className={cn("h-28 flex flex-col", isToday && "border-primary")}>
-            <div className="flex-grow p-2 text-left">
-                <p className="text-sm font-bold">{gregorian.day}</p>
+        <Card className={cn("h-28 flex flex-col justify-between", isToday && "border-primary bg-accent/50")}>
+            <div className="p-2 text-left">
+                <p className="font-bold text-lg">{gregorian.day}</p>
             </div>
-            <div className={cn("p-2 text-right text-xs bg-muted/50", isToday && "bg-primary/10 text-primary")}>
-                <p className="font-semibold">{hijri.day} {hijri.month.en}</p>
+            <div className={cn("p-2 text-right text-xs bg-muted/50 text-muted-foreground", isToday && "bg-primary/10 text-primary font-semibold")}>
+                <p>{hijri.day}</p>
+                 <p className="truncate">{hijriMonthName}</p>
             </div>
         </Card>
     );
@@ -56,8 +63,8 @@ export const HijriCalendar = ({ year, month }: { year: number, month: number }) 
     }, [year, month]);
 
     const today = new Date();
-    const todayString = `${today.getDate().toString().padStart(2, '0')}-${(today.getMonth() + 1).toString().padStart(2, '0')}-${today.getFullYear()}`;
-    const firstDayOfMonth = calendarData.length > 0 ? (new Date(calendarData[0].date.gregorian.date.split('-').reverse().join('-')).getDay() + 6) % 7 : 0;
+    const todayString = `${String(today.getDate()).padStart(2, '0')}-${String(today.getMonth() + 1).padStart(2, '0')}-${today.getFullYear()}`;
+    const firstDayOfWeek = calendarData.length > 0 ? (new Date(year, month - 1, 1).getDay() + 6) % 7 : 0; // 0=Mon, 6=Sun
 
     return (
         <Card>
@@ -71,7 +78,7 @@ export const HijriCalendar = ({ year, month }: { year: number, month: number }) 
                     </div>
                 ) : (
                     <div className="grid grid-cols-7 gap-2">
-                        {Array.from({ length: firstDayOfMonth }).map((_, i) => <DayCard key={`empty-${i}`} dayData={null} isToday={false} />)}
+                        {Array.from({ length: firstDayOfWeek }).map((_, i) => <DayCard key={`empty-${i}`} dayData={null} isToday={false} />)}
                         {calendarData.map(day => (
                             <DayCard 
                                 key={day.date.readable}

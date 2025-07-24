@@ -1,11 +1,10 @@
 
 "use client"
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Calendar as CalendarIcon, ArrowLeft, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useLanguage } from '@/components/language-provider';
-import HijriDate from 'hijri-date/lib/safe';
 import Link from 'next/link';
 import { HijriCalendar } from '@/components/hijri-calendar';
 
@@ -38,16 +37,23 @@ export default function IslamicCalendarPage() {
     const { language } = useLanguage();
     const c = content[language];
     
-    const [currentHijriDate, setCurrentHijriDate] = useState(new HijriDate());
+    const [date, setDate] = useState(new Date());
     
     const changeMonth = (amount: number) => {
-        const newDate = new HijriDate(currentHijriDate.getTime());
-        newDate.setMonth(newDate.getMonth() + amount);
-        setCurrentHijriDate(newDate);
+        setDate(currentDate => {
+            const newDate = new Date(currentDate);
+            newDate.setMonth(newDate.getMonth() + amount);
+            return newDate;
+        });
     };
+    
+    // We need to use Gregorian month and year for the API call
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1; // getMonth() is 0-indexed
 
-    const monthName = (language === 'de' ? hijriMonths_de : hijriMonths_en)[currentHijriDate.getMonth()];
-    const year = currentHijriDate.getFullYear();
+    // For display, we can use a Hijri conversion library or the API data
+    const monthName = (language === 'de' ? hijriMonths_de : hijriMonths_en)[new Date(date).getMonth()];
+    const displayYear = date.getFullYear();
 
     return (
         <div className="container mx-auto px-4 py-8">
@@ -70,12 +76,12 @@ export default function IslamicCalendarPage() {
                     <Button variant="outline" size="icon" onClick={() => changeMonth(-1)}>
                         <ChevronLeft className="h-4 w-4" />
                     </Button>
-                    <h2 className="text-2xl font-semibold text-center w-64">{monthName} {year}</h2>
+                    <h2 className="text-2xl font-semibold text-center w-64">{monthName} {displayYear}</h2>
                     <Button variant="outline" size="icon" onClick={() => changeMonth(1)}>
                         <ChevronRight className="h-4 w-4" />
                     </Button>
                 </div>
-                <HijriCalendar year={year} month={currentHijriDate.getMonth() + 1} />
+                <HijriCalendar year={year} month={month} />
             </div>
         </div>
     );

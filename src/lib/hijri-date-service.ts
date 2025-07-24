@@ -52,7 +52,7 @@ export interface MonthData {
 
 export async function getHijriCalendar(month: number, year: number): Promise<MonthData | null> {
     try {
-        const response = await fetch(`https://api.aladhan.com/v1/hijriCalendar/${year}/${month}`);
+        const response = await fetch(`https://api.aladhan.com/v1/calendar/${year}/${month}`);
         if (!response.ok) {
             console.error("Failed to fetch calendar data:", response.status);
             return null;
