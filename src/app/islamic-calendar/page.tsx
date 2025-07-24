@@ -52,8 +52,13 @@ const hijriMonths_de = [
 ];
 
 function formatHijriDate(hijri: HijriDate, lang: 'de' | 'en'): string {
+    const year = hijri.getFullYear();
+    // Add a check to prevent "undefined" from being displayed.
+    if (isNaN(year)) {
+        return '';
+    }
     const months = lang === 'de' ? hijriMonths_de : hijriMonths_en;
-    return `${hijri.getDate()} ${months[hijri.getMonth()]} ${hijri.getFullYear()} AH`;
+    return `${hijri.getDate()} ${months[hijri.getMonth()]} ${year} AH`;
 }
 
 
