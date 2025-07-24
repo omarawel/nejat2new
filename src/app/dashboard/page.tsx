@@ -129,8 +129,7 @@ export default function DashboardPage() {
         <div className="container mx-auto px-4 py-8">
             <header className="flex flex-col sm:flex-row justify-between sm:items-center mb-12 gap-4">
                 <div className="text-center sm:text-left">
-                    <h1 className="text-4xl font-bold tracking-tight text-primary flex items-center gap-3">
-                        <LayoutGrid className="h-10 w-10" />
+                    <h1 className="text-4xl font-bold tracking-tight text-primary">
                         {c.title}
                     </h1>
                     <p className="text-muted-foreground mt-2 text-lg max-w-2xl">{c.description}</p>
