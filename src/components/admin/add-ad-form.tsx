@@ -120,47 +120,56 @@ export function AddAdForm({ onFinished }: { onFinished: () => void }) {
     });
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
-        setIsSubmitting(true);
-        let finalImageUrl = "";
+       setIsSubmitting(true);
+       let finalImageUrl = "";
 
-        try {
-            if (values.imageSource === 'upload' && values.imageFile) {
-                const imageFile = values.imageFile;
-                const storageRef = ref(storage, `ads/${Date.now()}-${imageFile.name}`);
-                const uploadResult = await uploadBytes(storageRef, imageFile);
-                finalImageUrl = await getDownloadURL(uploadResult.ref);
-            } else if (values.imageSource === 'url' && values.imageUrl) {
-                finalImageUrl = values.imageUrl;
-            }
+       try {
+           console.log("Starting ad creation process..."); // Log 1
 
-            if (!finalImageUrl) {
-                throw new Error("Image URL could not be determined.");
-            }
+           if (values.imageSource === 'upload' && values.imageFile) {
+               console.log("Uploading image..."); // Log 2
+               const imageFile = values.imageFile;
+               const storageRef = ref(storage, `ads/${Date.now()}-${imageFile.name}`);
+               const uploadResult = await uploadBytes(storageRef, imageFile);
+               finalImageUrl = await getDownloadURL(uploadResult.ref);
+               console.log("Image uploaded, download URL:", finalImageUrl); // Log 3
+           } else if (values.imageSource === 'url' && values.imageUrl) {
+               finalImageUrl = values.imageUrl;
+               console.log("Using image URL:", finalImageUrl); // Log 4
+           }
 
-            await addAd({
-                slotId: values.slotId,
-                title: values.title,
-                description: values.description || '',
-                linkUrl: values.linkUrl,
-                imageUrl: finalImageUrl,
-                actionButtonText: values.actionButtonText,
-            });
+           if (!finalImageUrl) {
+               throw new Error("Image URL could not be determined.");
+           }
 
-            toast({ title: c.adCreated });
-            form.reset();
-            onFinished();
+           console.log("Adding ad data to database..."); // Log 5
+           await addAd({
+               slotId: values.slotId,
+               title: values.title,
+               description: values.description || '',
+               linkUrl: values.linkUrl,
+               imageUrl: finalImageUrl,
+               actionButtonText: values.actionButtonText,
+           });
+           console.log("Ad data added successfully."); // Log 6
 
-        } catch (error) {
-            console.error("Error creating ad:", error);
-            toast({
-                variant: 'destructive',
-                title: 'Error',
-                description: c.errorCreating,
-            });
-        } finally {
-            setIsSubmitting(false);
-        }
-    };
+           toast({ title: c.adCreated });
+           form.reset();
+           onFinished();
+           console.log("Process finished successfully."); // Log 7
+
+       } catch (error) {
+           console.error("Error creating ad:", error); // Log 8
+           toast({
+               variant: 'destructive',
+               title: 'Error',
+               description: c.errorCreating,
+           });
+       } finally {
+           setIsSubmitting(false);
+           console.log("setIsSubmitting(false) called."); // Log 9
+       }
+   };
 
     const imageSource = form.watch('imageSource');
 
