@@ -58,16 +58,6 @@ function toDegrees(radians: number) {
     return radians * 180 / Math.PI;
 }
 
-const NavigationArrow = ({ rotation }: { rotation: number }) => (
-    <div className="absolute w-full h-full" style={{ transform: `rotate(${rotation}deg)` }}>
-        <Navigation
-            className={cn("absolute -top-4 left-1/2 -translate-x-1/2 w-8 h-8 transition-colors text-white/90")}
-            style={{ transform: 'rotate(180deg)' }}
-        />
-    </div>
-);
-
-
 export default function CompassPage() {
     const { language } = useLanguage();
     const c = content[language];
@@ -182,6 +172,9 @@ export default function CompassPage() {
                             </Alert>
                         ) : (
                             <>
+                                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+                                    <Navigation className="w-8 h-8 text-primary" style={{transform: 'rotate(180deg)'}}/>
+                                </div>
                                 <div className="relative w-64 h-64 mx-auto rounded-full flex items-center justify-center" style={{
                                     border: '4px solid hsl(var(--border))',
                                     background: 'hsl(var(--muted))',
