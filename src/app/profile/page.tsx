@@ -41,6 +41,8 @@ const content = {
         login: "Anmelden",
         themeSettings: "Theme-Einstellungen",
         themeDescription: "Wähle dein bevorzugtes Farbschema für die App.",
+        saveTheme: "Theme speichern",
+        themeSaved: "Theme gespeichert",
         themes: {
             light: "Hell",
             dark: "Dunkel",
@@ -73,6 +75,8 @@ const content = {
         login: "Login",
         themeSettings: "Theme Settings",
         themeDescription: "Choose your preferred color scheme for the app.",
+        saveTheme: "Save Theme",
+        themeSaved: "Theme Saved",
          themes: {
             light: "Light",
             dark: "Dark",
@@ -99,6 +103,8 @@ export default function ProfilePage() {
     const [newPassword, setNewPassword] = useState('');
     const [confirmNewPassword, setConfirmNewPassword] = useState('');
     const [isUpdatingPassword, setIsUpdatingPassword] = useState(false);
+    
+    const [selectedTheme, setSelectedTheme] = useState(theme);
 
     useEffect(() => {
         if (user) {
@@ -108,6 +114,10 @@ export default function ProfilePage() {
             router.push('/login');
         }
     }, [user, loadingAuth, router]);
+    
+    useEffect(() => {
+        setSelectedTheme(theme);
+    }, [theme]);
 
     const handleNameUpdate = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -150,6 +160,11 @@ export default function ProfilePage() {
         } finally {
             setIsUpdatingPassword(false);
         }
+    }
+
+    const handleThemeSave = () => {
+        setTheme(selectedTheme);
+        toast({ title: c.themeSaved });
     }
 
 
@@ -224,23 +239,23 @@ export default function ProfilePage() {
                         <CardTitle className="flex items-center gap-2"><Palette /> {c.themeSettings}</CardTitle>
                         <CardDescription>{c.themeDescription}</CardDescription>
                     </CardHeader>
-                    <CardContent>
+                    <CardContent className="space-y-4">
                         <div className="flex flex-wrap gap-4">
                             {(['light', 'dark', 'rose', 'blue', 'black'] as const).map((themeKey) => (
                                 <Button
                                     key={themeKey}
-                                    variant={theme === themeKey ? 'default' : 'outline'}
-                                    onClick={() => setTheme(themeKey)}
-                                    className={cn("capitalize", 
-                                        themeKey === 'rose' && 'bg-rose-900 text-white hover:bg-rose-800',
-                                        themeKey === 'blue' && 'bg-blue-900 text-white hover:bg-blue-800',
-                                        themeKey === 'black' && 'bg-black text-white hover:bg-gray-800',
-                                    )}
+                                    variant={selectedTheme === themeKey ? 'default' : 'outline'}
+                                    onClick={() => setSelectedTheme(themeKey)}
+                                    className={cn("capitalize")}
                                 >
                                     {c.themes[themeKey]}
                                 </Button>
                             ))}
                         </div>
+                         <Button onClick={handleThemeSave} disabled={selectedTheme === theme}>
+                            <Save className="mr-2 h-4 w-4" />
+                            {c.saveTheme}
+                        </Button>
                     </CardContent>
                 </Card>
 
