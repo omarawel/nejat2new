@@ -4,7 +4,7 @@
 import { useEffect, useState, useCallback, useMemo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, LocateFixed, AlertTriangle, Loader2, CheckCircle, Navigation } from 'lucide-react';
+import { ArrowLeft, LocateFixed, AlertTriangle, Loader2, CheckCircle, Navigation, Camera } from 'lucide-react';
 import { useLanguage } from '@/components/language-provider';
 import Link from 'next/link';
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
@@ -13,8 +13,8 @@ import { useToast } from '@/hooks/use-toast';
 
 const content = {
     de: {
-        pageTitle: "Qibla Richtung",
-        pageDescription: "Finde die Richtung zur Kaaba von deinem aktuellen Standort.",
+        pageTitle: "Qibla Kompass",
+        pageDescription: "Richte dein Gerät aus, um die Richtung nach Mekka zu finden.",
         backToFeatures: "Zurück zu den Funktionen",
         requestingPermissions: "Berechtigungen anfordern...",
         calculating: "Berechne...",
@@ -26,10 +26,11 @@ const content = {
         distance: "Distanz",
         perfectlyAligned: "Perfekt ausgerichtet!",
         alignDevice: "Gerät ausrichten",
+        arQibla: "AR Qibla"
     },
     en: {
-        pageTitle: "Qibla Direction",
-        pageDescription: "Find the direction to the Kaaba from your current location.",
+        pageTitle: "Qibla Compass",
+        pageDescription: "Align your device to find the direction to Mecca.",
         backToFeatures: "Back to Features",
         requestingPermissions: "Requesting permissions...",
         calculating: "Calculating...",
@@ -41,6 +42,7 @@ const content = {
         distance: "Distance",
         perfectlyAligned: "Perfectly Aligned!",
         alignDevice: "Align Device",
+        arQibla: "AR Qibla"
     }
 }
 
@@ -55,64 +57,6 @@ function toDegrees(radians: number) {
     return radians * 180 / Math.PI;
 }
 
-function Compass({ heading, qiblaDirection }: { heading: number, qiblaDirection: number | null }) {
-    const rotation = 360 - heading;
-    const qiblaRelative = qiblaDirection !== null ? (qiblaDirection - heading + 360) % 360 : null;
-    const deviation = qiblaDirection !== null ? Math.round(180 - Math.abs(Math.abs(qiblaDirection - heading) - 180)) : null;
-
-    return (
-        <div className="relative w-64 h-64 sm:w-80 sm:h-80 mx-auto transition-transform duration-200" style={{ transform: `rotate(${rotation}deg)` }}>
-            {/* Dial background and ticks */}
-            <svg viewBox="0 0 200 200" className="w-full h-full">
-                <circle cx="100" cy="100" r="98" fill="none" stroke="hsl(var(--muted-foreground))" strokeWidth="1" opacity="0.5" />
-                {Array.from({ length: 120 }).map((_, i) => (
-                    <line
-                        key={i}
-                        x1="100"
-                        y1="2"
-                        x2="100"
-                        y2={i % 5 === 0 ? "10" : "6"}
-                        stroke="hsl(var(--muted-foreground))"
-                        strokeWidth={i % 5 === 0 ? "1" : "0.5"}
-                        transform={`rotate(${i * 3}, 100, 100)`}
-                    />
-                ))}
-            </svg>
-             {/* Cardinal points */}
-            <div className="absolute inset-0 flex items-center justify-center text-xl font-bold text-muted-foreground" style={{ transform: `rotate(${-rotation}deg)` }}>
-                <span className="absolute -top-1">N</span>
-                <span className="absolute -bottom-1 rotate-180">S</span>
-                <span className="absolute -left-1 -rotate-90">W</span>
-                <span className="absolute -right-1 rotate-90">E</span>
-            </div>
-
-            {/* Qibla Indicator Arrow */}
-            {qiblaRelative !== null && (
-                 <div
-                    className="absolute top-0 left-1/2 w-0 h-0 -translate-x-1/2 -translate-y-4"
-                    style={{
-                        transform: `rotate(${qiblaRelative}deg) translateY(-88px)`,
-                        transformOrigin: '50% 100px',
-                    }}
-                >
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="hsl(var(--primary))" className="transition-colors duration-500">
-                        <path d="M12 2L2 22h20L12 2z" transform="rotate(180 12 12)" />
-                    </svg>
-                </div>
-            )}
-            
-            {/* Center Content */}
-            <div className="absolute inset-0 flex items-center justify-center" style={{ transform: `rotate(${-rotation}deg)` }}>
-                {deviation !== null && (
-                    <span className={cn("text-5xl font-mono font-bold", Math.abs(deviation) < 5 && "text-primary")}>
-                        {deviation}°
-                    </span>
-                )}
-            </div>
-        </div>
-    );
-}
-
 export default function CompassPage() {
     const { language } = useLanguage();
     const c = content[language];
@@ -124,7 +68,6 @@ export default function CompassPage() {
     const [status, setStatus] = useState<string>(c.requestingPermissions);
 
     const calculateQibla = useCallback((lat: number, lng: number) => {
-        // Bearing
         const userLatRad = toRadians(lat);
         const kaabaLatRad = toRadians(KAABA_LAT);
         const deltaLng = toRadians(KAABA_LNG - lng);
@@ -135,7 +78,6 @@ export default function CompassPage() {
         bearing = (bearing + 360) % 360;
         setQiblaDirection(bearing);
         
-        // Distance (Haversine formula)
         const R = 6371; // Radius of Earth in kilometers
         const dLat = toRadians(KAABA_LAT - lat);
         const dLon = toRadians(KAABA_LNG - lng);
@@ -149,7 +91,6 @@ export default function CompassPage() {
 
     const handleOrientation = (event: DeviceOrientationEvent) => {
         let alpha = event.alpha;
-        // For iOS devices
         if (typeof (event as any).webkitCompassHeading !== 'undefined') {
             alpha = (event as any).webkitCompassHeading;
         }
@@ -211,12 +152,23 @@ export default function CompassPage() {
     return (
         <div className="flex-grow flex flex-col items-center justify-center bg-gray-900 text-white p-4">
             <div className="w-full max-w-sm text-center">
-                 <Button asChild variant="ghost" className="absolute top-4 left-4 text-white hover:bg-white/10 hover:text-white">
-                    <Link href="/">
-                        <ArrowLeft className="mr-2 h-4 w-4" />
-                        {c.backToFeatures}
-                    </Link>
-                </Button>
+                <div className="absolute top-4 left-4 flex items-center gap-2">
+                    <Button asChild variant="ghost" className="text-white hover:bg-white/10 hover:text-white">
+                        <Link href="/">
+                            <ArrowLeft className="mr-2 h-4 w-4" />
+                            {c.backToFeatures}
+                        </Link>
+                    </Button>
+                </div>
+                
+                 <div className="absolute top-4 right-4">
+                    <Button asChild variant="outline" className="bg-white/10 text-white border-white/20 hover:bg-white/20">
+                        <Link href="/ar-qibla">
+                            <Camera className="mr-2 h-4 w-4" />
+                            {c.arQibla}
+                        </Link>
+                    </Button>
+                </div>
 
                 <header className="my-8">
                     <h1 className="text-3xl font-bold">{c.pageTitle}</h1>
@@ -273,7 +225,24 @@ export default function CompassPage() {
                                         <span className="absolute right-4">E</span>
                                     </div>
                                     <div className="absolute w-full h-full" style={{ transform: `rotate(${qiblaDirection}deg)` }}>
-                                         <div className="absolute top-1/2 left-1/2 w-0.5 h-12 bg-primary -translate-y-full origin-bottom" style={{ transform: "rotate(180deg)"}} />
+                                        <div
+                                            className="absolute top-1/2 left-1/2 -translate-y-[calc(50%_+_1rem)] -translate-x-1/2 text-primary"
+                                        >
+                                            <svg
+                                                xmlns="http://www.w3.org/2000/svg"
+                                                width="24"
+                                                height="24"
+                                                viewBox="0 0 24 24"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                strokeWidth="2"
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                            >
+                                                <path d="M12 2L2 22h20L12 2z" transform="rotate(180 12 12)"/>
+                                                <circle cx="12" cy="12" r="2" fill="currentColor"/>
+                                            </svg>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
