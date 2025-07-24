@@ -19,7 +19,7 @@ import { useToast } from '@/hooks/use-toast';
 import { getFooterContent, updateFooterContent, type FooterContent, type SocialLink } from '@/lib/footer';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
-const iconOptions = ["FacebookIcon", "TwitterIcon", "InstagramIcon", "YouTubeIcon"];
+const iconOptions = ["FacebookIcon", "TwitterIcon", "InstagramIcon", "YouTubeIcon", "XIcon", "TikTokIcon", "LinkedInIcon"];
 
 const content = {
     de: {

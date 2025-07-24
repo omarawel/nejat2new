@@ -3,7 +3,7 @@
 
 import Link from "next/link";
 import { useLanguage } from "../language-provider";
-import { FacebookIcon, InstagramIcon, TwitterIcon, YouTubeIcon } from "../icons";
+import { FacebookIcon, InstagramIcon, TwitterIcon, YouTubeIcon, XIcon, TikTokIcon, LinkedInIcon } from "../icons";
 import { useEffect, useState } from "react";
 import { getFooterContentOnce, type FooterContent, type SocialLink } from "@/lib/footer";
 import { Skeleton } from "../ui/skeleton";
@@ -41,7 +41,10 @@ const iconMap: { [key: string]: React.ComponentType<any> } = {
     FacebookIcon,
     TwitterIcon,
     InstagramIcon,
-    YouTubeIcon
+    YouTubeIcon,
+    XIcon,
+    TikTokIcon,
+    LinkedInIcon
 };
 
 export function Footer() {
