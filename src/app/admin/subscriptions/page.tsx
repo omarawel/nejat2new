@@ -32,6 +32,7 @@ const content = {
         editPlan: "Plan bearbeiten",
         name: "Name",
         price: "Preis",
+        aiLimit: "KI-Limit",
         status: "Status",
         actions: "Aktionen",
         noPlans: "Noch keine Pläne erstellt. Füge einen neuen hinzu, um zu beginnen.",
@@ -56,6 +57,7 @@ const content = {
         editPlan: "Edit Plan",
         name: "Name",
         price: "Price",
+        aiLimit: "AI Limit",
         status: "Status",
         actions: "Actions",
         noPlans: "No plans created yet. Add a new one to get started.",
@@ -175,8 +177,9 @@ export default function AdminSubscriptionsPage() {
                         <Table>
                             <TableHeader>
                                 <TableRow>
-                                    <TableHead className="w-[40%]">{c.name}</TableHead>
+                                    <TableHead className="w-[35%]">{c.name}</TableHead>
                                     <TableHead>{c.price}</TableHead>
+                                    <TableHead>{c.aiLimit}</TableHead>
                                     <TableHead>{c.status}</TableHead>
                                     <TableHead className="text-right">{c.actions}</TableHead>
                                 </TableRow>
@@ -187,6 +190,7 @@ export default function AdminSubscriptionsPage() {
                                         <TableRow key={plan.id}>
                                             <TableCell className="font-semibold">{plan.name}</TableCell>
                                             <TableCell>{plan.price}</TableCell>
+                                            <TableCell>{plan.aiRequestLimit}</TableCell>
                                             <TableCell>
                                                 <Badge variant={plan.active ? "default" : "secondary"}>
                                                     {plan.active ? c.active : c.inactive}
@@ -214,7 +218,7 @@ export default function AdminSubscriptionsPage() {
                                     ))
                                 ) : (
                                     <TableRow>
-                                        <TableCell colSpan={4} className="h-24 text-center">
+                                        <TableCell colSpan={5} className="h-24 text-center">
                                             {c.noPlans}
                                         </TableCell>
                                     </TableRow>

@@ -8,6 +8,7 @@ export interface SubscriptionPlan {
   price: string;
   features: string[];
   priceId: string; // Stripe Price ID
+  aiRequestLimit: number; // Monthly AI request limit
   active: boolean;
   createdAt: Timestamp;
 }

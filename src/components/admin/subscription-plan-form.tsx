@@ -25,6 +25,7 @@ const content = {
         priceIdPlaceholder: "price_123abc...",
         featuresLabel: "Features (eins pro Zeile)",
         featuresPlaceholder: "Exklusive KI-Funktionen\nWerbefrei\n...",
+        aiRequestLimitLabel: "KI-Anfragen-Limit (monatlich)",
         activeLabel: "Plan ist aktiv",
         createButton: "Plan erstellen",
         updateButton: "Plan aktualisieren",
@@ -42,6 +43,7 @@ const content = {
         priceIdPlaceholder: "price_123abc...",
         featuresLabel: "Features (one per line)",
         featuresPlaceholder: "Exclusive AI features\nAd-free experience\n...",
+        aiRequestLimitLabel: "AI Request Limit (monthly)",
         activeLabel: "Plan is active",
         createButton: "Create Plan",
         updateButton: "Update Plan",
@@ -57,6 +59,7 @@ const formSchema = z.object({
   price: z.string().min(1, "Price is required."),
   priceId: z.string().min(1, "Stripe Price ID is required.").startsWith('price_', "Must be a valid Stripe Price ID"),
   features: z.string().min(1, "At least one feature is required."),
+  aiRequestLimit: z.coerce.number().int().min(0, "AI request limit must be a positive number."),
   active: z.boolean().default(true),
 });
 
@@ -78,6 +81,7 @@ export function SubscriptionPlanForm({ plan, onFinished }: SubscriptionPlanFormP
             price: plan?.price || "",
             priceId: plan?.priceId || "",
             features: plan?.features.join('\n') || "",
+            aiRequestLimit: plan?.aiRequestLimit || 0,
             active: plan?.active ?? true,
         },
     });
@@ -96,7 +100,7 @@ export function SubscriptionPlanForm({ plan, onFinished }: SubscriptionPlanFormP
                 toast({ title: c.successUpdate });
             } else {
                 // Create new plan
-                await addSubscriptionPlan(planData);
+                await addSubscriptionPlan(planData as any);
                 toast({ title: c.successCreate });
             }
             form.reset();
@@ -127,17 +131,30 @@ export function SubscriptionPlanForm({ plan, onFinished }: SubscriptionPlanFormP
                         </FormItem>
                     )}
                 />
-                 <FormField
-                    control={form.control}
-                    name="price"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>{c.priceLabel}</FormLabel>
-                            <FormControl><Input placeholder={c.pricePlaceholder} {...field} /></FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
+                 <div className="grid grid-cols-2 gap-4">
+                    <FormField
+                        control={form.control}
+                        name="price"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>{c.priceLabel}</FormLabel>
+                                <FormControl><Input placeholder={c.pricePlaceholder} {...field} /></FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                    <FormField
+                        control={form.control}
+                        name="aiRequestLimit"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>{c.aiRequestLimitLabel}</FormLabel>
+                                <FormControl><Input type="number" {...field} /></FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                 </div>
                 <FormField
                     control={form.control}
                     name="priceId"
