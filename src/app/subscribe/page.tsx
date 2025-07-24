@@ -54,11 +54,13 @@ const content = {
 const features = [
     { key: 'quran_hadith_access', de: 'Vollständiger Koran & Hadith-Zugriff', en: 'Full Quran & Hadith Access' },
     { key: 'qibla_prayer_times', de: 'Qibla-Kompass & Gebetszeiten', en: 'Qibla Compass & Prayer Times' },
-    { key: 'ai_requests', de: 'KI-Anfragen / Monat', en: 'AI-Requests / Month' },
+    { key: 'islamic_knowledge', de: 'Islamische Wissensbibliothek', en: 'Islamic Knowledge Library' },
+    { key: 'basic_tools', de: 'Grundlegende Tools (Tasbih, Tracker)', en: 'Basic Tools (Tasbih, Trackers)' },
+    { key: 'ai_requests', de: 'KI-Anfragen / Monat', en: 'AI Requests / Month' },
     { key: 'support_dev', de: 'Entwicklung unterstützen', en: 'Support Development' },
-    { key: 'memorization_tool', de: 'Auswendiglernen-Tool', en: 'Memorization-Tool' },
+    { key: 'memorization_tool', de: 'Auswendiglernen-Tool', en: 'Memorization Tool' },
     { key: 'ad_free', de: 'Werbefreie Erfahrung', en: 'Ad-free Experience' },
-    { key: 'quran_offline', de: 'Koran Offline-Zugriff', en: 'Quran Offline-Access' },
+    { key: 'quran_offline', de: 'Koran Offline-Zugriff', en: 'Quran Offline Access' },
     { key: 'early_access', de: 'Früher Zugriff auf neue Features', en: 'Early Access to new Features' },
 ];
 
@@ -66,6 +68,8 @@ const planFeatures: Record<string, Record<string, any>> = {
     free: {
         quran_hadith_access: true,
         qibla_prayer_times: true,
+        islamic_knowledge: true,
+        basic_tools: true,
         ai_requests: 3,
         support_dev: false,
         memorization_tool: false,
@@ -76,6 +80,8 @@ const planFeatures: Record<string, Record<string, any>> = {
     supporter: {
         quran_hadith_access: true,
         qibla_prayer_times: true,
+        islamic_knowledge: true,
+        basic_tools: true,
         ai_requests: 15,
         support_dev: true,
         memorization_tool: false,
@@ -86,6 +92,8 @@ const planFeatures: Record<string, Record<string, any>> = {
     pro: {
         quran_hadith_access: true,
         qibla_prayer_times: true,
+        islamic_knowledge: true,
+        basic_tools: true,
         ai_requests: 30,
         support_dev: true,
         memorization_tool: true,
@@ -96,6 +104,8 @@ const planFeatures: Record<string, Record<string, any>> = {
     patron: {
         quran_hadith_access: true,
         qibla_prayer_times: true,
+        islamic_knowledge: true,
+        basic_tools: true,
         ai_requests: 75,
         support_dev: true,
         memorization_tool: true,
