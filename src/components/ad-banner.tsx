@@ -62,7 +62,7 @@ export function AdBanner({ slotId, className }: AdBannerProps) {
                         src={ad.imageUrl}
                         alt={ad.title}
                         fill
-                        className="rounded-md object-cover"
+                        className="rounded-md object-contain"
                     />
                 </div>
                 <div className="flex-grow text-center sm:text-left">
