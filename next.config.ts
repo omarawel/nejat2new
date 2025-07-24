@@ -43,6 +43,7 @@ const nextConfig: NextConfig = {
   ) => {
     if (!isServer) {
         config.externals.push('async_hooks');
+        config.externals.push('handlebars');
     }
 
     return config;
