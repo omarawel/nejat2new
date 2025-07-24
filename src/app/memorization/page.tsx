@@ -14,8 +14,8 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { addFavorite } from '@/lib/favorites';
 import { useToast } from '@/hooks/use-toast';
 import Link from 'next/link';
-import { UpgradeInlineAlert } from '@/components/upgrade-inline-alert';
 import { getUserSubscription } from '@/lib/user-usage';
+import { useSearchParams } from 'next/navigation';
 
 
 const content = {
@@ -61,10 +61,11 @@ const content = {
     }
 }
 
-export default function MemorizationPage() {
+function MemorizationTool() {
   const { language } = useLanguage();
   const c = content[language] || content.de;
   const { toast } = useToast();
+  const searchParams = useSearchParams();
 
   const [user, authLoading] = useAuthState(auth);
   const [hasSubscription, setHasSubscription] = useState(false);
@@ -79,6 +80,14 @@ export default function MemorizationPage() {
   const [audioUrl, setAudioUrl] = useState<string | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [isSaving, setIsSaving] = useState(false);
+
+  useEffect(() => {
+    const textFromQuery = searchParams.get('text');
+    if (textFromQuery) {
+        setInputText(textFromQuery);
+        setLearningText(textFromQuery);
+    }
+  }, [searchParams]);
 
   useEffect(() => {
       const checkSubscription = async () => {
@@ -134,7 +143,7 @@ export default function MemorizationPage() {
           toast({
               title: c.favoriteSaved,
               description: (
-                  <Button variant="link" asChild>
+                  <Button variant="link" asChild className="p-0">
                       <Link href="/favorites">{c.viewFavorites}</Link>
                   </Button>
               )
@@ -293,4 +302,13 @@ export default function MemorizationPage() {
       </div>
     </div>
   );
+}
+
+export default function MemorizationPage() {
+    return (
+        // Wrap with Suspense to handle query param reading
+        <React.Suspense fallback={<div className="flex-grow flex items-center justify-center"><Loader2 className="h-8 w-8 animate-spin" /></div>}>
+            <MemorizationTool />
+        </React.Suspense>
+    )
 }

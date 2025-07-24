@@ -153,6 +153,7 @@ export function AppHeader() {
           </>
         ) : (
           <>
+            <QuotaDisplay />
             <Button variant="ghost" asChild className="hidden sm:inline-flex">
                 <Link href="/login">
                     <LogIn />

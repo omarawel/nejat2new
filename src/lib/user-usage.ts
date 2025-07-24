@@ -64,8 +64,18 @@ export const getUserUsage = async (userId: string): Promise<UserUsage> => {
 // This is the main function to check and update a user's quota
 export const checkAndDecrementQuota = async (userId: string | null): Promise<{ success: boolean; quota: UserQuota }> => {
     if (!userId) {
-        // Not logged in, deny access
-        return { success: false, quota: { limit: 0, remaining: 0 } };
+        // Not logged in, check free tier quota from local storage or session
+        // For simplicity, we'll give 3 requests to non-logged-in users.
+        // A more robust solution might use a session or local storage with a timestamp.
+        let sessionRequests = parseInt(sessionStorage.getItem('freeRequests') || '0', 10);
+        const quota = { limit: FREE_TIER_LIMIT, remaining: FREE_TIER_LIMIT - sessionRequests };
+
+        if (quota.remaining <= 0) {
+            return { success: false, quota };
+        }
+        
+        sessionStorage.setItem('freeRequests', (sessionRequests + 1).toString());
+        return { success: true, quota: { ...quota, remaining: quota.remaining - 1 } };
     }
 
     const allPlans = await getPlans();
@@ -94,7 +104,7 @@ export const checkAndDecrementQuota = async (userId: string | null): Promise<{ s
     const remaining = limit - currentCount;
 
     if (remaining <= 0) {
-        return { success: false, quota: { limit, remaining } };
+        return { success: false, quota: { limit, remaining: 0 } };
     }
     
     // If quota is available, decrement it
@@ -110,7 +120,8 @@ export const checkAndDecrementQuota = async (userId: string | null): Promise<{ s
 // Get only the user's quota without decrementing it
 export const getUserQuota = async (userId: string | null): Promise<UserQuota> => {
      if (!userId) {
-        return { limit: 0, remaining: 0 };
+        let sessionRequests = parseInt(sessionStorage.getItem('freeRequests') || '0', 10);
+        return { limit: FREE_TIER_LIMIT, remaining: Math.max(0, FREE_TIER_LIMIT - sessionRequests) };
     }
     const allPlans = await getPlans();
     const subscription = await getUserSubscription(userId);

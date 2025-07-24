@@ -93,10 +93,8 @@ export default function QuizPage() {
   const [aiError, setAiError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!authLoading && user) {
-        getUserQuota(user.uid).then(setQuota);
-    } else if (!authLoading && !user) {
-        setQuota({ limit: 3, remaining: 3});
+    if (!authLoading) {
+        getUserQuota(user?.uid || null).then(setQuota);
     }
   }, [user, authLoading]);
 
@@ -149,7 +147,7 @@ export default function QuizPage() {
     ? aiQuiz 
     : staticQuizData[language][selectedTopic as keyof typeof staticQuizData['de']];
 
-    const canSubmitAi = quota ? quota.remaining > 0 : !user;
+    const canSubmitAi = quota ? quota.remaining > 0 : true;
 
 
   if (quizStarted && quizData) {

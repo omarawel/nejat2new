@@ -45,10 +45,8 @@ export function InsightsForm() {
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
-    if (!authLoading && user) {
-        getUserQuota(user.uid).then(setQuota);
-    } else if (!authLoading && !user) {
-        setQuota({ limit: 3, remaining: 3});
+    if (!authLoading) {
+        getUserQuota(user?.uid || null).then(setQuota);
     }
   }, [user, authLoading]);
 
@@ -79,7 +77,7 @@ export function InsightsForm() {
     }
   }
   
-  const canSubmit = quota ? quota.remaining > 0 : !user;
+  const canSubmit = quota ? quota.remaining > 0 : true;
 
   return (
     <div className="space-y-6">

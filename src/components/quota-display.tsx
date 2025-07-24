@@ -32,10 +32,9 @@ const content = {
 
 interface QuotaDisplayProps {
     className?: string;
-    onQuotaUpdate?: (quota: UserQuota) => void;
 }
 
-export function QuotaDisplay({ className, onQuotaUpdate }: QuotaDisplayProps) {
+export function QuotaDisplay({ className }: QuotaDisplayProps) {
     const [user] = useAuthState(auth);
     const [quota, setQuota] = useState<UserQuota | null>(null);
     const [loading, setLoading] = useState(true);
@@ -44,33 +43,25 @@ export function QuotaDisplay({ className, onQuotaUpdate }: QuotaDisplayProps) {
 
     useEffect(() => {
         const fetchQuota = async () => {
-            if (user) {
-                setLoading(true);
-                const userQuota = await getUserQuota(user.uid);
-                setQuota(userQuota);
-                if(onQuotaUpdate) onQuotaUpdate(userQuota);
-                setLoading(false);
-            } else {
-                // Set free tier quota for logged-out users
-                setQuota({ limit: 3, remaining: 3 }); 
-                setLoading(false);
-            }
+            setLoading(true);
+            const userQuota = await getUserQuota(user?.uid || null);
+            setQuota(userQuota);
+            setLoading(false);
         };
         fetchQuota();
-    }, [user, onQuotaUpdate]);
+    }, [user]);
 
     if (loading) {
         return (
             <div className="flex items-center gap-2 text-sm text-muted-foreground">
                 <Loader2 className="h-4 w-4 animate-spin" />
-                <span>Loading quota...</span>
             </div>
         );
     }
     
     if (!quota) return null;
 
-    if (quota.limit > 3) { // User has a paid plan
+    if (user && quota.limit > 3) { // User has a paid plan
         return (
              <TooltipProvider>
                 <Tooltip>
@@ -89,13 +80,25 @@ export function QuotaDisplay({ className, onQuotaUpdate }: QuotaDisplayProps) {
         );
     }
     
-    // Free tier user
+    // Free tier user (logged in or out)
     return (
-        <div className="flex items-center gap-2 text-sm">
+         <div className="flex items-center gap-2 text-sm">
             <span>
-                {quota.remaining} / {quota.limit} {c.remaining}
+                 <TooltipProvider>
+                    <Tooltip>
+                        <TooltipTrigger asChild>
+                             <span className="flex items-center gap-1">
+                                <Sparkles className="h-4 w-4" />
+                                {quota.remaining} / {quota.limit} {c.remaining}
+                            </span>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                            <p>{c.tooltip}</p>
+                        </TooltipContent>
+                    </Tooltip>
+                </TooltipProvider>
             </span>
-            <Button size="sm" asChild>
+             <Button size="sm" asChild variant="secondary">
                 <Link href="/subscribe">
                     <Star className="mr-2 h-4 w-4" />
                     {c.upgrade}

@@ -117,10 +117,8 @@ export default function IslamicNamesPage() {
     const [aiError, setAiError] = useState<string | null>(null);
 
     useEffect(() => {
-        if (!authLoading && user) {
-            getUserQuota(user.uid).then(setQuota);
-        } else if (!authLoading && !user) {
-            setQuota({ limit: 3, remaining: 3});
+        if (!authLoading) {
+            getUserQuota(user?.uid || null).then(setQuota);
         }
     }, [user, authLoading]);
 
@@ -163,7 +161,7 @@ export default function IslamicNamesPage() {
 
     const filteredMaleNames = filterNames(names.male);
     const filteredFemaleNames = filterNames(names.female);
-    const canSubmit = quota ? quota.remaining > 0 : !user;
+    const canSubmit = quota ? quota.remaining > 0 : true;
 
     return (
         <div className="container mx-auto px-4 py-8">
