@@ -112,7 +112,7 @@ export default function ContactPage() {
 
             <Card>
                 <CardHeader className="text-center">
-                    <CardTitle className="text-3xl flex items-center justify-center gap-3"><Mail /> {c.title}</CardTitle>
+                    <CardTitle className="text-3xl">{c.title}</CardTitle>
                     <CardDescription>{c.description}</CardDescription>
                 </CardHeader>
                 <CardContent>
