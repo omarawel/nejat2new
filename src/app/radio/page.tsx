@@ -17,20 +17,6 @@ const stations = [
         logo: "https://placehold.co/100x100.png",
         hint: "Kaaba"
     },
-    {
-        name: "Quran Radio - AbdulBaset",
-        description: "Recitations by the legendary Qari AbdulBaset AbdulSamad.",
-        streamUrl: "https://qurango.net/radio/abdullbaset_abdulsamad",
-        logo: "https://placehold.co/100x100.png",
-        hint: "Quran"
-    },
-    {
-        name: "Radio Coran - France",
-        description: "Islamic programs and recitations in French.",
-        streamUrl: "https://listen.radioking.com/radio/353553/stream/417244",
-        logo: "https://placehold.co/100x100.png",
-        hint: "Eiffel Tower"
-    },
 ];
 
 const content = {
