@@ -85,10 +85,10 @@ const formSchema = z.object({
   actionButtonText: z.string().min(1, "Button text is required."),
   imageSource: z.enum(['upload', 'url']),
   imageFile: z.instanceof(File).optional().refine(file => !file || file.size < 2 * 1024 * 1024, "File size must be less than 2MB").refine(file => !file || ['image/png', 'image/jpeg', 'image/webp'].includes(file.type), "Only PNG, JPG, and WEBP formats are allowed."),
-  imageUrl: z.string().optional(),
+  imageUrl: z.string().url().optional().or(z.literal('')),
 }).refine(data => {
     if (data.imageSource === 'upload') return !!data.imageFile;
-    if (data.imageSource === 'url') return !!data.imageUrl && z.string().url().safeParse(data.imageUrl).success;
+    if (data.imageSource === 'url') return !!data.imageUrl;
     return false;
 }, {
     message: "Please provide a valid image file or URL.",
