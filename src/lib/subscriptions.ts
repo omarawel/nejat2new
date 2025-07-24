@@ -38,7 +38,7 @@ export const getSubscriptionPlans = (callback: (plans: SubscriptionPlan[]) => vo
         price: '4,99€/Monat',
         features: ['30 KI-Anfragen pro Monat', 'Alle Supporter-Vorteile', 'Offline-Zugriff für Koran'],
         priceId: 'price_1RmJ3rGXWEMb96gVBYrwf9DD',
-        stripeLink: '', // To be filled later
+        stripeLink: 'https://buy.stripe.com/7sY5kD3XJddJaTifwTabK03', // To be filled later
         aiRequestLimit: 30,
         active: true,
         createdAt: Timestamp.now(), 
