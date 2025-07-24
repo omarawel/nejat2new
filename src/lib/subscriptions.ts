@@ -29,7 +29,9 @@ export const getSubscriptionPlans = (callback: (plans: SubscriptionPlan[]) => vo
             '15 KI-Anfragen pro Monat',
             'Entwicklung unterstützen',
             'Vollständiger Koran & Hadith-Zugriff',
-            'Qibla-Kompass & Gebetszeiten'
+            'Qibla-Kompass & Gebetszeiten',
+            'Islamische Wissensbibliothek',
+            'Grundlegende Tools (Tasbih, Tracker)',
         ],
         priceId: 'price_1RltQWGXWEMb96gVAEDYSZay',
         stripeLink: 'https://buy.stripe.com/7sYfZham72z5bXm0BZabK02',
