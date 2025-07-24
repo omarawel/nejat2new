@@ -117,7 +117,6 @@ export function AppHeader() {
           </>
         ) : user ? (
             <>
-            <QuotaDisplay />
            <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" className="flex items-center gap-2">
@@ -130,6 +129,9 @@ export function AppHeader() {
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>{c.myAccount}</DropdownMenuLabel>
+              <div className="px-2 py-1.5">
+                <QuotaDisplay />
+              </div>
               <DropdownMenuSeparator />
               <DropdownMenuItem onClick={() => router.push('/dashboard')}>
                 <LayoutGrid className="mr-2 h-4 w-4" />
