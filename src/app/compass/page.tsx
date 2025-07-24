@@ -15,11 +15,11 @@ const content = {
         pageTitle: "Qibla-Kompass",
         pageDescription: "Finde die Richtung nach Mekka für dein Gebet.",
         backToFeatures: "Zurück zu den Funktionen",
-        requestingPermissions: "Berechtigungen werden angefordert...",
+        requestingPermissions: "Berechtigungen anfordern...",
         calculating: "Berechne Qibla-Richtung...",
         ready: "Bereit. Richte dein Gerät aus.",
         permissionError: "Fehler bei der Berechtigung",
-        permissionErrorDesc: "Zugriff auf Standort und/oder Gerätesensoren verweigert. Bitte aktiviere die Berechtigungen in deinen Browsereinstellungen.",
+        permissionErrorDesc: "Zugriff auf Standort und/oder Gerätesensoren verweigert. Bitte aktiviere die Berechtigungen in deinen Browsereinstellungen und lade die Seite neu.",
         unsupportedError: "Nicht unterstützt",
         unsupportedErrorDesc: "Dein Browser oder Gerät unterstützt die erforderlichen Sensoren nicht.",
         note: "Hinweis: Halte dein Gerät flach und fern von Metallgegenständen für eine bessere Genauigkeit."
@@ -32,7 +32,7 @@ const content = {
         calculating: "Calculating Qibla direction...",
         ready: "Ready. Align your device.",
         permissionError: "Permission Error",
-        permissionErrorDesc: "Location and/or device sensor access denied. Please enable permissions in your browser settings.",
+        permissionErrorDesc: "Location and/or device sensor access denied. Please enable permissions in your browser settings and reload the page.",
         unsupportedError: "Not Supported",
         unsupportedErrorDesc: "Your browser or device does not support the required sensors.",
         note: "Note: For best accuracy, hold your device flat and away from metal objects."
@@ -64,21 +64,20 @@ export default function CompassPage() {
     }, [c.ready]);
 
     const handleOrientation = (event: DeviceOrientationEvent) => {
-        // webkitCompassHeading is for iOS
         const webkitHeading = (event as any).webkitCompassHeading;
         const alpha = event.alpha;
         
         let newHeading = 0;
-        if (webkitHeading !== undefined && webkitHeading !== null) {
+        if (webkitHeading !== undefined && webkitHeading !== null) { // iOS
             newHeading = webkitHeading; 
-        } else if (alpha !== null) {
-            // For Android
+        } else if (alpha !== null) { // Android
             newHeading = 360 - alpha;
         }
         setHeading(newHeading);
     };
 
     const requestPermissions = useCallback(async () => {
+        setStatus(c.requestingPermissions);
         try {
             // Request device orientation permission for iOS 13+
             if (typeof (DeviceOrientationEvent as any).requestPermission === 'function') {
@@ -90,12 +89,13 @@ export default function CompassPage() {
                 }
             }
 
-            // Get location
             if (!("geolocation" in navigator)) {
                 setError(c.unsupportedErrorDesc);
                 setStatus(c.unsupportedError)
                 return;
             }
+
+            window.addEventListener('deviceorientation', handleOrientation);
 
             navigator.geolocation.getCurrentPosition(
                 (position) => {
@@ -108,14 +108,12 @@ export default function CompassPage() {
                 }
             );
 
-            window.addEventListener('deviceorientation', handleOrientation);
-
         } catch (e) {
             setError(c.permissionErrorDesc);
             setStatus(c.permissionError)
             console.error(e);
         }
-    }, [calculateQiblaDirection, c.calculating, c.permissionError, c.permissionErrorDesc, c.unsupportedError, c.unsupportedErrorDesc]);
+    }, [calculateQiblaDirection, c]);
     
     useEffect(() => {
         requestPermissions();
@@ -147,22 +145,22 @@ export default function CompassPage() {
                              <Alert variant="destructive">
                                 <AlertTriangle className="h-4 w-4" />
                                 <AlertTitle>{status}</AlertTitle>
-                                <AlertDescription>{error}</AlertDescription>
+                                <AlertDescription>
+                                    {error}
+                                    <Button onClick={requestPermissions} className="w-full mt-4">Try Again</Button>
+                                </AlertDescription>
                             </Alert>
                         ) : (
                             <>
                                 <div className="relative w-64 h-64 mx-auto rounded-full bg-muted border-4 border-accent flex items-center justify-center">
-                                    {/* Compass Background */}
                                     <div className="absolute w-full h-full text-muted-foreground font-bold">
                                         <div className="absolute top-1 left-1/2 -translate-x-1/2">N</div>
                                         <div className="absolute bottom-1 left-1/2 -translate-x-1/2">S</div>
                                         <div className="absolute left-1 top-1/2 -translate-y-1/2">W</div>
                                         <div className="absolute right-1 top-1/2 -translate-y-1/2">E</div>
                                     </div>
-
-                                    {/* Main Compass Dial */}
-                                    <div className="w-full h-full transition-transform duration-300" style={{ transform: `rotate(${rotation}deg)` }}>
-                                         {/* Qibla Pointer */}
+                                    
+                                    <div className="w-full h-full transition-transform duration-200" style={{ transform: `rotate(${rotation}deg)` }}>
                                         <div className="absolute w-full h-full" style={{ transform: `rotate(${qiblaDirection}deg)` }}>
                                              <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-0 h-0
                                                 border-l-[10px] border-l-transparent
@@ -171,8 +169,6 @@ export default function CompassPage() {
                                                 <span className="absolute -bottom-6 -ml-2 text-primary font-bold">🕋</span>
                                             </div>
                                         </div>
-
-                                        {/* Device Direction Pointer */}
                                         <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-0 h-0
                                             border-l-[8px] border-l-transparent
                                             border-r-[8px] border-r-transparent
