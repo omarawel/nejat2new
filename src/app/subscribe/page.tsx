@@ -26,6 +26,7 @@ const content = {
         loginToSubscribe: "Bitte melde dich an, um einen Plan zu wählen.",
         compareTitle: "Vergleiche die Pläne",
         compareFeature: "Feature",
+        compareFree: "Kostenlos",
         compareSupporter: "Unterstützer",
         comparePro: "Pro",
         comparePatron: "Patron",
@@ -40,6 +41,7 @@ const content = {
         loginToSubscribe: "Please log in to choose a plan.",
         compareTitle: "Compare Plans",
         compareFeature: "Feature",
+        compareFree: "Free",
         compareSupporter: "Supporter",
         comparePro: "Pro",
         comparePatron: "Patron",
@@ -75,20 +77,20 @@ const defaultPlans: Omit<SubscriptionPlan, 'id' | 'createdAt' >[] = [
 
 const allFeatures = {
     de: [
-        { feature: "Werbefreie Erfahrung", supporter: true, pro: true, patron: true },
-        { feature: "Entwicklung unterstützen", supporter: true, pro: true, patron: true },
-        { feature: "KI-Anfragen / Monat", supporter: "15", pro: "30", patron: "75" },
-        { feature: "Auswendiglernen-Tool", supporter: true, pro: true, patron: true },
-        { feature: "Koran Offline-Zugriff", supporter: false, pro: true, patron: true },
-        { feature: "Früher Zugriff auf neue Features", supporter: false, pro: false, patron: true },
+        { feature: "Werbefreie Erfahrung", free: false, supporter: true, pro: true, patron: true },
+        { feature: "Entwicklung unterstützen", free: false, supporter: true, pro: true, patron: true },
+        { feature: "KI-Anfragen / Monat", free: "3", supporter: "15", pro: "30", patron: "75" },
+        { feature: "Auswendiglernen-Tool", free: false, supporter: true, pro: true, patron: true },
+        { feature: "Koran Offline-Zugriff", free: false, supporter: false, pro: true, patron: true },
+        { feature: "Früher Zugriff auf neue Features", free: false, supporter: false, pro: false, patron: true },
     ],
     en: [
-        { feature: "Ad-free Experience", supporter: true, pro: true, patron: true },
-        { feature: "Support Development", supporter: true, pro: true, patron: true },
-        { feature: "AI Requests / Month", supporter: "15", pro: "30", patron: "75" },
-        { feature: "Memorization Tool", supporter: true, pro: true, patron: true },
-        { feature: "Quran Offline Access", supporter: false, pro: true, patron: true },
-        { feature: "Early Access to New Features", supporter: false, pro: false, patron: true },
+        { feature: "Ad-free Experience", free: false, supporter: true, pro: true, patron: true },
+        { feature: "Support Development", free: false, supporter: true, pro: true, patron: true },
+        { feature: "AI Requests / Month", free: "3", supporter: "15", pro: "30", patron: "75" },
+        { feature: "Memorization Tool", free: false, supporter: true, pro: true, patron: true },
+        { feature: "Quran Offline Access", free: false, supporter: false, pro: true, patron: true },
+        { feature: "Early Access to New Features", free: false, supporter: false, pro: false, patron: true },
     ]
 }
 
@@ -169,6 +171,7 @@ export default function SubscribePage() {
                             <TableHeader>
                                 <TableRow>
                                     <TableHead className="w-[40%] text-lg">{c.compareFeature}</TableHead>
+                                    <TableHead className="text-center text-lg">{c.compareFree}</TableHead>
                                     <TableHead className="text-center text-lg">{c.compareSupporter}</TableHead>
                                     <TableHead className="text-center text-lg text-primary">{c.comparePro}</TableHead>
                                     <TableHead className="text-center text-lg">{c.comparePatron}</TableHead>
@@ -178,6 +181,12 @@ export default function SubscribePage() {
                                 {featuresList.map((item, index) => (
                                     <TableRow key={index} className="hover:bg-muted/50">
                                         <TableCell className="font-semibold">{item.feature}</TableCell>
+                                        <TableCell className="text-center">
+                                            {typeof item.free === 'boolean' ? 
+                                                item.free ? <Check className="mx-auto h-6 w-6 text-green-500" /> : <X className="mx-auto h-6 w-6 text-muted-foreground" />
+                                                : <span className="font-bold">{item.free}</span>
+                                            }
+                                        </TableCell>
                                         <TableCell className="text-center">
                                             {typeof item.supporter === 'boolean' ? 
                                                 item.supporter ? <Check className="mx-auto h-6 w-6 text-green-500" /> : <X className="mx-auto h-6 w-6 text-muted-foreground" />
