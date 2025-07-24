@@ -102,7 +102,7 @@ export default function CustomizeDashboardPage() {
     };
 
     const localizedTools = allTools
-        .map(tool => ({ ...tool, name: tool[language] || tool.en }))
+        .map(tool => ({ ...tool, name: tool[language as keyof typeof tool] || tool.en }))
         .sort((a, b) => a.name.localeCompare(b.name));
 
     if (loadingAuth || loadingSettings) {
@@ -149,16 +149,16 @@ export default function CustomizeDashboardPage() {
                 </div>
             </header>
 
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-x-6 gap-y-4 max-w-6xl mx-auto">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 max-w-6xl mx-auto">
                 {localizedTools.map(tool => (
-                    <div key={tool.key} className="flex items-center space-x-2 p-2 rounded-md hover:bg-accent">
+                    <div key={tool.key} className="flex items-center space-x-2 p-2 rounded-md hover:bg-accent border">
                         <Switch
                             id={tool.key}
                             checked={selectedTools.includes(tool.key)}
                             onCheckedChange={() => handleToggleTool(tool.key)}
                         />
-                        <Label htmlFor={tool.key} className="cursor-pointer flex items-center gap-2 text-sm">
-                           <span className="text-lg">{tool.icon}</span> 
+                        <Label htmlFor={tool.key} className="cursor-pointer flex flex-col items-start gap-1 text-sm">
+                           <span className="text-xl">{tool.icon}</span> 
                            <span>{tool.name}</span>
                         </Label>
                     </div>
