@@ -208,7 +208,7 @@ export default function HajjUmrahPage() {
   return (
     <div className="container mx-auto px-4 py-8">
       <Button asChild variant="ghost" className="mb-8">
-        <Link href="/">
+        <Link href="/#features">
             <ArrowLeft className="mr-2 h-4 w-4" />
             {c.backToFeatures}
         </Link>
