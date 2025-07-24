@@ -112,7 +112,7 @@ export function AddAdForm({ onFinished }: { onFinished: () => void }) {
         defaultValues: {
             title: "",
             description: "",
-            slotId: undefined,
+            slotId: "",
             linkUrl: "",
             actionButtonText: "",
             imageSource: "upload",
