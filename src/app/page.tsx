@@ -148,27 +148,6 @@ export default function Home() {
           </CardContent>
         </Card>
       </section>
-
-      <section className="mt-16 w-full max-w-4xl mx-auto">
-        <Card className="bg-gradient-to-br from-secondary/10 to-accent/20">
-          <CardHeader className="items-center text-center p-8">
-              <CardTitle className="text-4xl font-bold">
-                {c.communityTitle}
-              </CardTitle>
-              <CardDescription className="text-lg text-muted-foreground max-w-md">
-                {c.communityDescription}
-              </CardDescription>
-          </CardHeader>
-          <CardContent className="flex justify-center pb-8">
-              <Button size="lg" asChild variant="secondary">
-                <Link href="/community">
-                    <Users className="mr-2 h-5 w-5" />
-                    {c.communityButton}
-                </Link>
-              </Button>
-          </CardContent>
-        </Card>
-      </section>
     </div>
   );
 }
