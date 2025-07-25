@@ -11,6 +11,7 @@ import { Skeleton } from './ui/skeleton';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '@/lib/firebase';
 import { getUserSubscription } from '@/lib/user-usage';
+import { isAdmin } from '@/lib/admin';
 
 interface AdBannerProps {
   slotId: string;
@@ -44,9 +45,14 @@ export function AdBanner({ slotId, className }: AdBannerProps) {
 
         let hasAdFreePlan = false;
         if (user) {
-            const subscription = await getUserSubscription(user.uid);
-            if(subscription?.status === 'active' && (subscription.planId === 'pro' || subscription.planId === 'patron')) {
+            const userIsAdmin = await isAdmin(user.uid);
+            if (userIsAdmin) {
                 hasAdFreePlan = true;
+            } else {
+                const subscription = await getUserSubscription(user.uid);
+                if(subscription?.status === 'active' && (subscription.planId === 'pro' || subscription.planId === 'patron')) {
+                    hasAdFreePlan = true;
+                }
             }
         }
 
