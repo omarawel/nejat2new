@@ -22,14 +22,11 @@ const transformDropboxUrl = (url?: string): string | undefined => {
     if (!url) return undefined;
     try {
         const urlObject = new URL(url);
-        if (urlObject.hostname === 'www.dropbox.com') {
-            // Reconstruct the URL for direct content access
-            // Example input: https://www.dropbox.com/scl/fi/.../...png?rlkey=...&dl=0
-            // Example output: https://dl.dropboxusercontent.com/scl/fi/.../...png
-            const newUrl = `https://dl.dropboxusercontent.com${urlObject.pathname}`;
-            return newUrl;
+        if (urlObject.hostname.includes('dropbox.com') && urlObject.searchParams.has('dl')) {
+            urlObject.searchParams.set('dl', '1');
+            return urlObject.toString();
         }
-        return urlObject.toString();
+        return url;
     } catch (e) {
         console.error("Invalid URL for transformation:", url);
         return url;

@@ -147,11 +147,11 @@ const transformDropboxUrl = (url?: string): string | undefined => {
     if (!url) return undefined;
     try {
         const urlObject = new URL(url);
-        if (urlObject.hostname === 'www.dropbox.com') {
-            const newUrl = `https://dl.dropboxusercontent.com${urlObject.pathname}`;
-            return newUrl;
+        if (urlObject.hostname.includes('dropbox.com') && urlObject.searchParams.has('dl')) {
+            urlObject.searchParams.set('dl', '1');
+            return urlObject.toString();
         }
-        return urlObject.toString();
+        return url;
     } catch (e) {
         console.error("Invalid URL for transformation:", url);
         return url;
