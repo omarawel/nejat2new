@@ -98,10 +98,6 @@ export default function Home() {
       <section className="mt-16 w-full max-w-4xl mx-auto">
         <AdBanner slotId="homepage-sidebar" />
       </section>
-
-      <section className="mt-8 w-full max-w-4xl mx-auto">
-        <AdBanner slotId="homepage-bottom" />
-      </section>
       
       <section className="mt-16 w-full max-w-4xl mx-auto">
         <Card className="bg-gradient-to-br from-primary/10 to-accent/20">
@@ -122,6 +118,10 @@ export default function Home() {
               </Button>
           </CardContent>
         </Card>
+      </section>
+
+      <section className="mt-8 w-full max-w-4xl mx-auto">
+        <AdBanner slotId="homepage-bottom" />
       </section>
 
       <section className="mt-16 w-full max-w-4xl mx-auto">
