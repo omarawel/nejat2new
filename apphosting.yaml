@@ -5,3 +5,6 @@ runConfig:
   # Increase this value if you'd like to automatically spin up
   # more instances in response to increased traffic.
   maxInstances: 1
+# The region to deploy your backend to.
+# This is optional and will be chosen for you if not specified.
+region: europe-west4
