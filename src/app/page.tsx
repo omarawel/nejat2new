@@ -91,7 +91,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="mt-16 w-full max-w-6xl mx-auto">
+      <section className="mt-16 w-full max-w-4xl mx-auto">
         <AdBanner slotId="homepage-bottom" />
       </section>
       
