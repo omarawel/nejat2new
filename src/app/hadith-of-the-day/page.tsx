@@ -130,7 +130,7 @@ export default function HadithOfTheDayPage() {
             toast({
                 variant: 'destructive',
                 title: c.loginToSave,
-                description: <Button variant="secondary" size="sm" asChild className="mt-2"><Link href="/login">Login</Link></Button>
+                description: <Button variant="secondary" size="sm" asChild className="mt-2"><Link href="/login">Login</Link></Button>,
             });
             return;
         }
@@ -203,4 +203,4 @@ export default function HadithOfTheDayPage() {
             </div>
         </div>
     );
-
+}
