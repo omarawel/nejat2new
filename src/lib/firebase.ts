@@ -12,8 +12,7 @@ const firebaseConfig = {
   projectId: "nejat-ba9qt",
   storageBucket: "nejat-ba9qt.firebasestorage.app",
   messagingSenderId: "727421281697",
-  appId: "1:727421281697:web:5e77ba1a851093f15897e0",
-  measurementId: "G-S3XQ0KYYJ6"
+  appId: "1:727421281697:web:55de49f0402160105897e0"
 };
 
 
