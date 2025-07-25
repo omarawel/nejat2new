@@ -4,7 +4,7 @@ import { collection, addDoc, onSnapshot, query, doc, deleteDoc, updateDoc, Times
 
 export interface Ad {
   id: string;
-  slotId: string;
+  slotIds: string[];
   title: string;
   description: string;
   type: 'image' | 'video';
@@ -37,9 +37,9 @@ export const getAds = (callback: (ads: Ad[]) => void) => {
 // Add a new ad
 export const addAd = async (ad: Omit<Ad, 'id' | 'createdAt'>) => {
   try {
-    if (!ad.slotId || !ad.linkUrl) {
+    if (!ad.slotIds || ad.slotIds.length === 0 || !ad.linkUrl) {
       console.error("Ad data is incomplete:", ad);
-      throw new Error('Ad data is incomplete');
+      throw new Error('Ad data is incomplete. At least one slot and a link URL are required.');
     }
     
     console.log("Attempting to add ad:", ad);
@@ -79,10 +79,12 @@ export const deleteAd = (adId: string) => {
 // Get a single ad by slot ID (for display in the app)
 export const getAdBySlot = (slotId: string, callback: (ad: Ad | null) => void) => {
     const adsCol = collection(db, 'ads');
-    const q = query(adsCol, where('slotId', '==', slotId));
+    const q = query(adsCol, where('slotIds', 'array-contains', slotId));
     
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
         if (!querySnapshot.empty) {
+            // If multiple ads match, we'll just take the first one for simplicity.
+            // You could implement logic to rotate them.
             const adDoc = querySnapshot.docs[0];
             callback({ id: adDoc.id, ...adDoc.data() } as Ad);
         } else {

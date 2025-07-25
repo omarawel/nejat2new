@@ -15,9 +15,8 @@ import { addAd, updateAd, type Ad } from '@/lib/ads';
 import { storage } from '@/lib/firebase';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { Textarea } from '../ui/textarea';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
 import { RadioGroup, RadioGroupItem } from '../ui/radio-group';
+import { Checkbox } from '../ui/checkbox';
 
 const adPlacements = [
     'homepage-top-banner',
@@ -38,8 +37,7 @@ const content = {
         titlePlaceholder: "z.B. Lerne die Grundlagen des Islam",
         descriptionLabel: "Beschreibung",
         descriptionPlaceholder: "Eine kurze Beschreibung für die Anzeige...",
-        slotIdLabel: "Platzierung (Slot ID)",
-        slotIdPlaceholder: "Wähle einen Platzierungsort",
+        slotIdsLabel: "Platzierungen (Slot IDs)",
         linkUrlLabel: "Link URL",
         linkUrlPlaceholder: "https://example.com/learn-islam",
         actionButtonLabel: "Aktions-Button Text",
@@ -71,8 +69,7 @@ const content = {
         titlePlaceholder: "e.g. Learn the Basics of Islam",
         descriptionLabel: "Description",
         descriptionPlaceholder: "A short description for the ad...",
-        slotIdLabel: "Placement (Slot ID)",
-        slotIdPlaceholder: "Select a placement",
+        slotIdsLabel: "Placements (Slot IDs)",
         linkUrlLabel: "Link URL",
         linkUrlPlaceholder: "https://example.com/learn-islam",
         actionButtonLabel: "Action Button Text",
@@ -104,7 +101,7 @@ const content = {
 const formSchema = z.object({
   title: z.string().optional(),
   description: z.string().optional(),
-  slotId: z.string().min(1, "Placement is required."),
+  slotIds: z.array(z.string()).min(1, "At least one placement is required."),
   linkUrl: z.string().url({ message: "Please enter a valid URL." }),
   actionButtonText: z.string().min(1, "Button text is required."),
   type: z.enum(['image', 'video']),
@@ -115,6 +112,7 @@ const formSchema = z.object({
 }).refine(data => {
     if (data.type === 'image') {
         if (data.imageSource === 'upload') {
+            // For update, imageUrl might already exist
             return !!data.imageFile || !!data.imageUrl;
         }
         if (data.imageSource === 'url') {
@@ -124,10 +122,10 @@ const formSchema = z.object({
     if (data.type === 'video') {
          return !!data.videoUrl && z.string().url().safeParse(data.videoUrl).success;
     }
-    return false;
+    return true; // Let the backend handle more complex validation if needed
 }, {
     message: "Please provide a valid file or URL based on the ad type.",
-    path: ['imageFile'] // You can adjust the path to be more specific if needed
+    path: ['imageFile']
 });
 
 interface AddAdFormProps {
@@ -147,7 +145,7 @@ export function AddAdForm({ ad, onFinished }: AddAdFormProps) {
         defaultValues: {
             title: ad?.title || "",
             description: ad?.description || "",
-            slotId: ad?.slotId || "",
+            slotIds: ad?.slotIds || [],
             linkUrl: ad?.linkUrl || "",
             actionButtonText: ad?.actionButtonText || "",
             type: ad?.type || 'image',
@@ -160,7 +158,7 @@ export function AddAdForm({ ad, onFinished }: AddAdFormProps) {
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
        setIsSubmitting(true);
        let finalImageUrl = values.type === 'image' ? (ad?.imageUrl || "") : undefined;
-       let finalVideoUrl = values.type === 'video' ? (ad?.videoUrl || "") : undefined;
+       let finalVideoUrl = values.type === 'video' ? (ad?.videoUrl || values.videoUrl) : undefined;
 
        try {
            if (values.type === 'image') {
@@ -179,7 +177,7 @@ export function AddAdForm({ ad, onFinished }: AddAdFormProps) {
            }
            
            const adData = {
-               slotId: values.slotId,
+               slotIds: values.slotIds,
                title: values.title || '',
                description: values.description || '',
                linkUrl: values.linkUrl,
@@ -218,26 +216,53 @@ export function AddAdForm({ ad, onFinished }: AddAdFormProps) {
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-                <FormField
+                 <FormField
                     control={form.control}
-                    name="slotId"
-                    render={({ field }) => (
+                    name="slotIds"
+                    render={() => (
                         <FormItem>
-                            <FormLabel>{c.slotIdLabel}</FormLabel>
-                             <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                <FormControl>
-                                <SelectTrigger>
-                                    <SelectValue placeholder={c.slotIdPlaceholder} />
-                                </SelectTrigger>
-                                </FormControl>
-                                <SelectContent>
-                                    {adPlacements.map(p => <SelectItem key={p} value={p}>{p}</SelectItem>)}
-                                </SelectContent>
-                            </Select>
+                            <div className="mb-4">
+                               <FormLabel className="text-base">{c.slotIdsLabel}</FormLabel>
+                            </div>
+                            <div className="grid grid-cols-2 gap-2">
+                            {adPlacements.map((item) => (
+                                <FormField
+                                key={item}
+                                control={form.control}
+                                name="slotIds"
+                                render={({ field }) => {
+                                    return (
+                                    <FormItem
+                                        key={item}
+                                        className="flex flex-row items-start space-x-3 space-y-0"
+                                    >
+                                        <FormControl>
+                                        <Checkbox
+                                            checked={field.value?.includes(item)}
+                                            onCheckedChange={(checked) => {
+                                            return checked
+                                                ? field.onChange([...field.value, item])
+                                                : field.onChange(
+                                                    field.value?.filter(
+                                                    (value) => value !== item
+                                                    )
+                                                )
+                                            }}
+                                        />
+                                        </FormControl>
+                                        <FormLabel className="text-sm font-normal">
+                                        {item}
+                                        </FormLabel>
+                                    </FormItem>
+                                    )
+                                }}
+                                />
+                            ))}
+                            </div>
                             <FormMessage />
                         </FormItem>
                     )}
-                />
+                    />
                  <FormField
                     control={form.control}
                     name="type"
@@ -328,12 +353,26 @@ export function AddAdForm({ ad, onFinished }: AddAdFormProps) {
                         render={({ field }) => (
                             <FormItem className="pt-2">
                                 <FormLabel>{c.imageSource}</FormLabel>
-                                <Tabs value={field.value} onValueChange={field.onChange} className="w-full">
-                                    <TabsList className="grid w-full grid-cols-2">
-                                        <TabsTrigger value="upload">{c.upload}</TabsTrigger>
-                                        <TabsTrigger value="url">{c.fromUrl}</TabsTrigger>
-                                    </TabsList>
-                                </Tabs>
+                                 <FormControl>
+                                    <RadioGroup
+                                    onValueChange={field.onChange}
+                                    defaultValue={field.value}
+                                    className="flex space-x-4 pt-2"
+                                    >
+                                    <FormItem className="flex items-center space-x-2 space-y-0">
+                                        <FormControl>
+                                        <RadioGroupItem value="upload" />
+                                        </FormControl>
+                                        <FormLabel className="font-normal">{c.upload}</FormLabel>
+                                    </FormItem>
+                                    <FormItem className="flex items-center space-x-2 space-y-0">
+                                        <FormControl>
+                                        <RadioGroupItem value="url" />
+                                        </FormControl>
+                                        <FormLabel className="font-normal">{c.fromUrl}</FormLabel>
+                                    </FormItem>
+                                    </RadioGroup>
+                                </FormControl>
                             </FormItem>
                         )}
                     />

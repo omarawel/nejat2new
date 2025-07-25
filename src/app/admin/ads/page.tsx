@@ -31,7 +31,7 @@ const content = {
         loading: "Anzeigen werden geladen...",
         addNewAd: "Neue Anzeige hinzufügen",
         editAd: "Anzeige bearbeiten",
-        slotId: "Slot-ID",
+        slotId: "Slot-IDs",
         image: "Bild",
         titleHeader: "Titel",
         actions: "Aktionen",
@@ -53,7 +53,7 @@ const content = {
         loading: "Loading ads...",
         addNewAd: "Add New Ad",
         editAd: "Edit Ad",
-        slotId: "Slot ID",
+        slotId: "Slot IDs",
         image: "Image",
         titleHeader: "Title",
         actions: "Actions",
@@ -186,7 +186,7 @@ export default function AdManagementPage() {
                                         <TableRow key={ad.id}>
                                             <TableCell>
                                                 <Image 
-                                                    src={ad.imageUrl}
+                                                    src={ad.imageUrl || "https://placehold.co/100x50.png"}
                                                     alt={ad.title}
                                                     width={100}
                                                     height={50}
@@ -198,7 +198,11 @@ export default function AdManagementPage() {
                                                 <p className="text-xs text-muted-foreground truncate">{ad.description}</p>
                                             </TableCell>
                                              <TableCell>
-                                                <Badge variant="outline">{ad.slotId}</Badge>
+                                                <div className="flex flex-wrap gap-1">
+                                                    {ad.slotIds.map(id => (
+                                                        <Badge key={id} variant="outline">{id}</Badge>
+                                                    ))}
+                                                </div>
                                             </TableCell>
                                             <TableCell className="text-right">
                                                 <Button variant="ghost" size="icon" onClick={() => handleOpenForm(ad)}><Edit className="h-4 w-4" /></Button>
@@ -232,7 +236,7 @@ export default function AdManagementPage() {
                     </CardContent>
                 </Card>
             </div>
-             <DialogContent className="sm:max-w-[480px]">
+             <DialogContent className="sm:max-w-lg">
                 <DialogHeader>
                     <DialogTitle>{selectedAd ? c.editAd : c.addNewAd}</DialogTitle>
                 </DialogHeader>
