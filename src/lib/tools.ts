@@ -63,5 +63,6 @@ export const allTools = [
     { key: "quran_miracles", icon: "✨", de: "Wunder des Korans", en: "Miracles of the Quran", href: "/quran-miracles" },
     { key: "islamic_miracles", icon: "🌟", de: "Wunder im Islam", en: "Miracles in Islam", href: "/islamic-miracles" },
     { key: "zakat_calculator", icon: "💸", de: "Zakat-Rechner", en: "Zakat Calculator", href: "/zakat-calculator" },
-    { key: "civilization", icon: "🏛️", de: "Zivilisation", en: "Civilization", href: "/civilization" }
+    { key: "civilization", icon: "🏛️", de: "Zivilisation", en: "Civilization", href: "/civilization" },
+    { key: "diary", icon: "📔", de: "Tagebuch", en: "Diary", href: "/diary"}
 ];
