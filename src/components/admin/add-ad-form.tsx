@@ -11,7 +11,7 @@ import { Input } from '@/components/ui/input';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { useToast } from '@/hooks/use-toast';
 import { Loader2 } from 'lucide-react';
-import { addAd } from '@/lib/ads';
+import { addAd, updateAd, type Ad } from '@/lib/ads';
 import { storage } from '@/lib/firebase';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { Textarea } from '../ui/textarea';
@@ -51,9 +51,13 @@ const content = {
         imageUrlLabel: "Bild-URL",
         imageUrlPlaceholder: "https://example.com/image.png",
         createAd: "Anzeige erstellen",
+        updateAd: "Anzeige aktualisieren",
         creatingAd: "Wird erstellt...",
+        updatingAd: "Wird aktualisiert...",
         adCreated: "Anzeige erfolgreich erstellt",
+        adUpdated: "Anzeige erfolgreich aktualisiert",
         errorCreating: "Fehler beim Erstellen der Anzeige",
+        errorUpdating: "Fehler beim Aktualisieren der Anzeige",
         errorUploading: "Fehler beim Hochladen des Bildes",
     },
     en: {
@@ -75,9 +79,13 @@ const content = {
         imageUrlLabel: "Image URL",
         imageUrlPlaceholder: "https://example.com/image.png",
         createAd: "Create Ad",
+        updateAd: "Update Ad",
         creatingAd: "Creating...",
+        updatingAd: "Updating...",
         adCreated: "Ad created successfully",
+        adUpdated: "Ad updated successfully",
         errorCreating: "Error creating ad",
+        errorUpdating: "Error updating ad",
         errorUploading: "Error uploading image",
     }
 }
@@ -92,16 +100,26 @@ const formSchema = z.object({
   imageFile: z.instanceof(File).optional(),
   imageUrl: z.string().optional(),
 }).refine(data => {
-    if (data.imageSource === 'upload') return !!data.imageFile;
-    if (data.imageSource === 'url') return !!data.imageUrl && z.string().url().safeParse(data.imageUrl).success;
+    if (data.imageSource === 'upload') {
+        // For updates, the file is optional if a URL already exists
+        return !!data.imageFile || !!data.imageUrl;
+    }
+    if (data.imageSource === 'url') {
+        return !!data.imageUrl && z.string().url().safeParse(data.imageUrl).success;
+    }
     return false;
 }, {
     message: "Please provide a valid image file or URL.",
-    path: ['imageFile'] // You can choose where to show the error
+    path: ['imageFile']
 });
 
+interface AddAdFormProps {
+    ad?: Ad | null;
+    onFinished: () => void;
+}
 
-export function AddAdForm({ onFinished }: { onFinished: () => void }) {
+
+export function AddAdForm({ ad, onFinished }: AddAdFormProps) {
     const { language } = useLanguage();
     const c = content[language];
     const { toast } = useToast();
@@ -110,18 +128,19 @@ export function AddAdForm({ onFinished }: { onFinished: () => void }) {
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            title: "",
-            description: "",
-            slotId: "",
-            linkUrl: "",
-            actionButtonText: "",
-            imageSource: "upload",
+            title: ad?.title || "",
+            description: ad?.description || "",
+            slotId: ad?.slotId || "",
+            linkUrl: ad?.linkUrl || "",
+            actionButtonText: ad?.actionButtonText || "",
+            imageSource: ad?.imageUrl ? 'url' : 'upload',
+            imageUrl: ad?.imageUrl || "",
         },
     });
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
        setIsSubmitting(true);
-       let finalImageUrl = "";
+       let finalImageUrl = ad?.imageUrl || "";
 
        try {
            if (values.imageSource === 'upload' && values.imageFile) {
@@ -136,26 +155,33 @@ export function AddAdForm({ onFinished }: { onFinished: () => void }) {
            if (!finalImageUrl) {
                throw new Error("Image URL could not be determined.");
            }
-
-           await addAd({
+           
+           const adData = {
                slotId: values.slotId,
                title: values.title,
                description: values.description || '',
                linkUrl: values.linkUrl,
                imageUrl: finalImageUrl,
                actionButtonText: values.actionButtonText,
-           });
+           };
 
-           toast({ title: c.adCreated });
+           if (ad) {
+               await updateAd(ad.id, adData);
+               toast({ title: c.adUpdated });
+           } else {
+               await addAd(adData);
+               toast({ title: c.adCreated });
+           }
+
            form.reset();
            onFinished();
 
        } catch (error) {
-           console.error("Error creating ad:", error);
+           console.error("Error saving ad:", error);
            toast({
                variant: 'destructive',
                title: 'Error',
-               description: c.errorCreating,
+               description: ad ? c.errorUpdating : c.errorCreating,
            });
        } finally {
            setIsSubmitting(false);
@@ -301,9 +327,9 @@ export function AddAdForm({ onFinished }: { onFinished: () => void }) {
                     {isSubmitting ? (
                         <>
                             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                            {c.creatingAd}
+                            {ad ? c.updatingAd : c.creatingAd}
                         </>
-                    ) : c.createAd}
+                    ) : (ad ? c.updateAd : c.createAd)}
                 </Button>
             </form>
         </Form>

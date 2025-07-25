@@ -30,6 +30,7 @@ const content = {
         goHome: "Zur Startseite",
         loading: "Anzeigen werden geladen...",
         addNewAd: "Neue Anzeige hinzufügen",
+        editAd: "Anzeige bearbeiten",
         slotId: "Slot-ID",
         image: "Bild",
         titleHeader: "Titel",
@@ -51,6 +52,7 @@ const content = {
         goHome: "Go to Homepage",
         loading: "Loading ads...",
         addNewAd: "Add New Ad",
+        editAd: "Edit Ad",
         slotId: "Slot ID",
         image: "Image",
         titleHeader: "Title",
@@ -76,6 +78,7 @@ export default function AdManagementPage() {
     const [loading, setLoading] = useState(true);
     const [ads, setAds] = useState<Ad[]>([]);
     const [isFormOpen, setIsFormOpen] = useState(false);
+    const [selectedAd, setSelectedAd] = useState<Ad | null>(null);
     
     useEffect(() => {
         if (loadingAuth) return;
@@ -113,6 +116,11 @@ export default function AdManagementPage() {
             })
         }
     }
+
+    const handleOpenForm = (ad: Ad | null = null) => {
+        setSelectedAd(ad);
+        setIsFormOpen(true);
+    };
 
 
     if (loadingAuth || loading) {
@@ -155,12 +163,10 @@ export default function AdManagementPage() {
                         <h1 className="text-4xl font-bold tracking-tight text-primary">{c.title}</h1>
                         <p className="text-muted-foreground mt-2 text-lg max-w-2xl">{c.description}</p>
                     </div>
-                     <DialogTrigger asChild>
-                        <Button>
-                            <PlusCircle className="mr-2 h-4 w-4" />
-                            {c.addNewAd}
-                        </Button>
-                    </DialogTrigger>
+                     <Button onClick={() => handleOpenForm()}>
+                        <PlusCircle className="mr-2 h-4 w-4" />
+                        {c.addNewAd}
+                    </Button>
                 </header>
 
                 <Card>
@@ -195,7 +201,7 @@ export default function AdManagementPage() {
                                                 <Badge variant="outline">{ad.slotId}</Badge>
                                             </TableCell>
                                             <TableCell className="text-right">
-                                                <Button variant="ghost" size="icon" disabled><Edit className="h-4 w-4" /></Button>
+                                                <Button variant="ghost" size="icon" onClick={() => handleOpenForm(ad)}><Edit className="h-4 w-4" /></Button>
                                                 <AlertDialog>
                                                     <AlertDialogTrigger asChild>
                                                         <Button variant="ghost" size="icon"><Trash2 className="h-4 w-4 text-destructive" /></Button>
@@ -228,9 +234,9 @@ export default function AdManagementPage() {
             </div>
              <DialogContent className="sm:max-w-[480px]">
                 <DialogHeader>
-                    <DialogTitle>{c.addNewAd}</DialogTitle>
+                    <DialogTitle>{selectedAd ? c.editAd : c.addNewAd}</DialogTitle>
                 </DialogHeader>
-                <AddAdForm onFinished={() => setIsFormOpen(false)} />
+                <AddAdForm ad={selectedAd} onFinished={() => setIsFormOpen(false)} />
             </DialogContent>
         </Dialog>
     );
