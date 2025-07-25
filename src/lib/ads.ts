@@ -7,7 +7,9 @@ export interface Ad {
   slotId: string;
   title: string;
   description: string;
-  imageUrl: string;
+  type: 'image' | 'video';
+  imageUrl?: string;
+  videoUrl?: string;
   linkUrl: string;
   actionButtonText: string;
   createdAt: Timestamp;
@@ -35,7 +37,7 @@ export const getAds = (callback: (ads: Ad[]) => void) => {
 // Add a new ad
 export const addAd = async (ad: Omit<Ad, 'id' | 'createdAt'>) => {
   try {
-    if (!ad.slotId || !ad.imageUrl || !ad.linkUrl || !ad.title) {
+    if (!ad.slotId || !ad.linkUrl || !ad.title) {
       console.error("Ad data is incomplete:", ad);
       throw new Error('Ad data is incomplete');
     }

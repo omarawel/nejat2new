@@ -1,3 +1,4 @@
+
 "use client"
 
 import { useEffect, useState } from 'react';
@@ -16,6 +17,7 @@ interface AdBannerProps {
 // Function to transform Dropbox URL to a direct link
 const transformDropboxUrl = (url: string): string => {
     try {
+        if (!url) return url;
         const urlObject = new URL(url);
         if (urlObject.hostname === 'www.dropbox.com') {
             urlObject.hostname = 'dl.dropboxusercontent.com';
@@ -33,8 +35,7 @@ export function AdBanner({ slotId, className }: AdBannerProps) {
 
   useEffect(() => {
     const unsubscribe = getAdBySlot(slotId, (fetchedAd) => {
-      if (fetchedAd) {
-        // Transform the imageUrl if it's a Dropbox link
+      if (fetchedAd && fetchedAd.imageUrl) {
         fetchedAd.imageUrl = transformDropboxUrl(fetchedAd.imageUrl);
       }
       setAd(fetchedAd);
@@ -56,13 +57,24 @@ export function AdBanner({ slotId, className }: AdBannerProps) {
     <div className={className}>
         <Card className="bg-muted/50 overflow-hidden">
              <CardContent className="p-4 flex items-center gap-4">
-                <div className="relative w-20 h-20 sm:w-24 sm:h-24 flex-shrink-0">
-                    <Image 
-                        src={ad.imageUrl}
-                        alt={ad.title}
-                        fill
-                        className="object-contain rounded-md"
-                    />
+                <div className="relative w-20 h-20 sm:w-24 sm:h-24 flex-shrink-0 bg-black rounded-md">
+                   {ad.type === 'video' && ad.videoUrl ? (
+                        <video 
+                            src={ad.videoUrl}
+                            autoPlay
+                            loop
+                            muted
+                            playsInline
+                            className="w-full h-full object-contain rounded-md"
+                        />
+                   ) : ad.imageUrl ? (
+                        <Image 
+                            src={ad.imageUrl}
+                            alt={ad.title}
+                            fill
+                            className="object-contain rounded-md"
+                        />
+                   ) : null}
                 </div>
                 <div className="text-left flex-grow">
                     <h4 className="font-bold text-base">{ad.title}</h4>

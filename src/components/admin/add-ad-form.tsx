@@ -17,6 +17,7 @@ import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { Textarea } from '../ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
+import { RadioGroup, RadioGroupItem } from '../ui/radio-group';
 
 const adPlacements = [
     'homepage-top-banner',
@@ -50,6 +51,8 @@ const content = {
         imageSubtext: "PNG, JPG, WEBP bis zu 2MB",
         imageUrlLabel: "Bild-URL",
         imageUrlPlaceholder: "https://example.com/image.png",
+        videoUrlLabel: "Video-URL",
+        videoUrlPlaceholder: "https://example.com/video.mp4",
         createAd: "Anzeige erstellen",
         updateAd: "Anzeige aktualisieren",
         creatingAd: "Wird erstellt...",
@@ -59,6 +62,9 @@ const content = {
         errorCreating: "Fehler beim Erstellen der Anzeige",
         errorUpdating: "Fehler beim Aktualisieren der Anzeige",
         errorUploading: "Fehler beim Hochladen des Bildes",
+        adType: "Anzeigentyp",
+        image: "Bild",
+        video: "Video",
     },
     en: {
         titleLabel: "Title",
@@ -78,6 +84,8 @@ const content = {
         imageSubtext: "PNG, JPG, WEBP up to 2MB",
         imageUrlLabel: "Image URL",
         imageUrlPlaceholder: "https://example.com/image.png",
+        videoUrlLabel: "Video URL",
+        videoUrlPlaceholder: "https://example.com/video.mp4",
         createAd: "Create Ad",
         updateAd: "Update Ad",
         creatingAd: "Creating...",
@@ -87,6 +95,9 @@ const content = {
         errorCreating: "Error creating ad",
         errorUpdating: "Error updating ad",
         errorUploading: "Error uploading image",
+        adType: "Ad Type",
+        image: "Image",
+        video: "Video",
     }
 }
 
@@ -96,21 +107,27 @@ const formSchema = z.object({
   slotId: z.string().min(1, "Placement is required."),
   linkUrl: z.string().url({ message: "Please enter a valid URL." }),
   actionButtonText: z.string().min(1, "Button text is required."),
+  type: z.enum(['image', 'video']),
   imageSource: z.enum(['upload', 'url']),
   imageFile: z.instanceof(File).optional(),
   imageUrl: z.string().optional(),
+  videoUrl: z.string().optional(),
 }).refine(data => {
-    if (data.imageSource === 'upload') {
-        // For updates, the file is optional if a URL already exists
-        return !!data.imageFile || !!data.imageUrl;
+    if (data.type === 'image') {
+        if (data.imageSource === 'upload') {
+            return !!data.imageFile || !!data.imageUrl;
+        }
+        if (data.imageSource === 'url') {
+            return !!data.imageUrl && z.string().url().safeParse(data.imageUrl).success;
+        }
     }
-    if (data.imageSource === 'url') {
-        return !!data.imageUrl && z.string().url().safeParse(data.imageUrl).success;
+    if (data.type === 'video') {
+         return !!data.videoUrl && z.string().url().safeParse(data.videoUrl).success;
     }
     return false;
 }, {
-    message: "Please provide a valid image file or URL.",
-    path: ['imageFile']
+    message: "Please provide a valid file or URL based on the ad type.",
+    path: ['imageFile'] // You can adjust the path to be more specific if needed
 });
 
 interface AddAdFormProps {
@@ -133,27 +150,32 @@ export function AddAdForm({ ad, onFinished }: AddAdFormProps) {
             slotId: ad?.slotId || "",
             linkUrl: ad?.linkUrl || "",
             actionButtonText: ad?.actionButtonText || "",
+            type: ad?.type || 'image',
             imageSource: ad?.imageUrl ? 'url' : 'upload',
             imageUrl: ad?.imageUrl || "",
+            videoUrl: ad?.videoUrl || "",
         },
     });
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
        setIsSubmitting(true);
-       let finalImageUrl = ad?.imageUrl || "";
+       let finalImageUrl = values.type === 'image' ? (ad?.imageUrl || "") : undefined;
+       let finalVideoUrl = values.type === 'video' ? (ad?.videoUrl || "") : undefined;
 
        try {
-           if (values.imageSource === 'upload' && values.imageFile) {
-               const imageFile = values.imageFile;
-               const storageRef = ref(storage, `ads/${Date.now()}-${imageFile.name}`);
-               const uploadResult = await uploadBytes(storageRef, imageFile);
-               finalImageUrl = await getDownloadURL(uploadResult.ref);
-           } else if (values.imageSource === 'url' && values.imageUrl) {
-               finalImageUrl = values.imageUrl;
-           }
-
-           if (!finalImageUrl) {
-               throw new Error("Image URL could not be determined.");
+           if (values.type === 'image') {
+               if (values.imageSource === 'upload' && values.imageFile) {
+                   const imageFile = values.imageFile;
+                   const storageRef = ref(storage, `ads/${Date.now()}-${imageFile.name}`);
+                   const uploadResult = await uploadBytes(storageRef, imageFile);
+                   finalImageUrl = await getDownloadURL(uploadResult.ref);
+               } else if (values.imageSource === 'url' && values.imageUrl) {
+                   finalImageUrl = values.imageUrl;
+               }
+           } else { // video
+                if (values.videoUrl) {
+                    finalVideoUrl = values.videoUrl;
+                }
            }
            
            const adData = {
@@ -161,15 +183,17 @@ export function AddAdForm({ ad, onFinished }: AddAdFormProps) {
                title: values.title,
                description: values.description || '',
                linkUrl: values.linkUrl,
-               imageUrl: finalImageUrl,
                actionButtonText: values.actionButtonText,
+               type: values.type,
+               imageUrl: finalImageUrl,
+               videoUrl: finalVideoUrl,
            };
 
            if (ad) {
                await updateAd(ad.id, adData);
                toast({ title: c.adUpdated });
            } else {
-               await addAd(adData);
+               await addAd(adData as Omit<Ad, 'id' | 'createdAt'>);
                toast({ title: c.adCreated });
            }
 
@@ -188,6 +212,7 @@ export function AddAdForm({ ad, onFinished }: AddAdFormProps) {
        }
    };
 
+    const adType = form.watch('type');
     const imageSource = form.watch('imageSource');
 
     return (
@@ -213,6 +238,35 @@ export function AddAdForm({ ad, onFinished }: AddAdFormProps) {
                         </FormItem>
                     )}
                 />
+                 <FormField
+                    control={form.control}
+                    name="type"
+                    render={({ field }) => (
+                         <FormItem className="space-y-3">
+                            <FormLabel>{c.adType}</FormLabel>
+                            <FormControl>
+                                <RadioGroup
+                                onValueChange={field.onChange}
+                                defaultValue={field.value}
+                                className="flex space-x-4"
+                                >
+                                <FormItem className="flex items-center space-x-2 space-y-0">
+                                    <FormControl>
+                                    <RadioGroupItem value="image" />
+                                    </FormControl>
+                                    <FormLabel className="font-normal">{c.image}</FormLabel>
+                                </FormItem>
+                                <FormItem className="flex items-center space-x-2 space-y-0">
+                                    <FormControl>
+                                    <RadioGroupItem value="video" />
+                                    </FormControl>
+                                    <FormLabel className="font-normal">{c.video}</FormLabel>
+                                </FormItem>
+                                </RadioGroup>
+                            </FormControl>
+                        </FormItem>
+                    )}
+                    />
                 <FormField
                     control={form.control}
                     name="title"
@@ -239,7 +293,6 @@ export function AddAdForm({ ad, onFinished }: AddAdFormProps) {
                         </FormItem>
                     )}
                 />
-
                 <FormField
                     control={form.control}
                     name="linkUrl"
@@ -253,7 +306,6 @@ export function AddAdForm({ ad, onFinished }: AddAdFormProps) {
                         </FormItem>
                     )}
                 />
-
                  <FormField
                     control={form.control}
                     name="actionButtonText"
@@ -268,61 +320,78 @@ export function AddAdForm({ ad, onFinished }: AddAdFormProps) {
                     )}
                 />
                 
-                <FormField
-                    control={form.control}
-                    name="imageSource"
-                    render={({ field }) => (
-                         <FormItem className="pt-2">
-                            <FormLabel>{c.imageSource}</FormLabel>
-                            <Tabs value={field.value} onValueChange={field.onChange} className="w-full">
-                                <TabsList className="grid w-full grid-cols-2">
-                                    <TabsTrigger value="upload">{c.upload}</TabsTrigger>
-                                    <TabsTrigger value="url">{c.fromUrl}</TabsTrigger>
-                                </TabsList>
-                            </Tabs>
-                         </FormItem>
-                    )}
-                />
-
-                {imageSource === 'upload' ? (
-                     <FormField
+                {adType === 'image' && (
+                    <>
+                    <FormField
                         control={form.control}
-                        name="imageFile"
-                        render={({ field: { onChange, value, ...rest } }) => (
-                            <FormItem>
-                                <FormLabel>{c.imageLabel}</FormLabel>
-                                <FormControl>
-                                    <Input 
-                                        type="file" 
-                                        accept="image/png, image/jpeg, image/webp"
-                                        onChange={(e) => {
-                                            const file = e.target.files?.[0];
-                                            if (file) onChange(file);
-                                        }}
-                                        className="pt-2"
-                                        {...rest}
-                                    />
-                                </FormControl>
-                                <FormMessage />
+                        name="imageSource"
+                        render={({ field }) => (
+                            <FormItem className="pt-2">
+                                <FormLabel>{c.imageSource}</FormLabel>
+                                <Tabs value={field.value} onValueChange={field.onChange} className="w-full">
+                                    <TabsList className="grid w-full grid-cols-2">
+                                        <TabsTrigger value="upload">{c.upload}</TabsTrigger>
+                                        <TabsTrigger value="url">{c.fromUrl}</TabsTrigger>
+                                    </TabsList>
+                                </Tabs>
                             </FormItem>
                         )}
                     />
-                ) : (
+                    {imageSource === 'upload' ? (
+                        <FormField
+                            control={form.control}
+                            name="imageFile"
+                            render={({ field: { onChange, value, ...rest } }) => (
+                                <FormItem>
+                                    <FormLabel>{c.imageLabel}</FormLabel>
+                                    <FormControl>
+                                        <Input 
+                                            type="file" 
+                                            accept="image/png, image/jpeg, image/webp"
+                                            onChange={(e) => {
+                                                const file = e.target.files?.[0];
+                                                if (file) onChange(file);
+                                            }}
+                                            className="pt-2"
+                                            {...rest}
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                    ) : (
+                        <FormField
+                            control={form.control}
+                            name="imageUrl"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>{c.imageUrlLabel}</FormLabel>
+                                    <FormControl>
+                                        <Input placeholder={c.imageUrlPlaceholder} {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                    )}
+                    </>
+                )}
+                {adType === 'video' && (
                      <FormField
                         control={form.control}
-                        name="imageUrl"
+                        name="videoUrl"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>{c.imageUrlLabel}</FormLabel>
+                                <FormLabel>{c.videoUrlLabel}</FormLabel>
                                 <FormControl>
-                                    <Input placeholder={c.imageUrlPlaceholder} {...field} />
+                                    <Input placeholder={c.videoUrlPlaceholder} {...field} />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
                         )}
                     />
                 )}
-
                 <Button type="submit" className="w-full !mt-6" disabled={isSubmitting}>
                     {isSubmitting ? (
                         <>
