@@ -12,7 +12,7 @@ const firebaseConfig = {
   "storageBucket": "nejat-ba9qt.appspot.com",
   "apiKey": "AIzaSyBjPIdjsQjUIOogs0LMp_KSuDpD2490HyM",
   "authDomain": "nejat-ba9qt.firebaseapp.com",
-  "measurementId": "",
+  "measurementId": "G-S3XQ0KYYJ6",
   "messagingSenderId": "727421281697"
 };
 
