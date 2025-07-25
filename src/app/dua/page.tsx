@@ -11,6 +11,7 @@ import { useLanguage } from '@/components/language-provider';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { ArrowLeft } from 'lucide-react';
+import { AdBanner } from '@/components/ad-banner';
 
 const duaData = {
   de: {
@@ -205,6 +206,9 @@ export default function DuaPage() {
         <h1 className="text-4xl font-bold tracking-tight text-primary">{content.title}</h1>
         <p className="text-muted-foreground mt-2 text-lg max-w-2xl mx-auto">{content.description}</p>
       </header>
+        <div className="max-w-4xl mx-auto my-8">
+            <AdBanner slotId="dua-page-banner" />
+        </div>
       <div className="max-w-4xl mx-auto">
         {content.duas.map((category, index) => (
           <div key={index} className="mb-8">

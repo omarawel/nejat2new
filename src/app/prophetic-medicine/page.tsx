@@ -6,6 +6,7 @@ import { useLanguage } from '@/components/language-provider';
 import { Leaf, Droplets, Utensils, Shield, ArrowLeft, Sun, Sprout } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import { AdBanner } from '@/components/ad-banner';
 
 const content = {
     de: {
@@ -248,6 +249,9 @@ export default function PropheticMedicinePage() {
                         </CardContent>
                     </Card>
                 ))}
+            </div>
+            <div className="w-full max-w-4xl mx-auto mt-12">
+                <AdBanner slotId="prophetic-medicine-inline" />
             </div>
         </div>
     );

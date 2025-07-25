@@ -9,6 +9,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import { format } from 'date-fns';
+import { AdBanner } from "@/components/ad-banner";
 
 const content = {
     de: {
@@ -196,7 +197,7 @@ export default function PrayerTimesPage() {
                 </CardContent>
             </Card>
         )}
-
+        <AdBanner slotId="prayer-times-bottom" />
         <Card>
             <CardHeader>
                 <CardTitle className="flex items-center gap-3"><LocateFixed /> {c.qiblaTitle}</CardTitle>

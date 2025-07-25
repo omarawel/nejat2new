@@ -34,6 +34,7 @@ import { useAuthState } from "react-firebase-hooks/auth"
 import { auth } from "@/lib/firebase"
 import { useToast } from "@/hooks/use-toast"
 import { addFavorite } from "@/lib/favorites"
+import { AdBanner } from "@/components/ad-banner"
 
 
 type Language = "eng" | "urd" | "ara";
@@ -372,7 +373,10 @@ export default function HadithPage() {
                 </form>
             </div>
       </div>
-
+      
+       <div className="my-8">
+            <AdBanner slotId="hadith-page-bottom" />
+        </div>
 
       {error && (
         <Alert variant="destructive">

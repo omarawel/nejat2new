@@ -9,6 +9,7 @@ import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
+import { AdBanner } from '@/components/ad-banner';
 
 const content = {
     de: {
@@ -95,6 +96,9 @@ export default function TasbihCounterPage() {
                  <Button variant="outline" className="w-48" onClick={handleReset}>
                     <RotateCcw className="mr-2 h-4 w-4" /> {c.reset}
                 </Button>
+            </div>
+             <div className="w-full mt-12">
+                <AdBanner slotId="tasbih-counter-bottom" />
             </div>
         </div>
     </div>

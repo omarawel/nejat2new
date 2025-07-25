@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { BookHeart, HelpCircle, ArrowLeft, Star, Users, Droplets } from 'lucide-react';
 import { useLanguage } from '@/components/language-provider';
 import Link from 'next/link';
+import { AdBanner } from '@/components/ad-banner';
 
 const content = {
     de: {
@@ -127,6 +128,10 @@ export default function RevertsCornerPage() {
             </h1>
             <p className="text-muted-foreground mt-2 text-lg max-w-2xl mx-auto">{c.description}</p>
         </header>
+
+         <div className="max-w-4xl mx-auto my-8">
+            <AdBanner slotId="reverts-corner-banner" />
+        </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
             {c.cards.map((card, index) => {

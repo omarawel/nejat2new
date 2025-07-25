@@ -7,7 +7,10 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import {
+  Card,
+  CardContent,
+} from "@/components/ui/card"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Input } from "@/components/ui/input"
@@ -34,6 +37,7 @@ import { auth } from "@/lib/firebase"
 import { useToast } from "@/hooks/use-toast"
 import { addFavorite } from "@/lib/favorites"
 import { canAccessFeature } from "@/lib/user-usage"
+import { AdBanner } from "@/components/ad-banner"
 
 
 interface Surah {
@@ -572,6 +576,8 @@ export default function QuranPage() {
              )}
         </CardContent>
       </Card>
+      
+       <AdBanner slotId="quran-page-bottom" />
 
       {isSearching && (
           <div className="flex items-center justify-center py-4">

@@ -10,6 +10,7 @@ import { useState, useEffect } from 'react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { AdBanner } from '@/components/ad-banner';
 
 const ZAKAT_RATE = 0.025;
 
@@ -181,6 +182,9 @@ export default function ZakatCalculatorPage() {
                     </CardFooter>
                 </Card>
             )}
+             <div className="w-full mt-12">
+                <AdBanner slotId="zakat-calculator-bottom" />
+            </div>
         </div>
     </div>
   );

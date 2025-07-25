@@ -11,6 +11,7 @@ import { useLanguage } from '@/components/language-provider';
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import { AdBanner } from '@/components/ad-banner';
 
 const storiesData = {
   de: {
@@ -160,10 +161,13 @@ export default function IslamicStoriesPage() {
         </h1>
         <p className="text-muted-foreground mt-2 text-lg max-w-2xl mx-auto">{c.description}</p>
       </header>
+      <div className="max-w-4xl mx-auto my-8">
+        <AdBanner slotId="stories-page-inline" />
+      </div>
       <Accordion type="single" collapsible className="w-full max-w-3xl mx-auto">
         {c.stories.map((item, index) => (
           <AccordionItem key={index} value={`item-${index}`}>
-            <AccordionTrigger className="text-xl text-left">{item.title || item.name}</AccordionTrigger>
+            <AccordionTrigger className="text-xl text-left hover:no-underline">{item.title || item.name}</AccordionTrigger>
             <AccordionContent className="text-base text-foreground/80 px-4">
               {item.story}
             </AccordionContent>
