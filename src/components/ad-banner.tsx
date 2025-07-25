@@ -46,7 +46,7 @@ export function AdBanner({ slotId, className }: AdBannerProps) {
   }, [slotId]);
 
   if (loading) {
-    return <Skeleton className="w-full h-20" />;
+    return <Skeleton className="w-full h-40" />;
   }
 
   if (!ad) {
@@ -55,25 +55,25 @@ export function AdBanner({ slotId, className }: AdBannerProps) {
 
   return (
     <div className={className}>
-        <Card className="bg-muted/50">
-            <CardContent className="p-2 flex items-center gap-3">
-                <div className="relative w-16 h-16 flex-shrink-0">
+        <Card className="bg-muted/50 overflow-hidden">
+            <CardContent className="p-0">
+                <div className="relative w-full h-32">
                     <Image 
                         src={ad.imageUrl}
                         alt={ad.title}
                         fill
-                        className="rounded-md object-contain"
+                        className="object-cover"
                     />
                 </div>
-                <div className="flex-grow text-left overflow-hidden">
-                    <h4 className="font-bold text-base truncate">{ad.title}</h4>
-                    <p className="text-sm text-muted-foreground truncate">{ad.description}</p>
+                <div className="p-4 text-left">
+                    <h4 className="font-bold text-base">{ad.title}</h4>
+                    <p className="text-sm text-muted-foreground mt-1 mb-4">{ad.description}</p>
+                    <Button asChild size="sm">
+                        <Link href={ad.linkUrl} target="_blank" rel="noopener noreferrer">
+                            {ad.actionButtonText}
+                        </Link>
+                    </Button>
                 </div>
-                <Button asChild size="sm" className="flex-shrink-0">
-                    <Link href={ad.linkUrl} target="_blank" rel="noopener noreferrer">
-                        {ad.actionButtonText}
-                    </Link>
-                </Button>
             </CardContent>
         </Card>
     </div>
