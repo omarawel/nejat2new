@@ -149,6 +149,7 @@ const transformDropboxUrl = (url?: string): string | undefined => {
         const urlObject = new URL(url);
         if (urlObject.hostname === 'www.dropbox.com') {
             urlObject.hostname = 'dl.dropboxusercontent.com';
+            urlObject.search = ''; // Remove all query params like rlkey, st, etc.
             urlObject.searchParams.set('dl', '1');
         }
         return urlObject.toString();
@@ -157,7 +158,6 @@ const transformDropboxUrl = (url?: string): string | undefined => {
         return url;
     }
 };
-
 
 export function AddAdForm({ ad, onFinished }: AddAdFormProps) {
     const { language } = useLanguage();

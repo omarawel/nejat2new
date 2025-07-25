@@ -17,18 +17,19 @@ interface AdBannerProps {
   className?: string;
 }
 
-// Function to transform Dropbox URL to a direct link
-const transformDropboxUrl = (url: string): string => {
+const transformDropboxUrl = (url?: string): string | undefined => {
+    if (!url) return undefined;
     try {
-        if (!url) return url;
         const urlObject = new URL(url);
         if (urlObject.hostname === 'www.dropbox.com') {
             urlObject.hostname = 'dl.dropboxusercontent.com';
+            urlObject.search = ''; // Remove all query params like rlkey, st, etc.
+            urlObject.searchParams.set('dl', '1');
         }
         return urlObject.toString();
     } catch (e) {
         console.error("Invalid URL for transformation:", url);
-        return url; // Return original URL if parsing fails
+        return url;
     }
 };
 
@@ -59,8 +60,13 @@ export function AdBanner({ slotId, className }: AdBannerProps) {
         // If user is not logged in, or has no ad-free plan, show the ad
         setShowAd(true);
         const unsubscribe = getAdBySlot(slotId, (fetchedAd) => {
-          if (fetchedAd && fetchedAd.imageUrl) {
-            fetchedAd.imageUrl = transformDropboxUrl(fetchedAd.imageUrl);
+          if (fetchedAd) {
+              if (fetchedAd.imageUrl) {
+                fetchedAd.imageUrl = transformDropboxUrl(fetchedAd.imageUrl);
+              }
+              if (fetchedAd.videoUrl) {
+                fetchedAd.videoUrl = transformDropboxUrl(fetchedAd.videoUrl);
+              }
           }
           setAd(fetchedAd);
           setLoadingAd(false);
