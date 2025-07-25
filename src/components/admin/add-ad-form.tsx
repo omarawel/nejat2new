@@ -17,6 +17,7 @@ import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { Textarea } from '../ui/textarea';
 import { RadioGroup, RadioGroupItem } from '../ui/radio-group';
 import { Checkbox } from '../ui/checkbox';
+import { ScrollArea } from '../ui/scroll-area';
 
 const adPlacements = [
     'homepage-top-banner',
@@ -225,231 +226,234 @@ export function AddAdForm({ ad, onFinished }: AddAdFormProps) {
 
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-                 <FormField
-                    control={form.control}
-                    name="slotIds"
-                    render={() => (
-                        <FormItem>
-                            <div className="mb-4">
-                               <FormLabel className="text-base">{c.slotIdsLabel}</FormLabel>
-                            </div>
-                            <div className="max-h-60 overflow-y-auto pr-4 grid grid-cols-2 gap-2">
-                                {adPlacements.map((item) => (
-                                    <FormField
-                                    key={item}
-                                    control={form.control}
-                                    name="slotIds"
-                                    render={({ field }) => {
-                                        return (
-                                        <FormItem
-                                            key={item}
-                                            className="flex flex-row items-start space-x-3 space-y-0"
-                                        >
-                                            <FormControl>
-                                            <Checkbox
-                                                checked={field.value?.includes(item)}
-                                                onCheckedChange={(checked) => {
-                                                return checked
-                                                    ? field.onChange([...field.value, item])
-                                                    : field.onChange(
-                                                        field.value?.filter(
-                                                        (value) => value !== item
-                                                        )
-                                                    )
-                                                }}
-                                            />
-                                            </FormControl>
-                                            <FormLabel className="text-sm font-normal">
-                                            {item}
-                                            </FormLabel>
-                                        </FormItem>
-                                        )
-                                    }}
-                                    />
-                                ))}
-                            </div>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                    />
-                 <FormField
-                    control={form.control}
-                    name="type"
-                    render={({ field }) => (
-                         <FormItem className="space-y-3">
-                            <FormLabel>{c.adType}</FormLabel>
-                            <FormControl>
-                                <RadioGroup
-                                onValueChange={field.onChange}
-                                defaultValue={field.value}
-                                className="flex space-x-4"
-                                >
-                                <FormItem className="flex items-center space-x-2 space-y-0">
-                                    <FormControl>
-                                    <RadioGroupItem value="image" />
-                                    </FormControl>
-                                    <FormLabel className="font-normal">{c.image}</FormLabel>
-                                </FormItem>
-                                <FormItem className="flex items-center space-x-2 space-y-0">
-                                    <FormControl>
-                                    <RadioGroupItem value="video" />
-                                    </FormControl>
-                                    <FormLabel className="font-normal">{c.video}</FormLabel>
-                                </FormItem>
-                                </RadioGroup>
-                            </FormControl>
-                        </FormItem>
-                    )}
-                    />
-                <FormField
-                    control={form.control}
-                    name="title"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>{c.titleLabel} (optional)</FormLabel>
-                            <FormControl>
-                                <Input placeholder={c.titlePlaceholder} {...field} />
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
-                 <FormField
-                    control={form.control}
-                    name="description"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>{c.descriptionLabel}</FormLabel>
-                            <FormControl>
-                                <Textarea placeholder={c.descriptionPlaceholder} {...field} />
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
-                <FormField
-                    control={form.control}
-                    name="linkUrl"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>{c.linkUrlLabel}</FormLabel>
-                            <FormControl>
-                                <Input placeholder={c.linkUrlPlaceholder} {...field} />
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
-                 <FormField
-                    control={form.control}
-                    name="actionButtonText"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>{c.actionButtonLabel}</FormLabel>
-                            <FormControl>
-                                <Input placeholder={c.actionButtonPlaceholder} {...field} />
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
-                
-                {adType === 'image' && (
-                    <>
+            <ScrollArea className="h-[60vh] pr-6">
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
                     <FormField
                         control={form.control}
-                        name="imageSource"
+                        name="slotIds"
+                        render={() => (
+                            <FormItem>
+                                <div className="mb-4">
+                                <FormLabel className="text-base">{c.slotIdsLabel}</FormLabel>
+                                </div>
+                                <div className="grid grid-cols-2 gap-2">
+                                    {adPlacements.map((item) => (
+                                        <FormField
+                                        key={item}
+                                        control={form.control}
+                                        name="slotIds"
+                                        render={({ field }) => {
+                                            return (
+                                            <FormItem
+                                                key={item}
+                                                className="flex flex-row items-start space-x-3 space-y-0"
+                                            >
+                                                <FormControl>
+                                                <Checkbox
+                                                    checked={field.value?.includes(item)}
+                                                    onCheckedChange={(checked) => {
+                                                    return checked
+                                                        ? field.onChange([...field.value, item])
+                                                        : field.onChange(
+                                                            field.value?.filter(
+                                                            (value) => value !== item
+                                                            )
+                                                        )
+                                                    }}
+                                                />
+                                                </FormControl>
+                                                <FormLabel className="text-sm font-normal">
+                                                {item}
+                                                </FormLabel>
+                                            </FormItem>
+                                            )
+                                        }}
+                                        />
+                                    ))}
+                                </div>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                        />
+                    <FormField
+                        control={form.control}
+                        name="type"
                         render={({ field }) => (
-                            <FormItem className="pt-2">
-                                <FormLabel>{c.imageSource}</FormLabel>
-                                 <FormControl>
+                            <FormItem className="space-y-3">
+                                <FormLabel>{c.adType}</FormLabel>
+                                <FormControl>
                                     <RadioGroup
                                     onValueChange={field.onChange}
                                     defaultValue={field.value}
-                                    className="flex space-x-4 pt-2"
+                                    className="flex space-x-4"
                                     >
                                     <FormItem className="flex items-center space-x-2 space-y-0">
                                         <FormControl>
-                                        <RadioGroupItem value="upload" />
+                                        <RadioGroupItem value="image" />
                                         </FormControl>
-                                        <FormLabel className="font-normal">{c.upload}</FormLabel>
+                                        <FormLabel className="font-normal">{c.image}</FormLabel>
                                     </FormItem>
                                     <FormItem className="flex items-center space-x-2 space-y-0">
                                         <FormControl>
-                                        <RadioGroupItem value="url" />
+                                        <RadioGroupItem value="video" />
                                         </FormControl>
-                                        <FormLabel className="font-normal">{c.fromUrl}</FormLabel>
+                                        <FormLabel className="font-normal">{c.video}</FormLabel>
                                     </FormItem>
                                     </RadioGroup>
                                 </FormControl>
                             </FormItem>
                         )}
+                        />
+                    <FormField
+                        control={form.control}
+                        name="title"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>{c.titleLabel} (optional)</FormLabel>
+                                <FormControl>
+                                    <Input placeholder={c.titlePlaceholder} {...field} />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
                     />
-                    {imageSource === 'upload' ? (
+                    <FormField
+                        control={form.control}
+                        name="description"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>{c.descriptionLabel}</FormLabel>
+                                <FormControl>
+                                    <Textarea placeholder={c.descriptionPlaceholder} {...field} />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                    <FormField
+                        control={form.control}
+                        name="linkUrl"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>{c.linkUrlLabel}</FormLabel>
+                                <FormControl>
+                                    <Input placeholder={c.linkUrlPlaceholder} {...field} />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                    <FormField
+                        control={form.control}
+                        name="actionButtonText"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>{c.actionButtonLabel}</FormLabel>
+                                <FormControl>
+                                    <Input placeholder={c.actionButtonPlaceholder} {...field} />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+                    
+                    {adType === 'image' && (
+                        <>
                         <FormField
                             control={form.control}
-                            name="imageFile"
-                            render={({ field: { onChange, value, ...rest } }) => (
-                                <FormItem>
-                                    <FormLabel>{c.imageLabel}</FormLabel>
+                            name="imageSource"
+                            render={({ field }) => (
+                                <FormItem className="pt-2">
+                                    <FormLabel>{c.imageSource}</FormLabel>
                                     <FormControl>
-                                        <Input 
-                                            type="file" 
-                                            accept="image/png, image/jpeg, image/webp"
-                                            onChange={(e) => {
-                                                const file = e.target.files?.[0];
-                                                if (file) onChange(file);
-                                            }}
-                                            className="pt-2"
-                                            {...rest}
-                                        />
+                                        <RadioGroup
+                                        onValueChange={field.onChange}
+                                        defaultValue={field.value}
+                                        className="flex space-x-4 pt-2"
+                                        >
+                                        <FormItem className="flex items-center space-x-2 space-y-0">
+                                            <FormControl>
+                                            <RadioGroupItem value="upload" />
+                                            </FormControl>
+                                            <FormLabel className="font-normal">{c.upload}</FormLabel>
+                                        </FormItem>
+                                        <FormItem className="flex items-center space-x-2 space-y-0">
+                                            <FormControl>
+                                            <RadioGroupItem value="url" />
+                                            </FormControl>
+                                            <FormLabel className="font-normal">{c.fromUrl}</FormLabel>
+                                        </FormItem>
+                                        </RadioGroup>
                                     </FormControl>
-                                    <FormMessage />
                                 </FormItem>
                             )}
                         />
-                    ) : (
+                        {imageSource === 'upload' ? (
+                            <FormField
+                                control={form.control}
+                                name="imageFile"
+                                render={({ field: { onChange, value, ...rest } }) => (
+                                    <FormItem>
+                                        <FormLabel>{c.imageLabel}</FormLabel>
+                                        <FormControl>
+                                            <Input 
+                                                type="file" 
+                                                accept="image/png, image/jpeg, image/webp"
+                                                onChange={(e) => {
+                                                    const file = e.target.files?.[0];
+                                                    if (file) onChange(file);
+                                                }}
+                                                className="pt-2"
+                                                {...rest}
+                                            />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                        ) : (
+                            <FormField
+                                control={form.control}
+                                name="imageUrl"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>{c.imageUrlLabel}</FormLabel>
+                                        <FormControl>
+                                            <Input placeholder={c.imageUrlPlaceholder} {...field} />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                        )}
+                        </>
+                    )}
+                    {adType === 'video' && (
                         <FormField
                             control={form.control}
-                            name="imageUrl"
+                            name="videoUrl"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>{c.imageUrlLabel}</FormLabel>
+                                    <FormLabel>{c.videoUrlLabel}</FormLabel>
                                     <FormControl>
-                                        <Input placeholder={c.imageUrlPlaceholder} {...field} />
+                                        <Input placeholder={c.videoUrlPlaceholder} {...field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
                             )}
                         />
                     )}
-                    </>
-                )}
-                {adType === 'video' && (
-                     <FormField
-                        control={form.control}
-                        name="videoUrl"
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>{c.videoUrlLabel}</FormLabel>
-                                <FormControl>
-                                    <Input placeholder={c.videoUrlPlaceholder} {...field} />
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                    />
-                )}
-                <Button type="submit" className="w-full !mt-6" disabled={isSubmitting}>
-                    {isSubmitting ? (
-                        <>
-                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                            {ad ? c.updatingAd : c.creatingAd}
-                        </>
-                    ) : (ad ? c.updateAd : c.createAd)}
-                </Button>
-            </form>
+                    <Button type="submit" className="w-full !mt-6" disabled={isSubmitting}>
+                        {isSubmitting ? (
+                            <>
+                                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                {ad ? c.updatingAd : c.creatingAd}
+                            </>
+                        ) : (ad ? c.updateAd : c.createAd)}
+                    </Button>
+                </form>
+            </ScrollArea>
         </Form>
     );
 }
+
