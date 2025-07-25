@@ -20,7 +20,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { Button } from "@/components/ui/button"
-import { Terminal, Search, Eye, EyeOff, Play, Loader, Pause, ArrowLeft, Download, WifiOff, Star, Sparkles } from "lucide-react"
+import { Terminal, Search, Eye, EyeOff, Play, Loader, Pause, ArrowLeft, Download, WifiOff, Star, Sparkles, Loader2 } from "lucide-react"
 import { useEffect, useState, useMemo, FormEvent, useRef, useCallback } from "react"
 import { cn } from "@/lib/utils"
 import { textToSpeech } from "@/ai/flows/text-to-speech"
