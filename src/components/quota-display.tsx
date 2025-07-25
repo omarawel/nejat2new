@@ -32,9 +32,10 @@ const content = {
 
 interface QuotaDisplayProps {
     className?: string;
+    showUpgradeButton?: boolean;
 }
 
-export function QuotaDisplay({ className }: QuotaDisplayProps) {
+export function QuotaDisplay({ className, showUpgradeButton = false }: QuotaDisplayProps) {
     const [user] = useAuthState(auth);
     const [quota, setQuota] = useState<UserQuota | null>(null);
     const [loading, setLoading] = useState(true);
@@ -98,12 +99,14 @@ export function QuotaDisplay({ className }: QuotaDisplayProps) {
                     </Tooltip>
                 </TooltipProvider>
             </span>
-             <Button size="sm" asChild variant="secondary">
-                <Link href="/subscribe">
-                    <Star className="mr-2 h-4 w-4" />
-                    {c.upgrade}
-                </Link>
-            </Button>
+             {showUpgradeButton && (
+                <Button size="sm" asChild variant="secondary">
+                    <Link href="/subscribe">
+                        <Star className="mr-2 h-4 w-4" />
+                        {c.upgrade}
+                    </Link>
+                </Button>
+             )}
         </div>
     );
 }

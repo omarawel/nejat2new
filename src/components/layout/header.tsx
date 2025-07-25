@@ -5,7 +5,7 @@ import { useState, useEffect } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { User, onAuthStateChanged, signOut } from "firebase/auth"
-import { LogIn, UserPlus, LogOut, UserCircle, LayoutGrid, Shield } from "lucide-react"
+import { LogIn, UserPlus, LogOut, UserCircle, LayoutGrid, Shield, Star } from "lucide-react"
 
 import { ThemeToggle } from "@/components/theme-toggle"
 import { LanguageToggle } from "@/components/language-toggle"
@@ -39,7 +39,8 @@ const content = {
     loggedOutSuccess: "Sie wurden erfolgreich abgemeldet.",
     logoutFailed: "Abmeldung fehlgeschlagen",
     logoutError: "Beim Abmelden ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.",
-    user: "Benutzer"
+    user: "Benutzer",
+    upgrade: "Upgrade"
   },
   en: {
     login: "Login",
@@ -53,7 +54,8 @@ const content = {
     loggedOutSuccess: "You have been successfully logged out.",
     logoutFailed: "Logout Failed",
     logoutError: "An error occurred while logging out. Please try again.",
-    user: "User"
+    user: "User",
+    upgrade: "Upgrade"
   },
 }
 
@@ -130,7 +132,7 @@ export function AppHeader() {
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>{c.myAccount}</DropdownMenuLabel>
               <div className="px-2 py-1.5">
-                <QuotaDisplay />
+                <QuotaDisplay showUpgradeButton={true} />
               </div>
               <DropdownMenuSeparator />
               <DropdownMenuItem onClick={() => router.push('/dashboard')}>
