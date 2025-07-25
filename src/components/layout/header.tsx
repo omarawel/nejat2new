@@ -166,7 +166,7 @@ export function AppHeader() {
                     {c.login}
                 </Link>
             </Button>
-             <Button asChild>
+             <Button asChild className="hidden sm:inline-flex">
                 <Link href="/signup">
                     <UserPlus />
                     {c.signup}
