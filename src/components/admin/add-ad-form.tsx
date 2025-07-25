@@ -29,6 +29,16 @@ const adPlacements = [
     'feature-page-bottom',
     'profile-page-sidebar',
     'dashboard-page-banner',
+    'prophets-page-banner',
+    'sahaba-page-banner',
+    'dua-page-banner',
+    'stories-page-inline',
+    'prayer-times-bottom',
+    'zakat-calculator-bottom',
+    'tasbih-counter-bottom',
+    'hisnul-muslim-top',
+    'prophetic-medicine-inline',
+    'reverts-corner-banner',
 ];
 
 const content = {
