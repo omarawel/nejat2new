@@ -21,7 +21,7 @@ const staticContent = {
         privacy: "Datenschutz",
         imprint: "Impressum",
         followUs: "Folge uns",
-        copyright: `© ${new Date().getFullYear()} Nejat Digital. Alle Rechte vorbehalten.`
+        copyright: `© ${new Date().getFullYear()} Nejat Pro. Alle Rechte vorbehalten.`
     },
     en: {
         description: "Explore a comprehensive suite of tools for your spiritual journey: precise prayer times, Qibla compass, Quran and Hadith collections, a memorization tool, a Zakat calculator, and AI-powered features like a Dua generator and a scholar to answer your questions.",
@@ -34,7 +34,7 @@ const staticContent = {
         privacy: "Privacy",
         imprint: "Imprint",
         followUs: "Follow Us",
-        copyright: `© ${new Date().getFullYear()} Nejat Digital. All rights reserved.`
+        copyright: `© ${new Date().getFullYear()} Nejat Pro. All rights reserved.`
     }
 }
 
@@ -64,7 +64,7 @@ export function Footer() {
     
     const c = content ? content[language] : staticContent[language];
     const socialLinks = content ? content.socialLinks : [];
-    const copyrightText = `© ${new Date().getFullYear()} Nejat Digital. All rights reserved.`;
+    const copyrightText = `© ${new Date().getFullYear()} Nejat Pro. All rights reserved.`;
 
     if (loading) {
         return (
