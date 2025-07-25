@@ -46,7 +46,7 @@ export function AdBanner({ slotId, className }: AdBannerProps) {
   }, [slotId]);
 
   if (loading) {
-    return <Skeleton className="w-full h-24" />;
+    return <Skeleton className="w-full h-20" />;
   }
 
   if (!ad) {
@@ -56,8 +56,8 @@ export function AdBanner({ slotId, className }: AdBannerProps) {
   return (
     <div className={className}>
         <Card className="bg-muted/50">
-            <CardContent className="p-4 flex flex-col sm:flex-row items-center gap-4">
-                <div className="relative w-full sm:w-32 h-20 flex-shrink-0">
+            <CardContent className="p-2 flex items-center gap-3">
+                <div className="relative w-16 h-16 flex-shrink-0">
                     <Image 
                         src={ad.imageUrl}
                         alt={ad.title}
@@ -65,11 +65,11 @@ export function AdBanner({ slotId, className }: AdBannerProps) {
                         className="rounded-md object-contain"
                     />
                 </div>
-                <div className="flex-grow text-center sm:text-left">
-                    <h4 className="font-bold text-lg">{ad.title}</h4>
-                    <p className="text-sm text-muted-foreground">{ad.description}</p>
+                <div className="flex-grow text-left overflow-hidden">
+                    <h4 className="font-bold text-base truncate">{ad.title}</h4>
+                    <p className="text-sm text-muted-foreground truncate">{ad.description}</p>
                 </div>
-                <Button asChild className="w-full sm:w-auto flex-shrink-0">
+                <Button asChild size="sm" className="flex-shrink-0">
                     <Link href={ad.linkUrl} target="_blank" rel="noopener noreferrer">
                         {ad.actionButtonText}
                     </Link>
