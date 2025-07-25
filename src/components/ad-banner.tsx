@@ -1,4 +1,3 @@
-
 "use client"
 
 import { useEffect, useState } from 'react';
@@ -62,7 +61,7 @@ export function AdBanner({ slotId, className }: AdBannerProps) {
                         src={ad.imageUrl}
                         alt={ad.title}
                         fill
-                        className="object-cover rounded-md"
+                        className="object-contain rounded-md"
                     />
                 </div>
                 <div className="text-left flex-grow">
