@@ -23,8 +23,11 @@ const transformDropboxUrl = (url?: string): string | undefined => {
     try {
         const urlObject = new URL(url);
         if (urlObject.hostname === 'www.dropbox.com') {
-            urlObject.hostname = 'dl.dropboxusercontent.com';
-            urlObject.search = ''; // Remove all query params like rlkey, st, etc.
+            // Reconstruct the URL for direct content access
+            // Example input: https://www.dropbox.com/scl/fi/.../...png?rlkey=...&dl=0
+            // Example output: https://dl.dropboxusercontent.com/scl/fi/.../...png
+            const newUrl = `https://dl.dropboxusercontent.com${urlObject.pathname}`;
+            return newUrl;
         }
         return urlObject.toString();
     } catch (e) {
