@@ -199,7 +199,7 @@ export default function AdManagementPage() {
                                             </TableCell>
                                              <TableCell>
                                                 <div className="flex flex-wrap gap-1">
-                                                    {ad.slotIds.map(id => (
+                                                    {Array.isArray(ad.slotIds) && ad.slotIds.map(id => (
                                                         <Badge key={id} variant="outline">{id}</Badge>
                                                     ))}
                                                 </div>
