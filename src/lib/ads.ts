@@ -37,7 +37,7 @@ export const getAds = (callback: (ads: Ad[]) => void) => {
 // Add a new ad
 export const addAd = async (ad: Omit<Ad, 'id' | 'createdAt'>) => {
   try {
-    if (!ad.slotId || !ad.linkUrl || !ad.title) {
+    if (!ad.slotId || !ad.linkUrl) {
       console.error("Ad data is incomplete:", ad);
       throw new Error('Ad data is incomplete');
     }

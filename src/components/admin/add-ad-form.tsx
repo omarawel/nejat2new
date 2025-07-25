@@ -102,7 +102,7 @@ const content = {
 }
 
 const formSchema = z.object({
-  title: z.string().min(3, "Title must be at least 3 characters."),
+  title: z.string().optional(),
   description: z.string().optional(),
   slotId: z.string().min(1, "Placement is required."),
   linkUrl: z.string().url({ message: "Please enter a valid URL." }),
@@ -180,7 +180,7 @@ export function AddAdForm({ ad, onFinished }: AddAdFormProps) {
            
            const adData = {
                slotId: values.slotId,
-               title: values.title,
+               title: values.title || '',
                description: values.description || '',
                linkUrl: values.linkUrl,
                actionButtonText: values.actionButtonText,
@@ -272,7 +272,7 @@ export function AddAdForm({ ad, onFinished }: AddAdFormProps) {
                     name="title"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>{c.titleLabel}</FormLabel>
+                            <FormLabel>{c.titleLabel} (optional)</FormLabel>
                             <FormControl>
                                 <Input placeholder={c.titlePlaceholder} {...field} />
                             </FormControl>
