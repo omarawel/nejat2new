@@ -4,7 +4,7 @@
 import { useEffect, useState, useCallback } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { RefreshCw, Loader2, ArrowLeft, Share2, Heart } from 'lucide-react';
+import { RefreshCw, Loader2, ArrowLeft, Share2, Heart, BookOpen } from 'lucide-react';
 import { useLanguage } from '@/components/language-provider';
 import Link from 'next/link';
 import { useToast } from '@/hooks/use-toast';
@@ -168,21 +168,24 @@ export default function VerseOfTheDayPage() {
 
 
     return (
-        <div className="container mx-auto px-4 py-8 flex flex-col items-center justify-center flex-grow">
-            <div className="w-full max-w-2xl">
-                <Button asChild variant="ghost" className="mb-8">
-                    <Link href="/">
-                        <ArrowLeft className="mr-2 h-4 w-4" />
-                        {c.backToFeatures}
-                    </Link>
-                </Button>
-                <header className="text-center mb-6">
-                     <h1 className="text-4xl font-bold tracking-tight text-primary">{c.title}</h1>
-                     <p className="text-muted-foreground mt-2 text-lg max-w-2xl mx-auto">{c.intro}</p>
-                </header>
-                <Card className="w-full text-center shadow-xl">
+        <div className="flex-grow w-full flex flex-col bg-background">
+             <div className="flex-grow w-full bg-accent/30 rounded-b-[3rem] p-4 relative">
+                 <div className="container mx-auto">
+                    <Button asChild variant="ghost" className="absolute top-4 left-4">
+                        <Link href="/">
+                            <ArrowLeft className="mr-2 h-4 w-4" />
+                            {c.backToFeatures}
+                        </Link>
+                    </Button>
+                 </div>
+                 <div className="flex items-center justify-center h-full">
+                     <BookOpen className="h-24 w-24 text-primary/50" />
+                 </div>
+             </div>
+             <div className="container mx-auto px-4 -mt-24 sm:-mt-32 z-10">
+                <Card className="w-full max-w-2xl mx-auto text-center shadow-2xl">
                     <CardHeader>
-                        <CardTitle className="text-3xl font-bold">{c.title}</CardTitle>
+                        <CardTitle className="text-2xl font-bold">{c.title}</CardTitle>
                     </CardHeader>
                     <CardContent className="min-h-[250px] flex items-center justify-center">
                         {loading ? (
