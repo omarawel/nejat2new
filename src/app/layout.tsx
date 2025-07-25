@@ -6,6 +6,9 @@ import { AppHeader } from '@/components/layout/header';
 import { Toaster } from '@/components/ui/toaster';
 import { Suspense } from 'react';
 import { Footer } from '@/components/layout/footer';
+import { Inter } from 'next/font/google';
+
+const inter = Inter({ subsets: ['latin'], variable: '--font-body' });
 
 export const metadata: Metadata = {
   title: 'Nejat Digital',
@@ -35,11 +38,8 @@ export default function RootLayout({
     <html lang="de" suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
       </head>
-      <body className="font-body antialiased">
+      <body className={`${inter.variable} font-body antialiased`}>
         <ThemeProvider>
           <LanguageProvider>
             <div className="flex flex-col min-h-screen">
