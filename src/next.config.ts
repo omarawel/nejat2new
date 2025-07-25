@@ -37,6 +37,14 @@ const nextConfig: NextConfig = {
       }
     ],
   },
+  async rewrites() {
+    return [
+      {
+        source: '/v0/:path*',
+        destination: 'https://firebasestorage.googleapis.com/v0/:path*',
+      },
+    ]
+  },
   experimental: {
   },
   allowedDevOrigins: [
