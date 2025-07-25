@@ -168,8 +168,8 @@ export function AddAdForm({ ad, onFinished }: AddAdFormProps) {
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
        setIsSubmitting(true);
-       let finalImageUrl = values.type === 'image' ? (ad?.imageUrl || "") : undefined;
-       let finalVideoUrl = values.type === 'video' ? (ad?.videoUrl || values.videoUrl) : undefined;
+       let finalImageUrl: string | null = null;
+       let finalVideoUrl: string | null = null;
 
        try {
            if (values.type === 'image') {
@@ -180,6 +180,8 @@ export function AddAdForm({ ad, onFinished }: AddAdFormProps) {
                    finalImageUrl = await getDownloadURL(uploadResult.ref);
                } else if (values.imageSource === 'url' && values.imageUrl) {
                    finalImageUrl = values.imageUrl;
+               } else if (ad?.imageUrl) {
+                   finalImageUrl = ad.imageUrl;
                }
            } else { // video
                 if (values.videoUrl) {
