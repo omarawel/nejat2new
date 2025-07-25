@@ -1,8 +1,9 @@
+
 "use client"
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Grid, Star, UserPlus } from "lucide-react";
+import { Grid, Star, UserPlus, Users } from "lucide-react";
 import Link from "next/link";
 import { useLanguage } from "@/components/language-provider";
 import { useMemo } from "react";
@@ -13,7 +14,7 @@ const FeatureCard = ({ icon, name }: { icon: string, name: string }) => {
   return (
     <div className="flex flex-col justify-center items-center p-2 border border-border rounded-lg bg-card text-card-foreground hover:bg-accent/90 cursor-pointer transition-colors h-24">
       <span className="text-3xl">{icon}</span>
-      <span className="mt-2 text-[11px] text-center font-medium leading-snug">{name}</span>
+      <span className="mt-2 text-xs text-center font-medium leading-snug break-words">{name}</span>
     </div>
   );
 };
@@ -28,6 +29,9 @@ const content = {
     premiumTitle: "Mehr freischalten mit Premium",
     premiumDescription: "Erhalte Zugang zu exklusiven KI-Funktionen, einer werbefreien Erfahrung und unterstütze die fortlaufende Entwicklung der App.",
     premiumButton: "Jetzt upgraden",
+    communityTitle: "Tritt unserer Community bei",
+    communityDescription: "Tausche dich mit anderen aus, nimm an Events teil und wachse gemeinsam in deinem Glauben.",
+    communityButton: "Zur Community",
   },
   en: {
     title: "Your Digital Companion for your daily Islamic life",
@@ -38,6 +42,9 @@ const content = {
     premiumTitle: "Unlock More with Premium",
     premiumDescription: "Get access to exclusive AI features, an ad-free experience, and support the continued development of the app.",
     premiumButton: "Upgrade Now",
+    communityTitle: "Join Our Community",
+    communityDescription: "Connect with others, join events, and grow together in your faith.",
+    communityButton: "Go to Community",
   },
 }
 
@@ -83,8 +90,12 @@ export default function Home() {
           })}
         </div>
       </section>
+
+      <section className="mt-16 w-full max-w-md mx-auto">
+        <AdBanner slotId="homepage-bottom" />
+      </section>
       
-      <section className="mt-20 w-full max-w-2xl mx-auto">
+      <section className="mt-16 w-full max-w-md mx-auto">
         <Card className="bg-gradient-to-br from-primary/10 to-accent/20">
           <CardHeader className="items-center text-center p-8">
               <CardTitle className="text-4xl font-bold text-primary">
@@ -99,6 +110,27 @@ export default function Home() {
                 <Link href="/subscribe">
                     <Star className="mr-2 h-5 w-5" />
                     {c.premiumButton}
+                </Link>
+              </Button>
+          </CardContent>
+        </Card>
+      </section>
+
+      <section className="mt-16 w-full max-w-md mx-auto">
+        <Card className="bg-gradient-to-br from-secondary/10 to-accent/20">
+          <CardHeader className="items-center text-center p-8">
+              <CardTitle className="text-4xl font-bold">
+                {c.communityTitle}
+              </CardTitle>
+              <CardDescription className="text-lg text-muted-foreground max-w-md">
+                {c.communityDescription}
+              </CardDescription>
+          </CardHeader>
+          <CardContent className="flex justify-center pb-8">
+              <Button size="lg" asChild variant="secondary">
+                <Link href="/community">
+                    <Users className="mr-2 h-5 w-5" />
+                    {c.communityButton}
                 </Link>
               </Button>
           </CardContent>
