@@ -1,3 +1,4 @@
+
 {
   "hosting": {
     "source": ".",
@@ -9,5 +10,12 @@
     "frameworksBackend": {
       "region": "europe-west1"
     }
+  },
+  "firestore": {
+    "rules": "firestore.rules",
+    "indexes": "firestore.indexes.json"
+  },
+  "functions": {
+    "source": "functions"
   }
 }

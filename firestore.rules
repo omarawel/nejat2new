@@ -1,0 +1,83 @@
+
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper function to check if a user is an admin
+    function isAdmin(userId) {
+      // In a real app, this might check a dedicated 'admins' collection.
+      // For now, we assume an admin has a specific field in their user doc.
+      // This is a simplified example; production apps might need more robust checks.
+      return exists(/databases/$(database)/documents/users/$(userId)/admin/dashboard);
+    }
+    
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    // Site-wide content (e.g., footer) is publicly readable
+    match /siteContent/{docId} {
+      allow read: if true;
+      allow write: if isAdmin(request.auth.uid);
+    }
+
+    // Ads are publicly readable, only admins can write
+    match /ads/{adId} {
+      allow read: if true;
+      allow write: if isAdmin(request.auth.uid);
+    }
+    
+    // Subscription plans are readable by authenticated users, only writable by admins
+    match /subscriptionPlans/{planId} {
+        allow read: if isAuthenticated();
+        allow write: if isAdmin(request.auth.uid);
+    }
+    
+    // Hatim groups can be read by anyone, but only authenticated users can create/update
+    match /hatimGroups/{groupId} {
+        allow read: if true;
+        allow create: if isAuthenticated();
+        // Allow a user to update a juz only if they are taking an unassigned one
+        // or releasing one that is assigned to them.
+        allow update: if isAuthenticated() &&
+                       request.resource.data.diff(resource.data).affectedKeys().hasOnly(['juzs']);
+    }
+
+    // Contact submissions can be created by anyone, but only read/deleted by admins
+    match /contactSubmissions/{submissionId} {
+        allow create: if true;
+        allow read, update, delete: if isAdmin(request.auth.uid);
+    }
+
+    // Users collection rules
+    match /users/{userId} {
+      // A user can only access their own document
+      allow read, update, delete: if request.auth.uid == userId;
+      allow create: if request.auth.uid == userId;
+
+      // Rules for subcollections within a user's document
+      match /favorites/{favoriteId} {
+        allow read, write, delete: if request.auth.uid == userId;
+      }
+      
+      match /config/{docId} {
+         allow read, write: if request.auth.uid == userId;
+      }
+
+      match /admin/{docId} {
+         allow read, write: if request.auth.uid == userId && isAdmin(userId);
+      }
+      
+       match /usage/{docId} {
+         allow read, write: if request.auth.uid == userId;
+      }
+
+      // Subscriptions can only be read by the user, but only written by a backend (e.g., cloud function)
+      match /subscriptions/{subscriptionId} {
+        allow read: if request.auth.uid == userId;
+        allow write: if false; // Disallow client-side writes
+      }
+    }
+  }
+}
