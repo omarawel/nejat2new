@@ -14,7 +14,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { getAds, deleteAd, type Ad } from '@/lib/ads';
 import Image from 'next/image';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogTrigger } from '@/components/ui/dialog';
 import { AddAdForm } from '@/components/admin/add-ad-form';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { useToast } from '@/hooks/use-toast';
@@ -31,6 +31,7 @@ const content = {
         loading: "Anzeigen werden geladen...",
         addNewAd: "Neue Anzeige hinzufügen",
         editAd: "Anzeige bearbeiten",
+        formDescription: "Fülle die Details aus, um eine neue Anzeige zu erstellen oder eine bestehende zu bearbeiten.",
         slotId: "Slot-IDs",
         image: "Bild",
         titleHeader: "Titel",
@@ -53,6 +54,7 @@ const content = {
         loading: "Loading ads...",
         addNewAd: "Add New Ad",
         editAd: "Edit Ad",
+        formDescription: "Fill in the details to create a new ad or edit an existing one.",
         slotId: "Slot IDs",
         image: "Image",
         titleHeader: "Title",
@@ -239,6 +241,7 @@ export default function AdManagementPage() {
              <DialogContent className="sm:max-w-lg">
                 <DialogHeader>
                     <DialogTitle>{selectedAd ? c.editAd : c.addNewAd}</DialogTitle>
+                    <DialogDescription>{c.formDescription}</DialogDescription>
                 </DialogHeader>
                 <AddAdForm ad={selectedAd} onFinished={() => setIsFormOpen(false)} />
             </DialogContent>

@@ -13,7 +13,7 @@ import { isAdmin } from '@/lib/admin';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { getSubscriptionPlans, deleteSubscriptionPlan, type SubscriptionPlan } from '@/lib/subscriptions';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogTrigger } from '@/components/ui/dialog';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { useToast } from '@/hooks/use-toast';
 import { Badge } from '@/components/ui/badge';
@@ -30,6 +30,7 @@ const content = {
         loading: "Pläne werden geladen...",
         addNewPlan: "Neuen Plan hinzufügen",
         editPlan: "Plan bearbeiten",
+        formDescription: "Fülle die Details aus, um einen neuen Plan zu erstellen oder einen bestehenden zu bearbeiten.",
         name: "Name",
         price: "Preis",
         aiLimit: "KI-Limit",
@@ -55,6 +56,7 @@ const content = {
         loading: "Loading plans...",
         addNewPlan: "Add New Plan",
         editPlan: "Edit Plan",
+        formDescription: "Fill in the details to create a new plan or edit an existing one.",
         name: "Name",
         price: "Price",
         aiLimit: "AI Limit",
@@ -231,6 +233,7 @@ export default function AdminSubscriptionsPage() {
              <DialogContent className="sm:max-w-lg">
                 <DialogHeader>
                     <DialogTitle>{selectedPlan ? c.editPlan : c.addNewPlan}</DialogTitle>
+                    <DialogDescription>{c.formDescription}</DialogDescription>
                 </DialogHeader>
                 <SubscriptionPlanForm 
                     plan={selectedPlan} 

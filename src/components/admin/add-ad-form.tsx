@@ -123,7 +123,6 @@ const formSchema = z.object({
 }).refine(data => {
     if (data.type === 'image') {
         if (data.imageSource === 'upload') {
-            // For update, imageUrl might already exist
             return !!data.imageFile || !!data.imageUrl;
         }
         if (data.imageSource === 'url') {
@@ -133,7 +132,7 @@ const formSchema = z.object({
     if (data.type === 'video') {
          return !!data.videoUrl && z.string().url().safeParse(data.videoUrl).success;
     }
-    return true; // Let the backend handle more complex validation if needed
+    return true;
 }, {
     message: "Please provide a valid file or URL based on the ad type.",
     path: ['imageFile']
@@ -143,6 +142,21 @@ interface AddAdFormProps {
     ad?: Ad | null;
     onFinished: () => void;
 }
+
+const transformDropboxUrl = (url?: string): string | undefined => {
+    if (!url) return undefined;
+    try {
+        const urlObject = new URL(url);
+        if (urlObject.hostname === 'www.dropbox.com') {
+            urlObject.hostname = 'dl.dropboxusercontent.com';
+            urlObject.searchParams.set('dl', '1');
+        }
+        return urlObject.toString();
+    } catch (e) {
+        console.error("Invalid URL for transformation:", url);
+        return url;
+    }
+};
 
 
 export function AddAdForm({ ad, onFinished }: AddAdFormProps) {
@@ -179,13 +193,13 @@ export function AddAdForm({ ad, onFinished }: AddAdFormProps) {
                    const uploadResult = await uploadBytes(storageRef, imageFile);
                    finalImageUrl = await getDownloadURL(uploadResult.ref);
                } else if (values.imageSource === 'url' && values.imageUrl) {
-                   finalImageUrl = values.imageUrl;
+                   finalImageUrl = transformDropboxUrl(values.imageUrl) || null;
                } else if (ad?.imageUrl) {
                    finalImageUrl = ad.imageUrl;
                }
            } else { // video
                 if (values.videoUrl) {
-                    finalVideoUrl = values.videoUrl;
+                    finalVideoUrl = transformDropboxUrl(values.videoUrl) || null;
                 }
            }
            
@@ -458,4 +472,3 @@ export function AddAdForm({ ad, onFinished }: AddAdFormProps) {
         </Form>
     );
 }
-
