@@ -40,11 +40,25 @@ const getPlans = async () => {
 
 // Get a user's current subscription status from the `subscriptions` subcollection
 export const getUserSubscription = async (userId: string): Promise<UserSubscription | null> => {
-    const subDocRef = doc(db, 'users', userId, 'subscriptions', 'current');
-    const docSnap = await getDoc(subDocRef);
-    if (docSnap.exists()) {
-        return docSnap.data() as UserSubscription;
+    if (!userId) return null;
+    // Note: In a real app, you would likely have a more secure way to check this,
+    // possibly involving a backend or cloud function to verify against Stripe's records.
+    // For this example, we'll read directly from a subcollection that would be populated
+    // by a webhook (like the one in `functions/src/stripeWebhook.ts`).
+    
+    // As the webhook isn't fully implemented, this will likely return null.
+    // We will need to simulate or manually add data to Firestore for this to work.
+    const subDocRef = doc(db, 'users', userId, 'subscriptions', 'current'); // This path assumes a specific structure.
+    
+    try {
+        const docSnap = await getDoc(subDocRef);
+        if (docSnap.exists()) {
+            return docSnap.data() as UserSubscription;
+        }
+    } catch (error) {
+        console.error("Error fetching user subscription:", error);
     }
+
     return null;
 }
 

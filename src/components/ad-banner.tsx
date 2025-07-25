@@ -8,6 +8,9 @@ import { Button } from '@/components/ui/button';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Skeleton } from './ui/skeleton';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { auth } from '@/lib/firebase';
+import { getUserSubscription } from '@/lib/user-usage';
 
 interface AdBannerProps {
   slotId: string;
@@ -30,22 +33,51 @@ const transformDropboxUrl = (url: string): string => {
 };
 
 export function AdBanner({ slotId, className }: AdBannerProps) {
+  const [user, loadingAuth] = useAuthState(auth);
   const [ad, setAd] = useState<Ad | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [loadingAd, setLoadingAd] = useState(true);
+  const [showAd, setShowAd] = useState(false);
 
   useEffect(() => {
-    const unsubscribe = getAdBySlot(slotId, (fetchedAd) => {
-      if (fetchedAd && fetchedAd.imageUrl) {
-        fetchedAd.imageUrl = transformDropboxUrl(fetchedAd.imageUrl);
-      }
-      setAd(fetchedAd);
-      setLoading(false);
-    });
+    const checkSubscriptionAndFetchAd = async () => {
+        if(loadingAuth) return;
 
-    return () => unsubscribe();
-  }, [slotId]);
+        let hasAdFreePlan = false;
+        if (user) {
+            const subscription = await getUserSubscription(user.uid);
+            if(subscription?.status === 'active' && (subscription.planId === 'pro' || subscription.planId === 'patron')) {
+                hasAdFreePlan = true;
+            }
+        }
 
-  if (loading) {
+        if (hasAdFreePlan) {
+            setShowAd(false);
+            setLoadingAd(false);
+            return;
+        }
+
+        // If user is not logged in, or has no ad-free plan, show the ad
+        setShowAd(true);
+        const unsubscribe = getAdBySlot(slotId, (fetchedAd) => {
+          if (fetchedAd && fetchedAd.imageUrl) {
+            fetchedAd.imageUrl = transformDropboxUrl(fetchedAd.imageUrl);
+          }
+          setAd(fetchedAd);
+          setLoadingAd(false);
+        });
+
+        return () => unsubscribe();
+    };
+    
+    checkSubscriptionAndFetchAd();
+
+  }, [slotId, user, loadingAuth]);
+
+  if (!showAd) {
+      return null;
+  }
+  
+  if (loadingAd) {
     return <Skeleton className="w-full h-28" />;
   }
 
