@@ -234,40 +234,40 @@ export function AddAdForm({ ad, onFinished }: AddAdFormProps) {
                             <div className="mb-4">
                                <FormLabel className="text-base">{c.slotIdsLabel}</FormLabel>
                             </div>
-                            <div className="grid grid-cols-2 gap-2">
-                            {adPlacements.map((item) => (
-                                <FormField
-                                key={item}
-                                control={form.control}
-                                name="slotIds"
-                                render={({ field }) => {
-                                    return (
-                                    <FormItem
-                                        key={item}
-                                        className="flex flex-row items-start space-x-3 space-y-0"
-                                    >
-                                        <FormControl>
-                                        <Checkbox
-                                            checked={field.value?.includes(item)}
-                                            onCheckedChange={(checked) => {
-                                            return checked
-                                                ? field.onChange([...field.value, item])
-                                                : field.onChange(
-                                                    field.value?.filter(
-                                                    (value) => value !== item
+                            <div className="max-h-60 overflow-y-auto pr-4 grid grid-cols-2 gap-2">
+                                {adPlacements.map((item) => (
+                                    <FormField
+                                    key={item}
+                                    control={form.control}
+                                    name="slotIds"
+                                    render={({ field }) => {
+                                        return (
+                                        <FormItem
+                                            key={item}
+                                            className="flex flex-row items-start space-x-3 space-y-0"
+                                        >
+                                            <FormControl>
+                                            <Checkbox
+                                                checked={field.value?.includes(item)}
+                                                onCheckedChange={(checked) => {
+                                                return checked
+                                                    ? field.onChange([...field.value, item])
+                                                    : field.onChange(
+                                                        field.value?.filter(
+                                                        (value) => value !== item
+                                                        )
                                                     )
-                                                )
-                                            }}
-                                        />
-                                        </FormControl>
-                                        <FormLabel className="text-sm font-normal">
-                                        {item}
-                                        </FormLabel>
-                                    </FormItem>
-                                    )
-                                }}
-                                />
-                            ))}
+                                                }}
+                                            />
+                                            </FormControl>
+                                            <FormLabel className="text-sm font-normal">
+                                            {item}
+                                            </FormLabel>
+                                        </FormItem>
+                                        )
+                                    }}
+                                    />
+                                ))}
                             </div>
                             <FormMessage />
                         </FormItem>
