@@ -1,11 +1,12 @@
 
 "use client"
 
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { User, Calendar, BookOpen, ArrowLeft } from 'lucide-react';
+import { User, Calendar, BookOpen, ArrowLeft, Share2 } from 'lucide-react';
 import { useLanguage } from '@/components/language-provider';
 import Link from 'next/link';
+import { useToast } from '@/hooks/use-toast';
 
 const content = {
     de: {
@@ -24,7 +25,9 @@ const content = {
                 "Die immense Belohnung für die Geduldigen im Dies- und Jenseits.",
                 "Wie man durch Gebet, Dhikr und Vertrauen auf Allah (Tawakkul) Geduld entwickelt."
             ]
-        }
+        },
+        shareError: "Teilen wird von deinem Browser nicht unterstützt.",
+        khutbahCopied: "Khutbah-Link in die Zwischenablage kopiert.",
     },
     en: {
         pageTitle: "Khutbah of the Week",
@@ -42,7 +45,9 @@ const content = {
                 "The immense reward for the patient in this life and the hereafter.",
                 "How to develop patience through prayer, Dhikr, and trust in Allah (Tawakkul)."
             ]
-        }
+        },
+        shareError: "Sharing is not supported by your browser.",
+        khutbahCopied: "Khutbah link copied to clipboard.",
     }
 }
 
@@ -50,6 +55,28 @@ const content = {
 export default function KhutbahOfTheWeekPage() {
   const { language } = useLanguage();
   const c = content[language] || content.de;
+  const { toast } = useToast();
+
+   const handleShare = async () => {
+        const khutbahData = c.khutbah;
+        const shareText = `"${khutbahData.title}" - ${khutbahData.speaker}\n\n${window.location.href}`;
+        if (navigator.share) {
+            try {
+                await navigator.share({
+                    title: c.pageTitle,
+                    text: shareText,
+                    url: window.location.href,
+                });
+            } catch (error) {
+                console.error('Error sharing:', error);
+            }
+        } else {
+            navigator.clipboard.writeText(shareText);
+            toast({
+                description: c.khutbahCopied,
+            });
+        }
+    };
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -96,6 +123,12 @@ export default function KhutbahOfTheWeekPage() {
                     </ul>
                 </div>
             </CardContent>
+            <CardFooter>
+                <Button variant="outline" onClick={handleShare}>
+                    <Share2 className="mr-2 h-4 w-4" />
+                    Teilen
+                </Button>
+            </CardFooter>
         </Card>
     </div>
   );

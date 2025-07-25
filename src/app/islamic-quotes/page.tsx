@@ -4,9 +4,13 @@
 import { useEffect, useState, useCallback } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { RefreshCw, MessageSquareQuote, ArrowLeft } from 'lucide-react';
+import { RefreshCw, MessageSquareQuote, ArrowLeft, Loader2, Share2, Heart } from 'lucide-react';
 import { useLanguage } from '@/components/language-provider';
 import Link from 'next/link';
+import { useToast } from '@/hooks/use-toast';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { auth } from '@/lib/firebase';
+import { addFavorite } from '@/lib/favorites';
 
 interface Quote {
   text_de: string;
@@ -31,23 +35,36 @@ const content = {
         description: "Eine tägliche Dosis Weisheit von großen Gelehrten und Denkern des Islam, um die Seele zu nähren und den Geist zu inspirieren.",
         backToFeatures: "Zurück zu den Funktionen",
         newQuote: "Neues Zitat",
-        intro: "Worte haben die Macht, zu heilen, zu motivieren und unsere Perspektive zu verändern. Diese Sammlung von Zitaten von den Gefährten des Propheten, großen Imamen und Gelehrten dient als tägliche Erinnerung an die tiefen Weisheiten und die spirituelle Tiefe des islamischen Erbes."
+        intro: "Worte haben die Macht, zu heilen, zu motivieren und unsere Perspektive zu verändern. Diese Sammlung von Zitaten von den Gefährten des Propheten, großen Imamen und Gelehrten dient als tägliche Erinnerung an die tiefen Weisheiten und die spirituelle Tiefe des islamischen Erbes.",
+        shareError: "Teilen wird von deinem Browser nicht unterstützt.",
+        quoteCopied: "Zitat in die Zwischenablage kopiert.",
+        favoriteSaved: "Als Favorit gespeichert!",
+        loginToSave: "Anmelden, um Favoriten zu speichern.",
+        errorSaving: "Fehler beim Speichern des Favoriten."
     },
     en: {
         title: "Inspirational Quotes",
         description: "A daily dose of wisdom from great scholars and thinkers of Islam to nourish the soul and inspire the mind.",
         backToFeatures: "Back to Features",
         newQuote: "New Quote",
-        intro: "Words have the power to heal, motivate, and change our perspective. This collection of quotes from the companions of the Prophet, great Imams, and scholars serves as a daily reminder of the profound wisdom and spiritual depth of the Islamic heritage."
+        intro: "Words have the power to heal, motivate, and change our perspective. This collection of quotes from the companions of the Prophet, great Imams, and scholars serves as a daily reminder of the profound wisdom and spiritual depth of the Islamic heritage.",
+        shareError: "Sharing is not supported by your browser.",
+        quoteCopied: "Quote copied to clipboard.",
+        favoriteSaved: "Saved to favorites!",
+        loginToSave: "Login to save favorites.",
+        errorSaving: "Error saving favorite."
     }
 }
 
 export default function IslamicQuotesPage() {
     const { language } = useLanguage();
     const c = content[language] || content.de;
+    const { toast } = useToast();
+    const [user] = useAuthState(auth);
 
     const [quote, setQuote] = useState<Quote | null>(null);
     const [loading, setLoading] = useState(true);
+    const [isSaving, setIsSaving] = useState(false);
 
     const getNewQuote = useCallback(() => {
         setLoading(true);
@@ -67,6 +84,51 @@ export default function IslamicQuotesPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    const handleShare = async () => {
+        if (!quote) return;
+        const shareText = `"${language === 'de' ? quote.text_de : quote.text_en}" - ${language === 'de' ? quote.author_de : quote.author_en}`;
+        if (navigator.share) {
+            try {
+                await navigator.share({
+                    title: c.title,
+                    text: shareText,
+                });
+            } catch (error) {
+                console.error('Error sharing:', error);
+            }
+        } else {
+            navigator.clipboard.writeText(shareText);
+            toast({
+                description: c.quoteCopied,
+            });
+        }
+    };
+    
+    const handleSaveFavorite = async () => {
+        if (!quote) return;
+        if (!user) {
+            toast({
+                variant: 'destructive',
+                title: c.loginToSave,
+                description: <Button variant="secondary" size="sm" asChild className="mt-2"><Link href="/login">Login</Link></Button>
+            });
+            return;
+        }
+
+        setIsSaving(true);
+        const textToSave = `"${language === 'de' ? quote.text_de : quote.text_en}" - ${language === 'de' ? quote.author_de : quote.author_en}`;
+        try {
+            await addFavorite(user.uid, textToSave);
+            toast({ title: c.favoriteSaved });
+        } catch (error) {
+            console.error("Error saving favorite: ", error);
+            toast({ variant: 'destructive', title: c.errorSaving });
+        } finally {
+            setIsSaving(false);
+        }
+    }
+
+
     return (
         <div className="container mx-auto px-4 py-8 flex flex-col items-center justify-center flex-grow">
             <div className="w-full max-w-2xl">
@@ -76,21 +138,18 @@ export default function IslamicQuotesPage() {
                         {c.backToFeatures}
                     </Link>
                 </Button>
-                 <header className="text-center mb-6">
-                    <h1 className="text-4xl font-bold tracking-tight text-primary">{c.title}</h1>
-                    <p className="text-muted-foreground mt-2 text-lg max-w-2xl mx-auto">{c.intro}</p>
+                <header className="text-center mb-6">
+                     <h1 className="text-4xl font-bold tracking-tight text-primary">{c.title}</h1>
+                     <p className="text-muted-foreground mt-2 text-lg max-w-2xl mx-auto">{c.intro}</p>
                 </header>
                 <Card className="w-full text-center shadow-xl">
                     <CardHeader>
-                        
                         <CardTitle className="text-3xl font-bold">{c.title}</CardTitle>
-                        <CardDescription className="text-lg">{c.description}</CardDescription>
                     </CardHeader>
                     <CardContent className="min-h-[150px] flex items-center justify-center">
                         {loading ? (
                              <div className="space-y-4 w-full">
-                                <div className="h-6 bg-muted rounded w-3/4 mx-auto animate-pulse"></div>
-                                <div className="h-4 bg-muted rounded w-1/3 mx-auto animate-pulse"></div>
+                                <Loader2 className="h-10 w-10 animate-spin text-primary mx-auto" />
                             </div>
                         ) : quote ? (
                             <blockquote className="space-y-4">
@@ -99,13 +158,19 @@ export default function IslamicQuotesPage() {
                             </blockquote>
                         ) : null}
                     </CardContent>
-                    <CardFooter className="flex justify-center p-6">
-                        <Button onClick={getNewQuote} disabled={loading}>
-                            <RefreshCw className={`mr-2 h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
-                            {c.newQuote}
-                        </Button>
-                    </CardFooter>
                 </Card>
+                <div className="w-full max-w-2xl mx-auto mt-4 grid grid-cols-3 gap-2">
+                    <Button variant="outline" className="col-span-1" onClick={getNewQuote} disabled={loading}>
+                        <RefreshCw className={`mr-2 h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
+                        {c.newQuote}
+                    </Button>
+                     <Button variant="outline" aria-label="Share" onClick={handleShare}>
+                        <Share2 className="h-5 w-5" />
+                    </Button>
+                    <Button variant="outline" aria-label="Favorite" onClick={handleSaveFavorite} disabled={isSaving}>
+                       {isSaving ? <Loader2 className="h-5 w-5 animate-spin"/> : <Heart className="h-5 w-5" />}
+                    </Button>
+                </div>
             </div>
         </div>
     );

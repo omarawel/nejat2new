@@ -4,10 +4,13 @@
 import { useEffect, useState, useCallback } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { RefreshCw, Loader2, ArrowLeft } from 'lucide-react';
+import { RefreshCw, Loader2, ArrowLeft, Share2, Heart } from 'lucide-react';
 import { useLanguage } from '@/components/language-provider';
 import Link from 'next/link';
-import { Metadata } from 'next';
+import { useToast } from '@/hooks/use-toast';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { auth } from '@/lib/firebase';
+import { addFavorite } from '@/lib/favorites';
 
 interface Verse {
   verse_en: string;
@@ -69,7 +72,12 @@ const content = {
         backToFeatures: "Zurück zu den Funktionen",
         newVerse: "Neuer Vers",
         surah: "Sure",
-        intro: "Der Koran ist eine Quelle der Rechtleitung, Barmherzigkeit und Weisheit. Ein einziger Vers kann das Herz berühren, den Verstand erleuchten und den Weg für den Tag weisen. Diese Funktion bietet dir täglich einen neuen, inspirierenden Vers, um deine Verbindung zum Buch Allahs zu vertiefen."
+        intro: "Der Koran ist eine Quelle der Rechtleitung, Barmherzigkeit und Weisheit. Ein einziger Vers kann das Herz berühren, den Verstand erleuchten und den Weg für den Tag weisen. Diese Funktion bietet dir täglich einen neuen, inspirierenden Vers, um deine Verbindung zum Buch Allahs zu vertiefen.",
+        shareError: "Teilen wird von deinem Browser nicht unterstützt.",
+        verseCopied: "Vers in die Zwischenablage kopiert.",
+        favoriteSaved: "Als Favorit gespeichert!",
+        loginToSave: "Anmelden, um Favoriten zu speichern.",
+        errorSaving: "Fehler beim Speichern des Favoriten."
     },
     en: {
         title: "Verse of the Day",
@@ -77,16 +85,24 @@ const content = {
         backToFeatures: "Back to Features",
         newVerse: "New Verse",
         surah: "Surah",
-        intro: "The Quran is a source of guidance, mercy, and wisdom. a single verse can touch the heart, enlighten the mind, and guide one's way for the day. This feature offers you a new, inspiring verse daily to deepen your connection with the Book of Allah."
+        intro: "The Quran is a source of guidance, mercy, and wisdom. a single verse can touch the heart, enlighten the mind, and guide one's way for the day. This feature offers you a new, inspiring verse daily to deepen your connection with the Book of Allah.",
+        shareError: "Sharing is not supported by your browser.",
+        verseCopied: "Verse copied to clipboard.",
+        favoriteSaved: "Saved to favorites!",
+        loginToSave: "Login to save favorites.",
+        errorSaving: "Error saving favorite."
     }
 }
 
 export default function VerseOfTheDayPage() {
     const { language } = useLanguage();
     const c = content[language] || content.de;
+    const { toast } = useToast();
+    const [user] = useAuthState(auth);
 
     const [verse, setVerse] = useState<Verse | null>(null);
     const [loading, setLoading] = useState(true);
+    const [isSaving, setIsSaving] = useState(false);
 
     const getNewVerse = useCallback(() => {
         setLoading(true);
@@ -99,13 +115,57 @@ export default function VerseOfTheDayPage() {
             }
             setVerse(newVerse);
             setLoading(false);
-        }, 500);
+        }, 300);
     }, [verse]);
 
     useEffect(() => {
         getNewVerse();
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    const handleShare = async () => {
+        if (!verse) return;
+        const shareText = `"${language === 'de' ? verse.verse_de : verse.verse_en}" - ${c.surah} ${language === 'de' ? verse.surah_de : verse.surah_en}, ${verse.reference}`;
+        if (navigator.share) {
+            try {
+                await navigator.share({
+                    title: c.title,
+                    text: shareText,
+                });
+            } catch (error) {
+                console.error('Error sharing:', error);
+            }
+        } else {
+            navigator.clipboard.writeText(shareText);
+            toast({
+                description: c.verseCopied,
+            });
+        }
+    };
+    
+    const handleSaveFavorite = async () => {
+        if (!verse) return;
+        if (!user) {
+            toast({
+                variant: 'destructive',
+                title: c.loginToSave,
+                description: <Button variant="secondary" size="sm" asChild className="mt-2"><Link href="/login">Login</Link></Button>
+            });
+            return;
+        }
+        setIsSaving(true);
+        const textToSave = `Quran, ${c.surah} ${language === 'de' ? verse.surah_de : verse.surah_en}, ${verse.reference}\n\n"${language === 'de' ? verse.verse_de : verse.verse_en}"`;
+        try {
+            await addFavorite(user.uid, textToSave);
+            toast({ title: c.favoriteSaved });
+        } catch (error) {
+            console.error("Error saving favorite: ", error);
+            toast({ variant: 'destructive', title: c.errorSaving });
+        } finally {
+            setIsSaving(false);
+        }
+    }
+
 
     return (
         <div className="container mx-auto px-4 py-8 flex flex-col items-center justify-center flex-grow">
@@ -123,7 +183,6 @@ export default function VerseOfTheDayPage() {
                 <Card className="w-full text-center shadow-xl">
                     <CardHeader>
                         <CardTitle className="text-3xl font-bold">{c.title}</CardTitle>
-                        <CardDescription className="text-lg">{c.description}</CardDescription>
                     </CardHeader>
                     <CardContent className="min-h-[250px] flex items-center justify-center">
                         {loading ? (
@@ -136,13 +195,19 @@ export default function VerseOfTheDayPage() {
                             </div>
                         ) : null}
                     </CardContent>
-                    <CardFooter className="flex justify-center p-6">
-                        <Button onClick={getNewVerse} disabled={loading}>
-                            <RefreshCw className={`mr-2 h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
-                            {c.newVerse}
-                        </Button>
-                    </CardFooter>
                 </Card>
+                 <div className="w-full max-w-2xl mx-auto mt-4 grid grid-cols-3 gap-2">
+                    <Button variant="outline" className="col-span-1" onClick={getNewVerse} disabled={loading}>
+                        <RefreshCw className={`mr-2 h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
+                        {c.newVerse}
+                    </Button>
+                    <Button variant="outline" aria-label="Share" onClick={handleShare}>
+                        <Share2 className="h-5 w-5" />
+                    </Button>
+                    <Button variant="outline" aria-label="Favorite" onClick={handleSaveFavorite} disabled={isSaving}>
+                       {isSaving ? <Loader2 className="h-5 w-5 animate-spin"/> : <Heart className="h-5 w-5" />}
+                    </Button>
+                </div>
             </div>
         </div>
     );
