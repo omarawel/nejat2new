@@ -2,8 +2,8 @@
 "use client"
 
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Grid, Star, UserPlus, Users } from "lucide-react";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
+import { Grid, Star, UserPlus, Users, MessageSquareQuote } from "lucide-react";
 import Link from "next/link";
 import { useLanguage } from "@/components/language-provider";
 import { useMemo } from "react";
@@ -26,6 +26,10 @@ const content = {
     button: "Registrieren",
     sectionTitle: "Entdecke mehr",
     sectionDescription: "Nützliche Werkzeuge für deinen Alltag.",
+    hadithTitle: "Hadith des Tages",
+    hadithQuote: "Der Starke ist nicht der, der im Ringen siegt, sondern der, der sich im Zorn beherrschen kann.",
+    hadithAuthor: "Prophet Muhammad (ﷺ)",
+    hadithButton: "Mehr entdecken",
     premiumTitle: "Mehr freischalten mit Premium",
     premiumDescription: "Erhalte Zugang zu exklusiven KI-Funktionen, einer werbefreien Erfahrung und unterstütze die fortlaufende Entwicklung der App.",
     premiumButton: "Jetzt upgraden",
@@ -39,6 +43,10 @@ const content = {
     button: "Sign Up",
     sectionTitle: "Discover More",
     sectionDescription: "Useful tools for your daily life.",
+    hadithTitle: "Hadith of the Day",
+    hadithQuote: "The strong man is not the one who wrestles, but the strong man is in fact the one who controls himself in a fit of rage.",
+    hadithAuthor: "Prophet Muhammad (ﷺ)",
+    hadithButton: "Discover More",
     premiumTitle: "Unlock More with Premium",
     premiumDescription: "Get access to exclusive AI features, an ad-free experience, and support the continued development of the app.",
     premiumButton: "Upgrade Now",
@@ -96,7 +104,24 @@ export default function Home() {
       </section>
 
       <section className="mt-16 w-full max-w-4xl mx-auto">
-        <AdBanner slotId="homepage-sidebar" />
+        <Card className="text-center">
+            <CardHeader>
+                <CardTitle className="text-3xl font-bold">{c.hadithTitle}</CardTitle>
+            </CardHeader>
+            <CardContent>
+                <blockquote className="space-y-2">
+                    <p className="text-lg italic text-muted-foreground">"{c.hadithQuote}"</p>
+                    <footer className="text-sm font-medium">{c.hadithAuthor}</footer>
+                </blockquote>
+            </CardContent>
+            <CardFooter className="flex justify-center">
+                 <Button asChild variant="outline">
+                    <Link href="/hadith-of-the-day">
+                        {c.hadithButton}
+                    </Link>
+                </Button>
+            </CardFooter>
+        </Card>
       </section>
       
       <section className="mt-16 w-full max-w-4xl mx-auto">
