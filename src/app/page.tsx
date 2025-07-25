@@ -76,8 +76,12 @@ export default function Home() {
           </Button>
         </div>
       </section>
+
+      <section className="mt-8 w-full max-w-4xl mx-auto">
+        <AdBanner slotId="homepage-top-banner" />
+      </section>
       
-      <section id="features" className="w-full max-w-6xl mx-auto">
+      <section id="features" className="w-full max-w-6xl mx-auto mt-16">
         <h2 className="text-2xl sm:text-3xl font-bold">{c.sectionTitle}</h2>
         <p className="mt-2 text-md sm:text-lg text-muted-foreground">{c.sectionDescription}</p>
         <div className="mt-8 grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-7 xl:grid-cols-8 gap-4">
@@ -92,6 +96,10 @@ export default function Home() {
       </section>
 
       <section className="mt-16 w-full max-w-4xl mx-auto">
+        <AdBanner slotId="homepage-sidebar" />
+      </section>
+
+      <section className="mt-8 w-full max-w-4xl mx-auto">
         <AdBanner slotId="homepage-bottom" />
       </section>
       
