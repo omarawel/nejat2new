@@ -57,7 +57,7 @@ export function AdBanner({ slotId, className }: AdBannerProps) {
     <div className={className}>
         <Card className="bg-muted/50">
             <CardContent className="p-4 flex flex-col sm:flex-row items-center gap-4">
-                <div className="relative w-full sm:w-32 h-32 sm:h-20 flex-shrink-0">
+                <div className="relative w-full sm:w-32 h-20 flex-shrink-0">
                     <Image 
                         src={ad.imageUrl}
                         alt={ad.title}
