@@ -27,7 +27,7 @@ export const allTools = [
     { key: "hadith_of_day", icon: "📜", de: "Hadith des Tages", en: "Hadith of the Day", href: "/hadith-of-the-day" },
     { key: "hajj_umrah", icon: "🕋", de: "Haddsch & Umrah", en: "Hajj & Umrah", href: "/hajj-umrah" },
     { key: "halal_haram_checker", icon: "حلال", de: "Halal/Haram Checker", en: "Halal/Haram Checker", href: "/halal-haram-checker" },
-    { key: "hatim", icon: "📖", de: "Hatim", en: "Hatim", href: "/hatim" },
+    { key: "hatim", icon: "3️⃣0️⃣✅️", de: "Hatim", en: "Hatim", href: "/hatim" },
     { key: "quran", icon: "📖", de: "Heiliger Koran", en: "Holy Quran", href: "/quran" },
     { key: "hereafter", icon: "🌅", de: "Das Jenseits", en: "The Hereafter", href: "/hereafter" },
     { key: "hisnul_muslim", icon: "ﷻ", de: "Hisnul Muslim", en: "Hisnul Muslim", href: "/hisnul-muslim" },
