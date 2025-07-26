@@ -7,7 +7,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Card, CardHeader, CardContent } from '@/components/ui/card';
 import { useLanguage } from '@/components/language-provider';
 import { ArrowLeft, Star, Moon, Sun, Users } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -28,6 +28,7 @@ const content = {
                 ],
                 dua: {
                     title: 'Eröffnungs-Dua (Dua al-Istiftah)',
+                    context: "Wird nach dem eröffnenden Takbir (Allahu Akbar) und vor der Rezitation von Al-Fatiha gesprochen.",
                     arabic: 'سُبْحَانَكَ اللَّهُمَّ وَبِحَمْدِكَ، وَتَبَارَكَ اسْمُكَ، وَتَعَالَى جَدُّكَ، وَلَا إِلَهَ غَيْرُكَ',
                     translation: 'Gepriesen seist Du, o Allah, und mit Deinem Lob. Gesegnet sei Dein Name und erhaben Deine Majestät. Und es gibt keine Gottheit außer Dir.'
                 }
@@ -41,6 +42,7 @@ const content = {
                 ],
                 dua: {
                     title: 'Dua al-Qunut (im Witr-Gebet)',
+                    context: "Wird in der letzten Rak'ah des Witr-Gebets vor oder nach dem Ruku rezitiert.",
                     arabic: 'اللَّهُمَّ اهْدِنِي فِيمَنْ هَدَيْتَ، وَعَافِنِي فِيمَنْ عَافَيْتَ، وَتَوَلَّنِي فِيمَنْ تَوَلَّيْتَ، وَبَارِكْ لِي فِيمَا أَعْطَيْتَ، وَقِنِي شَرَّ مَا قَضَيْتَ، فَإِنَّكَ تَقْضِي وَلاَ يُقْضَى عَلَيْكَ، وَإِنَّهُ لاَ يَذِلُّ مَنْ وَالَيْتَ، تَبَارَكْتَ رَبَّنَا وَتَعَالَيْتَ',
                     translation: 'O Allah, leite mich recht mit denen, die Du rechtgeleitet hast, und gewähre mir Wohlbefinden mit denen, denen Du Wohlbefinden gewährt hast. Nimm mich in Deine Obhut mit denen, die Du in Deine Obhut genommen hast. Segne, was Du mir gegeben hast. Schütze mich vor dem Übel dessen, was Du bestimmt hast. Wahrlich, Du allein bestimmst und über Dich wird nicht bestimmt. Wahrlich, erniedrigt wird nicht, wen Du zum Freund nimmst. Gesegnet seist Du, unser Herr, und erhaben.'
                 }
@@ -55,6 +57,7 @@ const content = {
                 ],
                  dua: {
                     title: 'Dua für Tahajjud (Auszug)',
+                    context: "Kann während des Sujud (Niederwerfung) im Tahajjud-Gebet oder nach dem Gebet gesprochen werden.",
                     arabic: 'اللَّهُمَّ لَكَ الْحَمْدُ أَنْتَ نُورُ السَّمَوَاتِ وَالْأَرْضِ وَمَنْ فِيهِنَّ...',
                     translation: 'O Allah, Dir gebührt alles Lob, Du bist das Licht der Himmel und der Erde und aller, die darin sind...'
                 }
@@ -67,8 +70,9 @@ const content = {
                     "Salat al-Istikhara: Das Gebet um Führung bei einer wichtigen Entscheidung.",
                     "Salat al-Tasbih: Ein besonderes Gebet, das eine hohe Anzahl an Lobpreisungen beinhaltet und eine große Belohnung verspricht."
                 ],
-                 dua: {
+                dua: {
                     title: 'Dua al-Istikhara (Auszug)',
+                    context: "Wird nach zwei freiwilligen Rak'at gesprochen, die speziell mit der Absicht der Istikhara gebetet werden.",
                     arabic: 'اللَّهُمَّ إِنِّي أَsْتَخِيرُكَ بِعِلْمِكَ، وَأَسْتَقْدِرُكَ بِقُدْرَتِكَ، وَأَسْأَلُكَ مِنْ فَضْلِكَ الْعَظِيمِ...',
                     translation: 'O Allah, ich bitte Dich um Führung durch Dein Wissen und um Kraft durch Deine Macht und ich bitte Dich um Deine unermessliche Gunst...'
                 }
@@ -83,6 +87,7 @@ const content = {
                 ],
                  dua: {
                     title: 'Dua für den Verstorbenen (im Janazah-Gebet)',
+                    context: "Wird nach dem dritten Takbir im Janazah-Gebet gesprochen.",
                     arabic: 'اللَّهُمَّ اغْفِرْ لَهُ وَارْحَمْهُ وَعَافِهِ وَاعْفُ عَنْهُ...',
                     translation: 'O Allah, vergib ihm, erbarme dich seiner, gewähre ihm Wohlbefinden und verzeihe ihm...'
                 }
@@ -103,6 +108,7 @@ const content = {
                 ],
                  dua: {
                     title: 'Opening Dua (Dua al-Istiftah)',
+                    context: "Recited after the opening Takbir (Allahu Akbar) and before the recitation of Al-Fatiha.",
                     arabic: 'سُبْحَانَكَ اللَّهُمَّ وَبِحَمْدِكَ، وَتَبَارَكَ اسْمُكَ، وَتَعَالَى جَدُّكَ، وَلَا إِلَهَ غَيْرُكَ',
                     translation: 'Glory is to You, O Allah, and with Your praise. Blessed is Your name and exalted is Your majesty. And there is no deity other than You.'
                 }
@@ -116,6 +122,7 @@ const content = {
                 ],
                  dua: {
                     title: 'Dua al-Qunut (in Witr Prayer)',
+                    context: "Recited in the last Rak'ah of the Witr prayer, before or after the Ruku.",
                     arabic: 'اللَّهُمَّ اهْدِنِي فِيمَنْ هَدَيْتَ، وَعَافِنِي فِيمَنْ عَافَيْتَ، وَتَوَلَّنِي فِيمَنْ تَوَلَّيْتَ، وَبَارِكْ لِي فِيمَا أَعْطَيْتَ، وَقِنِي شَرَّ مَا قَضَيْتَ، فَإِنَّكَ تَقْضِي وَلاَ يُقْضَى عَلَيْكَ، وَإِنَّهُ لاَ يَذِلُّ مَنْ وَالَيْتَ، تَبَارَكْتَ رَبَّنَا وَتَعَالَيْتَ',
                     translation: 'O Allah, guide me with those whom You have guided, and grant me well-being with those whom You have granted well-being. Take me into Your charge with those whom You have taken into Your charge. Bless me in what You have given. Protect me from the evil of what You have decreed. Verily, You decree and none can decree over You. Verily, he whom You show allegiance to is not abased. Blessed are You, our Lord, and Exalted.'
                 }
@@ -130,6 +137,7 @@ const content = {
                 ],
                  dua: {
                     title: 'Dua for Tahajjud (Excerpt)',
+                    context: "Can be recited during Sujud (prostration) in the Tahajjud prayer or after the prayer.",
                     arabic: 'اللَّهُمَّ لَكَ الْحَمْدُ أَنْتَ نُورُ السَّمَوَاتِ وَالْأَرْضِ وَمَنْ فِيهِنَّ...',
                     translation: 'O Allah, to You be all praise, You are the Light of the heavens and the earth and all that is in them...'
                 }
@@ -144,6 +152,7 @@ const content = {
                 ],
                 dua: {
                     title: 'Dua al-Istikhara (Excerpt)',
+                    context: "Recited after praying two voluntary Rak'at specifically with the intention of Istikhara.",
                     arabic: 'اللَّهُمَّ إِنِّي أَsْتَخِيرُكَ بِعِلْمِكَ، وَأَسْتَقْدِرُكَ بِقُدْرَتِكَ، وَأَسْأَلُكَ مِنْ فَضْلِكَ الْعَظِيمِ...',
                     translation: 'O Allah, I seek guidance from Your knowledge, and Power from Your Might, and I ask for Your great blessings...'
                 }
@@ -158,6 +167,7 @@ const content = {
                 ],
                  dua: {
                     title: 'Dua for the Deceased (in Janazah Prayer)',
+                    context: "Recited after the third Takbir in the Janazah prayer.",
                     arabic: 'اللَّهُمَّ اغْفِرْ لَهُ وَارْحَمْهُ وَعَافِهِ وَاعْفُ عَنْهُ...',
                     translation: 'O Allah, forgive him and have mercy on him, grant him well-being and pardon him...'
                 }
@@ -194,12 +204,13 @@ export default function TypesOfSalahPage() {
                                <p className="text-muted-foreground">{section.description}</p>
                                <ul className="list-disc list-inside space-y-2">
                                    {section.items.map((item, i) => (
-                                       <li key={i} dangerouslySetInnerHTML={{ __html: item }}></li>
+                                       <li key={i}>{item}</li>
                                    ))}
                                </ul>
                                {section.dua && (
                                    <div className="mt-4 pt-4 border-t border-border/50">
                                        <h4 className="font-semibold text-primary">{section.dua.title}</h4>
+                                       {section.dua.context && <p className="text-xs text-muted-foreground mb-2">({section.dua.context})</p>}
                                        <p className="font-quranic text-lg text-right mt-2">{section.dua.arabic}</p>
                                        <p className="text-sm italic text-muted-foreground mt-2">"{section.dua.translation}"</p>
                                    </div>
