@@ -7,6 +7,9 @@ import { User, Calendar, BookOpen, ArrowLeft, Share2 } from 'lucide-react';
 import { useLanguage } from '@/components/language-provider';
 import Link from 'next/link';
 import { useToast } from '@/hooks/use-toast';
+import { toBlob } from 'html-to-image';
+import { useRef } from 'react';
+
 
 const content = {
     de: {
@@ -27,7 +30,7 @@ const content = {
             ]
         },
         shareError: "Teilen wird von deinem Browser nicht unterstützt.",
-        khutbahCopied: "Khutbah-Link in die Zwischenablage kopiert.",
+        khutbahCopied: "Khutbah-Bild in die Zwischenablage kopiert.",
     },
     en: {
         pageTitle: "Khutbah of the Week",
@@ -47,7 +50,7 @@ const content = {
             ]
         },
         shareError: "Sharing is not supported by your browser.",
-        khutbahCopied: "Khutbah link copied to clipboard.",
+        khutbahCopied: "Khutbah image copied to clipboard.",
     }
 }
 
@@ -56,25 +59,30 @@ export default function KhutbahOfTheWeekPage() {
   const { language } = useLanguage();
   const c = content[language] || content.de;
   const { toast } = useToast();
+  const postcardRef = useRef<HTMLDivElement>(null);
+
 
    const handleShare = async () => {
-        const khutbahData = c.khutbah;
-        const shareText = `"${khutbahData.title}" - ${khutbahData.speaker}\n\n${window.location.href}`;
-        if (navigator.share) {
-            try {
+        if (!postcardRef.current) return;
+        try {
+            const blob = await toBlob(postcardRef.current, { pixelRatio: 2 });
+            if (!blob) return;
+
+            const file = new File([blob], 'khutbah.png', { type: 'image/png' });
+            if (navigator.canShare && navigator.canShare({ files: [file] })) {
                 await navigator.share({
+                    files: [file],
                     title: c.pageTitle,
-                    text: shareText,
-                    url: window.location.href,
                 });
-            } catch (error) {
-                console.error('Error sharing:', error);
+            } else {
+                 await navigator.clipboard.write([
+                    new ClipboardItem({ 'image/png': blob })
+                ]);
+                toast({ description: c.khutbahCopied });
             }
-        } else {
-            navigator.clipboard.writeText(shareText);
-            toast({
-                description: c.khutbahCopied,
-            });
+        } catch (error) {
+            console.error('Error sharing:', error);
+            toast({ variant: 'destructive', description: c.shareError });
         }
     };
 
@@ -93,7 +101,7 @@ export default function KhutbahOfTheWeekPage() {
             <p className="text-muted-foreground mt-2 text-lg">{c.pageDescription}</p>
         </header>
 
-        <Card className="max-w-3xl mx-auto shadow-lg">
+        <Card ref={postcardRef} className="max-w-3xl mx-auto shadow-lg bg-card">
             <CardHeader>
                 <div className="aspect-video w-full bg-muted rounded-lg flex items-center justify-center mb-4">
                      <p className="text-muted-foreground">Video Placeholder</p>

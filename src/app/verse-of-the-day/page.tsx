@@ -1,7 +1,7 @@
 
 "use client"
 
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, useRef } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { RefreshCw, Loader2, ArrowLeft, Share2, Heart, BookOpen } from 'lucide-react';
@@ -11,6 +11,7 @@ import { useToast } from '@/hooks/use-toast';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '@/lib/firebase';
 import { addFavorite } from '@/lib/favorites';
+import { toBlob } from 'html-to-image';
 
 interface Verse {
   verse_en: string;
@@ -74,7 +75,7 @@ const content = {
         surah: "Sure",
         intro: "Der Koran ist eine Quelle der Rechtleitung, Barmherzigkeit und Weisheit. Ein einziger Vers kann das Herz berühren, den Verstand erleuchten und den Weg für den Tag weisen. Diese Funktion bietet dir täglich einen neuen, inspirierenden Vers, um deine Verbindung zum Buch Allahs zu vertiefen.",
         shareError: "Teilen wird von deinem Browser nicht unterstützt.",
-        verseCopied: "Vers in die Zwischenablage kopiert.",
+        verseCopied: "Vers-Bild in die Zwischenablage kopiert.",
         favoriteSaved: "Als Favorit gespeichert!",
         loginToSave: "Anmelden, um Favoriten zu speichern.",
         errorSaving: "Fehler beim Speichern des Favoriten."
@@ -87,7 +88,7 @@ const content = {
         surah: "Surah",
         intro: "The Quran is a source of guidance, mercy, and wisdom. a single verse can touch the heart, enlighten the mind, and guide one's way for the day. This feature offers you a new, inspiring verse daily to deepen your connection with the Book of Allah.",
         shareError: "Sharing is not supported by your browser.",
-        verseCopied: "Verse copied to clipboard.",
+        verseCopied: "Verse image copied to clipboard.",
         favoriteSaved: "Saved to favorites!",
         loginToSave: "Login to save favorites.",
         errorSaving: "Error saving favorite."
@@ -103,6 +104,7 @@ export default function VerseOfTheDayPage() {
     const [verse, setVerse] = useState<Verse | null>(null);
     const [loading, setLoading] = useState(true);
     const [isSaving, setIsSaving] = useState(false);
+    const postcardRef = useRef<HTMLDivElement>(null);
 
     const getNewVerse = useCallback(() => {
         setLoading(true);
@@ -124,22 +126,26 @@ export default function VerseOfTheDayPage() {
     }, []);
 
     const handleShare = async () => {
-        if (!verse) return;
-        const shareText = `"${language === 'de' ? verse.verse_de : verse.verse_en}" - ${c.surah} ${language === 'de' ? verse.surah_de : verse.surah_en}, ${verse.reference}`;
-        if (navigator.share) {
-            try {
+        if (!postcardRef.current || !verse) return;
+        try {
+            const blob = await toBlob(postcardRef.current, { pixelRatio: 2 });
+            if (!blob) return;
+
+            const file = new File([blob], `verse-${verse.reference}.png`, { type: 'image/png' });
+            if (navigator.canShare && navigator.canShare({ files: [file] })) {
                 await navigator.share({
+                    files: [file],
                     title: c.title,
-                    text: shareText,
                 });
-            } catch (error) {
-                console.error('Error sharing:', error);
+            } else {
+                 await navigator.clipboard.write([
+                    new ClipboardItem({ 'image/png': blob })
+                ]);
+                toast({ description: c.verseCopied });
             }
-        } else {
-            navigator.clipboard.writeText(shareText);
-            toast({
-                description: c.verseCopied,
-            });
+        } catch (error) {
+            console.error('Error sharing:', error);
+            toast({ variant: 'destructive', description: c.shareError });
         }
     };
     
@@ -183,7 +189,7 @@ export default function VerseOfTheDayPage() {
                  </div>
              </div>
              <div className="container mx-auto px-4 -mt-24 sm:-mt-32 z-10">
-                <Card className="w-full max-w-2xl mx-auto text-center shadow-2xl">
+                <Card ref={postcardRef} className="w-full max-w-2xl mx-auto text-center shadow-2xl bg-card">
                     <CardHeader>
                         <CardTitle className="text-2xl font-bold">{c.title}</CardTitle>
                     </CardHeader>

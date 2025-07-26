@@ -1,7 +1,7 @@
 
 "use client"
 
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, useRef } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { RefreshCw, MessageSquareQuote, ArrowLeft, Loader2, Share2, Heart } from 'lucide-react';
@@ -11,6 +11,7 @@ import { useToast } from '@/hooks/use-toast';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '@/lib/firebase';
 import { addFavorite } from '@/lib/favorites';
+import { toBlob } from 'html-to-image';
 
 interface Quote {
   text_de: string;
@@ -37,7 +38,7 @@ const content = {
         newQuote: "Neues Zitat",
         intro: "Worte haben die Macht, zu heilen, zu motivieren und unsere Perspektive zu verändern. Diese Sammlung von Zitaten von den Gefährten des Propheten, großen Imamen und Gelehrten dient als tägliche Erinnerung an die tiefen Weisheiten und die spirituelle Tiefe des islamischen Erbes.",
         shareError: "Teilen wird von deinem Browser nicht unterstützt.",
-        quoteCopied: "Zitat in die Zwischenablage kopiert.",
+        quoteCopied: "Zitat-Bild in die Zwischenablage kopiert.",
         favoriteSaved: "Als Favorit gespeichert!",
         loginToSave: "Anmelden, um Favoriten zu speichern.",
         errorSaving: "Fehler beim Speichern des Favoriten."
@@ -49,7 +50,7 @@ const content = {
         newQuote: "New Quote",
         intro: "Words have the power to heal, motivate, and change our perspective. This collection of quotes from the companions of the Prophet, great Imams, and scholars serves as a daily reminder of the profound wisdom and spiritual depth of the Islamic heritage.",
         shareError: "Sharing is not supported by your browser.",
-        quoteCopied: "Quote copied to clipboard.",
+        quoteCopied: "Quote image copied to clipboard.",
         favoriteSaved: "Saved to favorites!",
         loginToSave: "Login to save favorites.",
         errorSaving: "Error saving favorite."
@@ -65,6 +66,7 @@ export default function IslamicQuotesPage() {
     const [quote, setQuote] = useState<Quote | null>(null);
     const [loading, setLoading] = useState(true);
     const [isSaving, setIsSaving] = useState(false);
+    const postcardRef = useRef<HTMLDivElement>(null);
 
     const getNewQuote = useCallback(() => {
         setLoading(true);
@@ -85,22 +87,26 @@ export default function IslamicQuotesPage() {
     }, []);
 
     const handleShare = async () => {
-        if (!quote) return;
-        const shareText = `"${language === 'de' ? quote.text_de : quote.text_en}" - ${language === 'de' ? quote.author_de : quote.author_en}`;
-        if (navigator.share) {
-            try {
+        if (!postcardRef.current || !quote) return;
+        try {
+            const blob = await toBlob(postcardRef.current, { pixelRatio: 2 });
+            if (!blob) return;
+
+            const file = new File([blob], `quote.png`, { type: 'image/png' });
+            if (navigator.canShare && navigator.canShare({ files: [file] })) {
                 await navigator.share({
+                    files: [file],
                     title: c.title,
-                    text: shareText,
                 });
-            } catch (error) {
-                console.error('Error sharing:', error);
+            } else {
+                 await navigator.clipboard.write([
+                    new ClipboardItem({ 'image/png': blob })
+                ]);
+                toast({ description: c.quoteCopied });
             }
-        } else {
-            navigator.clipboard.writeText(shareText);
-            toast({
-                description: c.quoteCopied,
-            });
+        } catch (error) {
+            console.error('Error sharing:', error);
+            toast({ variant: 'destructive', description: c.shareError });
         }
     };
     
@@ -145,7 +151,7 @@ export default function IslamicQuotesPage() {
                  </div>
              </div>
              <div className="container mx-auto px-4 -mt-24 sm:-mt-32 z-10">
-                <Card className="w-full max-w-2xl mx-auto text-center shadow-2xl">
+                <Card ref={postcardRef} className="w-full max-w-2xl mx-auto text-center shadow-2xl bg-card">
                     <CardHeader>
                         <CardTitle className="text-2xl font-bold">{c.title}</CardTitle>
                     </CardHeader>
@@ -178,4 +184,3 @@ export default function IslamicQuotesPage() {
         </div>
     );
 }
-

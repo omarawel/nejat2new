@@ -1,7 +1,7 @@
 
 "use client"
 
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, useRef } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { RefreshCw, MessageSquareQuote, ArrowLeft, Loader2, Share2, Heart } from 'lucide-react';
@@ -11,6 +11,7 @@ import { useToast } from '@/hooks/use-toast';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '@/lib/firebase';
 import { addFavorite } from '@/lib/favorites';
+import { toBlob } from 'html-to-image';
 
 interface Post {
   title_de: string;
@@ -55,7 +56,7 @@ const content = {
         backToFeatures: "Zurück zu den Funktionen",
         newPost: "Neuer Beitrag",
         shareError: "Teilen wird von deinem Browser nicht unterstützt.",
-        postCopied: "Beitrag in die Zwischenablage kopiert.",
+        postCopied: "Post-Bild in die Zwischenablage kopiert.",
         favoriteSaved: "Als Favorit gespeichert!",
         loginToSave: "Anmelden, um Favoriten zu speichern.",
         errorSaving: "Fehler beim Speichern des Favoriten."
@@ -65,7 +66,7 @@ const content = {
         backToFeatures: "Back to Features",
         newPost: "New Post",
         shareError: "Sharing is not supported by your browser.",
-        postCopied: "Post copied to clipboard.",
+        postCopied: "Post image copied to clipboard.",
         favoriteSaved: "Saved to favorites!",
         loginToSave: "Login to save favorites.",
         errorSaving: "Error saving favorite."
@@ -81,6 +82,7 @@ export default function ProphetPostOfTheDayPage() {
     const [post, setPost] = useState<Post | null>(null);
     const [loading, setLoading] = useState(true);
     const [isSaving, setIsSaving] = useState(false);
+    const postcardRef = useRef<HTMLDivElement>(null);
 
     const getNewPost = useCallback(() => {
         setLoading(true);
@@ -100,23 +102,27 @@ export default function ProphetPostOfTheDayPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const handleShare = async () => {
-        if (!post) return;
-        const shareText = `"${language === 'de' ? post.title_de : post.title_en}"\n\n${language === 'de' ? post.content_de : post.content_en}`;
-        if (navigator.share) {
-            try {
+     const handleShare = async () => {
+        if (!postcardRef.current || !post) return;
+        try {
+            const blob = await toBlob(postcardRef.current, { pixelRatio: 2 });
+            if (!blob) return;
+
+            const file = new File([blob], `post.png`, { type: 'image/png' });
+            if (navigator.canShare && navigator.canShare({ files: [file] })) {
                 await navigator.share({
+                    files: [file],
                     title: language === 'de' ? post.title_de : post.title_en,
-                    text: shareText,
                 });
-            } catch (error) {
-                console.error('Error sharing:', error);
+            } else {
+                 await navigator.clipboard.write([
+                    new ClipboardItem({ 'image/png': blob })
+                ]);
+                toast({ description: c.postCopied });
             }
-        } else {
-            navigator.clipboard.writeText(shareText);
-            toast({
-                description: c.postCopied,
-            });
+        } catch (error) {
+            console.error('Error sharing:', error);
+            toast({ variant: 'destructive', description: c.shareError });
         }
     };
     
@@ -161,7 +167,7 @@ export default function ProphetPostOfTheDayPage() {
                  </div>
              </div>
              <div className="container mx-auto px-4 -mt-24 sm:-mt-32 z-10">
-                <Card className="w-full max-w-2xl mx-auto text-center shadow-2xl">
+                <Card ref={postcardRef} className="w-full max-w-2xl mx-auto text-center shadow-2xl bg-card">
                     <CardHeader>
                         <CardTitle className="text-2xl font-bold">{c.title}</CardTitle>
                     </CardHeader>

@@ -1,7 +1,7 @@
 
 "use client"
 
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, useRef } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { RefreshCw, BookOpen, Loader2, ArrowLeft, Share2, Heart, List } from 'lucide-react';
@@ -11,7 +11,8 @@ import { useToast } from '@/hooks/use-toast';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '@/lib/firebase';
 import { addFavorite } from '@/lib/favorites';
-import Image from 'next/image';
+import { toBlob } from 'html-to-image';
+
 
 interface Quote {
   text_de: string;
@@ -57,7 +58,7 @@ const content = {
         newHadith: "Neuer Hadith",
         narrated: "Überliefert von",
         shareError: "Teilen wird von deinem Browser nicht unterstützt.",
-        hadithCopied: "Hadith in die Zwischenablage kopiert.",
+        hadithCopied: "Hadith-Bild in die Zwischenablage kopiert.",
         favoriteSaved: "Als Favorit gespeichert!",
         loginToSave: "Anmelden, um Favoriten zu speichern.",
         errorSaving: "Fehler beim Speichern des Favoriten."
@@ -68,7 +69,7 @@ const content = {
         newHadith: "New Hadith",
         narrated: "Narrated by",
         shareError: "Sharing is not supported by your browser.",
-        hadithCopied: "Hadith copied to clipboard.",
+        hadithCopied: "Hadith image copied to clipboard.",
         favoriteSaved: "Saved to favorites!",
         loginToSave: "Login to save favorites.",
         errorSaving: "Error saving favorite."
@@ -84,6 +85,7 @@ export default function HadithOfTheDayPage() {
     const [quote, setQuote] = useState<Quote | null>(null);
     const [loading, setLoading] = useState(true);
     const [isSaving, setIsSaving] = useState(false);
+    const postcardRef = useRef<HTMLDivElement>(null);
 
     const getNewQuote = useCallback(() => {
         setLoading(true);
@@ -104,23 +106,26 @@ export default function HadithOfTheDayPage() {
     }, []);
 
     const handleShare = async () => {
-        if (!quote) return;
-        const shareText = `"${language === 'de' ? quote.text_de : quote.text_en}" - ${quote.author_en} (${quote.reference})`;
-        if (navigator.share) {
-            try {
+        if (!postcardRef.current || !quote) return;
+        try {
+            const blob = await toBlob(postcardRef.current, { pixelRatio: 2 });
+            if (!blob) return;
+
+            const file = new File([blob], `hadith-${quote.reference}.png`, { type: 'image/png' });
+            if (navigator.canShare && navigator.canShare({ files: [file] })) {
                 await navigator.share({
+                    files: [file],
                     title: c.title,
-                    text: shareText,
                 });
-            } catch (error) {
-                console.error('Error sharing:', error);
+            } else {
+                 await navigator.clipboard.write([
+                    new ClipboardItem({ 'image/png': blob })
+                ]);
+                toast({ description: c.hadithCopied });
             }
-        } else {
-            // Fallback for browsers that don't support Web Share API
-            navigator.clipboard.writeText(shareText);
-            toast({
-                description: c.hadithCopied,
-            });
+        } catch (error) {
+            console.error('Error sharing:', error);
+            toast({ variant: 'destructive', description: c.shareError });
         }
     };
     
@@ -160,19 +165,9 @@ export default function HadithOfTheDayPage() {
                         </Link>
                     </Button>
                  </div>
-                 <div className="flex items-center justify-center h-full">
-                      <Image 
-                        src="https://www.dropbox.com/scl/fi/y4jqa7s9aamexfbvb1tf7/DALL-E-2025-07-16-11.45.19-A-beautiful-and-elegant-calligraphy-of-the-name-of-Prophet-Muhammad-peace-be-upon-him-in-Arabic-s-l-All-h-lyh-wslm-The-calligraphy-is-in-a-c.png?rlkey=v1u1r5z22a0q5u43u1p5b3mhc&dl=1"
-                        alt="Calligraphy of Prophet Muhammad's name"
-                        width={300}
-                        height={200}
-                        className="object-contain"
-                        data-ai-hint="calligraphy prophet"
-                    />
-                 </div>
              </div>
              <div className="container mx-auto px-4 -mt-24 sm:-mt-32 z-10">
-                <Card className="w-full max-w-2xl mx-auto text-center shadow-2xl">
+                <Card ref={postcardRef} className="w-full max-w-2xl mx-auto text-center shadow-2xl bg-card">
                     <CardHeader>
                         <CardTitle className="text-2xl font-bold">{c.title}</CardTitle>
                     </CardHeader>
