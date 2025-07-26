@@ -58,7 +58,7 @@ export const allTools = [
     { key: "janazah", icon: "⚰️", de: "Todesfall (Janazah)", en: "Death (Janazah)", href: "/janazah" },
     { key: "dreams_in_islam", icon: "💤", de: "Träume im Islam", en: "Dreams in Islam", href: "/dreams-in-islam" },
     { key: "missed_fasts", icon: "🗓️", de: "Verpasste Fastentage", en: "Missed Fasts", href: "/missed-fasts" },
-    { key: "types_of_salah", icon: "🙏", de: "Arten des Gebets", en: "Types of Salah", href: "/missed-prayers" },
+    { key: "types_of_salah", icon: "🕌", de: "Arten des Gebets", en: "Types of Salah", href: "/missed-prayers" },
     { key: "verse_finder", icon: "🔎", de: "Vers-Finder", en: "Verse Finder", href: "/verse-finder" },
     { key: "quran_miracles", icon: "✨", de: "Wunder des Korans", en: "Miracles of the Quran", href: "/quran-miracles" },
     { key: "islamic_miracles", icon: "☪", de: "Wunder im Islam", en: "Miracles in Islam", href: "/islamic-miracles" },
