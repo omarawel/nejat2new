@@ -6,7 +6,7 @@ import { ArrowLeft, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useLanguage } from '@/components/language-provider';
 import Link from 'next/link';
 import React, { useState, useEffect, useMemo } from 'react';
-import { DateObject } from 'react-date-object';
+import DateObject from 'react-date-object';
 import { cn } from '@/lib/utils';
 
 const content = {
