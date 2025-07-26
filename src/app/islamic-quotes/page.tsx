@@ -146,7 +146,7 @@ export default function IslamicQuotesPage() {
                 </Button>
                 <Card 
                     ref={postcardRef} 
-                    className="w-full text-center shadow-2xl bg-card bg-gradient-to-br from-card to-rose-100/50 dark:to-rose-900/20"
+                    className="w-full text-center shadow-2xl bg-card bg-gradient-to-br from-rose-100/20 via-transparent to-purple-100/20 dark:from-rose-900/20 dark:to-purple-900/20"
                 >
                     <CardContent className="p-8 min-h-[300px] flex flex-col items-center justify-center">
                         <MessageSquareQuote className="h-16 w-16 text-rose-300 dark:text-rose-700 mb-4" />
