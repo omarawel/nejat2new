@@ -84,7 +84,7 @@ export function Footer() {
                         <div className="flex items-center gap-2 mb-2">
                             <div className="relative">
                                 <h3 className="text-xl font-bold">Nejat</h3>
-                                <Badge className="absolute -top-2 -right-4 px-1 py-0 text-[10px]">Pro</Badge>
+                                <Badge className="absolute -top-4 -right-4 px-1 py-0 text-[10px]">Pro</Badge>
                             </div>
                         </div>
                         <p className="text-muted-foreground max-w-md">{c.description}</p>

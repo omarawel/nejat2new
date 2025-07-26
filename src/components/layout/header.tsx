@@ -109,7 +109,7 @@ export function AppHeader() {
       <Link href="/" className="flex items-center gap-2">
         <div className="relative">
             <span className="text-xl font-bold">Nejat</span>
-            <Badge className="absolute -top-2 -right-4 px-1 py-0 text-[10px]">Pro</Badge>
+            <Badge className="absolute -top-4 -right-4 px-1 py-0 text-[10px]">Pro</Badge>
         </div>
       </Link>
       <div className="flex-1" />
