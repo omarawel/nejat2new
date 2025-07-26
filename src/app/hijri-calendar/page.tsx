@@ -1,4 +1,3 @@
-
 "use client"
 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
@@ -8,7 +7,7 @@ import { useLanguage } from '@/components/language-provider';
 import Link from 'next/link';
 import React, { useState, useEffect, useMemo } from 'react';
 import { DateObject } from 'react-date-object';
-import islamic from 'react-date-object/calendars/islamic';
+import Islamic from "react-date-object/calendars/islamic"
 import { cn } from '@/lib/utils';
 
 // Locales need to be imported dynamically on the client side
@@ -41,10 +40,10 @@ export default function HijriCalendarPage() {
   const c = content[language];
   const locale = language === 'de' ? 'de' : 'en';
 
-  const [currentDate, setCurrentDate] = useState(new DateObject({ calendar: islamic, locale: locale }));
+  const [currentDate, setCurrentDate] = useState(new DateObject({ calendar: Islamic, locale: locale }));
   
   useEffect(() => {
-    setCurrentDate(new DateObject({ calendar: islamic, locale: locale }));
+    setCurrentDate(new DateObject({ calendar: Islamic, locale: locale }));
   }, [locale]);
 
   const goToPreviousMonth = () => setCurrentDate(currentDate.subtract(1, "month"));
@@ -61,7 +60,7 @@ export default function HijriCalendarPage() {
     });
   }, [firstDay, daysInMonth, dayOfWeek]);
   
-  const today = new DateObject({ calendar: islamic });
+  const today = new DateObject({ calendar: Islamic });
 
   return (
     <div className="container mx-auto px-4 py-8">
