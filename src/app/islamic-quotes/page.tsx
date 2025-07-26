@@ -146,20 +146,22 @@ export default function IslamicQuotesPage() {
                 </Button>
                 <Card 
                     ref={postcardRef} 
-                    className="w-full text-center shadow-2xl bg-card bg-gradient-to-br from-rose-100/20 via-transparent to-purple-100/20 dark:from-rose-900/20 dark:to-purple-900/20"
+                    className="w-full text-center shadow-2xl bg-card border-amber-200/50 dark:border-amber-800/50 bg-[url('https://www.transparenttextures.com/patterns/old-paper.png')] dark:bg-[url('https://www.transparenttextures.com/patterns/old-paper-dark.png')]"
                 >
-                    <CardContent className="p-8 min-h-[300px] flex flex-col items-center justify-center">
-                        <MessageSquareQuote className="h-16 w-16 text-rose-300 dark:text-rose-700 mb-4" />
-                        {loading ? (
-                             <div className="space-y-4 w-full">
-                                <Loader2 className="h-10 w-10 animate-spin text-primary mx-auto" />
-                            </div>
-                        ) : quote ? (
-                            <blockquote className="space-y-4">
-                                <p className="text-xl md:text-2xl leading-relaxed text-foreground/90">"{language === 'de' ? quote.text_de : quote.text_en}"</p>
-                                <footer className="text-base text-muted-foreground">- {language === 'de' ? quote.author_de : quote.author_en}</footer>
-                            </blockquote>
-                        ) : null}
+                    <CardContent className="p-2">
+                        <div className="border-4 border-amber-300 dark:border-amber-800 rounded-md p-8 min-h-[300px] flex flex-col items-center justify-center">
+                            <MessageSquareQuote className="h-12 w-12 text-amber-600 dark:text-amber-400 mb-4" />
+                            {loading ? (
+                                <div className="space-y-4 w-full">
+                                    <Loader2 className="h-10 w-10 animate-spin text-primary mx-auto" />
+                                </div>
+                            ) : quote ? (
+                                <blockquote className="space-y-4">
+                                    <p className="text-xl md:text-2xl leading-relaxed text-foreground/90">"{language === 'de' ? quote.text_de : quote.text_en}"</p>
+                                    <footer className="text-base text-muted-foreground">- {language === 'de' ? quote.author_de : quote.author_en}</footer>
+                                </blockquote>
+                            ) : null}
+                        </div>
                     </CardContent>
                     <CardFooter className="justify-end p-2 pr-4">
                         <p className="text-xs text-muted-foreground">Nejat Pro</p>
