@@ -162,22 +162,22 @@ export default function ProphetPostOfTheDayPage() {
                 </Button>
                 <Card 
                     ref={postcardRef} 
-                    className="w-full shadow-2xl bg-card border-emerald-200/50 dark:border-emerald-800/50 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-teal-50 dark:from-teal-900 to-card"
+                    className="w-full shadow-2xl bg-slate-900 text-white border-teal-500/30"
                 >
                     <CardContent className="p-2">
-                         <div className="border-4 border-teal-300/50 dark:border-teal-800/50 rounded-md p-6 min-h-[300px] flex flex-col items-center justify-center text-center">
-                            <CardTitle className="text-2xl font-bold mb-4">{c.title}</CardTitle>
+                         <div className="border-2 border-teal-500/50 rounded-md p-6 min-h-[300px] flex flex-col items-center justify-center text-center">
+                            <CardTitle className="font-serif text-2xl font-bold mb-4">{c.title}</CardTitle>
                             {loading ? (
-                                <Loader2 className="h-12 w-12 animate-spin text-primary" />
+                                <Loader2 className="h-12 w-12 animate-spin text-teal-400" />
                             ) : post ? (
                                 <div className="space-y-4">
-                                    <h3 className="text-xl font-semibold text-primary">{language === 'de' ? post.title_de : post.title_en}</h3>
-                                    <p className="text-base leading-relaxed text-foreground/90">{language === 'de' ? post.content_de : post.content_en}</p>
-                                    <p className="text-sm text-muted-foreground italic">Quelle: {language === 'de' ? post.source_de : post.source_en}</p>
+                                    <h3 className="text-xl font-semibold text-teal-400">{language === 'de' ? post.title_de : post.title_en}</h3>
+                                    <p className="text-base leading-relaxed text-slate-300">{language === 'de' ? post.content_de : post.content_en}</p>
+                                    <p className="text-sm text-slate-400 italic">Quelle: {language === 'de' ? post.source_de : post.source_en}</p>
                                 </div>
                             ) : null}
                              <div className="flex-grow" />
-                             <p className="text-xs text-muted-foreground/80 pt-4 mt-auto">Nejat Pro</p>
+                             <p className="text-xs text-slate-500/80 pt-4 mt-auto">Nejat Pro</p>
                         </div>
                     </CardContent>
                 </Card>
