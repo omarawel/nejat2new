@@ -61,7 +61,7 @@ export const allTools = [
     { key: "types_of_salah", icon: "🙏", de: "Arten des Gebets", en: "Types of Salah", href: "/missed-prayers" },
     { key: "verse_finder", icon: "🔎", de: "Vers-Finder", en: "Verse Finder", href: "/verse-finder" },
     { key: "quran_miracles", icon: "✨", de: "Wunder des Korans", en: "Miracles of the Quran", href: "/quran-miracles" },
-    { key: "islamic_miracles", icon: "🌟", de: "Wunder im Islam", en: "Miracles in Islam", href: "/islamic-miracles" },
+    { key: "islamic_miracles", icon: "☪", de: "Wunder im Islam", en: "Miracles in Islam", href: "/islamic-miracles" },
     { key: "zakat_calculator", icon: "💸", de: "Zakat-Rechner", en: "Zakat Calculator", href: "/zakat-calculator" },
     { key: "civilization", icon: "🏛️", de: "Zivilisation", en: "Civilization", href: "/civilization" },
     { key: "diary", icon: "📔", de: "Tagebuch", en: "Diary", href: "/diary"},
