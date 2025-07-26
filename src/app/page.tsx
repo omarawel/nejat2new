@@ -24,7 +24,7 @@ const FeatureCard = ({ icon, name, toolKey }: { icon: string, name: string, tool
 const content = {
   de: {
     title: "Dein digitaler Begleiter für den islamischen Alltag",
-    description: "Finde alles, was du für deine spirituelle Reise brauchst: präzise Gebetszeiten, den gesamten Koran, eine umfassende Hadith-Sammlung und einzigartige KI-Tools, die dein Wissen erweitern.",
+    description: "Finde alles, was du für deine spirituelle Reise brauchst: den gesamten Koran, eine umfassende Hadith-Sammlung und einzigartige KI-Tools, die dein Wissen erweitern.",
     button: "Registrieren",
     sectionTitle: "Entdecke mehr",
     sectionDescription: "Nützliche Werkzeuge für deinen Alltag.",
@@ -39,7 +39,7 @@ const content = {
   },
   en: {
     title: "Your Digital Companion for your daily Islamic life",
-    description: "Find everything you need for your spiritual journey: precise prayer times, the entire Quran, a comprehensive Hadith collection, and unique AI tools to expand your knowledge.",
+    description: "Find everything you need for your spiritual journey: the entire Quran, a comprehensive Hadith collection, and unique AI tools to expand your knowledge.",
     button: "Sign Up",
     sectionTitle: "Discover More",
     sectionDescription: "Useful tools for your daily life.",
