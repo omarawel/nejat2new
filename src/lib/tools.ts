@@ -23,9 +23,9 @@ export const allTools = [
     { key: "prayer_times", icon: "🌙", de: "Gebetszeiten", en: "Prayer Times", href: "/prayer-times" },
     { key: "greeting_card", icon: "💌", de: "Grußkarte", en: "Greeting Card", href: "/greeting-card" },
     { key: "akhlaq", icon: "😊", de: "Gute Manieren (Akhlaq)", en: "Good Manners (Akhlaq)", href: "/akhlaq" },
-    { key: "hadith", icon: "📚", de: "Hadith Sammlung", en: "Hadith Collection", href: "/hadith" },
-    { key: "hadith_of_day", icon: "📜", de: "Hadith des Tages", en: "Hadith of the Day", href: "/hadith-of-the-day" },
     { key: "hajj_umrah", icon: "🕋", de: "Haddsch & Umrah", en: "Hajj & Umrah", href: "/hajj-umrah" },
+    { key: "hadith_of_day", icon: "📜", de: "Hadith des Tages", en: "Hadith of the Day", href: "/hadith-of-the-day" },
+    { key: "hadith", icon: "📚", de: "Hadith Sammlung", en: "Hadith Collection", href: "/hadith" },
     { key: "halal_haram_checker", icon: "حلال", de: "Halal/Haram Checker", en: "Halal/Haram Checker", href: "/halal-haram-checker" },
     { key: "hatim", icon: "3️⃣0️⃣✅️", de: "Hatim", en: "Hatim", href: "/hatim" },
     { key: "quran", icon: "📖", de: "Heiliger Koran", en: "Holy Quran", href: "/quran" },
@@ -38,7 +38,6 @@ export const allTools = [
     { key: "islamic_months", icon: "🌙", de: "Islamische Monate", en: "Islamic Months", href: "/islamic-months" },
     { key: "islamic_names", icon: "👶", de: "Islamische Namen", en: "Islamic Names", href: "/islamic-names" },
     { key: "islamic_quotes", icon: "💬", de: "Islamische Zitate", en: "Islamic Quotes", href: "/islamic-quotes" },
-    { key: "hijri_calendar", icon: "📅", de: "Hijri-Kalender", en: "Hijri Calendar", href: "/hijri-calendar" },
     { key: "insights", icon: "🎓", de: "KI-Gelehrter", en: "AI Scholar", href: "/insights" },
     { key: "khutbah_of_week", icon: "🎤", de: "Khutbah der Woche", en: "Khutbah of the Week", href: "/khutbah-of-the-week" },
     { key: "reverts_corner", icon: "🤝", de: "Konvertiten-Ecke", en: "Revert's Corner", href: "/reverts-corner" },
@@ -46,6 +45,8 @@ export const allTools = [
     { key: "ladies_special", icon: "🧕🏻", de: "Ladies Special", en: "Ladies Special", href: "/ladies-special" },
     { key: "learning_path_generator", icon: "🗺️", de: "Lernpfad-Generator", en: "Learning Path Generator", href: "/learning-path" },
     { key: "mosque_finder", icon: "🕌", de: "Moscheefinder", en: "Mosque Finder", href: "/mosque-finder" },
+    { key: "support", icon: "❤️", de: "Plattform unterstützen", en: "Support Platform", href: "/subscribe" },
+    { key: "prophet_post_of_the_day", icon: "𓆩ﷺ𓆪", de: "Post über den Propheten", en: "Post about the Prophet", href: "/prophet-post-of-the-day" },
     { key: "prophetic_medicine", icon: "🌿", de: "Prophetische Medizin", en: "Prophetic Medicine", href: "/prophetic-medicine" },
     { key: "qibla", icon: "🧭", de: "Qibla Kompass", en: "Qibla Compass", href: "/compass" },
     { key: "quiz", icon: "❓", de: "Quiz", en: "Quiz", href: "/quiz" },
@@ -53,7 +54,6 @@ export const allTools = [
     { key: "travel_etiquette", icon: "✈️", de: "Reise-Etikette", en: "Travel Etiquette", href: "/travel-etiquette" },
     { key: "sahaba", icon: "👥", de: "Sahaba", en: "Sahaba", href: "/sahaba" },
     { key: "donations", icon: "💸", de: "Spenden", en: "Donations", href: "/donations" },
-    { key: "support", icon: "❤️", de: "Plattform unterstützen", en: "Support Platform", href: "/subscribe" },
     { key: "tasbih_counter", icon: "📿", de: "Tasbih Zähler", en: "Tasbih Counter", href: "/tasbih-counter" },
     { key: "janazah", icon: "⚰️", de: "Todesfall (Janazah)", en: "Death (Janazah)", href: "/janazah" },
     { key: "dreams_in_islam", icon: "💤", de: "Träume im Islam", en: "Dreams in Islam", href: "/dreams-in-islam" },
@@ -65,5 +65,5 @@ export const allTools = [
     { key: "zakat_calculator", icon: "💸", de: "Zakat-Rechner", en: "Zakat Calculator", href: "/zakat-calculator" },
     { key: "civilization", icon: "🏛️", de: "Zivilisation", en: "Civilization", href: "/civilization" },
     { key: "diary", icon: "📔", de: "Tagebuch", en: "Diary", href: "/diary"},
-    { key: "prophet_post_of_the_day", icon: "𓆩ﷺ𓆪", de: "Post über den Propheten", en: "Post about the Prophet", href: "/prophet-post-of-the-day" }
 ];
+
