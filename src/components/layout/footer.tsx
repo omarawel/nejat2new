@@ -81,9 +81,9 @@ export function Footer() {
             <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
                     <div className="md:col-span-2">
-                        <div className="relative inline-block mb-2">
+                        <div className="flex items-center gap-1.5 mb-2">
                             <h3 className="text-xl font-bold">Nejat</h3>
-                            <Badge className="absolute -top-4 -right-1.5 px-1 py-0 text-[10px]">Pro</Badge>
+                            <Badge variant="default">Pro</Badge>
                         </div>
                         <p className="text-muted-foreground max-w-md">{c.description}</p>
                     </div>
