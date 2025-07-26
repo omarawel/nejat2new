@@ -182,27 +182,26 @@ export default function VerseOfTheDayPage() {
                         {c.backToFeatures}
                     </Link>
                 </Button>
-                <Card 
+                 <Card 
                     ref={postcardRef} 
-                    className="w-full text-center shadow-2xl bg-card bg-gradient-to-br from-card to-slate-100/50 dark:to-slate-900/50"
+                    className="w-full text-center shadow-2xl bg-card"
                 >
-                     <CardHeader>
-                        <CardTitle className="text-2xl font-bold">{c.title}</CardTitle>
-                    </CardHeader>
-                    <CardContent className="min-h-[250px] flex items-center justify-center p-6">
-                        {loading ? (
-                            <Loader2 className="h-12 w-12 animate-spin text-primary" />
-                        ) : verse ? (
-                            <div className="space-y-6">
-                                <p className="text-3xl font-quranic text-right tracking-wide leading-relaxed">{verse.verse_ar}</p>
-                                <p className="text-lg leading-relaxed text-foreground/90">"{language === 'de' ? verse.verse_de : verse.verse_en}"</p>
-                                <p className="text-sm text-muted-foreground">{c.surah} {language === 'de' ? verse.surah_de : verse.surah_en}, {verse.reference}</p>
-                            </div>
-                        ) : null}
+                    <CardContent className="p-2">
+                         <div className="border-4 border-amber-300 dark:border-amber-800 rounded-md p-6 min-h-[300px] flex flex-col items-center justify-center">
+                            <CardTitle className="text-2xl font-bold mb-4">{c.title}</CardTitle>
+                            {loading ? (
+                                <Loader2 className="h-12 w-12 animate-spin text-primary" />
+                            ) : verse ? (
+                                <div className="space-y-6">
+                                    <p className="text-3xl font-quranic text-right tracking-wide leading-relaxed">{verse.verse_ar}</p>
+                                    <p className="text-lg leading-relaxed text-foreground/90">"{language === 'de' ? verse.verse_de : verse.verse_en}"</p>
+                                    <p className="text-sm text-muted-foreground">{c.surah} {language === 'de' ? verse.surah_de : verse.surah_en}, {verse.reference}</p>
+                                </div>
+                            ) : null}
+                             <div className="flex-grow" />
+                             <p className="text-xs text-muted-foreground/80 pt-4 mt-auto">Nejat Pro</p>
+                        </div>
                     </CardContent>
-                     <CardFooter className="justify-end p-2 pr-4">
-                        <p className="text-xs text-muted-foreground">Nejat Pro</p>
-                    </CardFooter>
                 </Card>
                  <div className="w-full mt-4 grid grid-cols-3 gap-2">
                     <Button variant="outline" onClick={getNewVerse} disabled={loading || authLoading}>
