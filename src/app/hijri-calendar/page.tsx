@@ -1,13 +1,22 @@
+
 "use client"
 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, ChevronLeft, ChevronRight } from 'lucide-react';
+import { ArrowLeft, ChevronLeft, ChevronRight, Loader2 } from 'lucide-react';
 import { useLanguage } from '@/components/language-provider';
 import Link from 'next/link';
 import React, { useState, useEffect, useMemo } from 'react';
 import DateObject from 'react-date-object';
 import { cn } from '@/lib/utils';
+import { Skeleton } from '@/components/ui/skeleton';
+
+// Import the necessary calendars and locales
+import "react-date-object/calendars/islamic"
+import "react-date-object/calendars/gregorian"
+import "react-date-object/locales/de"
+import "react-date-object/locales/en"
+
 
 const content = {
     de: {
@@ -31,27 +40,55 @@ export default function HijriCalendarPage() {
   const c = content[language];
   const locale = language === 'de' ? 'de' : 'en';
 
-  const [currentDate, setCurrentDate] = useState(new DateObject({ calendar: "islamic", locale: locale }));
+  const [currentDate, setCurrentDate] = useState<DateObject | null>(null);
   
   useEffect(() => {
     setCurrentDate(new DateObject({ calendar: "islamic", locale: locale }));
   }, [locale]);
 
-  const goToPreviousMonth = () => setCurrentDate(currentDate.subtract(1, "month"));
-  const goToNextMonth = () => setCurrentDate(currentDate.add(1, "month"));
+  const goToPreviousMonth = () => {
+    if (currentDate) {
+      setCurrentDate(new DateObject(currentDate).subtract(1, "month"));
+    }
+  };
+  const goToNextMonth = () => {
+    if (currentDate) {
+      setCurrentDate(new DateObject(currentDate).add(1, "month"));
+    }
+  };
 
-  const firstDay = useMemo(() => new DateObject(currentDate).setDay(1), [currentDate]);
-  const daysInMonth = firstDay.daysInMonth;
-  const dayOfWeek = firstDay.weekDay.index;
+  const firstDay = useMemo(() => {
+      if (!currentDate) return null;
+      return new DateObject(currentDate).setDay(1);
+  }, [currentDate]);
+
+  const daysInMonth = firstDay?.daysInMonth;
+  const dayOfWeek = firstDay?.weekDay.index;
 
   const calendarDays = useMemo(() => {
-    return Array(daysInMonth + dayOfWeek).fill(null).map((_, index) => {
+    if (typeof daysInMonth !== 'number' || typeof dayOfWeek !== 'number' || !firstDay) return [];
+    
+    // Ensure the array length is valid
+    const arrayLength = daysInMonth + dayOfWeek;
+    if (arrayLength < 0 || !Number.isInteger(arrayLength)) {
+      return [];
+    }
+    
+    return Array(arrayLength).fill(null).map((_, index) => {
         if (index < dayOfWeek) return null;
         return new DateObject(firstDay).setDay(index - dayOfWeek + 1);
     });
   }, [firstDay, daysInMonth, dayOfWeek]);
   
   const today = new DateObject({ calendar: "islamic" });
+
+  if (!currentDate) {
+      return (
+          <div className="container mx-auto px-4 py-8 flex items-center justify-center">
+              <Loader2 className="h-8 w-8 animate-spin" />
+          </div>
+      )
+  }
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -74,10 +111,10 @@ export default function HijriCalendarPage() {
                         <Button variant="outline" size="icon" onClick={goToNextMonth}><ChevronRight /></Button>
                     </div>
                     <div className="grid grid-cols-7 gap-1 text-center font-semibold text-muted-foreground">
-                        {c.days.map(day => <div key={day} className="w-10 h-10 flex items-center justify-center">{day}</div>)}
+                        {c.days.map(day => <div key={day} className="w-full h-10 flex items-center justify-center">{day}</div>)}
                     </div>
                     <div className="grid grid-cols-7 gap-1 mt-2">
-                        {calendarDays.map((day, index) => (
+                        {calendarDays.length > 0 ? calendarDays.map((day, index) => (
                             <div
                                 key={index}
                                 className={cn(
@@ -90,11 +127,13 @@ export default function HijriCalendarPage() {
                                 {day && (
                                     <>
                                         <span className="font-bold text-lg">{day.format("d")}</span>
-                                        <span className="text-xs text-muted-foreground">{day.convert().format("D")}</span>
+                                        <span className="text-xs text-muted-foreground">{new DateObject(day).convert('gregorian').format("D")}</span>
                                     </>
                                 )}
                             </div>
-                        ))}
+                        )) : (
+                            [...Array(35)].map((_, i) => <Skeleton key={i} className="h-16 w-full"/>)
+                        )}
                     </div>
                 </CardContent>
             </Card>
