@@ -66,4 +66,3 @@ export const allTools = [
     { key: "civilization", icon: "🏛️", de: "Zivilisation", en: "Civilization", href: "/civilization" },
     { key: "diary", icon: "📔", de: "Tagebuch", en: "Diary", href: "/diary"},
 ];
-
