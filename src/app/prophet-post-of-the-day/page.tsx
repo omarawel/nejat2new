@@ -162,10 +162,10 @@ export default function ProphetPostOfTheDayPage() {
                 </Button>
                 <Card 
                     ref={postcardRef} 
-                    className="w-full shadow-2xl bg-card border-emerald-200/50 dark:border-emerald-800/50 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-emerald-50 dark:from-emerald-900 to-card"
+                    className="w-full shadow-2xl bg-card border-emerald-200/50 dark:border-emerald-800/50 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-teal-50 dark:from-teal-900 to-card"
                 >
                     <CardContent className="p-2">
-                         <div className="border-4 border-emerald-300/50 dark:border-emerald-800/50 rounded-md p-6 min-h-[300px] flex flex-col items-center justify-center text-center">
+                         <div className="border-4 border-teal-300/50 dark:border-teal-800/50 rounded-md p-6 min-h-[300px] flex flex-col items-center justify-center text-center">
                             <CardTitle className="text-2xl font-bold mb-4">{c.title}</CardTitle>
                             {loading ? (
                                 <Loader2 className="h-12 w-12 animate-spin text-primary" />
@@ -197,4 +197,3 @@ export default function ProphetPostOfTheDayPage() {
         </div>
     );
 }
-
