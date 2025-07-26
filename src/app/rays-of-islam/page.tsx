@@ -29,7 +29,7 @@ const content = {
             link: "https://lesen.amazon.de/kp/kshare?asin=B0F195Y5MY&id=ks6jizhuxvh3xhy2fuvlsjprmi",
             googlePlayButtonText: "Jetzt auf Google Play lesen",
             googlePlayLink: "https://play.google.com/store/books/details/Omar_Awel_Die_Strahlen_des_Islam?id=jqJNEQAAQBAJ",
-            image: "https://dl.dropboxusercontent.com/scl/fi/fwwpjh0x0cqllcocnj3as/IMG_20250717_094009_277.jpg?rlkey=4l9ep5b9el2ri2xuajmo7dqe8&dl=0"
+            image: "https://dl.dropboxusercontent.com/scl/fi/fwwpjh0x0cqllcocnj3as/IMG_20250717_094009_277.jpg?rlkey=4l9ep5b9el2ri2xuajmo7dqe8&dl=1"
         },
         englishBook: {
             title: "The Rays Of Islam: A Journey Through Faith, Science, and Humanity (English Edition)",
@@ -47,7 +47,7 @@ const content = {
             link: "https://lesen.amazon.de/kp/kshare?asin=B0F1HDQZQ7&id=bd54wv7j75bj5jqer3wa5bv7xu",
             googlePlayButtonText: "Auf Google Play lesen (Englisch)",
             googlePlayLink: "https://play.google.com/store/books/details/Omar_Awel_The_Rays_Of_Islam?id=wNhPEQAAQBAJ",
-            image: "https://dl.dropboxusercontent.com/scl/fi/l7itt143gcy7dtusvrelq/IMG_20250717_094013_874.jpg?rlkey=dpp2528r5jyo7n83d1abga1gg&dl=0"
+            image: "https://dl.dropboxusercontent.com/scl/fi/l7itt143gcy7dtusvrelq/IMG_20250717_094013_874.jpg?rlkey=dpp2528r5jyo7n83d1abga1gg&dl=1"
         }
     },
     en: {
@@ -70,7 +70,7 @@ const content = {
             link: "https://lesen.amazon.de/kp/kshare?asin=B0F195Y5MY&id=ks6jizhuxvh3xhy2fuvlsjprmi",
             googlePlayButtonText: "Read on Google Play (German)",
             googlePlayLink: "https://play.google.com/store/books/details/Omar_Awel_Die_Strahlen_des_Islam?id=jqJNEQAAQBAJ",
-            image: "https://dl.dropboxusercontent.com/scl/fi/fwwpjh0x0cqllcocnj3as/IMG_20250717_094009_277.jpg?rlkey=4l9ep5b9el2ri2xuajmo7dqe8&dl=0"
+            image: "https://dl.dropboxusercontent.com/scl/fi/fwwpjh0x0cqllcocnj3as/IMG_20250717_094009_277.jpg?rlkey=4l9ep5b9el2ri2xuajmo7dqe8&dl=1"
         },
         englishBook: {
             title: "The Rays Of Islam: A Journey Through Faith, Science, and Humanity (English Edition)",
@@ -88,7 +88,7 @@ const content = {
             link: "https://lesen.amazon.de/kp/kshare?asin=B0F1HDQZQ7&id=bd54wv7j75bj5jqer3wa5bv7xu",
             googlePlayButtonText: "Read on Google Play",
             googlePlayLink: "https://play.google.com/store/books/details/Omar_Awel_The_Rays_Of_Islam?id=wNhPEQAAQBAJ",
-            image: "https://dl.dropboxusercontent.com/scl/fi/l7itt143gcy7dtusvrelq/IMG_20250717_094013_874.jpg?rlkey=dpp2528r5jyo7n83d1abga1gg&dl=0"
+            image: "https://dl.dropboxusercontent.com/scl/fi/l7itt143gcy7dtusvrelq/IMG_20250717_094013_874.jpg?rlkey=dpp2528r5jyo7n83d1abga1gg&dl=1"
         }
     }
 }
