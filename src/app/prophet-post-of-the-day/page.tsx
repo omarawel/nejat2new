@@ -152,21 +152,17 @@ export default function ProphetPostOfTheDayPage() {
 
 
     return (
-       <div className="flex-grow w-full flex flex-col bg-background">
-             <div className="flex-grow w-full bg-emerald-50 dark:bg-emerald-950/30 rounded-b-[3rem] p-4 relative">
-                 <div className="container mx-auto">
-                    <Button asChild variant="ghost" className="absolute top-4 left-4">
-                        <Link href="/">
-                            <ArrowLeft className="mr-2 h-4 w-4" />
-                            {c.backToFeatures}
-                        </Link>
-                    </Button>
-                 </div>
-             </div>
-             <div className="container mx-auto px-4 -mt-24 sm:-mt-32 z-10">
+       <div className="container mx-auto px-4 py-8 flex flex-col items-center justify-center flex-grow">
+             <div className="w-full max-w-2xl">
+                <Button asChild variant="ghost" className="mb-4">
+                    <Link href="/">
+                        <ArrowLeft className="mr-2 h-4 w-4" />
+                        {c.backToFeatures}
+                    </Link>
+                </Button>
                 <Card 
                     ref={postcardRef} 
-                    className="w-full max-w-2xl mx-auto text-center shadow-2xl bg-card border-emerald-200/50 dark:border-emerald-800/50 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-emerald-50 dark:from-emerald-900 to-card"
+                    className="w-full text-center shadow-2xl bg-card border-emerald-200/50 dark:border-emerald-800/50 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-emerald-50 dark:from-emerald-900 to-card"
                 >
                     <CardHeader>
                         <CardTitle className="text-2xl font-bold">{c.title}</CardTitle>
@@ -186,8 +182,8 @@ export default function ProphetPostOfTheDayPage() {
                         <p className="text-xs text-muted-foreground">Nejat Pro</p>
                     </CardFooter>
                 </Card>
-                 <div className="w-full max-w-2xl mx-auto mt-4 grid grid-cols-3 gap-2">
-                    <Button variant="outline" className="col-span-1" onClick={getNewPost} disabled={loading || authLoading || !user}>
+                 <div className="w-full mt-4 grid grid-cols-3 gap-2">
+                    <Button variant="outline" onClick={getNewPost} disabled={loading || authLoading}>
                         <RefreshCw className={`mr-2 h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
                         {c.newPost}
                     </Button>

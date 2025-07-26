@@ -4,7 +4,7 @@
 import { useEffect, useState, useCallback, useRef } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { RefreshCw, BookOpen, Loader2, ArrowLeft, Share2, Heart, List } from 'lucide-react';
+import { RefreshCw, BookOpen, Loader2, ArrowLeft, Share2, Heart } from 'lucide-react';
 import { useLanguage } from '@/components/language-provider';
 import Link from 'next/link';
 import { useToast } from '@/hooks/use-toast';
@@ -155,21 +155,17 @@ export default function HadithOfTheDayPage() {
 
 
     return (
-        <div className="flex-grow w-full flex flex-col bg-background">
-             <div className="flex-grow w-full bg-amber-50 dark:bg-amber-950/30 rounded-b-[3rem] p-4 relative">
-                 <div className="container mx-auto">
-                    <Button asChild variant="ghost" className="absolute top-4 left-4">
-                        <Link href="/">
-                            <ArrowLeft className="mr-2 h-4 w-4" />
-                            {c.backToFeatures}
-                        </Link>
-                    </Button>
-                 </div>
-             </div>
-             <div className="container mx-auto px-4 -mt-24 sm:-mt-32 z-10">
+        <div className="container mx-auto px-4 py-8 flex flex-col items-center justify-center flex-grow">
+            <div className="w-full max-w-2xl">
+                <Button asChild variant="ghost" className="mb-4">
+                    <Link href="/">
+                        <ArrowLeft className="mr-2 h-4 w-4" />
+                        {c.backToFeatures}
+                    </Link>
+                </Button>
                 <Card 
                     ref={postcardRef} 
-                    className="w-full max-w-2xl mx-auto text-center shadow-2xl bg-card border-amber-200/50 dark:border-amber-800/50 bg-[url('https://www.transparenttextures.com/patterns/old-paper.png')] dark:bg-[url('https://www.transparenttextures.com/patterns/old-paper-dark.png')]"
+                    className="w-full text-center shadow-2xl bg-card border-amber-200/50 dark:border-amber-800/50 bg-[url('https://www.transparenttextures.com/patterns/old-paper.png')] dark:bg-[url('https://www.transparenttextures.com/patterns/old-paper-dark.png')]"
                 >
                     <CardContent className="p-2">
                         <div className="border-4 border-amber-300 dark:border-amber-800 rounded-md p-6 min-h-[300px] flex flex-col items-center justify-center">
@@ -188,8 +184,8 @@ export default function HadithOfTheDayPage() {
                         </div>
                     </CardContent>
                 </Card>
-                 <div className="w-full max-w-2xl mx-auto mt-4 grid grid-cols-4 gap-2">
-                    <Button variant="outline" className="col-span-2" onClick={getNewQuote} disabled={loading || authLoading || !user}>
+                 <div className="w-full mt-4 grid grid-cols-3 gap-2">
+                    <Button variant="outline" onClick={getNewQuote} disabled={loading || authLoading}>
                         <RefreshCw className={`mr-2 h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
                         {c.newHadith}
                     </Button>

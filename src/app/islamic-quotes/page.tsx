@@ -136,21 +136,17 @@ export default function IslamicQuotesPage() {
 
 
     return (
-       <div className="flex-grow w-full flex flex-col bg-background">
-             <div className="flex-grow w-full bg-rose-50 dark:bg-rose-950/30 rounded-b-[3rem] p-4 relative">
-                 <div className="container mx-auto">
-                    <Button asChild variant="ghost" className="absolute top-4 left-4">
-                        <Link href="/">
-                            <ArrowLeft className="mr-2 h-4 w-4" />
-                            {c.backToFeatures}
-                        </Link>
-                    </Button>
-                 </div>
-             </div>
-             <div className="container mx-auto px-4 -mt-24 sm:-mt-32 z-10">
+       <div className="container mx-auto px-4 py-8 flex flex-col items-center justify-center flex-grow">
+            <div className="w-full max-w-2xl">
+                <Button asChild variant="ghost" className="mb-4">
+                    <Link href="/">
+                        <ArrowLeft className="mr-2 h-4 w-4" />
+                        {c.backToFeatures}
+                    </Link>
+                </Button>
                 <Card 
                     ref={postcardRef} 
-                    className="w-full max-w-2xl mx-auto text-center shadow-2xl bg-card bg-gradient-to-br from-card to-rose-100/50 dark:to-rose-900/20"
+                    className="w-full text-center shadow-2xl bg-card bg-gradient-to-br from-card to-rose-100/50 dark:to-rose-900/20"
                 >
                     <CardContent className="p-8 min-h-[300px] flex flex-col items-center justify-center">
                         <MessageSquareQuote className="h-16 w-16 text-rose-300 dark:text-rose-700 mb-4" />
@@ -169,8 +165,8 @@ export default function IslamicQuotesPage() {
                         <p className="text-xs text-muted-foreground">Nejat Pro</p>
                     </CardFooter>
                 </Card>
-                 <div className="w-full max-w-2xl mx-auto mt-4 grid grid-cols-3 gap-2">
-                    <Button variant="outline" className="col-span-1" onClick={getNewQuote} disabled={loading || authLoading || !user}>
+                 <div className="w-full mt-4 grid grid-cols-3 gap-2">
+                    <Button variant="outline" onClick={getNewQuote} disabled={loading || authLoading}>
                         <RefreshCw className={`mr-2 h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
                         {c.newQuote}
                     </Button>
