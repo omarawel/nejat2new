@@ -7,12 +7,12 @@ import { getStorage } from "firebase/storage";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyBjPIdjsQjUIOogs0LMp_KSuDpD2490HyM",
-  authDomain: "nejat-ba9qt.firebaseapp.com",
-  projectId: "nejat-ba9qt",
-  storageBucket: "nejat-ba9qt.firebasestorage.app",
-  messagingSenderId: "727421281697",
-  appId: "1:727421281697:web:55de49f0402160105897e0"
+  apiKey: "AIzaSyC0fLgP_1axHefYp9J1yS024jP6f1l9Iaw",
+  authDomain: "nejat-3.firebaseapp.com",
+  projectId: "nejat-3",
+  storageBucket: "nejat-3.appspot.com",
+  messagingSenderId: "175027558661",
+  appId: "1:175027558661:web:16e378d38b55635817290f"
 };
 
 
