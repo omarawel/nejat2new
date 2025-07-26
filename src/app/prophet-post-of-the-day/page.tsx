@@ -161,35 +161,35 @@ export default function ProphetPostOfTheDayPage() {
                     </Link>
                 </Button>
                 <Card 
-                    ref={postcardRef} 
-                    className="w-full shadow-2xl bg-card text-card-foreground border-border"
+                    ref={postcardRef}
+                    className="w-full shadow-lg bg-card text-card-foreground border-border"
                 >
                     <CardContent className="p-2">
-                         <div className="border-2 border-primary/50 rounded-md p-6 min-h-[300px] flex flex-col items-center justify-center text-center bg-background">
-                            <CardTitle className="font-serif text-2xl font-bold mb-4 text-primary">{c.title}</CardTitle>
+                        <div className="border-2 border-accent/30 p-8 min-h-[400px] flex flex-col items-center justify-center text-center bg-background">
+                            <h2 className="font-serif text-2xl font-bold mb-2 text-primary">{c.title}</h2>
                             {loading ? (
                                 <Loader2 className="h-12 w-12 animate-spin text-primary" />
                             ) : post ? (
                                 <div className="space-y-4">
                                     <h3 className="text-xl font-semibold text-foreground">{language === 'de' ? post.title_de : post.title_en}</h3>
                                     <p className="text-base leading-relaxed text-muted-foreground">{language === 'de' ? post.content_de : post.content_en}</p>
-                                    <p className="text-sm text-muted-foreground/80 italic">Quelle: {language === 'de' ? post.source_de : post.source_en}</p>
+                                    <p className="text-sm text-muted-foreground/80 italic">Source: {language === 'de' ? post.source_de : post.source_en}</p>
                                 </div>
                             ) : null}
-                             <div className="flex-grow" />
-                             <p className="text-xs text-muted-foreground/50 pt-4 mt-auto">Nejat Pro</p>
+                            <div className="flex-grow" />
+                            <p className="text-xs text-muted-foreground/50 pt-4 mt-auto">Nejat Pro</p>
                         </div>
                     </CardContent>
                 </Card>
                  <div className="w-full mt-4 grid grid-cols-3 gap-2">
-                    <Button variant="outline" onClick={getNewPost} disabled={loading || authLoading}>
+                    <Button variant="outline" onClick={getNewPost} disabled={loading || authLoading || !user}>
                         <RefreshCw className={`mr-2 h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
                         {c.newPost}
                     </Button>
                      <Button variant="outline" aria-label="Share" onClick={handleShare} disabled={authLoading || !user}>
                         <Share2 className="h-5 w-5" />
                     </Button>
-                    <Button variant="outline" aria-label="Favorite" onClick={handleSaveFavorite} disabled={isSaving || authLoading}>
+                    <Button variant="outline" aria-label="Favorite" onClick={handleSaveFavorite} disabled={isSaving || authLoading || !user}>
                        {isSaving ? <Loader2 className="h-5 w-5 animate-spin"/> : <Heart className="h-5 w-5" />}
                     </Button>
                 </div>

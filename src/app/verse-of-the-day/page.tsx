@@ -182,36 +182,37 @@ export default function VerseOfTheDayPage() {
                         {c.backToFeatures}
                     </Link>
                 </Button>
-                 <Card 
-                    ref={postcardRef} 
-                    className="w-full text-center shadow-2xl bg-card"
+                <Card 
+                    ref={postcardRef}
+                    className="w-full shadow-2xl bg-card border-border overflow-hidden"
                 >
                     <CardContent className="p-2">
-                         <div className="border-4 border-amber-300 dark:border-amber-800 rounded-md p-6 min-h-[300px] flex flex-col items-center justify-center">
-                            <CardTitle className="text-2xl font-bold mb-4">{c.title}</CardTitle>
-                            {loading ? (
-                                <Loader2 className="h-12 w-12 animate-spin text-primary" />
-                            ) : verse ? (
-                                <div className="space-y-6">
-                                    <p className="text-3xl font-quranic text-right tracking-wide leading-relaxed">{verse.verse_ar}</p>
-                                    <p className="text-lg leading-relaxed text-foreground/90">"{language === 'de' ? verse.verse_de : verse.verse_en}"</p>
-                                    <p className="text-sm text-muted-foreground">{c.surah} {language === 'de' ? verse.surah_de : verse.surah_en}, {verse.reference}</p>
-                                </div>
-                            ) : null}
-                             <div className="flex-grow" />
-                             <p className="text-xs text-muted-foreground/80 pt-4 mt-auto">Nejat Pro</p>
+                        <div className="border-2 border-primary/20 p-1">
+                            <div className="border border-primary/30 p-6 min-h-[300px] flex flex-col items-center justify-center text-center bg-background">
+                                {loading ? (
+                                    <Loader2 className="h-12 w-12 animate-spin text-primary" />
+                                ) : verse ? (
+                                    <div className="space-y-6">
+                                        <p className="text-3xl font-quranic text-right tracking-wide leading-relaxed">{verse.verse_ar}</p>
+                                        <p className="text-lg leading-relaxed text-foreground/90">"{language === 'de' ? verse.verse_de : verse.verse_en}"</p>
+                                        <p className="text-sm text-muted-foreground">{c.surah} {language === 'de' ? verse.surah_de : verse.surah_en}, {verse.reference}</p>
+                                    </div>
+                                ) : null}
+                                <div className="flex-grow" />
+                                <p className="text-xs text-muted-foreground/80 pt-4 mt-auto">Nejat Pro</p>
+                            </div>
                         </div>
                     </CardContent>
                 </Card>
                  <div className="w-full mt-4 grid grid-cols-3 gap-2">
-                    <Button variant="outline" onClick={getNewVerse} disabled={loading || authLoading}>
+                    <Button variant="outline" onClick={getNewVerse} disabled={loading || authLoading || !user}>
                         <RefreshCw className={`mr-2 h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
                         {c.newVerse}
                     </Button>
                     <Button variant="outline" aria-label="Share" onClick={handleShare} disabled={authLoading || !user}>
                         <Share2 className="h-5 w-5" />
                     </Button>
-                    <Button variant="outline" aria-label="Favorite" onClick={handleSaveFavorite} disabled={isSaving || authLoading}>
+                    <Button variant="outline" aria-label="Favorite" onClick={handleSaveFavorite} disabled={isSaving || authLoading || !user}>
                        {isSaving ? <Loader2 className="h-5 w-5 animate-spin"/> : <Heart className="h-5 w-5" />}
                     </Button>
                 </div>

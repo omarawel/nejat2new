@@ -145,10 +145,10 @@ export default function IslamicQuotesPage() {
                     </Link>
                 </Button>
                 <Card 
-                    ref={postcardRef} 
+                    ref={postcardRef}
                     className="w-full text-center shadow-2xl bg-card border-amber-200/50 dark:border-amber-800/50 bg-[url('https://www.transparenttextures.com/patterns/old-paper.png')] dark:bg-[url('https://www.transparenttextures.com/patterns/old-paper-dark.png')]"
                 >
-                    <CardContent className="p-2">
+                     <CardContent className="p-2">
                         <div className="border-4 border-amber-300 dark:border-amber-800 rounded-md p-8 min-h-[300px] flex flex-col items-center justify-center">
                             <MessageSquareQuote className="h-12 w-12 text-amber-600 dark:text-amber-400 mb-4" />
                             {loading ? (
@@ -168,14 +168,14 @@ export default function IslamicQuotesPage() {
                     </CardFooter>
                 </Card>
                  <div className="w-full mt-4 grid grid-cols-3 gap-2">
-                    <Button variant="outline" onClick={getNewQuote} disabled={loading || authLoading}>
+                    <Button variant="outline" onClick={getNewQuote} disabled={loading || authLoading || !user}>
                         <RefreshCw className={`mr-2 h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
                         {c.newQuote}
                     </Button>
                      <Button variant="outline" aria-label="Share" onClick={handleShare} disabled={authLoading || !user}>
                         <Share2 className="h-5 w-5" />
                     </Button>
-                    <Button variant="outline" aria-label="Favorite" onClick={handleSaveFavorite} disabled={isSaving || authLoading}>
+                    <Button variant="outline" aria-label="Favorite" onClick={handleSaveFavorite} disabled={isSaving || authLoading || !user}>
                        {isSaving ? <Loader2 className="h-5 w-5 animate-spin"/> : <Heart className="h-5 w-5" />}
                     </Button>
                 </div>
