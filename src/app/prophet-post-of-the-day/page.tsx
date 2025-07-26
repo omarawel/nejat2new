@@ -2,7 +2,7 @@
 "use client"
 
 import { useEffect, useState, useCallback, useRef } from 'react';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { RefreshCw, MessageSquareQuote, ArrowLeft, Loader2, Share2, Heart } from 'lucide-react';
 import { useLanguage } from '@/components/language-provider';
@@ -182,6 +182,9 @@ export default function ProphetPostOfTheDayPage() {
                             </div>
                         ) : null}
                     </CardContent>
+                     <CardFooter className="justify-end">
+                        <p className="text-xs text-muted-foreground">Nejat Pro</p>
+                    </CardFooter>
                 </Card>
                  <div className="w-full max-w-2xl mx-auto mt-4 grid grid-cols-3 gap-2">
                     <Button variant="outline" className="col-span-1" onClick={getNewPost} disabled={loading}>

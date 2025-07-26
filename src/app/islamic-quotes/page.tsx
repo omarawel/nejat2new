@@ -167,6 +167,9 @@ export default function IslamicQuotesPage() {
                             </blockquote>
                         ) : null}
                     </CardContent>
+                    <CardFooter className="justify-end">
+                        <p className="text-xs text-muted-foreground">Nejat Pro</p>
+                    </CardFooter>
                 </Card>
                  <div className="w-full max-w-2xl mx-auto mt-4 grid grid-cols-3 gap-2">
                     <Button variant="outline" className="col-span-1" onClick={getNewQuote} disabled={loading}>
