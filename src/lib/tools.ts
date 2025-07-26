@@ -1,6 +1,6 @@
 
 export const allTools = [
-    { key: "prophets", icon: "👨‍👩‍👧‍👦", de: "25 Propheten", en: "25 Prophets", href: "/prophets" },
+    { key: "prophets", icon: "👳", de: "25 Propheten", en: "25 Prophets", href: "/prophets" },
     { key: "arabic_basics", icon: "✍️", de: "Arabische Grundlagen", en: "Arabic Basics", href: "/arabic-basics" },
     { key: "arabic_numbers", icon: "🔢", de: "Arabische Zahlen", en: "Arabic Numbers", href: "/arabic-numbers" },
     { key: "ar_qibla", icon: "📸", de: "AR Qibla", en: "AR Qibla", href: "/ar-qibla" },
