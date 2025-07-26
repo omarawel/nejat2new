@@ -10,7 +10,7 @@ import { getAnalytics } from "firebase/analytics";
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
   apiKey: "AIzaSyAkJ2-kon7JFWHaWJP9tNi1T3DyKEpT0Zo",
-  authDomain: "freelancer-ai-5067c.firebaseapp.com",
+  authDomain: "nejat.studio.firebase.google",
   projectId: "freelancer-ai-5067c",
   storageBucket: "freelancer-ai-5067c.firebasestorage.app",
   messagingSenderId: "785521346586",
