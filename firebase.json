@@ -14,9 +14,34 @@
   },
   "firestore": {
     "rules": "firestore.rules",
-    "indexes": "firestore.indexes.json"
+    "indexes": "firestore.indexes.json",
+    "database": "(default)"
   },
   "functions": {
     "source": "functions"
-  }
+  },
+  "emulators": {
+    "firestore": {
+      "port": "8080"
+    },
+    "hosting": {
+      "port": "5000"
+    },
+    "auth": {
+      "port": "9099"
+    },
+    "ui": {
+      "enabled": true
+    }
+  },
+  "remoteconfig": {
+    "template": "remoteconfig.template.json"
+  },
+  "database": {
+    "rules": "database.rules.json"
+  },
+  "storage": {
+    "rules": "storage.rules"
+  },
+  "location": "eur3"
 }
