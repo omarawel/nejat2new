@@ -84,7 +84,19 @@ export default function ProphetPostOfTheDayPage() {
     const [isSaving, setIsSaving] = useState(false);
     const postcardRef = useRef<HTMLDivElement>(null);
 
+    const showLoginToast = () => {
+        toast({
+            title: c.loginToSave,
+            variant: 'destructive',
+            description: <Button variant="secondary" size="sm" asChild className="mt-2"><Link href="/login">Login</Link></Button>,
+        });
+    }
+
     const getNewPost = useCallback(() => {
+        if (!user) {
+            showLoginToast();
+            return;
+        }
         setLoading(true);
         setTimeout(() => {
             const randomIndex = Math.floor(Math.random() * posts.length);
@@ -95,14 +107,20 @@ export default function ProphetPostOfTheDayPage() {
             setPost(newPost);
             setLoading(false);
         }, 300);
-    }, [post]);
+    }, [post, user, c.loginToSave]);
 
     useEffect(() => {
-        getNewPost();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        setLoading(true);
+        const randomIndex = Math.floor(Math.random() * posts.length);
+        setPost(posts[randomIndex]);
+        setLoading(false);
     }, []);
 
      const handleShare = async () => {
+        if (!user) {
+            showLoginToast();
+            return;
+        }
         if (!postcardRef.current || !post) return;
         try {
             const blob = await toBlob(postcardRef.current, { pixelRatio: 2 });
@@ -127,16 +145,11 @@ export default function ProphetPostOfTheDayPage() {
     };
     
     const handleSaveFavorite = async () => {
-        if (!post) return;
         if (!user) {
-            toast({
-                variant: 'destructive',
-                title: c.loginToSave,
-                description: <Button variant="secondary" size="sm" asChild className="mt-2"><Link href="/login">Login</Link></Button>
-            });
+            showLoginToast();
             return;
         }
-
+        if (!post) return;
         setIsSaving(true);
         const textToSave = `**${language === 'de' ? post.title_de : post.title_en}**\n\n${language === 'de' ? post.content_de : post.content_en}\n\n*Quelle: ${language === 'de' ? post.source_de : post.source_en}*`;
         try {
@@ -164,8 +177,8 @@ export default function ProphetPostOfTheDayPage() {
                     ref={postcardRef}
                     className="w-full shadow-lg bg-card text-card-foreground border-border"
                 >
-                    <CardContent className="p-2">
-                        <div className="border-2 border-accent/30 p-8 min-h-[400px] flex flex-col items-center justify-center text-center bg-background">
+                    <CardContent className="p-2 bg-accent/20">
+                        <div className="border-2 border-accent/30 p-8 min-h-[400px] flex flex-col items-center justify-center text-center bg-card">
                             <h2 className="font-serif text-2xl font-bold mb-2 text-primary">{c.title}</h2>
                             {loading ? (
                                 <Loader2 className="h-12 w-12 animate-spin text-primary" />
@@ -182,14 +195,14 @@ export default function ProphetPostOfTheDayPage() {
                     </CardContent>
                 </Card>
                  <div className="w-full mt-4 grid grid-cols-3 gap-2">
-                    <Button variant="outline" onClick={getNewPost} disabled={loading || authLoading || !user}>
+                    <Button variant="outline" onClick={getNewPost} disabled={loading || authLoading}>
                         <RefreshCw className={`mr-2 h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
                         {c.newPost}
                     </Button>
-                     <Button variant="outline" aria-label="Share" onClick={handleShare} disabled={authLoading || !user}>
+                     <Button variant="outline" aria-label="Share" onClick={handleShare} disabled={authLoading}>
                         <Share2 className="h-5 w-5" />
                     </Button>
-                    <Button variant="outline" aria-label="Favorite" onClick={handleSaveFavorite} disabled={isSaving || authLoading || !user}>
+                    <Button variant="outline" aria-label="Favorite" onClick={handleSaveFavorite} disabled={isSaving || authLoading}>
                        {isSaving ? <Loader2 className="h-5 w-5 animate-spin"/> : <Heart className="h-5 w-5" />}
                     </Button>
                 </div>

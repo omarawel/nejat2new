@@ -68,7 +68,19 @@ export default function IslamicQuotesPage() {
     const [isSaving, setIsSaving] = useState(false);
     const postcardRef = useRef<HTMLDivElement>(null);
 
+    const showLoginToast = () => {
+        toast({
+            title: c.loginToSave,
+            variant: 'destructive',
+            description: <Button variant="secondary" size="sm" asChild className="mt-2"><Link href="/login">Login</Link></Button>,
+        });
+    }
+
     const getNewQuote = useCallback(() => {
+        if (!user) {
+            showLoginToast();
+            return;
+        }
         setLoading(true);
         setTimeout(() => {
             const randomIndex = Math.floor(Math.random() * quotes.length);
@@ -79,14 +91,20 @@ export default function IslamicQuotesPage() {
             setQuote(newQuote);
             setLoading(false);
         }, 300);
-    }, [quote]);
+    }, [quote, user, c.loginToSave]);
 
     useEffect(() => {
-        getNewQuote();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        setLoading(true);
+        const randomIndex = Math.floor(Math.random() * quotes.length);
+        setQuote(quotes[randomIndex]);
+        setLoading(false);
     }, []);
 
     const handleShare = async () => {
+        if (!user) {
+            showLoginToast();
+            return;
+        }
         if (!postcardRef.current || !quote) return;
         try {
             const blob = await toBlob(postcardRef.current, { pixelRatio: 2 });
@@ -111,16 +129,11 @@ export default function IslamicQuotesPage() {
     };
     
     const handleSaveFavorite = async () => {
-        if (!quote) return;
         if (!user) {
-            toast({
-                variant: 'destructive',
-                title: c.loginToSave,
-                description: <Button variant="secondary" size="sm" asChild className="mt-2"><Link href="/login">Login</Link></Button>
-            });
+            showLoginToast();
             return;
         }
-
+        if (!quote) return;
         setIsSaving(true);
         const textToSave = `"${language === 'de' ? quote.text_de : quote.text_en}" - ${language === 'de' ? quote.author_de : quote.author_en}`;
         try {
@@ -168,14 +181,14 @@ export default function IslamicQuotesPage() {
                     </CardFooter>
                 </Card>
                  <div className="w-full mt-4 grid grid-cols-3 gap-2">
-                    <Button variant="outline" onClick={getNewQuote} disabled={loading || authLoading || !user}>
+                    <Button variant="outline" onClick={getNewQuote} disabled={loading || authLoading}>
                         <RefreshCw className={`mr-2 h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
                         {c.newQuote}
                     </Button>
-                     <Button variant="outline" aria-label="Share" onClick={handleShare} disabled={authLoading || !user}>
+                     <Button variant="outline" aria-label="Share" onClick={handleShare} disabled={authLoading}>
                         <Share2 className="h-5 w-5" />
                     </Button>
-                    <Button variant="outline" aria-label="Favorite" onClick={handleSaveFavorite} disabled={isSaving || authLoading || !user}>
+                    <Button variant="outline" aria-label="Favorite" onClick={handleSaveFavorite} disabled={isSaving || authLoading}>
                        {isSaving ? <Loader2 className="h-5 w-5 animate-spin"/> : <Heart className="h-5 w-5" />}
                     </Button>
                 </div>
