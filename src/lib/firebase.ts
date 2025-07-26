@@ -3,16 +3,18 @@ import { initializeApp, getApps, getApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
-
+import { getAnalytics } from "firebase/analytics";
 
 // Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyC0fLgP_1axHefYp9J1yS024jP6f1l9Iaw",
-  authDomain: "nejat-3.firebaseapp.com",
-  projectId: "nejat-3",
-  storageBucket: "nejat-3.appspot.com",
-  messagingSenderId: "175027558661",
-  appId: "1:175027558661:web:16e378d38b55635817290f"
+  apiKey: "AIzaSyAkJ2-kon7JFWHaWJP9tNi1T3DyKEpT0Zo",
+  authDomain: "freelancer-ai-5067c.firebaseapp.com",
+  projectId: "freelancer-ai-5067c",
+  storageBucket: "freelancer-ai-5067c.appspot.com",
+  messagingSenderId: "785521346586",
+  appId: "1:785521346586:web:590f1aa0489e7f8bbaa9a3",
+  measurementId: "G-BK94SVDKNF"
 };
 
 
@@ -22,5 +24,11 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 const storage = getStorage(app);
 
+// Initialize Analytics if not already initialized
+let analytics;
+if (typeof window !== 'undefined') {
+  analytics = getAnalytics(app);
+}
 
-export { app, auth, db, storage };
+
+export { app, auth, db, storage, analytics };
