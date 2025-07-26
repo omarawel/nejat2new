@@ -14,8 +14,8 @@ import { getDiaryEntries, deleteDiaryEntry, type DiaryEntry } from '@/lib/diary'
 import { useToast } from '@/hooks/use-toast';
 import { format } from 'date-fns';
 import { de, enUS } from 'date-fns/locale';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription } from '@/components/ui/dialog';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription as AlertDialogDesc, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { DiaryEntryForm } from '@/components/diary/diary-entry-form';
 
 const content = {
@@ -177,7 +177,7 @@ export default function DiaryPage() {
                                         <AlertDialogContent>
                                             <AlertDialogHeader>
                                                 <AlertDialogTitle>{c.confirmDeleteTitle}</AlertDialogTitle>
-                                                <AlertDialogDescription>{c.confirmDeleteDesc}</AlertDialogDescription>
+                                                <AlertDialogDesc>{c.confirmDeleteDesc}</AlertDialogDesc>
                                             </AlertDialogHeader>
                                             <AlertDialogFooter>
                                                 <AlertDialogCancel>{c.cancel}</AlertDialogCancel>
