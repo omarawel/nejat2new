@@ -64,5 +64,6 @@ export const allTools = [
     { key: "islamic_miracles", icon: "🌟", de: "Wunder im Islam", en: "Miracles in Islam", href: "/islamic-miracles" },
     { key: "zakat_calculator", icon: "💸", de: "Zakat-Rechner", en: "Zakat Calculator", href: "/zakat-calculator" },
     { key: "civilization", icon: "🏛️", de: "Zivilisation", en: "Civilization", href: "/civilization" },
-    { key: "diary", icon: "📔", de: "Tagebuch", en: "Diary", href: "/diary"}
+    { key: "diary", icon: "📔", de: "Tagebuch", en: "Diary", href: "/diary"},
+    { key: "prophet_post_of_the_day", icon: "🕊️", de: "Post über den Propheten", en: "Post about the Prophet", href: "/prophet-post-of-the-day" }
 ];
