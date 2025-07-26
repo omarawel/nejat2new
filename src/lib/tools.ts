@@ -30,7 +30,7 @@ export const allTools = [
     { key: "hatim", icon: "📖", de: "Hatim", en: "Hatim", href: "/hatim" },
     { key: "quran", icon: "📖", de: "Heiliger Koran", en: "Holy Quran", href: "/quran" },
     { key: "hereafter", icon: "🌅", de: "Das Jenseits", en: "The Hereafter", href: "/hereafter" },
-    { key: "hisnul_muslim", icon: "🏰", de: "Hisnul Muslim", en: "Hisnul Muslim", href: "/hisnul-muslim" },
+    { key: "hisnul_muslim", icon: "🛡️", de: "Hisnul Muslim", en: "Hisnul Muslim", href: "/hisnul-muslim" },
     { key: "islamic_education", icon: "🎓", de: "Islamische Erziehung", en: "Islamic Education", href: "/islamic-education" },
     { key: "islamic_stories", icon: "📜", de: "Islamische Geschichten", en: "Islamic Stories", href: "/islamic-stories" },
     { key: "islamic_art", icon: "🎨", de: "Islamische Kunst", en: "Islamic Art", href: "/islamic-art" },
