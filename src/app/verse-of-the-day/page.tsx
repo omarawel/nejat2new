@@ -99,7 +99,7 @@ export default function VerseOfTheDayPage() {
     const { language } = useLanguage();
     const c = content[language] || content.de;
     const { toast } = useToast();
-    const [user] = useAuthState(auth);
+    const [user, authLoading] = useAuthState(auth);
 
     const [verse, setVerse] = useState<Verse | null>(null);
     const [loading, setLoading] = useState(true);
@@ -209,14 +209,14 @@ export default function VerseOfTheDayPage() {
                     </CardFooter>
                 </Card>
                  <div className="w-full max-w-2xl mx-auto mt-4 grid grid-cols-3 gap-2">
-                    <Button variant="outline" className="col-span-1" onClick={getNewVerse} disabled={loading}>
+                    <Button variant="outline" className="col-span-1" onClick={getNewVerse} disabled={loading || authLoading || !user}>
                         <RefreshCw className={`mr-2 h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
                         {c.newVerse}
                     </Button>
-                    <Button variant="outline" aria-label="Share" onClick={handleShare}>
+                    <Button variant="outline" aria-label="Share" onClick={handleShare} disabled={authLoading || !user}>
                         <Share2 className="h-5 w-5" />
                     </Button>
-                    <Button variant="outline" aria-label="Favorite" onClick={handleSaveFavorite} disabled={isSaving}>
+                    <Button variant="outline" aria-label="Favorite" onClick={handleSaveFavorite} disabled={isSaving || authLoading}>
                        {isSaving ? <Loader2 className="h-5 w-5 animate-spin"/> : <Heart className="h-5 w-5" />}
                     </Button>
                 </div>

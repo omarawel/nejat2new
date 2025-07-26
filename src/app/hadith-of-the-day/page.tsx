@@ -187,14 +187,14 @@ export default function HadithOfTheDayPage() {
                     </CardFooter>
                 </Card>
                  <div className="w-full max-w-2xl mx-auto mt-4 grid grid-cols-4 gap-2">
-                    <Button variant="outline" className="col-span-2" onClick={getNewQuote} disabled={loading}>
+                    <Button variant="outline" className="col-span-2" onClick={getNewQuote} disabled={loading || authLoading || !user}>
                         <RefreshCw className={`mr-2 h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
                         {c.newHadith}
                     </Button>
-                    <Button variant="outline" aria-label="Share" onClick={handleShare}>
+                    <Button variant="outline" aria-label="Share" onClick={handleShare} disabled={authLoading || !user}>
                         <Share2 className="h-5 w-5" />
                     </Button>
-                    <Button variant="outline" aria-label="Favorite" onClick={handleSaveFavorite} disabled={isSaving}>
+                    <Button variant="outline" aria-label="Favorite" onClick={handleSaveFavorite} disabled={isSaving || authLoading}>
                        {isSaving ? <Loader2 className="h-5 w-5 animate-spin"/> : <Heart className="h-5 w-5" />}
                     </Button>
                 </div>
