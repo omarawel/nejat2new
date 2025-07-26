@@ -6,15 +6,17 @@ import { Button } from '@/components/ui/button';
 import { ArrowLeft, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useLanguage } from '@/components/language-provider';
 import Link from 'next/link';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { DateObject } from 'react-date-object';
 import islamic from 'react-date-object/calendars/islamic';
 import { cn } from '@/lib/utils';
 
 // Locales need to be imported dynamically on the client side
-import('react-date-object/locales/islamic_de');
-import('react-date-object/locales/islamic_en');
-import('react-date-object/locales/islamic_ar');
+// This avoids including all locales in the main bundle
+if (typeof window !== 'undefined') {
+    import('react-date-object/locales/islamic_de');
+    import('react-date-object/locales/islamic_en');
+}
 
 
 const content = {
@@ -37,24 +39,27 @@ const content = {
 export default function HijriCalendarPage() {
   const { language } = useLanguage();
   const c = content[language];
+  const locale = language === 'de' ? 'de' : 'en';
 
-  const [currentDate, setCurrentDate] = useState(new DateObject({ calendar: islamic, locale: language }));
+  const [currentDate, setCurrentDate] = useState(new DateObject({ calendar: islamic, locale: locale }));
   
   useEffect(() => {
-    setCurrentDate(new DateObject({ calendar: islamic, locale: language }));
-  }, [language]);
+    setCurrentDate(new DateObject({ calendar: islamic, locale: locale }));
+  }, [locale]);
 
   const goToPreviousMonth = () => setCurrentDate(currentDate.subtract(1, "month"));
   const goToNextMonth = () => setCurrentDate(currentDate.add(1, "month"));
 
-  const firstDay = new DateObject(currentDate).setDay(1);
+  const firstDay = useMemo(() => new DateObject(currentDate).setDay(1), [currentDate]);
   const daysInMonth = firstDay.daysInMonth;
   const dayOfWeek = firstDay.weekDay.index;
 
-  const calendarDays = Array(daysInMonth + dayOfWeek).fill(null).map((_, index) => {
-    if (index < dayOfWeek) return null;
-    return new DateObject(firstDay).setDay(index - dayOfWeek + 1);
-  });
+  const calendarDays = useMemo(() => {
+    return Array(daysInMonth + dayOfWeek).fill(null).map((_, index) => {
+        if (index < dayOfWeek) return null;
+        return new DateObject(firstDay).setDay(index - dayOfWeek + 1);
+    });
+  }, [firstDay, daysInMonth, dayOfWeek]);
   
   const today = new DateObject({ calendar: islamic });
 
@@ -79,16 +84,16 @@ export default function HijriCalendarPage() {
                         <Button variant="outline" size="icon" onClick={goToNextMonth}><ChevronRight /></Button>
                     </div>
                     <div className="grid grid-cols-7 gap-1 text-center font-semibold text-muted-foreground">
-                        {c.days.map(day => <div key={day}>{day}</div>)}
+                        {c.days.map(day => <div key={day} className="w-10 h-10 flex items-center justify-center">{day}</div>)}
                     </div>
                     <div className="grid grid-cols-7 gap-1 mt-2">
                         {calendarDays.map((day, index) => (
                             <div
                                 key={index}
                                 className={cn(
-                                    "p-2 text-center rounded-md h-16 flex flex-col justify-center items-center",
+                                    "p-2 text-center rounded-md h-16 flex flex-col justify-center items-center w-full",
                                     day ? "cursor-pointer hover:bg-accent" : "bg-transparent",
-                                    day && day.day === 13 || day && day.day === 14 || day && day.day === 15 ? 'bg-amber-100 dark:bg-amber-900/50' : '',
+                                    day && (day.day === 13 || day.day === 14 || day.day === 15) ? 'bg-amber-100 dark:bg-amber-900/50' : '',
                                     day && day.format() === today.format() ? 'bg-primary text-primary-foreground' : ''
                                 )}
                             >
