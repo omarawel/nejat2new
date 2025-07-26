@@ -198,7 +198,7 @@ export default function HadithOfTheDayPage() {
                     </CardContent>
                 </Card>
                  <div className="w-full mt-4 grid grid-cols-3 gap-2">
-                    <Button variant="outline" onClick={getNewQuote} disabled={loading || authLoading}>
+                    <Button variant="outline" onClick={getNewQuote} disabled={authLoading}>
                         <RefreshCw className={`mr-2 h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
                         {c.newHadith}
                     </Button>
@@ -213,3 +213,4 @@ export default function HadithOfTheDayPage() {
         </div>
     );
 }
+
