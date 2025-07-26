@@ -1,3 +1,4 @@
+
 // Import the functions you need from the SDKs you need
 import { initializeApp, getApps, getApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
@@ -11,7 +12,7 @@ const firebaseConfig = {
   apiKey: "AIzaSyAkJ2-kon7JFWHaWJP9tNi1T3DyKEpT0Zo",
   authDomain: "freelancer-ai-5067c.firebaseapp.com",
   projectId: "freelancer-ai-5067c",
-  storageBucket: "freelancer-ai-5067c.appspot.com",
+  storageBucket: "freelancer-ai-5067c.firebasestorage.app",
   messagingSenderId: "785521346586",
   appId: "1:785521346586:web:590f1aa0489e7f8bbaa9a3",
   measurementId: "G-BK94SVDKNF"
