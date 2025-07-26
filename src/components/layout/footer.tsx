@@ -62,8 +62,8 @@ export function Footer() {
         });
     }, []);
     
-    const c = content ? content[language] : staticContent[language];
-    const socialLinks = content ? content.socialLinks : [];
+    const c = content?.[language] || staticContent[language];
+    const socialLinks = content?.socialLinks || [];
     const copyrightText = `© ${new Date().getFullYear()} Nejat Pro. All rights reserved.`;
 
     if (loading) {
@@ -79,16 +79,16 @@ export function Footer() {
     return (
         <footer className="bg-card text-card-foreground border-t">
             <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    <div className="md:col-span-1">
+                <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8">
+                    <div className="lg:col-span-2">
                         <div className="relative inline-block mb-2">
-                            <h3 className="text-xl font-bold">Nejat</h3>
-                            <Badge className="absolute -top-4 -right-7 px-1 py-0 text-[10px]">Pro</Badge>
+                            <Link href="/" className="text-xl font-bold">Nejat</Link>
+                            <Badge variant="default" className="absolute -top-4 -right-7 h-auto px-1.5 py-0.5 text-[10px] font-bold">Pro</Badge>
                         </div>
                         <p className="text-muted-foreground max-w-md">{c.description}</p>
                     </div>
 
-                    <div className="md:col-span-2 grid grid-cols-2 gap-8">
+                    <div className="grid grid-cols-2 gap-8 md:col-span-1 lg:col-span-2">
                         <div>
                             <h4 className="font-semibold mb-4">{c.company}</h4>
                             <ul className="space-y-2">
