@@ -153,7 +153,7 @@ export default function ProphetPostOfTheDayPage() {
 
     return (
        <div className="flex-grow w-full flex flex-col bg-background">
-             <div className="flex-grow w-full bg-accent/30 rounded-b-[3rem] p-4 relative">
+             <div className="flex-grow w-full bg-emerald-50 dark:bg-emerald-950/30 rounded-b-[3rem] p-4 relative">
                  <div className="container mx-auto">
                     <Button asChild variant="ghost" className="absolute top-4 left-4">
                         <Link href="/">
@@ -162,12 +162,12 @@ export default function ProphetPostOfTheDayPage() {
                         </Link>
                     </Button>
                  </div>
-                 <div className="flex items-center justify-center h-full">
-                     <MessageSquareQuote className="h-24 w-24 text-primary/50" />
-                 </div>
              </div>
              <div className="container mx-auto px-4 -mt-24 sm:-mt-32 z-10">
-                <Card ref={postcardRef} className="w-full max-w-2xl mx-auto text-center shadow-2xl bg-card">
+                <Card 
+                    ref={postcardRef} 
+                    className="w-full max-w-2xl mx-auto text-center shadow-2xl bg-card border-emerald-200/50 dark:border-emerald-800/50 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-emerald-50 dark:from-emerald-900 to-card"
+                >
                     <CardHeader>
                         <CardTitle className="text-2xl font-bold">{c.title}</CardTitle>
                     </CardHeader>
@@ -182,7 +182,7 @@ export default function ProphetPostOfTheDayPage() {
                             </div>
                         ) : null}
                     </CardContent>
-                     <CardFooter className="justify-end">
+                     <CardFooter className="justify-end p-2 pr-4">
                         <p className="text-xs text-muted-foreground">Nejat Pro</p>
                     </CardFooter>
                 </Card>

@@ -156,7 +156,7 @@ export default function HadithOfTheDayPage() {
 
     return (
         <div className="flex-grow w-full flex flex-col bg-background">
-             <div className="flex-grow w-full bg-accent/30 rounded-b-[3rem] p-4 relative">
+             <div className="flex-grow w-full bg-amber-50 dark:bg-amber-950/30 rounded-b-[3rem] p-4 relative">
                  <div className="container mx-auto">
                     <Button asChild variant="ghost" className="absolute top-4 left-4">
                         <Link href="/">
@@ -167,24 +167,26 @@ export default function HadithOfTheDayPage() {
                  </div>
              </div>
              <div className="container mx-auto px-4 -mt-24 sm:-mt-32 z-10">
-                <Card ref={postcardRef} className="w-full max-w-2xl mx-auto text-center shadow-2xl bg-card">
-                    <CardHeader>
-                        <CardTitle className="text-2xl font-bold">{c.title}</CardTitle>
-                    </CardHeader>
-                    <CardContent className="min-h-[200px] flex items-center justify-center p-6">
-                        {loading ? (
-                            <Loader2 className="h-10 w-10 animate-spin text-primary" />
-                        ) : quote ? (
-                            <div className="space-y-4">
-                                <p className="text-2xl md:text-3xl font-quranic text-right tracking-wide leading-relaxed">{quote.arabic}</p>
-                                <p className="text-base md:text-lg leading-relaxed text-foreground/90">"{language === 'de' ? quote.text_de : quote.text_en}"</p>
-                                <p className="text-sm text-muted-foreground">{c.narrated} {language === 'de' ? quote.author_de : quote.author_en} [{quote.reference}]</p>
-                            </div>
-                        ) : null}
+                <Card 
+                    ref={postcardRef} 
+                    className="w-full max-w-2xl mx-auto text-center shadow-2xl bg-card border-amber-200/50 dark:border-amber-800/50 bg-[url('https://www.transparenttextures.com/patterns/old-paper.png')] dark:bg-[url('https://www.transparenttextures.com/patterns/old-paper-dark.png')]"
+                >
+                    <CardContent className="p-2">
+                        <div className="border-4 border-amber-300 dark:border-amber-800 rounded-md p-6 min-h-[300px] flex flex-col items-center justify-center">
+                            <CardTitle className="text-xl font-bold mb-4">{c.title}</CardTitle>
+                            {loading ? (
+                                <Loader2 className="h-10 w-10 animate-spin text-primary" />
+                            ) : quote ? (
+                                <div className="space-y-4">
+                                    <p className="text-2xl md:text-3xl font-quranic text-right tracking-wide leading-relaxed">{quote.arabic}</p>
+                                    <p className="text-base md:text-lg leading-relaxed text-foreground/90">"{language === 'de' ? quote.text_de : quote.text_en}"</p>
+                                    <p className="text-sm text-muted-foreground">{c.narrated} {language === 'de' ? quote.author_de : quote.author_en} [{quote.reference}]</p>
+                                </div>
+                            ) : null}
+                             <div className="flex-grow" />
+                             <p className="text-xs text-muted-foreground/80 pt-4 mt-auto">Nejat Pro</p>
+                        </div>
                     </CardContent>
-                    <CardFooter className="justify-end">
-                        <p className="text-xs text-muted-foreground">Nejat Pro</p>
-                    </CardFooter>
                 </Card>
                  <div className="w-full max-w-2xl mx-auto mt-4 grid grid-cols-4 gap-2">
                     <Button variant="outline" className="col-span-2" onClick={getNewQuote} disabled={loading || authLoading || !user}>

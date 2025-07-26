@@ -137,7 +137,7 @@ export default function IslamicQuotesPage() {
 
     return (
        <div className="flex-grow w-full flex flex-col bg-background">
-             <div className="flex-grow w-full bg-accent/30 rounded-b-[3rem] p-4 relative">
+             <div className="flex-grow w-full bg-rose-50 dark:bg-rose-950/30 rounded-b-[3rem] p-4 relative">
                  <div className="container mx-auto">
                     <Button asChild variant="ghost" className="absolute top-4 left-4">
                         <Link href="/">
@@ -146,16 +146,14 @@ export default function IslamicQuotesPage() {
                         </Link>
                     </Button>
                  </div>
-                 <div className="flex items-center justify-center h-full">
-                     <MessageSquareQuote className="h-24 w-24 text-primary/50" />
-                 </div>
              </div>
              <div className="container mx-auto px-4 -mt-24 sm:-mt-32 z-10">
-                <Card ref={postcardRef} className="w-full max-w-2xl mx-auto text-center shadow-2xl bg-card">
-                    <CardHeader>
-                        <CardTitle className="text-2xl font-bold">{c.title}</CardTitle>
-                    </CardHeader>
-                    <CardContent className="min-h-[150px] flex items-center justify-center p-6">
+                <Card 
+                    ref={postcardRef} 
+                    className="w-full max-w-2xl mx-auto text-center shadow-2xl bg-card bg-gradient-to-br from-card to-rose-100/50 dark:to-rose-900/20"
+                >
+                    <CardContent className="p-8 min-h-[300px] flex flex-col items-center justify-center">
+                        <MessageSquareQuote className="h-16 w-16 text-rose-300 dark:text-rose-700 mb-4" />
                         {loading ? (
                              <div className="space-y-4 w-full">
                                 <Loader2 className="h-10 w-10 animate-spin text-primary mx-auto" />
@@ -167,7 +165,7 @@ export default function IslamicQuotesPage() {
                             </blockquote>
                         ) : null}
                     </CardContent>
-                    <CardFooter className="justify-end">
+                    <CardFooter className="justify-end p-2 pr-4">
                         <p className="text-xs text-muted-foreground">Nejat Pro</p>
                     </CardFooter>
                 </Card>

@@ -175,7 +175,7 @@ export default function VerseOfTheDayPage() {
 
     return (
         <div className="flex-grow w-full flex flex-col bg-background">
-             <div className="flex-grow w-full bg-accent/30 rounded-b-[3rem] p-4 relative">
+             <div className="flex-grow w-full bg-slate-100 dark:bg-slate-900/50 rounded-b-[3rem] p-4 relative">
                  <div className="container mx-auto">
                     <Button asChild variant="ghost" className="absolute top-4 left-4">
                         <Link href="/">
@@ -184,16 +184,16 @@ export default function VerseOfTheDayPage() {
                         </Link>
                     </Button>
                  </div>
-                 <div className="flex items-center justify-center h-full">
-                     <BookOpen className="h-24 w-24 text-primary/50" />
-                 </div>
              </div>
              <div className="container mx-auto px-4 -mt-24 sm:-mt-32 z-10">
-                <Card ref={postcardRef} className="w-full max-w-2xl mx-auto text-center shadow-2xl bg-card">
+                <Card 
+                    ref={postcardRef} 
+                    className="w-full max-w-2xl mx-auto text-center shadow-2xl bg-card bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-slate-50 dark:from-slate-800/40 to-card"
+                >
                     <CardHeader>
                         <CardTitle className="text-2xl font-bold">{c.title}</CardTitle>
                     </CardHeader>
-                    <CardContent className="min-h-[250px] flex items-center justify-center">
+                    <CardContent className="min-h-[250px] flex items-center justify-center p-6">
                         {loading ? (
                             <Loader2 className="h-12 w-12 animate-spin text-primary" />
                         ) : verse ? (
@@ -204,7 +204,7 @@ export default function VerseOfTheDayPage() {
                             </div>
                         ) : null}
                     </CardContent>
-                     <CardFooter className="justify-end">
+                     <CardFooter className="justify-end p-2 pr-4">
                         <p className="text-xs text-muted-foreground">Nejat Pro</p>
                     </CardFooter>
                 </Card>
