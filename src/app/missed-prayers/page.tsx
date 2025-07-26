@@ -23,44 +23,59 @@ const content = {
                 title: "Fard (Pflichtgebete)",
                 description: "Dies sind die obligatorischen Gebete, die die Grundlage des täglichen Gottesdienstes bilden. Ihre Unterlassung ist eine große Sünde.",
                 items: [
-                    "**Die fünf täglichen Gebete (Salawat al-Khams):** Fajr (2 Rak'at), Dhuhr (4 Rak'at), Asr (4 Rak'at), Maghrib (3 Rak'at) und Isha (4 Rak'at).",
-                    "**Freitagsgebet (Salat al-Jumu'ah):** Obligatorisch für Männer, wird in der Gemeinschaft in der Moschee anstelle des Dhuhr-Gebets verrichtet."
+                    "Die fünf täglichen Gebete (Salawat al-Khams): Fajr (2 Rak'at), Dhuhr (4 Rak'at), Asr (4 Rak'at), Maghrib (3 Rak'at) und Isha (4 Rak'at).",
+                    "Freitagsgebet (Salat al-Jumu'ah): Obligatorisch für Männer, wird in der Gemeinschaft in der Moschee anstelle des Dhuhr-Gebets verrichtet."
                 ]
             },
             {
                 title: "Wajib (Notwendige Gebete)",
                 description: "Diese Gebete sind nach einigen Rechtsschulen (insbesondere der hanafitischen) fast so verpflichtend wie Fard. Ihre Unterlassung gilt ebenfalls als sündhaft.",
                 items: [
-                    "**Witr-Gebet:** Wird nach dem Isha-Gebet verrichtet, bestehend aus einer ungeraden Anzahl von Rak'at (üblicherweise 1 oder 3).",
-                    "**Eid-Gebete (Salat al-Eidain):** Die Gebete für Eid al-Fitr und Eid al-Adha."
-                ]
+                    "Witr-Gebet: Wird nach dem Isha-Gebet verrichtet, bestehend aus einer ungeraden Anzahl von Rak'at (üblicherweise 1 oder 3).",
+                    "Eid-Gebete (Salat al-Eidain): Die Gebete für Eid al-Fitr und Eid al-Adha."
+                ],
+                dua: {
+                    title: 'Dua al-Qunut (im Witr-Gebet)',
+                    arabic: 'اللَّهُمَّ اهْدِنِي فِيمَنْ هَدَيْتَ، وَعَافِنِي فِيمَنْ عَافَيْتَ، وَتَوَلَّنِي فِيمَنْ تَوَلَّيْتَ، وَبَارِكْ لِي فِيمَا أَعْطَيْتَ، وَقِنِي شَرَّ مَا قَضَيْتَ، فَإِنَّكَ تَقْضِي وَلاَ يُقْضَى عَلَيْكَ، وَإِنَّهُ لاَ يَذِلُّ مَنْ وَالَيْتَ، تَبَارَكْتَ رَبَّنَا وَتَعَالَيْتَ',
+                    translation: 'O Allah, leite mich recht mit denen, die Du rechtgeleitet hast, und gewähre mir Wohlbefinden mit denen, denen Du Wohlbefinden gewährt hast. Nimm mich in Deine Obhut mit denen, die Du in Deine Obhut genommen hast. Segne, was Du mir gegeben hast. Schütze mich vor dem Übel dessen, was Du bestimmt hast. Wahrlich, Du allein bestimmst und über Dich wird nicht bestimmt. Wahrlich, erniedrigt wird nicht, wen Du zum Freund nimmst. Gesegnet seist Du, unser Herr, und erhaben.'
+                }
             },
             {
                 title: "Sunnah (Empfohlene Gebete)",
                 description: "Dies sind Gebete, die der Prophet Muhammad (ﷺ) regelmäßig verrichtet hat. Ihre Verrichtung bringt große Belohnung, während ihre Unterlassung keine Sünde ist. Man unterscheidet zwischen stark empfohlenen (Mu'akkadah) und weniger stark empfohlenen (Ghayr Mu'akkadah) Sunnah-Gebeten.",
                 items: [
-                    "**Sunan ar-Rawatib (Mu'akkadah):** 12 Rak'at, die mit den Fard-Gebeten verbunden sind: 2 vor Fajr, 4 vor Dhuhr, 2 nach Dhuhr, 2 nach Maghrib, 2 nach Isha.",
-                    "**Tahajjud (Nachtgebet):** Ein freiwilliges Gebet, das im letzten Drittel der Nacht verrichtet wird und als besonders verdienstvoll gilt.",
-                    "**Duha-Gebet (Vormittagsgebet):** Wird nach Sonnenaufgang bis kurz vor Dhuhr verrichtet."
+                    "Sunan ar-Rawatib (Mu'akkadah): 12 Rak'at, die mit den Fard-Gebeten verbunden sind: 2 vor Fajr, 4 vor Dhuhr, 2 nach Dhuhr, 2 nach Maghrib, 2 nach Isha.",
+                    "Tahajjud (Nachtgebet): Ein freiwilliges Gebet, das im letzten Drittel der Nacht verrichtet wird und als besonders verdienstvoll gilt.",
+                    "Duha-Gebet (Vormittagsgebet): Wird nach Sonnenaufgang bis kurz vor Dhuhr verrichtet."
                 ]
             },
             {
                 title: "Nafl (Freiwillige Gebete)",
                 description: "Dies sind zusätzliche freiwillige Gebete, die ein Muslim jederzeit (außer zu den verbotenen Zeiten) verrichten kann, um näher zu Allah zu kommen.",
                 items: [
-                    "**Tahiyyat al-Masjid:** Zwei Rak'at beim Betreten einer Moschee, bevor man sich setzt.",
-                    "**Salat al-Istikhara:** Das Gebet um Führung bei einer Entscheidung.",
-                    "**Salat al-Tasbih:** Ein besonderes Gebet, das eine hohe Anzahl an Lobpreisungen beinhaltet."
-                ]
+                    "Tahiyyat al-Masjid: Zwei Rak'at beim Betreten einer Moschee, bevor man sich setzt.",
+                    "Salat al-Istikhara: Das Gebet um Führung bei einer Entscheidung.",
+                    "Salat al-Tasbih: Ein besonderes Gebet, das eine hohe Anzahl an Lobpreisungen beinhaltet."
+                ],
+                 dua: {
+                    title: 'Dua al-Istikhara (Auszug)',
+                    arabic: 'اللَّهُمَّ إِنِّي أَسْتَخِيرُكَ بِعِلْمِكَ، وَأَسْتَقْدِرُكَ بِقُدْرَتِكَ، وَأَسْأَلُكَ مِنْ فَضْلِكَ الْعَظِيمِ...',
+                    translation: 'O Allah, ich bitte Dich um Führung durch Dein Wissen und um Kraft durch Deine Macht und ich bitte Dich um Deine unermessliche Gunst...'
+                }
             },
             {
                 title: "Weitere Anlassgebete",
                 description: "Gebete, die zu bestimmten Anlässen verrichtet werden.",
                 items: [
-                    "**Salat al-Janazah (Totengebet):** Ein Gemeinschaftsgebet für einen Verstorbenen.",
-                    "**Salat al-Kusuf/Khusuf (Sonnen-/Mondfinsternisgebet):** Gebete während einer Sonnen- oder Mondfinsternis.",
-                    "**Salat al-Istisqa (Gebet um Regen):** Ein Gemeinschaftsgebet in Zeiten der Dürre."
-                ]
+                    "Salat al-Janazah (Totengebet): Ein Gemeinschaftsgebet für einen Verstorbenen.",
+                    "Salat al-Kusuf/Khusuf (Sonnen-/Mondfinsternisgebet): Gebete während einer Sonnen- oder Mondfinsternis.",
+                    "Salat al-Istisqa (Gebet um Regen): Ein Gemeinschaftsgebet in Zeiten der Dürre."
+                ],
+                 dua: {
+                    title: 'Dua für den Verstorbenen (im Janazah-Gebet)',
+                    arabic: 'اللَّهُمَّ اغْفِرْ لَهُ وَارْحَمْهُ وَعَافِهِ وَاعْفُ عَنْهُ...',
+                    translation: 'O Allah, vergib ihm, erbarme dich seiner, gewähre ihm Wohlbefinden und verzeihe ihm...'
+                }
             }
         ]
     },
@@ -73,44 +88,59 @@ const content = {
                 title: "Fard (Obligatory Prayers)",
                 description: "These are the mandatory prayers that form the basis of daily worship. Neglecting them is a major sin.",
                 items: [
-                    "**The five daily prayers (Salawat al-Khams):** Fajr (2 Rak'at), Dhuhr (4 Rak'at), Asr (4 Rak'at), Maghrib (3 Rak'at), and Isha (4 Rak'at).",
-                    "**Friday Prayer (Salat al-Jumu'ah):** Obligatory for men, performed in congregation at the mosque instead of the Dhuhr prayer."
+                    "The five daily prayers (Salawat al-Khams): Fajr (2 Rak'at), Dhuhr (4 Rak'at), Asr (4 Rak'at), Maghrib (3 Rak'at), and Isha (4 Rak'at).",
+                    "Friday Prayer (Salat al-Jumu'ah): Obligatory for men, performed in congregation at the mosque instead of the Dhuhr prayer."
                 ]
             },
             {
                 title: "Wajib (Necessary Prayers)",
                 description: "According to some schools of thought (especially the Hanafi school), these prayers are almost as obligatory as Fard. Neglecting them is also considered sinful.",
                 items: [
-                    "**Witr Prayer:** Performed after the Isha prayer, consisting of an odd number of Rak'at (usually 1 or 3).",
-                    "**Eid Prayers (Salat al-Eidain):** The prayers for Eid al-Fitr and Eid al-Adha."
-                ]
+                    "Witr Prayer: Performed after the Isha prayer, consisting of an odd number of Rak'at (usually 1 or 3).",
+                    "Eid Prayers (Salat al-Eidain): The prayers for Eid al-Fitr and Eid al-Adha."
+                ],
+                 dua: {
+                    title: 'Dua al-Qunut (in Witr Prayer)',
+                    arabic: 'اللَّهُمَّ اهْدِنِي فِيمَنْ هَدَيْتَ، وَعَافِنِي فِيمَنْ عَافَيْتَ، وَتَوَلَّنِي فِيمَنْ تَوَلَّيْتَ، وَبَارِكْ لِي فِيمَا أَعْطَيْتَ، وَقِنِي شَرَّ مَا قَضَيْتَ، فَإِنَّكَ تَقْضِي وَلاَ يُقْضَى عَلَيْكَ، وَإِنَّهُ لاَ يَذِلُّ مَنْ وَالَيْتَ، تَبَارَكْتَ رَبَّنَا وَتَعَالَيْتَ',
+                    translation: 'O Allah, guide me with those whom You have guided, and grant me well-being with those whom You have granted well-being. Take me into Your charge with those whom You have taken into Your charge. Bless me in what You have given. Protect me from the evil of what You have decreed. Verily, You decree and none can decree over You. Verily, he whom You show allegiance to is not abased. Blessed are You, our Lord, and Exalted.'
+                }
             },
             {
                 title: "Sunnah (Recommended Prayers)",
                 description: "These are prayers that the Prophet Muhammad (ﷺ) regularly performed. Performing them brings great reward, while omitting them is not a sin. A distinction is made between highly recommended (Mu'akkadah) and less emphasized (Ghayr Mu'akkadah) Sunnah prayers.",
                 items: [
-                    "**Sunan ar-Rawatib (Mu'akkadah):** 12 Rak'at associated with the Fard prayers: 2 before Fajr, 4 before Dhuhr, 2 after Dhuhr, 2 after Maghrib, 2 after Isha.",
-                    "**Tahajjud (Night Prayer):** A voluntary prayer performed in the last third of the night, considered particularly meritorious.",
-                    "**Duha Prayer (Forenoon Prayer):** Performed after sunrise until just before Dhuhr."
+                    "Sunan ar-Rawatib (Mu'akkadah): 12 Rak'at associated with the Fard prayers: 2 before Fajr, 4 before Dhuhr, 2 after Dhuhr, 2 after Maghrib, 2 after Isha.",
+                    "Tahajjud (Night Prayer): A voluntary prayer performed in the last third of the night, considered particularly meritorious.",
+                    "Duha Prayer (Forenoon Prayer): Performed after sunrise until just before Dhuhr."
                 ]
             },
             {
                 title: "Nafl (Voluntary Prayers)",
                 description: "These are additional voluntary prayers that a Muslim can perform at any time (except during the forbidden times) to draw closer to Allah.",
                 items: [
-                    "**Tahiyyat al-Masjid:** Two Rak'at upon entering a mosque before sitting down.",
-                    "**Salat al-Istikhara:** The prayer for guidance in making a decision.",
-                    "**Salat al-Tasbih:** A special prayer involving a high number of praises."
-                ]
+                    "Tahiyyat al-Masjid: Two Rak'at upon entering a mosque before sitting down.",
+                    "Salat al-Istikhara: The prayer for guidance in making a decision.",
+                    "Salat al-Tasbih: A special prayer involving a high number of praises."
+                ],
+                dua: {
+                    title: 'Dua al-Istikhara (Excerpt)',
+                    arabic: 'اللَّهُمَّ إِنِّي أَsْتَخِيرُكَ بِعِلْمِكَ، وَأَسْتَقْدِرُكَ بِقُدْرَتِكَ، وَأَسْأَلُكَ مِنْ فَضْلِكَ الْعَظِيمِ...',
+                    translation: 'O Allah, I seek guidance from Your knowledge, and Power from Your Might, and I ask for Your great blessings...'
+                }
             },
              {
                 title: "Other Occasional Prayers",
                 description: "Prayers performed on specific occasions.",
                 items: [
-                    "**Salat al-Janazah (Funeral Prayer):** A communal prayer for a deceased person.",
-                    "**Salat al-Kusuf/Khusuf (Eclipse Prayers):** Prayers during a solar or lunar eclipse.",
-                    "**Salat al-Istisqa (Prayer for Rain):** A communal prayer in times of drought."
-                ]
+                    "Salat al-Janazah (Funeral Prayer): A communal prayer for a deceased person.",
+                    "Salat al-Kusuf/Khusuf (Eclipse Prayers): Prayers during a solar or lunar eclipse.",
+                    "Salat al-Istisqa (Prayer for Rain): A communal prayer in times of drought."
+                ],
+                 dua: {
+                    title: 'Dua for the Deceased (in Janazah Prayer)',
+                    arabic: 'اللَّهُمَّ اغْفِرْ لَهُ وَارْحَمْهُ وَعَافِهِ وَاعْفُ عَنْهُ...',
+                    translation: 'O Allah, forgive him and have mercy on him, grant him well-being and pardon him...'
+                }
             }
         ]
     }
@@ -147,6 +177,13 @@ export default function TypesOfSalahPage() {
                                        <li key={i} dangerouslySetInnerHTML={{ __html: item }}></li>
                                    ))}
                                </ul>
+                               {section.dua && (
+                                   <div className="mt-4 pt-4 border-t border-border/50">
+                                       <h4 className="font-semibold text-primary">{section.dua.title}</h4>
+                                       <p className="font-quranic text-lg text-right mt-2">{section.dua.arabic}</p>
+                                       <p className="text-sm italic text-muted-foreground mt-2">"{section.dua.translation}"</p>
+                                   </div>
+                               )}
                             </AccordionContent>
                         </AccordionItem>
                     ))}
