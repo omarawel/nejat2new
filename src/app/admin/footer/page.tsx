@@ -10,7 +10,7 @@ import { Loader2, ArrowLeft, Save, Trash2, PlusCircle } from 'lucide-react';
 import { useLanguage } from '@/components/language-provider';
 import Link from 'next/link';
 import { isAdmin } from '@/lib/admin';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
@@ -232,6 +232,11 @@ export default function AdminFooterPage() {
                     ))}
                      <Button variant="outline" onClick={addSocialLink}><PlusCircle className="mr-2 h-4 w-4" />{c.addSocialLink}</Button>
                 </CardContent>
+                <CardFooter>
+                     <Button onClick={handleSaveChanges} disabled={isSaving}>
+                        {isSaving ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" />{c.saving}</> : <><Save className="mr-2 h-4 w-4" />{c.save}</>}
+                    </Button>
+                </CardFooter>
             </Card>
 
         </div>
