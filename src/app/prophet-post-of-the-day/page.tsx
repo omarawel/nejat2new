@@ -162,25 +162,24 @@ export default function ProphetPostOfTheDayPage() {
                 </Button>
                 <Card 
                     ref={postcardRef} 
-                    className="w-full text-center shadow-2xl bg-card border-emerald-200/50 dark:border-emerald-800/50 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-emerald-50 dark:from-emerald-900 to-card"
+                    className="w-full shadow-2xl bg-card border-emerald-200/50 dark:border-emerald-800/50 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-emerald-50 dark:from-emerald-900 to-card"
                 >
-                    <CardHeader>
-                        <CardTitle className="text-2xl font-bold">{c.title}</CardTitle>
-                    </CardHeader>
-                    <CardContent className="min-h-[250px] flex items-center justify-center p-6">
-                        {loading ? (
-                            <Loader2 className="h-12 w-12 animate-spin text-primary" />
-                        ) : post ? (
-                            <div className="space-y-4">
-                                <h3 className="text-xl font-semibold text-primary">{language === 'de' ? post.title_de : post.title_en}</h3>
-                                <p className="text-base leading-relaxed text-foreground/90">{language === 'de' ? post.content_de : post.content_en}</p>
-                                <p className="text-sm text-muted-foreground italic">Quelle: {language === 'de' ? post.source_de : post.source_en}</p>
-                            </div>
-                        ) : null}
+                    <CardContent className="p-2">
+                         <div className="border-4 border-emerald-300/50 dark:border-emerald-800/50 rounded-md p-6 min-h-[300px] flex flex-col items-center justify-center text-center">
+                            <CardTitle className="text-2xl font-bold mb-4">{c.title}</CardTitle>
+                            {loading ? (
+                                <Loader2 className="h-12 w-12 animate-spin text-primary" />
+                            ) : post ? (
+                                <div className="space-y-4">
+                                    <h3 className="text-xl font-semibold text-primary">{language === 'de' ? post.title_de : post.title_en}</h3>
+                                    <p className="text-base leading-relaxed text-foreground/90">{language === 'de' ? post.content_de : post.content_en}</p>
+                                    <p className="text-sm text-muted-foreground italic">Quelle: {language === 'de' ? post.source_de : post.source_en}</p>
+                                </div>
+                            ) : null}
+                             <div className="flex-grow" />
+                             <p className="text-xs text-muted-foreground/80 pt-4 mt-auto">Nejat Pro</p>
+                        </div>
                     </CardContent>
-                     <CardFooter className="justify-end p-2 pr-4">
-                        <p className="text-xs text-muted-foreground">Nejat Pro</p>
-                    </CardFooter>
                 </Card>
                  <div className="w-full mt-4 grid grid-cols-3 gap-2">
                     <Button variant="outline" onClick={getNewPost} disabled={loading || authLoading}>
@@ -198,3 +197,4 @@ export default function ProphetPostOfTheDayPage() {
         </div>
     );
 }
+
