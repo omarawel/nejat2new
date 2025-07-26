@@ -107,9 +107,9 @@ export function AppHeader() {
   return (
     <header className="sticky top-0 z-10 flex h-20 items-center gap-4 border-b bg-background/80 px-4 backdrop-blur-sm sm:px-8">
       <Link href="/" className="flex items-center gap-2">
-        <div className="flex items-center gap-1.5">
+         <div className="relative">
             <span className="text-xl font-bold">Nejat</span>
-            <Badge variant="default">Pro</Badge>
+            <Badge className="absolute -top-4 -right-7 px-1 py-0 text-[10px]">Pro</Badge>
         </div>
       </Link>
       <div className="flex-1" />
