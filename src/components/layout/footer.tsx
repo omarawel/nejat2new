@@ -79,8 +79,8 @@ export function Footer() {
     return (
         <footer className="bg-card text-card-foreground border-t">
             <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-                    <div className="md:col-span-2">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div className="md:col-span-1">
                         <div className="relative inline-block mb-2">
                             <h3 className="text-xl font-bold">Nejat</h3>
                             <Badge className="absolute -top-4 -right-7 px-1 py-0 text-[10px]">Pro</Badge>
@@ -88,21 +88,23 @@ export function Footer() {
                         <p className="text-muted-foreground max-w-md">{c.description}</p>
                     </div>
 
-                    <div>
-                        <h4 className="font-semibold mb-4">{c.company}</h4>
-                        <ul className="space-y-2">
-                            <li><Link href="/about" className="text-muted-foreground hover:text-primary">{c.about}</Link></li>
-                            <li><Link href="/contact" className="text-muted-foreground hover:text-primary">{c.contact}</Link></li>
-                            <li><Link href="/support" className="text-muted-foreground hover:text-primary">{c.support}</Link></li>
-                        </ul>
-                    </div>
-                     <div>
-                        <h4 className="font-semibold mb-4">{c.legal}</h4>
-                        <ul className="space-y-2">
-                            <li><Link href="/terms" className="text-muted-foreground hover:text-primary">{c.terms}</Link></li>
-                            <li><Link href="/privacy" className="text-muted-foreground hover:text-primary">{c.privacy}</Link></li>
-                            <li><Link href="/imprint" className="text-muted-foreground hover:text-primary">{c.imprint}</Link></li>
-                        </ul>
+                    <div className="md:col-span-2 grid grid-cols-2 gap-8">
+                        <div>
+                            <h4 className="font-semibold mb-4">{c.company}</h4>
+                            <ul className="space-y-2">
+                                <li><Link href="/about" className="text-muted-foreground hover:text-primary">{c.about}</Link></li>
+                                <li><Link href="/contact" className="text-muted-foreground hover:text-primary">{c.contact}</Link></li>
+                                <li><Link href="/support" className="text-muted-foreground hover:text-primary">{c.support}</Link></li>
+                            </ul>
+                        </div>
+                         <div>
+                            <h4 className="font-semibold mb-4">{c.legal}</h4>
+                            <ul className="space-y-2">
+                                <li><Link href="/terms" className="text-muted-foreground hover:text-primary">{c.terms}</Link></li>
+                                <li><Link href="/privacy" className="text-muted-foreground hover:text-primary">{c.privacy}</Link></li>
+                                <li><Link href="/imprint" className="text-muted-foreground hover:text-primary">{c.imprint}</Link></li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
 
