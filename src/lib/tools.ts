@@ -5,7 +5,7 @@ export const allTools = [
     { key: "arabic_numbers", icon: "🔢", de: "Arabische Zahlen", en: "Arabic Numbers", href: "/arabic-numbers" },
     { key: "ar_qibla", icon: "📸", de: "AR Qibla", en: "AR Qibla", href: "/ar-qibla" },
     { key: "arkan_al_iman", icon: "🤲", de: "Säulen des Iman", en: "Pillars of Iman", href: "/arkan-al-iman" },
-    { key: "arkan_al_islam", icon: "🕌", de: "Säulen des Islam", en: "Pillars of Islam", href: "/arkan-al-islam" },
+    { key: "arkan_al_islam", icon: "☝🏼", de: "Säulen des Islam", en: "Pillars of Islam", href: "/arkan-al-islam" },
     { key: "asma_ul_husna", icon: "الله", de: "Asma-Ul Husna", en: "Asma-Ul Husna", href: "/asma-ul-husna" },
     { key: "memorization", icon: "🧠", de: "Auswendiglernen", en: "Memorization", href: "/memorization" },
     { key: "community", icon: "🎉", de: "Community & Events", en: "Community & Events", href: "/community" },
