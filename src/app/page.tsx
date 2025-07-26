@@ -9,11 +9,12 @@ import { useLanguage } from "@/components/language-provider";
 import { useMemo } from "react";
 import { allTools } from "@/lib/tools";
 import { AdBanner } from "@/components/ad-banner";
+import { cn } from "@/lib/utils";
 
-const FeatureCard = ({ icon, name }: { icon: string, name: string }) => {
+const FeatureCard = ({ icon, name, toolKey }: { icon: string, name: string, toolKey: string }) => {
   return (
     <div className="flex flex-col justify-center items-center p-2 border border-border rounded-lg bg-card text-card-foreground hover:bg-accent/90 cursor-pointer transition-colors h-24">
-      <div className="text-3xl">{icon}</div>
+      <div className={cn("text-3xl", toolKey === 'asma_ul_husna' && 'text-2xl')}>{icon}</div>
       <div className="mt-2 text-xs text-center font-medium leading-snug break-words">{name}</div>
     </div>
   );
@@ -94,7 +95,7 @@ export default function Home() {
         <p className="mt-2 text-md sm:text-lg text-muted-foreground">{c.sectionDescription}</p>
         <div className="mt-8 grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-7 xl:grid-cols-8 gap-4">
           {localizedTools.map((tool) => {
-            const card = <FeatureCard icon={tool.icon} name={tool.name} />;
+            const card = <FeatureCard icon={tool.icon} name={tool.name} toolKey={tool.key} />;
             if (tool.href) {
                 return <Link key={tool.key} href={tool.href}>{card}</Link>
             }
