@@ -1,4 +1,8 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {};
+import tailwindConfig from './src/tailwind.config.ts';
+
+const nextConfig = {
+  ...tailwindConfig,
+};
 
 export default nextConfig;
