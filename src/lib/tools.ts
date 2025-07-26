@@ -42,7 +42,7 @@ export const allTools = [
     { key: "insights", icon: "🎓", de: "KI-Gelehrter", en: "AI Scholar", href: "/insights" },
     { key: "khutbah_of_week", icon: "🎤", de: "Khutbah der Woche", en: "Khutbah of the Week", href: "/khutbah-of-the-week" },
     { key: "reverts_corner", icon: "🤝", de: "Konvertiten-Ecke", en: "Revert's Corner", href: "/reverts-corner" },
-    { key: "verse_of_day", icon: "📜", de: "Koranvers des Tages", en: "Verse of the Day", href: "/verse-of-the-day" },
+    { key: "verse_of_day", icon: "📝", de: "Koranvers des Tages", en: "Verse of the Day", href: "/verse-of-the-day" },
     { key: "ladies_special", icon: "🧕🏻", de: "Ladies Special", en: "Ladies Special", href: "/ladies-special" },
     { key: "learning_path_generator", icon: "🗺️", de: "Lernpfad-Generator", en: "Learning Path Generator", href: "/learning-path" },
     { key: "mosque_finder", icon: "🕌", de: "Moscheefinder", en: "Mosque Finder", href: "/mosque-finder" },
