@@ -5,7 +5,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
-import { Play, Pause, Loader, Eye, EyeOff, BrainCircuit, Star, ArrowLeft } from 'lucide-react';
+import { Play, Pause, Loader2, Eye, EyeOff, BrainCircuit, Star, ArrowLeft } from 'lucide-react';
 import { useLanguage } from '@/components/language-provider';
 import { textToSpeech } from "@/ai/flows/text-to-speech";
 import { cn } from '@/lib/utils';
@@ -63,7 +63,7 @@ const content = {
 
 function MemorizationTool() {
   const { language } = useLanguage();
-  const c = content[language] || content.de;
+  const c = content[language];
   const { toast } = useToast();
   const searchParams = useSearchParams();
 
@@ -268,7 +268,7 @@ function MemorizationTool() {
                         </div>
                         <div className="flex justify-center gap-4 flex-wrap">
                             <Button variant="outline" size="lg" onClick={handlePlayAudio} disabled={loadingAudio}>
-                                {loadingAudio ? <Loader className="mr-2 h-5 w-5 animate-spin" /> : (playingAudio ? <Pause className="mr-2 h-5 w-5" /> : <Play className="mr-2 h-5 w-5" />)}
+                                {loadingAudio ? <Loader2 className="mr-2 h-5 w-5 animate-spin" /> : (playingAudio ? <Pause className="mr-2 h-5 w-5" /> : <Play className="mr-2 h-5 w-5" />)}
                                 {c.play}
                             </Button>
                             <Button variant="outline" size="lg" onClick={() => setIsHidden(!isHidden)}>
@@ -278,7 +278,7 @@ function MemorizationTool() {
                         </div>
                         {user ? (
                             <Button variant="outline" className="w-full" onClick={handleSaveFavorite} disabled={isSaving}>
-                               {isSaving ? <Loader className="mr-2 h-4 w-4 animate-spin" /> : <Star className="mr-2 h-4 w-4" />}
+                               {isSaving ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Star className="mr-2 h-4 w-4" />}
                                {c.saveToFavorites}
                             </Button>
                         ): (

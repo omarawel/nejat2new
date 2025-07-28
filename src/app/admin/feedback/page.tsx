@@ -17,7 +17,7 @@ export default function AdminFeedbackPage() {
             </Button>
             <Card className="text-center">
                 <CardHeader>
-                    
+                    <Construction className="h-12 w-12 mx-auto text-primary" />
                     <CardTitle className="text-2xl">Feedback Management</CardTitle>
                     <CardDescription>This feature is currently under construction.</CardDescription>
                 </CardHeader>
