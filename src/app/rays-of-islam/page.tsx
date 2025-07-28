@@ -93,7 +93,20 @@ const content = {
     }
 }
 
-const BookCard = ({ book }: { book: any }) => (
+interface Book {
+    title: string;
+    author: string;
+    description: string;
+    topicsTitle: string;
+    topics: string[];
+    buttonText: string;
+    link: string;
+    googlePlayButtonText: string;
+    googlePlayLink: string;
+    image: string;
+}
+
+const BookCard = ({ book }: { book: Book }) => (
     <Card className="w-full flex flex-col">
         <CardHeader className="items-center text-center">
              <div className="mb-4">

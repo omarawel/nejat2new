@@ -100,7 +100,7 @@ export function SubscriptionPlanForm({ plan, onFinished }: SubscriptionPlanFormP
                 toast({ title: c.successUpdate });
             } else {
                 // Create new plan
-                await addSubscriptionPlan(planData as any);
+                await addSubscriptionPlan(planData);
                 toast({ title: c.successCreate });
             }
             form.reset();

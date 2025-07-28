@@ -10,9 +10,13 @@ import { Button } from '@/components/ui/button';
 import { Check, Star, Loader2, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { auth } from '@/lib/firebase';
+import { auth, functions } from '@/lib/firebase';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { loadStripe } from '@stripe/stripe-js';
+import { httpsCallable } from 'firebase/functions';
+
+const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || '');
 
 const content = {
     de: {
@@ -64,7 +68,7 @@ const features = [
     { key: 'early_access', de: 'Früher Zugriff auf neue Features', en: 'Early Access to new Features' },
 ];
 
-const planFeatures: Record<string, Record<string, any>> = {
+const planFeatures: Record<string, Record<string, string | number | boolean>> = {
     free: {
         quran_hadith_access: true,
         qibla_prayer_times: true,
@@ -136,25 +140,35 @@ const SubscribePage: React.FC = () => {
         return () => unsubscribe();
     }, []);
 
-    const handleSubscribe = (planId: string) => {
+    const handleSubscribe = async (priceId: string) => {
         if (!user) {
             router.push('/login?redirect=/subscribe');
             return;
         }
-        
-        const selectedPlan = subscriptionPlans.find(p => p.id.toLowerCase() === planId.toLowerCase());
 
-        if (!selectedPlan || !selectedPlan.stripeLink) {
+        setLoadingRedirect(priceId);
+
+        try {
+            const createCheckoutSession = httpsCallable(functions, 'createStripeCheckoutSession');
+            const result = await createCheckoutSession({ priceId });
+            const { id: sessionId } = result.data as { id: string };
+
+            const stripe = await stripePromise;
+            if (stripe) {
+                const { error } = await stripe.redirectToCheckout({ sessionId });
+                if (error) {
+                    throw error;
+                }
+            }
+        } catch (error) {
+            console.error('Stripe checkout error:', error);
             toast({
                 variant: 'destructive',
                 title: 'Error',
-                description: 'Payment link is not available for this plan yet.'
+                description: c.errorRedirect
             });
-            return;
+            setLoadingRedirect(null);
         }
-
-        setLoadingRedirect(planId);
-        window.location.href = selectedPlan.stripeLink;
     };
 
 
@@ -195,12 +209,12 @@ const SubscribePage: React.FC = () => {
                             </CardContent>
                             <CardFooter>
                                 <Button
-                                    onClick={() => handleSubscribe(plan.id)}
+                                    onClick={() => handleSubscribe(plan.priceId)}
                                     className="w-full"
                                     variant={plan.id === 'pro' ? 'default' : 'outline'}
                                     disabled={!!loadingRedirect}
                                 >
-                                    {loadingRedirect === plan.id ? (
+                                    {loadingRedirect === plan.priceId ? (
                                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                                     ) : (
                                        <Star className="mr-2 h-4 w-4" />
@@ -252,12 +266,15 @@ const SubscribePage: React.FC = () => {
                                         <TableCell key={`btn-${planKey}`} className={cn("text-center p-4", planKey === 'pro' && 'bg-primary/5')}>
                                            {planKey !== 'free' && (
                                                <Button
-                                                    onClick={() => handleSubscribe(planKey)}
+                                                    onClick={() => {
+                                                        const plan = subscriptionPlans.find(p => p.id.toLowerCase() === planKey.toLowerCase());
+                                                        if (plan) handleSubscribe(plan.priceId);
+                                                    }}
                                                     className="w-full"
                                                     variant={planKey === 'pro' ? 'default' : 'outline'}
                                                     disabled={!!loadingRedirect}
                                                 >
-                                                    {loadingRedirect === planKey ? (
+                                                    {loadingRedirect === subscriptionPlans.find(p => p.id.toLowerCase() === planKey.toLowerCase())?.priceId ? (
                                                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                                                     ) : (
                                                        <Star className="mr-2 h-4 w-4" />

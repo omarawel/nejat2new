@@ -51,7 +51,7 @@ export function QuizSession({ quizTitle, questions, onFinish, backButtonText }: 
                             <Award className="h-12 w-12 text-primary" />
                         </div>
                         <CardTitle className="text-3xl">Quiz abgeschlossen!</CardTitle>
-                        <CardDescription>"{quizTitle}"</CardDescription>
+                        <CardDescription>&quot;{quizTitle}&quot;</CardDescription>
                     </CardHeader>
                     <CardContent>
                         <p className="text-4xl font-bold">

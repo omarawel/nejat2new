@@ -11,7 +11,7 @@ export const storeSurahList = (surahs: unknown) => {
     return set(SURAH_LIST_KEY, surahs);
 }
 
-export const getSurahList = () => {
+export const getSurahList = (): Promise<unknown> => {
     return get(SURAH_LIST_KEY);
 }
 
@@ -24,22 +24,22 @@ export const getSurahEdition = (surahNumber: number, editionIdentifier: string) 
     return get(getEditionKey(surahNumber, editionIdentifier));
 }
 
-export const getSurahWithEditions = async (surahNumber: number, editions: string[]) => {
+export const getSurahWithEditions = async (surahNumber: number, editions: string[]): Promise<unknown[]> => {
     const results = await Promise.all(
         editions.map(id => getSurahEdition(surahNumber, id))
     );
     
     // If any of the required editions are missing, return null
     if (results.some(r => !r)) {
-        return null;
+        return [];
     }
 
-    return results as any[]; // Cast to any[] to satisfy caller, while still checking for existence
+    return results; // Cast to any[] to satisfy caller, while still checking for existence
 }
 
 // --- Check and Clear ---
 export const isQuranDownloaded = async () => {
-    const surahList = await getSurahList() as any[];
+    const surahList = await getSurahList() as unknown[];
     if (!surahList || surahList.length !== 114) {
         return false;
     }

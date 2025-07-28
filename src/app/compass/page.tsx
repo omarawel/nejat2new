@@ -94,10 +94,11 @@ export default function CompassPage() {
         setDistance(R * centralAngle);
     }, []);
 
-    const handleOrientation = (event: CustomDeviceOrientationEvent) => {
-        let alpha = event.alpha;
-        if (typeof event.webkitCompassHeading !== 'undefined') {
-            alpha = event.webkitCompassHeading;
+    const handleOrientation = (event: Event) => {
+        const orientationEvent = event as CustomDeviceOrientationEvent;
+        let alpha = orientationEvent.alpha;
+        if (typeof orientationEvent.webkitCompassHeading !== 'undefined') {
+            alpha = orientationEvent.webkitCompassHeading;
         }
         if (alpha !== null) {
             setHeading(alpha);
@@ -116,14 +117,15 @@ export default function CompassPage() {
                     setStatus(c.permissionError);
                     return;
                 }
-            } catch (e) {
-                setError(c.permissionErrorDesc);
+            } catch (e: unknown) {
+                const err = e as Error;
+                setError(err.message || c.permissionErrorDesc);
                 setStatus(c.permissionError);
                 return;
             }
         }
         
-        window.addEventListener('deviceorientation', handleOrientation as (e: Event) => void);
+        window.addEventListener('deviceorientation', handleOrientation);
 
         navigator.geolocation.getCurrentPosition(
             (position) => {
@@ -142,7 +144,7 @@ export default function CompassPage() {
     useEffect(() => {
         requestPermissions();
         return () => {
-            window.removeEventListener('deviceorientation', handleOrientation as (e: Event) => void);
+            window.removeEventListener('deviceorientation', handleOrientation);
         };
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);

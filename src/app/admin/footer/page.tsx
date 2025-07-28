@@ -174,7 +174,7 @@ export default function AdminFooterPage() {
                 </TabsList>
                 <TabsContent value="de" className="space-y-6 mt-6">
                     <Card>
-                        <CardHeader><CardTitle>Beschreibung & Sektionen</CardTitle></CardHeader>
+                        <CardHeader><CardTitle>Beschreibung &amp; Sektionen</CardTitle></CardHeader>
                         <CardContent className="space-y-4">
                             <div className="space-y-2"><Label>Beschreibung</Label><Textarea value={footerContent.de?.description || ''} onChange={(e) => handleInputChange('de', 'description', e.target.value)} /></div>
                             <div className="space-y-2"><Label>Titel &apos;Unternehmen&apos;</Label><Input value={footerContent.de?.company || ''} onChange={(e) => handleInputChange('de', 'company', e.target.value)} /></div>
@@ -191,7 +191,7 @@ export default function AdminFooterPage() {
                 </TabsContent>
                 <TabsContent value="en" className="space-y-6 mt-6">
                      <Card>
-                        <CardHeader><CardTitle>Description & Sections</CardTitle></CardHeader>
+                        <CardHeader><CardTitle>Description &amp; Sections</CardTitle></CardHeader>
                         <CardContent className="space-y-4">
                             <div className="space-y-2"><Label>Description</Label><Textarea value={footerContent.en?.description || ''} onChange={(e) => handleInputChange('en', 'description', e.target.value)} /></div>
                             <div className="space-y-2"><Label>Title &apos;Company&apos;</Label><Input value={footerContent.en?.company || ''} onChange={(e) => handleInputChange('en', 'company', e.target.value)} /></div>
