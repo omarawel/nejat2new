@@ -7,7 +7,7 @@
       "**/node_modules/**"
     ],
     "frameworksBackend": {
-      "region": "europe-west4"
+      "region": "europe-west1"
     }
   },
   "firestore": {
@@ -41,5 +41,16 @@
   "storage": {
     "rules": "storage.rules"
   },
-  "location": "eur3"
+  "location": "eur3",
+  "apphosting": {
+    "backendId": "mywebapp",
+    "rootDir": "/",
+    "ignore": [
+      "node_modules",
+      ".git",
+      "firebase-debug.log",
+      "firebase-debug.*.log",
+      "functions"
+    ]
+  }
 }

@@ -1,5 +1,6 @@
 {
   "firebase_hosting": {
     "deploymentHostingUrl": "https://freelancer-ai-5067c.web.app"
-  }
+  },
+  "gemini_api": {}
 }
