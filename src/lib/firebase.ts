@@ -12,9 +12,9 @@ const firebaseConfig = {
   apiKey: "AIzaSyD5jMnxMBVrLlJbLHyvc_SvgbGYT_2-iPU",
   authDomain: "nejat-50nk7.firebaseapp.com",
   projectId: "nejat-50nk7",
-  storageBucket: "nejat-50nk7.appspot.com",
+  storageBucket: "nejat-50nk7.firebasestorage.app",
   messagingSenderId: "623928651663",
-  appId: "1:623928651663:web:8e36d43fd452fbdfc925fa"
+  appId: "1:623928651663:web:7566fc6754017248c925fa"
 };
 
 

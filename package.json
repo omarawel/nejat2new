@@ -48,7 +48,7 @@
     "date-fns": "^3.6.0",
     "dotenv": "^16.5.0",
     "embla-carousel-react": "^8.6.0",
-    "firebase": "^10.12.4",
+    "firebase": "^10.14.1",
     "genkit": "^1.15.5",
     "html-to-image": "^1.11.11",
     "idb-keyval": "^6.2.1",
