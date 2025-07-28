@@ -1,3 +1,4 @@
+
 import * as functions from 'firebase-functions';
 import Stripe from 'stripe';
 
@@ -46,12 +47,13 @@ export const createStripeCheckoutSession = functions.https.onCall(async (data, c
     });
 
     return { id: session.id };
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';
     console.error('Fehler beim Erstellen der Stripe Checkout Session:', error);
     throw new functions.https.HttpsError(
       'internal',
       'Fehler beim Erstellen der Checkout Session.',
-      error.message
+      errorMessage
     );
   }
 });

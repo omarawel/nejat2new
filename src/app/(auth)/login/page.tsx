@@ -29,7 +29,7 @@ import { Input } from "@/components/ui/input"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { useToast } from "@/hooks/use-toast"
 import { auth } from "@/lib/firebase"
-import { signInWithEmailAndPassword, sendPasswordResetEmail } from "firebase/auth"
+import { signInWithEmailAndPassword, sendPasswordResetEmail, FirebaseError } from "firebase/auth"
 import { useLanguage } from "@/components/language-provider"
 
 const formSchema = z.object({
@@ -117,21 +117,26 @@ export default function LoginPage() {
         description: c.welcomeBack,
       })
       router.push("/")
-    } catch (error: any) {
-      switch (error.code) {
-        case "auth/user-not-found":
-          setError(c.userNotFound);
-          break;
-        case "auth/wrong-password":
-          setError(c.wrongPassword);
-          break;
-        case "auth/invalid-credential":
-           setError(c.invalidCredential);
-           break;
-        default:
-          setError(c.unexpectedError);
-          console.error(error);
-          break;
+    } catch (err: unknown) {
+      if (err instanceof FirebaseError) {
+        switch (err.code) {
+          case "auth/user-not-found":
+            setError(c.userNotFound);
+            break;
+          case "auth/wrong-password":
+            setError(c.wrongPassword);
+            break;
+          case "auth/invalid-credential":
+            setError(c.invalidCredential);
+            break;
+          default:
+            setError(c.unexpectedError);
+            console.error(err);
+            break;
+        }
+      } else {
+         setError(c.unexpectedError);
+         console.error(err);
       }
     } finally {
       setLoading(false)
@@ -151,8 +156,8 @@ export default function LoginPage() {
             title: c.passwordResetSent,
             description: c.checkInbox,
         });
-    } catch (error: any) {
-        if (error.code === 'auth/user-not-found') {
+    } catch (err: unknown) {
+        if (err instanceof FirebaseError && err.code === 'auth/user-not-found') {
              toast({
                 variant: "destructive",
                 title: c.error,

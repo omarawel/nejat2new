@@ -38,7 +38,7 @@ const staticContent = {
     }
 }
 
-const iconMap: { [key: string]: React.ComponentType<any> } = {
+const iconMap: { [key: string]: React.ComponentType<React.SVGProps<SVGSVGElement>> } = {
     FacebookIcon,
     TwitterIcon,
     InstagramIcon,

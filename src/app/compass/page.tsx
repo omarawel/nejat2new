@@ -57,6 +57,11 @@ function toDegrees(radians: number) {
     return radians * 180 / Math.PI;
 }
 
+interface CustomDeviceOrientationEvent extends DeviceOrientationEvent {
+  webkitCompassHeading?: number;
+}
+
+
 export default function CompassPage() {
     const { language } = useLanguage();
     const c = content[language];
@@ -89,10 +94,10 @@ export default function CompassPage() {
         setDistance(R * centralAngle);
     }, []);
 
-    const handleOrientation = (event: DeviceOrientationEvent) => {
+    const handleOrientation = (event: CustomDeviceOrientationEvent) => {
         let alpha = event.alpha;
-        if (typeof (event as any).webkitCompassHeading !== 'undefined') {
-            alpha = (event as any).webkitCompassHeading;
+        if (typeof event.webkitCompassHeading !== 'undefined') {
+            alpha = event.webkitCompassHeading;
         }
         if (alpha !== null) {
             setHeading(alpha);
@@ -103,9 +108,9 @@ export default function CompassPage() {
         setStatus(c.requestingPermissions);
         setError(null);
 
-        if (typeof (DeviceOrientationEvent as any).requestPermission === 'function') {
+        if (typeof (DeviceOrientationEvent as unknown as { requestPermission?: () => Promise<PermissionState> }).requestPermission === 'function') {
             try {
-                const permission = await (DeviceOrientationEvent as any).requestPermission();
+                const permission = await (DeviceOrientationEvent as unknown as { requestPermission: () => Promise<PermissionState> }).requestPermission();
                 if (permission !== 'granted') {
                     setError(c.permissionErrorDesc);
                     setStatus(c.permissionError);
@@ -118,7 +123,7 @@ export default function CompassPage() {
             }
         }
         
-        window.addEventListener('deviceorientation', handleOrientation);
+        window.addEventListener('deviceorientation', handleOrientation as (e: Event) => void);
 
         navigator.geolocation.getCurrentPosition(
             (position) => {
@@ -137,7 +142,7 @@ export default function CompassPage() {
     useEffect(() => {
         requestPermissions();
         return () => {
-            window.removeEventListener('deviceorientation', handleOrientation);
+            window.removeEventListener('deviceorientation', handleOrientation as (e: Event) => void);
         };
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);

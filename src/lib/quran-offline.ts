@@ -1,3 +1,4 @@
+
 import { get, set, del, keys } from 'idb-keyval';
 
 const SURAH_LIST_KEY = 'quran_surah_list';
@@ -6,7 +7,7 @@ const getEditionKey = (surahNumber: number, edition: string) => `quran_surah_${s
 
 
 // --- Surah List ---
-export const storeSurahList = (surahs: any[]) => {
+export const storeSurahList = (surahs: unknown) => {
     return set(SURAH_LIST_KEY, surahs);
 }
 
@@ -15,7 +16,7 @@ export const getSurahList = () => {
 }
 
 // --- Individual Surah Editions ---
-export const storeSurahEdition = (surahNumber: number, editionIdentifier: string, data: any) => {
+export const storeSurahEdition = (surahNumber: number, editionIdentifier: string, data: unknown) => {
     return set(getEditionKey(surahNumber, editionIdentifier), data);
 }
 
@@ -33,12 +34,12 @@ export const getSurahWithEditions = async (surahNumber: number, editions: string
         return null;
     }
 
-    return results;
+    return results as any[]; // Cast to any[] to satisfy caller, while still checking for existence
 }
 
 // --- Check and Clear ---
 export const isQuranDownloaded = async () => {
-    const surahList = await getSurahList();
+    const surahList = await getSurahList() as any[];
     if (!surahList || surahList.length !== 114) {
         return false;
     }

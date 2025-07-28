@@ -1,3 +1,4 @@
+
 import * as functions from 'firebase-functions';
 import Stripe from 'stripe';
 import { getFirestore, Timestamp } from 'firebase-admin/firestore';
@@ -32,9 +33,10 @@ export const stripeWebhook = functions.https.onRequest(async (request, response)
       throw new Error('No Stripe signature found!');
     }
     event = stripe.webhooks.constructEvent(request.rawBody, sig, endpointSecret);
-  } catch (err: any) {
-    console.error('Webhook signature verification failed.', err.message);
-    response.status(400).send(`Webhook Error: ${err.message}`);
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : 'An unknown error occurred';
+    console.error('Webhook signature verification failed.', message);
+    response.status(400).send(`Webhook Error: ${message}`);
     return;
   }
 

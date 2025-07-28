@@ -32,7 +32,7 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Terminal } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
 import { auth } from "@/lib/firebase"
-import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth"
+import { createUserWithEmailAndPassword, updateProfile, FirebaseError } from "firebase/auth"
 import { useLanguage } from "@/components/language-provider"
 
 
@@ -141,8 +141,9 @@ export default function SignupPage() {
       
       router.push("/");
 
-    } catch (error: any) {
-       switch (error.code) {
+    } catch (err: unknown) {
+      if (err instanceof FirebaseError) {
+       switch (err.code) {
         case "auth/email-already-in-use":
           setError(c.emailInUse);
           break;
@@ -157,8 +158,12 @@ export default function SignupPage() {
           break;
         default:
           setError(c.unexpectedError);
-          console.error(error);
+          console.error(err);
           break;
+        }
+      } else {
+        setError(c.unexpectedError);
+        console.error(err);
       }
     } finally {
       setLoading(false)
