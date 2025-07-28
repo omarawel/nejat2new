@@ -265,7 +265,7 @@ export default function DuaGeneratorPage() {
                         )}
                          {!isLoading && !generatedDua && !error && (
                             <div className="flex-grow flex items-center justify-center text-muted-foreground">
-                                <p>Your Du'a will appear here.</p>
+                                <p>Your Du&apos;a will appear here.</p>
                             </div>
                          )}
                     </CardContent>

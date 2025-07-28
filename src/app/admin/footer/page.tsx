@@ -177,15 +177,15 @@ export default function AdminFooterPage() {
                         <CardHeader><CardTitle>Beschreibung & Sektionen</CardTitle></CardHeader>
                         <CardContent className="space-y-4">
                             <div className="space-y-2"><Label>Beschreibung</Label><Textarea value={footerContent.de?.description || ''} onChange={(e) => handleInputChange('de', 'description', e.target.value)} /></div>
-                            <div className="space-y-2"><Label>Titel 'Unternehmen'</Label><Input value={footerContent.de?.company || ''} onChange={(e) => handleInputChange('de', 'company', e.target.value)} /></div>
-                            <div className="space-y-2"><Label>Titel 'Rechtliches'</Label><Input value={footerContent.de?.legal || ''} onChange={(e) => handleInputChange('de', 'legal', e.target.value)} /></div>
-                            <div className="space-y-2"><Label>Link 'Über uns'</Label><Input value={footerContent.de?.about || ''} onChange={(e) => handleInputChange('de', 'about', e.target.value)} /></div>
-                            <div className="space-y-2"><Label>Link 'Kontakt'</Label><Input value={footerContent.de?.contact || ''} onChange={(e) => handleInputChange('de', 'contact', e.target.value)} /></div>
-                            <div className="space-y-2"><Label>Link 'Support'</Label><Input value={footerContent.de?.support || ''} onChange={(e) => handleInputChange('de', 'support', e.target.value)} /></div>
-                             <div className="space-y-2"><Label>Link 'AGB'</Label><Input value={footerContent.de?.terms || ''} onChange={(e) => handleInputChange('de', 'terms', e.target.value)} /></div>
-                            <div className="space-y-2"><Label>Link 'Datenschutz'</Label><Input value={footerContent.de?.privacy || ''} onChange={(e) => handleInputChange('de', 'privacy', e.target.value)} /></div>
-                            <div className="space-y-2"><Label>Link 'Impressum'</Label><Input value={footerContent.de?.imprint || ''} onChange={(e) => handleInputChange('de', 'imprint', e.target.value)} /></div>
-                            <div className="space-y-2"><Label>Text 'Folge uns'</Label><Input value={footerContent.de?.followUs || ''} onChange={(e) => handleInputChange('de', 'followUs', e.target.value)} /></div>
+                            <div className="space-y-2"><Label>Titel &apos;Unternehmen&apos;</Label><Input value={footerContent.de?.company || ''} onChange={(e) => handleInputChange('de', 'company', e.target.value)} /></div>
+                            <div className="space-y-2"><Label>Titel &apos;Rechtliches&apos;</Label><Input value={footerContent.de?.legal || ''} onChange={(e) => handleInputChange('de', 'legal', e.target.value)} /></div>
+                            <div className="space-y-2"><Label>Link &apos;Über uns&apos;</Label><Input value={footerContent.de?.about || ''} onChange={(e) => handleInputChange('de', 'about', e.target.value)} /></div>
+                            <div className="space-y-2"><Label>Link &apos;Kontakt&apos;</Label><Input value={footerContent.de?.contact || ''} onChange={(e) => handleInputChange('de', 'contact', e.target.value)} /></div>
+                            <div className="space-y-2"><Label>Link &apos;Support&apos;</Label><Input value={footerContent.de?.support || ''} onChange={(e) => handleInputChange('de', 'support', e.target.value)} /></div>
+                             <div className="space-y-2"><Label>Link &apos;AGB&apos;</Label><Input value={footerContent.de?.terms || ''} onChange={(e) => handleInputChange('de', 'terms', e.target.value)} /></div>
+                            <div className="space-y-2"><Label>Link &apos;Datenschutz&apos;</Label><Input value={footerContent.de?.privacy || ''} onChange={(e) => handleInputChange('de', 'privacy', e.target.value)} /></div>
+                            <div className="space-y-2"><Label>Link &apos;Impressum&apos;</Label><Input value={footerContent.de?.imprint || ''} onChange={(e) => handleInputChange('de', 'imprint', e.target.value)} /></div>
+                            <div className="space-y-2"><Label>Text &apos;Folge uns&apos;</Label><Input value={footerContent.de?.followUs || ''} onChange={(e) => handleInputChange('de', 'followUs', e.target.value)} /></div>
                         </CardContent>
                     </Card>
                 </TabsContent>
@@ -194,15 +194,15 @@ export default function AdminFooterPage() {
                         <CardHeader><CardTitle>Description & Sections</CardTitle></CardHeader>
                         <CardContent className="space-y-4">
                             <div className="space-y-2"><Label>Description</Label><Textarea value={footerContent.en?.description || ''} onChange={(e) => handleInputChange('en', 'description', e.target.value)} /></div>
-                            <div className="space-y-2"><Label>Title 'Company'</Label><Input value={footerContent.en?.company || ''} onChange={(e) => handleInputChange('en', 'company', e.target.value)} /></div>
-                            <div className="space-y-2"><Label>Title 'Legal'</Label><Input value={footerContent.en?.legal || ''} onChange={(e) => handleInputChange('en', 'legal', e.target.value)} /></div>
-                            <div className="space-y-2"><Label>Link 'About Us'</Label><Input value={footerContent.en?.about || ''} onChange={(e) => handleInputChange('en', 'about', e.target.value)} /></div>
-                            <div className="space-y-2"><Label>Link 'Contact'</Label><Input value={footerContent.en?.contact || ''} onChange={(e) => handleInputChange('en', 'contact', e.target.value)} /></div>
-                            <div className="space-y-2"><Label>Link 'Support'</Label><Input value={footerContent.en?.support || ''} onChange={(e) => handleInputChange('en', 'support', e.target.value)} /></div>
-                             <div className="space-y-2"><Label>Link 'Terms'</Label><Input value={footerContent.en?.terms || ''} onChange={(e) => handleInputChange('en', 'terms', e.target.value)} /></div>
-                            <div className="space-y-2"><Label>Link 'Privacy'</Label><Input value={footerContent.en?.privacy || ''} onChange={(e) => handleInputChange('en', 'privacy', e.target.value)} /></div>
-                            <div className="space-y-2"><Label>Link 'Imprint'</Label><Input value={footerContent.en?.imprint || ''} onChange={(e) => handleInputChange('en', 'imprint', e.target.value)} /></div>
-                            <div className="space-y-2"><Label>Text 'Follow Us'</Label><Input value={footerContent.en?.followUs || ''} onChange={(e) => handleInputChange('en', 'followUs', e.target.value)} /></div>
+                            <div className="space-y-2"><Label>Title &apos;Company&apos;</Label><Input value={footerContent.en?.company || ''} onChange={(e) => handleInputChange('en', 'company', e.target.value)} /></div>
+                            <div className="space-y-2"><Label>Title &apos;Legal&apos;</Label><Input value={footerContent.en?.legal || ''} onChange={(e) => handleInputChange('en', 'legal', e.target.value)} /></div>
+                            <div className="space-y-2"><Label>Link &apos;About Us&apos;</Label><Input value={footerContent.en?.about || ''} onChange={(e) => handleInputChange('en', 'about', e.target.value)} /></div>
+                            <div className="space-y-2"><Label>Link &apos;Contact&apos;</Label><Input value={footerContent.en?.contact || ''} onChange={(e) => handleInputChange('en', 'contact', e.target.value)} /></div>
+                            <div className="space-y-2"><Label>Link &apos;Support&apos;</Label><Input value={footerContent.en?.support || ''} onChange={(e) => handleInputChange('en', 'support', e.target.value)} /></div>
+                             <div className="space-y-2"><Label>Link &apos;Terms&apos;</Label><Input value={footerContent.en?.terms || ''} onChange={(e) => handleInputChange('en', 'terms', e.target.value)} /></div>
+                            <div className="space-y-2"><Label>Link &apos;Privacy&apos;</Label><Input value={footerContent.en?.privacy || ''} onChange={(e) => handleInputChange('en', 'privacy', e.target.value)} /></div>
+                            <div className="space-y-2"><Label>Link &apos;Imprint&apos;</Label><Input value={footerContent.en?.imprint || ''} onChange={(e) => handleInputChange('en', 'imprint', e.target.value)} /></div>
+                            <div className="space-y-2"><Label>Text &apos;Follow Us&apos;</Label><Input value={footerContent.en?.followUs || ''} onChange={(e) => handleInputChange('en', 'followUs', e.target.value)} /></div>
                         </CardContent>
                     </Card>
                 </TabsContent>

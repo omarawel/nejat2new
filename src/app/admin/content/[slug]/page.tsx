@@ -28,7 +28,7 @@ export default function AdminContentPage({ params }: { params: { slug: string } 
                     <CardDescription>This feature is currently under construction.</CardDescription>
                 </CardHeader>
                 <CardContent>
-                    <p className="text-muted-foreground">The functionality to manage the content for the '{pageTitle}' page will be available here soon.</p>
+                    <p className="text-muted-foreground">The functionality to manage the content for the &apos;{pageTitle}&apos; page will be available here soon.</p>
                 </CardContent>
             </Card>
         </div>
