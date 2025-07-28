@@ -43,7 +43,7 @@ const formSchema = z.object({
   confirmPassword: z.string(),
   terms: z.boolean().refine(val => val === true, { message: "You must accept the terms and conditions." }),
 }).refine(data => data.password === data.confirmPassword, {
-  message: "Passwords don't match",
+  message: "Passwords don&apos;t match",
   path: ["confirmPassword"],
 });
 
