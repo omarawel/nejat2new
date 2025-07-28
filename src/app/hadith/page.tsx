@@ -464,7 +464,7 @@ export default function HadithPage() {
                               </AccordionTrigger>
                               <AccordionContent>
                                   {openHadith === `item-${hadith.id}` && (
-                                      <HadithContent hadith={hadith} language={language} />
+                                      <HadithContent hadith={hadith} language={language} c={c}/>
                                   )}
                               </AccordionContent>
                           </AccordionItem>

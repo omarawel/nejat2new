@@ -87,7 +87,7 @@ export const checkAndDecrementQuota = async (userId: string | null): Promise<{ s
         // Not logged in, check free tier quota from local storage or session
         // For simplicity, we'll give 3 requests to non-logged-in users.
         // A more robust solution might use a session or local storage with a timestamp.
-        let sessionRequests = parseInt(sessionStorage.getItem('freeRequests') || '0', 10);
+        const sessionRequests = parseInt(sessionStorage.getItem('freeRequests') || '0', 10);
         const quota = { limit: FREE_TIER_LIMIT, remaining: FREE_TIER_LIMIT - sessionRequests };
 
         if (quota.remaining <= 0) {
@@ -103,11 +103,10 @@ export const checkAndDecrementQuota = async (userId: string | null): Promise<{ s
     const usage = await getUserUsage(userId);
     const now = new Date();
     
-    let currentPlan: SubscriptionPlan | undefined;
     let limit = FREE_TIER_LIMIT; // Default to free tier limit
 
     if (subscription && subscription.status === 'active') {
-        currentPlan = allPlans.find(p => p.id === subscription.planId);
+        const currentPlan = allPlans.find(p => p.id === subscription.planId);
         if (currentPlan) {
             limit = currentPlan.aiRequestLimit;
         }
@@ -140,7 +139,7 @@ export const checkAndDecrementQuota = async (userId: string | null): Promise<{ s
 // Get only the user's quota without decrementing it
 export const getUserQuota = async (userId: string | null): Promise<UserQuota> => {
      if (!userId) {
-        let sessionRequests = parseInt(sessionStorage.getItem('freeRequests') || '0', 10);
+        const sessionRequests = parseInt(sessionStorage.getItem('freeRequests') || '0', 10);
         return { limit: FREE_TIER_LIMIT, remaining: Math.max(0, FREE_TIER_LIMIT - sessionRequests) };
     }
 
