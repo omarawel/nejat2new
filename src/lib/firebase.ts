@@ -11,6 +11,7 @@ import { getAnalytics } from "firebase/analytics";
 const firebaseConfig = {
   apiKey: "AIzaSyD5jMnxMBVrLlJbLHyvc_SvgbGYT_2-iPU",
   authDomain: "nejat-50nk7.firebaseapp.com",
+  databaseURL: "https://nejat-50nk7-default-rtdb.europe-west1.firebasedatabase.app",
   projectId: "nejat-50nk7",
   storageBucket: "nejat-50nk7.firebasestorage.app",
   messagingSenderId: "623928651663",
