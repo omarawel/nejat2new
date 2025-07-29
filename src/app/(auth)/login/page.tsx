@@ -28,9 +28,10 @@ import {
 import { Input } from "@/components/ui/input"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { useToast } from "@/hooks/use-toast"
-import { auth } from "@/lib/firebase"
-import { signInWithEmailAndPassword, sendPasswordResetEmail, GoogleAuthProvider, signInWithPopup } from "firebase/auth"
+import { auth, db } from "@/lib/firebase"
+import { signInWithEmailAndPassword, sendPasswordResetEmail, GoogleAuthProvider, signInWithPopup, UserCredential } from "firebase/auth"
 import { useLanguage } from "@/components/language-provider"
+import { doc, setDoc, getDoc, updateProfile } from "firebase/firestore";
 
 const formSchema = z.object({
   email: z.string().email({ message: "Invalid email address." }),
@@ -90,6 +91,23 @@ const content = {
   },
 }
 
+const handleUserCreation = async (userCred: UserCredential, name?: string) => {
+    const user = userCred.user;
+    const userDocRef = doc(db, "users", user.uid);
+    const userDoc = await getDoc(userDocRef);
+
+    if (!userDoc.exists()) {
+        await setDoc(userDocRef, {
+            email: user.email,
+            displayName: name || user.displayName,
+            createdAt: new Date(),
+        });
+        if (name && user.displayName !== name) {
+            await updateProfile(user, { displayName: name });
+        }
+    }
+};
+
 
 export default function LoginPage() {
   const { language } = useLanguage();
@@ -120,7 +138,7 @@ export default function LoginPage() {
         description: c.welcomeBack,
       })
       router.push("/")
-    } catch (err: unknown) {
+    } catch (err) {
       if (typeof err === 'object' && err !== null && 'code' in err) {
         const firebaseError = err as { code: string };
         switch (firebaseError.code) {
@@ -160,7 +178,7 @@ export default function LoginPage() {
             title: c.passwordResetSent,
             description: c.checkInbox,
         });
-    } catch (err: unknown) {
+    } catch (err) {
         if (typeof err === 'object' && err !== null && 'code' in err && (err as {code: string}).code === 'auth/user-not-found') {
              toast({
                 variant: "destructive",
@@ -182,7 +200,8 @@ export default function LoginPage() {
     setError(null);
     const provider = new GoogleAuthProvider();
     try {
-      await signInWithPopup(auth, provider);
+      const userCredential = await signInWithPopup(auth, provider);
+      await handleUserCreation(userCredential);
        toast({
         title: c.loginSuccess,
         description: c.welcomeBack,
@@ -310,5 +329,3 @@ export default function LoginPage() {
     </Card>
   )
 }
-
-    

@@ -31,8 +31,9 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Terminal } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
-import { auth } from "@/lib/firebase"
-import { createUserWithEmailAndPassword, updateProfile, GoogleAuthProvider, signInWithPopup } from "firebase/auth"
+import { auth, db } from "@/lib/firebase"
+import { createUserWithEmailAndPassword, updateProfile, GoogleAuthProvider, signInWithPopup, UserCredential } from "firebase/auth"
+import { doc, setDoc, getDoc } from "firebase/firestore";
 import { useLanguage } from "@/components/language-provider"
 
 
@@ -98,6 +99,23 @@ const content = {
     }
 };
 
+const handleUserCreation = async (userCred: UserCredential, name?: string) => {
+    const user = userCred.user;
+    const userDocRef = doc(db, "users", user.uid);
+    const userDoc = await getDoc(userDocRef);
+
+    if (!userDoc.exists()) {
+        await setDoc(userDocRef, {
+            email: user.email,
+            displayName: name || user.displayName,
+            createdAt: new Date(),
+        });
+        if (name && user.displayName !== name) {
+            await updateProfile(user, { displayName: name });
+        }
+    }
+};
+
 
 export default function SignupPage() {
   const { language } = useLanguage();
@@ -132,10 +150,7 @@ export default function SignupPage() {
         values.password
       );
       
-      const user = userCredential.user;
-      await updateProfile(user, {
-        displayName: values.name,
-      });
+      await handleUserCreation(userCredential, values.name);
 
       toast({
         title: c.accountCreated,
@@ -179,7 +194,8 @@ export default function SignupPage() {
     setError(null);
     const provider = new GoogleAuthProvider();
     try {
-      await signInWithPopup(auth, provider);
+      const userCredential = await signInWithPopup(auth, provider);
+      await handleUserCreation(userCredential);
        toast({
         title: c.accountCreated,
         description: c.signedUpSuccess,
