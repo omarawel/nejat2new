@@ -200,7 +200,7 @@ export default function HadithOfTheDayPage() {
                         </div>
                     </CardContent>
                 </Card>
-                 {user && <div className="w-full mt-4 grid grid-cols-3 gap-2">
+                 <div className="w-full mt-4 grid grid-cols-3 gap-2">
                     <Button variant="outline" aria-label="Share" onClick={handleShare}>
                         <Share2 className="h-5 w-5" />
                     </Button>
@@ -210,7 +210,7 @@ export default function HadithOfTheDayPage() {
                     <Button variant="outline" aria-label="Favorite" onClick={handleSaveFavorite} disabled={isSaving}>
                        {isSaving ? <Loader2 className="h-5 w-5 animate-spin"/> : <Heart className="h-5 w-5" />}
                     </Button>
-                </div>}
+                </div>
             </div>
         </div>
     );
