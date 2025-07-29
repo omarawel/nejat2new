@@ -73,7 +73,7 @@ exports.stripeWebhook = functions.https.onRequest(async (request, response) => {
     }
     // Handle the event
     try {
-        switch (event.type) {
+        switch (event.type) { // Cast to any to bypass type checking
             case 'checkout.session.completed':
                 const session = event.data.object;
                 if (session.mode === 'subscription' && session.customer && session.subscription) {
