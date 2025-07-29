@@ -94,7 +94,7 @@ export function HadithOfTheDayCard() {
                         <Loader2 className="h-10 w-10 animate-spin text-primary" />
                     ) : quote ? (
                         <div className="space-y-4">
-                            <p className="text-xl md:text-2xl font-quranic text-right tracking-wide leading-relaxed">{quote.arabic}</p>
+                            <p className="text-xl md:text-2xl font-quranic text-center tracking-wide leading-relaxed">{quote.arabic}</p>
                             <p className="text-base md:text-lg leading-relaxed text-foreground/90">"{language === 'de' ? quote.text_de : quote.text_en}"</p>
                             <p className="text-sm text-muted-foreground">{c.narrated} {language === 'de' ? quote.author_de : quote.author_en} [{quote.reference}]</p>
                         </div>
@@ -111,4 +111,3 @@ export function HadithOfTheDayCard() {
         </Card>
     );
 }
-
