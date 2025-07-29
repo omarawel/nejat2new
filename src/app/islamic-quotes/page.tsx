@@ -1,4 +1,3 @@
-
 "use client"
 
 import { useEffect, useState, useCallback, useRef } from 'react';
@@ -12,7 +11,7 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '@/lib/firebase';
 import { addFavorite } from '@/lib/favorites';
 import { toBlob } from 'html-to-image';
-import { Badge } from '../ui/badge';
+import { Badge } from '@/components/ui/badge';
 import { Logo } from '@/components/icons';
 
 interface Quote {
