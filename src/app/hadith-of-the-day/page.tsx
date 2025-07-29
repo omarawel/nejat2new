@@ -196,11 +196,7 @@ export default function HadithOfTheDayPage() {
                         </div>
                     </CardContent>
                 </Card>
-                 <div className="w-full mt-4 grid grid-cols-3 gap-2">
-                    <Button variant="outline" onClick={getNewQuote} disabled={authLoading}>
-                        <RefreshCw className={`mr-2 h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
-                        {c.newHadith}
-                    </Button>
+                 <div className="w-full mt-4 grid grid-cols-2 gap-2">
                     <Button variant="outline" aria-label="Share" onClick={handleShare} disabled={authLoading}>
                         <Share2 className="h-5 w-5" />
                     </Button>
