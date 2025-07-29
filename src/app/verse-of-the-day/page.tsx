@@ -118,24 +118,6 @@ export default function VerseOfTheDayPage() {
         });
     }
 
-    const getNewVerse = useCallback(() => {
-        if (!user) {
-            showLoginToast();
-            return;
-        }
-        setLoading(true);
-        // Simulate API fetch delay
-        setTimeout(() => {
-            const randomIndex = Math.floor(Math.random() * verses.length);
-            let newVerse = verses[randomIndex];
-            if (verse && newVerse.verse_ar === verse.verse_ar) {
-                 newVerse = verses[(randomIndex + 1) % verses.length];
-            }
-            setVerse(newVerse);
-            setLoading(false);
-        }, 300);
-    }, [verse, user, c.loginToSave]);
-
     useEffect(() => {
         // This effect runs only once on the client, after hydration
         const randomIndex = Math.floor(Math.random() * verses.length);

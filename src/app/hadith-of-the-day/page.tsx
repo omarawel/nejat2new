@@ -99,24 +99,8 @@ export default function HadithOfTheDayPage() {
         });
     }
 
-    const getNewQuote = useCallback(() => {
-        if (!user) {
-            showLoginToast();
-            return;
-        }
-        setLoading(true);
-        setTimeout(() => {
-            const randomIndex = Math.floor(Math.random() * quotes.length);
-            let newQuote = quotes[randomIndex];
-            if (quote && newQuote.arabic === quote.arabic) {
-                 newQuote = quotes[(randomIndex + 1) % quotes.length];
-            }
-            setQuote(newQuote);
-            setLoading(false);
-        }, 300);
-    }, [quote, user, c.loginToSave]);
-
     useEffect(() => {
+        // This effect runs only once on the client, after hydration
         const randomIndex = Math.floor(Math.random() * quotes.length);
         setQuote(quotes[randomIndex]);
         setLoading(false);

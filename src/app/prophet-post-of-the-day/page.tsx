@@ -96,24 +96,8 @@ export default function ProphetPostOfTheDayPage() {
         });
     }
 
-    const getNewPost = useCallback(() => {
-        if (!user) {
-            showLoginToast();
-            return;
-        }
-        setLoading(true);
-        setTimeout(() => {
-            const randomIndex = Math.floor(Math.random() * posts.length);
-            let newPost = posts[randomIndex];
-            if (post && newPost.title_en === post.title_en) {
-                 newPost = posts[(randomIndex + 1) % posts.length];
-            }
-            setPost(newPost);
-            setLoading(false);
-        }, 300);
-    }, [post, user, c.loginToSave]);
-
     useEffect(() => {
+        // This effect runs only once on the client, after hydration
         const randomIndex = Math.floor(Math.random() * posts.length);
         setPost(posts[randomIndex]);
         setLoading(false);
