@@ -13,6 +13,7 @@ const inter = Inter({ subsets: ['latin'], variable: '--font-body' });
 export const metadata: Metadata = {
   title: 'Nejat Digital',
   description: 'Your guide to Islamic knowledge and practice.',
+  manifest: '/manifest.json',
 };
 
 const themeScript = `
