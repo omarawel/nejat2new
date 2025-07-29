@@ -1,4 +1,3 @@
-
 "use client"
 
 import { useEffect, useState, useCallback, useRef } from 'react';
@@ -207,7 +206,7 @@ export default function VerseOfTheDayPage() {
                                     <Loader2 className="h-12 w-12 animate-spin text-primary" />
                                 ) : verse ? (
                                     <div className="space-y-6">
-                                        <p className="text-3xl font-quranic text-right tracking-wide leading-relaxed">{verse.verse_ar}</p>
+                                        <p className="text-3xl font-quranic text-center tracking-wide leading-relaxed">{verse.verse_ar}</p>
                                         <p className="text-lg leading-relaxed text-foreground/90">"{language === 'de' ? verse.verse_de : verse.verse_en}"</p>
                                         <p className="text-sm text-muted-foreground">{c.surah} {language === 'de' ? verse.surah_de : verse.surah_en}, {verse.reference}</p>
                                     </div>
