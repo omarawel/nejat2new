@@ -1,57 +1,71 @@
-{
-  "rules": {
-    "databases": {
-      "database": {
-        "documents": {
-          // Allow public read access to ads, site content, and subscription plans
-          "ads/{adId}": {
-            "allow read": true,
-            "allow write": false // Should be managed by admin SDK
-          },
-          "siteContent/{docId}": {
-            "allow read": true,
-            "allow write": false // Should be managed by admin SDK
-          },
-          "subscriptionPlans/{planId}": {
-            "allow read": true,
-            "allow write": false // Should be managed by admin SDK
-          },
-          // Allow authenticated users to read/write to hatim groups
-          "hatimGroups/{groupId}": {
-            "allow read": true,
-            "allow write": "if request.auth != null"
-          },
-          // Allow admins to read contact submissions
-          "contactSubmissions/{submissionId}": {
-            "allow read, write": "if get(/databases/(default)/documents/users/$(request.auth.uid)).data.isAdmin == true"
-          },
-          // User-specific data rules
-          "users/{userId}": {
-            "allow read, write": "if request.auth.uid == userId",
-            // Subcollections for a user
-            "documents": {
-              "subscriptions/{subId}": {
-                "allow read, write": "if request.auth.uid == userId"
-              },
-              "usage/{usageId}": {
-                "allow read, write": "if request.auth.uid == userId"
-              },
-              "favorites/{favId}": {
-                "allow read, write": "if request.auth.uid == userId"
-              },
-              "diaryEntries/{entryId}": {
-                "allow read, write": "if request.auth.uid == userId"
-              },
-              "config/{configId}": {
-                "allow read, write": "if request.auth.uid == userId"
-              },
-              "admin/{adminConfigId}": {
-                "allow read, write": "if request.auth.uid == userId && get(/databases/(default)/documents/users/$(request.auth.uid)).data.isAdmin == true"
-              }
-            }
-          }
-        }
+
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+  
+    // Public read-only collections
+    match /ads/{adId} {
+      allow read: if true;
+      allow write: if request.auth != null && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.isAdmin == true;
+    }
+
+    match /hatimGroups/{groupId} {
+      allow read: if true;
+      allow create, update, delete: if request.auth != null;
+    }
+
+    match /siteContent/{docId} {
+        allow read: if true;
+        allow write: if request.auth != null && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.isAdmin == true;
+    }
+
+    match /subscriptionPlans/{planId} {
+      allow read: if true;
+      allow write: if request.auth != null && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.isAdmin == true;
+    }
+
+    // User-specific data
+    match /users/{userId} {
+      // Allow users to read their own document (for isAdmin check, etc.)
+      allow get: if request.auth != null && request.auth.uid == userId;
+      // Admins can read any user document
+      allow get: if request.auth != null && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.isAdmin == true;
+      
+      // Allow users to write to their own document (e.g., for creating it)
+      allow write: if request.auth != null && request.auth.uid == userId;
+      // Admins can write to any user document
+      allow write: if request.auth != null && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.isAdmin == true;
+
+      // Rules for user subcollections
+      match /favorites/{favoriteId} {
+        allow read, write, delete: if request.auth != null && request.auth.uid == userId;
       }
+
+      match /diaryEntries/{entryId} {
+        allow read, write, delete: if request.auth != null && request.auth.uid == userId;
+      }
+      
+      match /subscriptions/{subId} {
+        allow read, write: if request.auth != null && request.auth.uid == userId;
+      }
+      
+      match /config/dashboard {
+        allow read, write: if request.auth != null && request.auth.uid == userId;
+      }
+       match /admin/dashboard {
+        allow read, write: if request.auth != null && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.isAdmin == true;
+      }
+
+       match /usage/ai {
+         allow read, write: if request.auth != null && request.auth.uid == userId;
+      }
+    }
+    
+    // Contact submissions can be created by anyone, but only read/deleted by admins
+    match /contactSubmissions/{submissionId} {
+        allow create: if true;
+        allow read, update, delete: if request.auth != null && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.isAdmin == true;
     }
   }
 }
