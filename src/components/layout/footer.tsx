@@ -11,7 +11,7 @@ import { Badge } from "../ui/badge";
 
 const staticContent = {
     de: {
-        description: "Erkunde eine umfassende Suite von Tools für deine spirituelle Reise: präzise Gebetszeiten, Qibla-Kompass, Koran- und Hadith-Sammlungen, ein Auswendiglern-Werkzeug, einen Zakat-Rechner und KI-gestützte Funktionen wie einen Dua-Generator und einen Gelehrten, der deine Fragen beantwortet.",
+        description: "Erkunde eine umfassende Suite von Tools für deine spirituelle Reise: Koran- und Hadith-Sammlungen, ein Auswendiglern-Werkzeug, einen Zakat-Rechner und KI-gestützte Funktionen wie einen Dua-Generator und einen Gelehrten, der deine Fragen beantwortet.",
         company: "Unternehmen",
         about: "Über uns",
         contact: "Kontakt",
@@ -24,7 +24,7 @@ const staticContent = {
         copyright: `© ${new Date().getFullYear()} Nejat Pro. Alle Rechte vorbehalten.`
     },
     en: {
-        description: "Explore a comprehensive suite of tools for your spiritual journey: precise prayer times, Qibla compass, Quran and Hadith collections, a memorization tool, a Zakat calculator, and AI-powered features like a Dua generator and a scholar to answer your questions.",
+        description: "Explore a comprehensive suite of tools for your spiritual journey: Quran and Hadith collections, a memorization tool, a Zakat calculator, and AI-powered features like a Dua generator and a scholar to answer your questions.",
         company: "Company",
         about: "About Us",
         contact: "Contact",
