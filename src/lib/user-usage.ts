@@ -27,8 +27,9 @@ const FREE_TIER_LIMIT = 3;
 let plans: SubscriptionPlan[] = [];
 const getPlans = async () => {
     if (plans.length === 0) {
+       let unsubscribe: () => void;
        return new Promise<SubscriptionPlan[]>((resolve) => {
-            const unsubscribe = getSubscriptionPlans((fetchedPlans) => {
+            unsubscribe = getSubscriptionPlans((fetchedPlans) => {
                 plans = fetchedPlans;
                 unsubscribe();
                 resolve(plans);
