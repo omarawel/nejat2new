@@ -34,7 +34,7 @@ export const getSubscriptionPlans = (callback: (plans: SubscriptionPlan[]) => vo
             'Grundlegende Tools (Tasbih, Tracker)',
         ],
         priceId: 'price_1RltQWGXWEMb96gVAEDYSZay',
-        stripeLink: 'https://buy.stripe.com/7sYfZham72z5bXm0BZabK02',
+        stripeLink: 'https://buy.stripe.com/9B600j51Na1x5yY0BZabK06',
         aiRequestLimit: 15,
         active: true,
         createdAt: Timestamp.now(), 
@@ -51,7 +51,7 @@ export const getSubscriptionPlans = (callback: (plans: SubscriptionPlan[]) => vo
             'Koran Offline-Zugriff'
         ],
         priceId: 'price_1RmJ3rGXWEMb96gVBYrwf9DD',
-        stripeLink: 'https://buy.stripe.com/7sY5kD3XJddJaTifwTabK03',
+        stripeLink: 'https://buy.stripe.com/9B600j51Na1x5yY0BZabK06',
         aiRequestLimit: 30,
         active: true,
         createdAt: Timestamp.now(), 
@@ -67,7 +67,7 @@ export const getSubscriptionPlans = (callback: (plans: SubscriptionPlan[]) => vo
             'Früher Zugriff auf neue Features'
         ],
         priceId: 'price_1RltR4GXWEMb96gVOcjACqRR', 
-        stripeLink: 'https://buy.stripe.com/28E14n0Lx4Hdf9y2K7abK04',
+        stripeLink: 'https://buy.stripe.com/7sY28rbqbehN5yY4SfabK08',
         aiRequestLimit: 75,
         active: true,
         createdAt: Timestamp.now(),
