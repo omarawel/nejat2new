@@ -212,7 +212,7 @@ export default function TypesOfSalahPage() {
                                        <h4 className="font-semibold text-primary">{section.dua.title}</h4>
                                        {section.dua.context && <p className="text-xs text-muted-foreground mb-2">({section.dua.context})</p>}
                                        <p className="font-quranic text-lg text-right mt-2">{section.dua.arabic}</p>
-                                       <p className="text-sm italic text-muted-foreground mt-2">"{section.dua.translation}"</p>
+                                       <p className="text-sm italic text-muted-foreground mt-2">&quot;{section.dua.translation}&quot;</p>
                                    </div>
                                )}
                             </AccordionContent>

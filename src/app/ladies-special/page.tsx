@@ -179,7 +179,7 @@ export default function LadiesSpecialPage() {
                                 <div className="pt-2">
                                   <p className="text-xl font-quranic text-right">{item.arabic}</p>
                                   <p className="text-sm italic text-muted-foreground text-right">{item.transliteration}</p>
-                                  <p className="text-sm text-muted-foreground text-right mt-1">"{item.translation}"</p>
+                                  <p className="text-sm text-muted-foreground text-right mt-1">&quot;{item.translation}&quot;</p>
                                 </div>
                               )}
                             </AccordionContent>

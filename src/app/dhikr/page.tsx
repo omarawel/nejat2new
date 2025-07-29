@@ -221,7 +221,7 @@ const DhikrCard = ({ title, arabic, transliteration, meaning, benefit }: { title
       </CardHeader>
       <CardContent>
         <p className="font-semibold">{transliteration}</p>
-        <p className="text-muted-foreground">"{meaning}"</p>
+        <p className="text-muted-foreground">&quot;{meaning}&quot;</p>
         <p className="text-sm mt-4 pt-4 border-t border-border/50 text-foreground/80">
           <span className="font-semibold">Benefit:</span> {benefit}
         </p>

@@ -1,3 +1,4 @@
+
 "use client"
 
 import { useEffect, useState, useCallback, useRef } from 'react';
@@ -64,7 +65,7 @@ export default function IslamicQuotesPage() {
     const { language } = useLanguage();
     const c = content[language];
     const { toast } = useToast();
-    const [user] = useAuthState(auth);
+    const [user, loadingAuth] = useAuthState(auth);
 
     const [quote, setQuote] = useState<Quote | null>(null);
     const [loading, setLoading] = useState(true);
@@ -165,7 +166,7 @@ export default function IslamicQuotesPage() {
                                 </div>
                             ) : quote ? (
                                 <blockquote className="space-y-4">
-                                    <p className="text-xl md:text-2xl leading-relaxed text-foreground/90">"{language === 'de' ? quote.text_de : quote.text_en}"</p>
+                                    <p className="text-xl md:text-2xl leading-relaxed text-foreground/90">&quot;{language === 'de' ? quote.text_de : quote.text_en}&quot;</p>
                                     <footer className="text-base text-muted-foreground">- {language === 'de' ? quote.author_de : quote.author_en}</footer>
                                 </blockquote>
                             ) : null}
@@ -180,17 +181,18 @@ export default function IslamicQuotesPage() {
                         </div>
                     </CardFooter>
                 </Card>
-                 {user && <div className="w-full mt-4 grid grid-cols-3 gap-2">
-                     <Button variant="outline" aria-label="Share" onClick={handleShare}>
+                
+                <div className="w-full mt-4 grid grid-cols-3 gap-2">
+                    <Button variant="outline" aria-label="Share" onClick={handleShare}>
                         <Share2 className="h-5 w-5" />
                     </Button>
                      <Button variant="outline" aria-label="Copy Image" onClick={handleCopyImage}>
                         <Copy className="h-5 w-5" />
                     </Button>
-                    <Button variant="outline" aria-label="Favorite" onClick={handleSaveFavorite} disabled={isSaving}>
+                    <Button variant="outline" aria-label="Favorite" onClick={handleSaveFavorite} disabled={isSaving || loadingAuth}>
                        {isSaving ? <Loader2 className="h-5 w-5 animate-spin"/> : <Heart className="h-5 w-5" />}
                     </Button>
-                </div>}
+                </div>
             </div>
         </div>
     );

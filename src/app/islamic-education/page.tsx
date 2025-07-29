@@ -77,7 +77,7 @@ const content = {
             }
         ],
         quote: {
-            text: "Der Prophet (ﷺ) sagte: „Kein Vater kann seinem Kind ein besseres Geschenk machen als eine gute Erziehung.“",
+            text: "Kein Vater kann seinem Kind ein besseres Geschenk machen als eine gute Erziehung.",
             source: "(Tirmidhi)"
         }
     },
@@ -150,7 +150,7 @@ const content = {
             }
         ],
         quote: {
-            text: "The Prophet (ﷺ) said: 'No father can give a better gift to his child than good upbringing.'",
+            text: "No father can give a better gift to his child than good upbringing.",
             source: "(Tirmidhi)"
         }
     }
@@ -199,7 +199,7 @@ export default function IslamicEducationPage() {
                  <Card className="bg-accent/20 border-accent">
                     <CardContent className="p-6 text-center">
                         <blockquote className="text-lg italic text-foreground/80">
-                           "{c.quote.text}"
+                           &quot;{c.quote.text}&quot;
                            <footer className="text-sm not-italic text-muted-foreground mt-2">{c.quote.source}</footer>
                         </blockquote>
                     </CardContent>
