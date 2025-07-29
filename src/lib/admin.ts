@@ -1,15 +1,24 @@
-// In a real application, you would fetch this from a secure source,
-// like a 'roles' collection in Firestore, and implement proper security rules.
-// For this example, we'll use a hardcoded list of admin UIDs.
-const ADMIN_UIDS = [
-    'TBADqk9BBOQ5qhyzi25LlUFvy8i1', // Ersetzen Sie dies mit Ihrer tatsächlichen Firebase User ID
-    'RXf4Jk9dIqgGIqS0YXIYkSrwJb83', // Example UID
-    'another-admin-uid-here',
-];
+import { db } from './firebase';
+import { doc, getDoc } from 'firebase/firestore';
 
+// This function now checks for an `isAdmin` field in a user's document
+// in the 'users' collection. This is more flexible than a hardcoded list.
 export const isAdmin = async (uid: string | null): Promise<boolean> => {
     if (!uid) {
         return false;
     }
-    return ADMIN_UIDS.includes(uid);
+    
+    try {
+        const userDocRef = doc(db, 'users', uid);
+        const userDoc = await getDoc(userDocRef);
+        
+        if (userDoc.exists() && userDoc.data().isAdmin === true) {
+            return true;
+        }
+        
+        return false;
+    } catch (error) {
+        console.error("Error checking admin status:", error);
+        return false;
+    }
 }
