@@ -50,7 +50,7 @@
     "date-fns": "^3.6.0",
     "dotenv": "^16.5.0",
     "embla-carousel-react": "^8.6.0",
-    "firebase": "^12.0.0",
+    "firebase": "^11.3.0",
     "genkit": "^1.15.5",
     "html-to-image": "^1.11.11",
     "idb-keyval": "^6.2.1",
@@ -70,6 +70,7 @@
     "zod": "^3.24.2"
   },
   "devDependencies": {
+    "@opentelemetry/exporter-jaeger": "^1.25.1",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
