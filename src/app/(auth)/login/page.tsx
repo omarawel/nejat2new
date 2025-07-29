@@ -29,9 +29,9 @@ import { Input } from "@/components/ui/input"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { useToast } from "@/hooks/use-toast"
 import { auth, db } from "@/lib/firebase"
-import { signInWithEmailAndPassword, sendPasswordResetEmail, GoogleAuthProvider, signInWithPopup, UserCredential } from "firebase/auth"
+import { signInWithEmailAndPassword, sendPasswordResetEmail, GoogleAuthProvider, signInWithPopup, UserCredential, updateProfile } from "firebase/auth"
 import { useLanguage } from "@/components/language-provider"
-import { doc, setDoc, getDoc, updateProfile } from "firebase/firestore";
+import { doc, setDoc, getDoc } from "firebase/firestore";
 
 const formSchema = z.object({
   email: z.string().email({ message: "Invalid email address." }),
