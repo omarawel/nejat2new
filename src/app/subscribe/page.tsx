@@ -140,29 +140,27 @@ const SubscribePage: React.FC = () => {
         return () => unsubscribe();
     }, []);
 
-    const handleSubscribe = async (priceId: string) => {
+    const handleSubscribe = async (plan: SubscriptionPlan) => {
         if (!user) {
             router.push('/login?redirect=/subscribe');
             return;
         }
 
-        setLoadingRedirect(priceId);
+        setLoadingRedirect(plan.id);
 
-        try {
-            const createCheckoutSession = httpsCallable(functions, 'createStripeCheckoutSession');
-            const result = await createCheckoutSession({ priceId });
-            const { id: sessionId } = result.data as { id: string };
-
-            const stripe = await stripePromise;
-            if (stripe) {
-                const { error } = await stripe.redirectToCheckout({ sessionId });
-                if (error) {
-                    throw error;
-                }
+        if (plan.stripeLink) {
+            // Add the user's email to the Stripe link if it's not already there
+            const url = new URL(plan.stripeLink);
+            if (user.email && !url.searchParams.has('prefilled_email')) {
+                url.searchParams.append('prefilled_email', user.email);
             }
-        } catch (error) {
-            console.error('Stripe checkout error:', error);
-            toast({
+             // Add client_reference_id to associate checkout with the user
+            if (!url.searchParams.has('client_reference_id')) {
+                url.searchParams.append('client_reference_id', user.uid);
+            }
+            window.location.href = url.toString();
+        } else {
+             toast({
                 variant: 'destructive',
                 title: 'Error',
                 description: c.errorRedirect
@@ -209,12 +207,12 @@ const SubscribePage: React.FC = () => {
                             </CardContent>
                             <CardFooter>
                                 <Button
-                                    onClick={() => handleSubscribe(plan.priceId)}
+                                    onClick={() => handleSubscribe(plan)}
                                     className="w-full"
                                     variant={plan.id === 'pro' ? 'default' : 'outline'}
                                     disabled={!!loadingRedirect}
                                 >
-                                    {loadingRedirect === plan.priceId ? (
+                                    {loadingRedirect === plan.id ? (
                                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                                     ) : (
                                        <Star className="mr-2 h-4 w-4" />
@@ -268,13 +266,13 @@ const SubscribePage: React.FC = () => {
                                                <Button
                                                     onClick={() => {
                                                         const plan = subscriptionPlans.find(p => p.id.toLowerCase() === planKey.toLowerCase());
-                                                        if (plan) handleSubscribe(plan.priceId);
+                                                        if (plan) handleSubscribe(plan);
                                                     }}
                                                     className="w-full"
                                                     variant={planKey === 'pro' ? 'default' : 'outline'}
                                                     disabled={!!loadingRedirect}
                                                 >
-                                                    {loadingRedirect === subscriptionPlans.find(p => p.id.toLowerCase() === planKey.toLowerCase())?.priceId ? (
+                                                    {loadingRedirect === subscriptionPlans.find(p => p.id.toLowerCase() === planKey.toLowerCase())?.id ? (
                                                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                                                     ) : (
                                                        <Star className="mr-2 h-4 w-4" />
