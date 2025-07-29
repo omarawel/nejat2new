@@ -1,6 +1,15 @@
 
 import * as functions from 'firebase-functions';
 import Stripe from 'stripe';
+import { initializeApp, App } from 'firebase-admin/app';
+
+let app: App;
+try {
+  app = initializeApp();
+} catch (e) {
+  console.error("Firebase initialization error", e);
+  // If app is already initialized, it will throw, so we catch and ignore.
+}
 
 // Initialisiere Stripe mit deinem Secret Key
 // Stelle sicher, dass du deine Stripe Secret Key sicher in den Umgebungsvariablen von Firebase Functions speicherst
