@@ -103,7 +103,7 @@ export default function VerseOfTheDayPage() {
     const { language } = useLanguage();
     const c = content[language];
     const { toast } = useToast();
-    const [user] = useAuthState(auth);
+    const [user, loadingAuth] = useAuthState(auth);
 
     const [verse, setVerse] = useState<Verse | null>(null);
     const [loading, setLoading] = useState(true);
@@ -119,7 +119,6 @@ export default function VerseOfTheDayPage() {
     }
 
     useEffect(() => {
-        // This effect runs only once on the client, after hydration
         const randomIndex = Math.floor(Math.random() * verses.length);
         setVerse(verses[randomIndex]);
         setLoading(false);
@@ -236,7 +235,7 @@ export default function VerseOfTheDayPage() {
                     </CardContent>
                 </Card>
                 
-                {user && (
+                {!loadingAuth && user && (
                  <div className="w-full mt-4 grid grid-cols-3 gap-2">
                     <Button variant="outline" aria-label="Share" onClick={handleShare}>
                         <Share2 className="h-5 w-5" />
