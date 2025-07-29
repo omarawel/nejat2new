@@ -25,13 +25,12 @@ const FREE_TIER_LIMIT = 3;
 
 // Helper to get all available subscription plans once
 let plans: SubscriptionPlan[] = [];
-const getPlans = async () => {
+const getPlans = async (): Promise<SubscriptionPlan[]> => {
     if (plans.length === 0) {
-       let unsubscribe: () => void;
+       // This function now resolves a promise directly since getSubscriptionPlans is synchronous.
        return new Promise<SubscriptionPlan[]>((resolve) => {
-            unsubscribe = getSubscriptionPlans((fetchedPlans) => {
+            getSubscriptionPlans((fetchedPlans) => {
                 plans = fetchedPlans;
-                unsubscribe();
                 resolve(plans);
             });
        });
