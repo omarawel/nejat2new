@@ -4,7 +4,7 @@
 import { useEffect, useState, useCallback, useRef } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { RefreshCw, MessageSquareQuote, ArrowLeft, Loader2, Share2, Heart } from 'lucide-react';
+import { RefreshCw, MessageSquareQuote, ArrowLeft, Loader2, Share2, Heart, Copy } from 'lucide-react';
 import { useLanguage } from '@/components/language-provider';
 import Link from 'next/link';
 import { useToast } from '@/hooks/use-toast';
@@ -13,6 +13,7 @@ import { auth } from '@/lib/firebase';
 import { addFavorite } from '@/lib/favorites';
 import { toBlob } from 'html-to-image';
 import { Badge } from '@/components/ui/badge';
+import { Logo } from '@/components/icons';
 
 interface Quote {
   text_de: string;
@@ -42,7 +43,8 @@ const content = {
         quoteCopied: "Zitat-Bild in die Zwischenablage kopiert.",
         favoriteSaved: "Als Favorit gespeichert!",
         loginToSave: "Anmelden, um Favoriten zu speichern.",
-        errorSaving: "Fehler beim Speichern des Favoriten."
+        errorSaving: "Fehler beim Speichern des Favoriten.",
+        copyImage: "Bild kopieren"
     },
     en: {
         title: "Inspirational Quotes",
@@ -54,7 +56,8 @@ const content = {
         quoteCopied: "Quote image copied to clipboard.",
         favoriteSaved: "Saved to favorites!",
         loginToSave: "Login to save favorites.",
-        errorSaving: "Error saving favorite."
+        errorSaving: "Error saving favorite.",
+        copyImage: "Copy Image"
     }
 }
 
@@ -101,10 +104,6 @@ export default function IslamicQuotesPage() {
     }, []);
 
     const handleShare = async () => {
-        if (!user) {
-            showLoginToast();
-            return;
-        }
         if (!postcardRef.current || !quote) return;
         try {
             const blob = await toBlob(postcardRef.current, { pixelRatio: 2 });
@@ -124,6 +123,19 @@ export default function IslamicQuotesPage() {
             }
         } catch (error) {
             console.error('Error sharing:', error);
+            toast({ variant: 'destructive', description: c.shareError });
+        }
+    };
+
+    const handleCopyImage = async () => {
+        if (!postcardRef.current || !quote) return;
+        try {
+            const blob = await toBlob(postcardRef.current, { pixelRatio: 2 });
+            if (!blob) return;
+            await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
+            toast({ description: c.quoteCopied });
+        } catch (error) {
+            console.error('Error copying image:', error);
             toast({ variant: 'destructive', description: c.shareError });
         }
     };
@@ -178,19 +190,24 @@ export default function IslamicQuotesPage() {
                     </CardContent>
                     <CardFooter className="justify-center p-2">
                        <div className="relative inline-block">
-                             <Link href="/" className="text-sm font-bold text-muted-foreground/80">Nejat</Link>
+                             <Link href="/" className="flex items-center gap-1 text-sm font-bold text-muted-foreground/80">
+                                <Logo className="h-4 w-4"/> Nejat
+                             </Link>
                             <Badge variant="default" className="absolute -top-3.5 -right-7 h-auto px-1.5 py-0.5 text-[10px] font-bold">Pro</Badge>
                         </div>
                     </CardFooter>
                 </Card>
-                 <div className="w-full mt-4 grid grid-cols-2 gap-2">
+                 {user && <div className="w-full mt-4 grid grid-cols-3 gap-2">
                      <Button variant="outline" aria-label="Share" onClick={handleShare}>
                         <Share2 className="h-5 w-5" />
+                    </Button>
+                     <Button variant="outline" aria-label="Copy Image" onClick={handleCopyImage}>
+                        <Copy className="h-5 w-5" />
                     </Button>
                     <Button variant="outline" aria-label="Favorite" onClick={handleSaveFavorite} disabled={isSaving}>
                        {isSaving ? <Loader2 className="h-5 w-5 animate-spin"/> : <Heart className="h-5 w-5" />}
                     </Button>
-                </div>
+                </div>}
             </div>
         </div>
     );
