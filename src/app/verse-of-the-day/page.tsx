@@ -98,9 +98,9 @@ const content = {
 
 export default function VerseOfTheDayPage() {
     const { language } = useLanguage();
-    const c = content[language] || content.de;
+    const c = content[language];
     const { toast } = useToast();
-    const [user, authLoading] = useAuthState(auth);
+    const [user] = useAuthState(auth);
 
     const [verse, setVerse] = useState<Verse | null>(null);
     const [loading, setLoading] = useState(true);
@@ -134,7 +134,6 @@ export default function VerseOfTheDayPage() {
     }, [verse, user, c.loginToSave]);
 
     useEffect(() => {
-        setLoading(true);
         const randomIndex = Math.floor(Math.random() * verses.length);
         setVerse(verses[randomIndex]);
         setLoading(false);
@@ -151,11 +150,17 @@ export default function VerseOfTheDayPage() {
             if (!blob) return;
 
             const file = new File([blob], `verse-${verse.reference}.png`, { type: 'image/png' });
-            if (navigator.canShare && navigator.canShare({ files: [file] })) {
-                await navigator.share({
-                    files: [file],
-                    title: c.title,
-                });
+            
+            const shareData = {
+                files: [file],
+                title: c.title,
+                text: `"${language === 'de' ? verse.verse_de : verse.verse_en}" - Quran ${verse.reference}`
+            };
+
+            const canShare = navigator.canShare && navigator.canShare(shareData);
+
+            if (canShare) {
+                await navigator.share(shareData);
             } else {
                  await navigator.clipboard.write([
                     new ClipboardItem({ 'image/png': blob })
@@ -164,7 +169,18 @@ export default function VerseOfTheDayPage() {
             }
         } catch (error) {
             console.error('Error sharing:', error);
-            toast({ variant: 'destructive', description: c.shareError });
+            if (error instanceof Error && error.name === 'NotAllowedError') {
+                 try {
+                     const blob = await toBlob(postcardRef.current, { pixelRatio: 2 });
+                     if (!blob) return;
+                     await navigator.clipboard.write([ new ClipboardItem({ 'image/png': blob }) ]);
+                     toast({ description: c.verseCopied });
+                 } catch (copyError) {
+                      toast({ variant: 'destructive', description: c.shareError });
+                 }
+            } else {
+                 toast({ variant: 'destructive', description: c.shareError });
+            }
         }
     };
     
@@ -212,7 +228,7 @@ export default function VerseOfTheDayPage() {
                                     <p className="text-sm text-muted-foreground">{c.surah} {language === 'de' ? verse.surah_de : verse.surah_en}, {verse.reference}</p>
                                 </div>
                             ) : null}
-                             <div className="flex-grow" />
+                            <div className="flex-grow" />
                             <div className="relative pt-4 mt-auto">
                                 <div className="relative inline-block">
                                     <Link href="/" className="text-sm font-bold text-muted-foreground/80">Nejat</Link>
@@ -225,10 +241,10 @@ export default function VerseOfTheDayPage() {
                 
                 {user && (
                  <div className="w-full mt-4 grid grid-cols-2 gap-2">
-                    <Button variant="outline" aria-label="Share" onClick={handleShare} disabled={authLoading}>
+                    <Button variant="outline" aria-label="Share" onClick={handleShare}>
                         <Share2 className="h-5 w-5" />
                     </Button>
-                    <Button variant="outline" aria-label="Favorite" onClick={handleSaveFavorite} disabled={isSaving || authLoading}>
+                    <Button variant="outline" aria-label="Favorite" onClick={handleSaveFavorite} disabled={isSaving}>
                        {isSaving ? <Loader2 className="h-5 w-5 animate-spin"/> : <Heart className="h-5 w-5" />}
                     </Button>
                 </div>
@@ -237,4 +253,3 @@ export default function VerseOfTheDayPage() {
         </div>
     );
 }
-

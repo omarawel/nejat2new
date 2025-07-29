@@ -74,7 +74,6 @@ export function HadithOfTheDayCard() {
     const postcardRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        setLoading(true);
         const randomIndex = Math.floor(Math.random() * quotes.length);
         setQuote(quotes[randomIndex]);
         setLoading(false);
@@ -102,9 +101,9 @@ export function HadithOfTheDayCard() {
                     ) : null}
                      <div className="flex-grow" />
                     <div className="relative pt-4 mt-auto">
-                        <div className="relative inline-block mb-2">
-                            <Link href="/" className="text-sm font-bold text-muted-foreground/80">Nejat</Link>
-                            <Badge variant="default" className="absolute -top-3.5 -right-7 h-auto px-1.5 py-0.5 text-[8px] font-bold">Pro</Badge>
+                        <div className="relative inline-block">
+                             <Link href="/" className="text-sm font-bold text-muted-foreground/80">Nejat</Link>
+                            <Badge variant="default" className="absolute -top-3.5 -right-7 h-auto px-1.5 py-0.5 text-[10px] font-bold">Pro</Badge>
                         </div>
                     </div>
                 </div>

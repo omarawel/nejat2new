@@ -60,9 +60,9 @@ const content = {
 
 export default function IslamicQuotesPage() {
     const { language } = useLanguage();
-    const c = content[language] || content.de;
+    const c = content[language];
     const { toast } = useToast();
-    const [user, authLoading] = useAuthState(auth);
+    const [user] = useAuthState(auth);
 
     const [quote, setQuote] = useState<Quote | null>(null);
     const [loading, setLoading] = useState(true);
@@ -95,7 +95,6 @@ export default function IslamicQuotesPage() {
     }, [quote, user, c.loginToSave]);
 
     useEffect(() => {
-        setLoading(true);
         const randomIndex = Math.floor(Math.random() * quotes.length);
         setQuote(quotes[randomIndex]);
         setLoading(false);
@@ -178,17 +177,17 @@ export default function IslamicQuotesPage() {
                         </div>
                     </CardContent>
                     <CardFooter className="justify-center p-2">
-                       <div className="relative">
-                            <span className="text-xs font-bold text-muted-foreground/80">Nejat</span>
+                       <div className="relative inline-block">
+                             <Link href="/" className="text-sm font-bold text-muted-foreground/80">Nejat</Link>
                             <Badge variant="default" className="absolute -top-3.5 -right-7 h-auto px-1.5 py-0.5 text-[10px] font-bold">Pro</Badge>
                         </div>
                     </CardFooter>
                 </Card>
                  <div className="w-full mt-4 grid grid-cols-2 gap-2">
-                     <Button variant="outline" aria-label="Share" onClick={handleShare} disabled={authLoading}>
+                     <Button variant="outline" aria-label="Share" onClick={handleShare}>
                         <Share2 className="h-5 w-5" />
                     </Button>
-                    <Button variant="outline" aria-label="Favorite" onClick={handleSaveFavorite} disabled={isSaving || authLoading}>
+                    <Button variant="outline" aria-label="Favorite" onClick={handleSaveFavorite} disabled={isSaving}>
                        {isSaving ? <Loader2 className="h-5 w-5 animate-spin"/> : <Heart className="h-5 w-5" />}
                     </Button>
                 </div>
