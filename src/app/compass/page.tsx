@@ -145,8 +145,7 @@ export default function CompassPage() {
         return () => {
             window.removeEventListener('deviceorientation', handleOrientation);
         };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [requestPermissions]);
 
     const deviation = useMemo(() => {
         if (qiblaDirection === null) return 360;
