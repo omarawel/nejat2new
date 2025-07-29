@@ -29,7 +29,7 @@ import { Input } from "@/components/ui/input"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { useToast } from "@/hooks/use-toast"
 import { auth } from "@/lib/firebase"
-import { signInWithEmailAndPassword, sendPasswordResetEmail, FirebaseError, GoogleAuthProvider, signInWithPopup } from "firebase/auth"
+import { signInWithEmailAndPassword, sendPasswordResetEmail, GoogleAuthProvider, signInWithPopup } from "firebase/auth"
 import { useLanguage } from "@/components/language-provider"
 
 const formSchema = z.object({
@@ -71,7 +71,7 @@ const content = {
     passwordLabel: "Password",
     forgotPassword: "Forgot your password?",
     loginButton: "Login",
-    noAccount: "Don&apos;t have an account?",
+    noAccount: "Don't have an account?",
     signUp: "Sign up",
     loginFailed: "Login Failed",
     userNotFound: "No account found with this email address.",
@@ -121,8 +121,9 @@ export default function LoginPage() {
       })
       router.push("/")
     } catch (err: unknown) {
-      if (err instanceof FirebaseError) {
-        switch (err.code) {
+      if (typeof err === 'object' && err !== null && 'code' in err) {
+        const firebaseError = err as { code: string };
+        switch (firebaseError.code) {
           case "auth/user-not-found":
             setError(c.userNotFound);
             break;
@@ -160,7 +161,7 @@ export default function LoginPage() {
             description: c.checkInbox,
         });
     } catch (err: unknown) {
-        if (err instanceof FirebaseError && err.code === 'auth/user-not-found') {
+        if (typeof err === 'object' && err !== null && 'code' in err && (err as {code: string}).code === 'auth/user-not-found') {
              toast({
                 variant: "destructive",
                 title: c.error,
@@ -188,8 +189,8 @@ export default function LoginPage() {
       })
       router.push("/");
     } catch (err) {
-       if (err instanceof FirebaseError) {
-            setError(err.message);
+       if (typeof err === 'object' && err !== null && 'message' in err) {
+            setError((err as {message: string}).message);
        } else {
             setError(c.unexpectedError);
        }

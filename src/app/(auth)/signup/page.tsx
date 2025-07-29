@@ -32,7 +32,7 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Terminal } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
 import { auth } from "@/lib/firebase"
-import { createUserWithEmailAndPassword, updateProfile, FirebaseError, GoogleAuthProvider, signInWithPopup } from "firebase/auth"
+import { createUserWithEmailAndPassword, updateProfile, GoogleAuthProvider, signInWithPopup } from "firebase/auth"
 import { useLanguage } from "@/components/language-provider"
 
 
@@ -43,7 +43,7 @@ const formSchema = z.object({
   confirmPassword: z.string(),
   terms: z.boolean().refine(val => val === true, { message: "You must accept the terms and conditions." }),
 }).refine(data => data.password === data.confirmPassword, {
-  message: "Passwords don&apos;t match",
+  message: "Passwords don't match",
   path: ["confirmPassword"],
 });
 
@@ -145,8 +145,9 @@ export default function SignupPage() {
       router.push("/");
 
     } catch (err) {
-      if (err instanceof FirebaseError) {
-       switch (err.code) {
+      if (typeof err === 'object' && err !== null && 'code' in err) {
+       const firebaseError = err as { code: string };
+       switch (firebaseError.code) {
         case "auth/email-already-in-use":
           setError(c.emailInUse);
           break;
@@ -185,8 +186,8 @@ export default function SignupPage() {
       })
       router.push("/");
     } catch (err) {
-       if (err instanceof FirebaseError) {
-            setError(err.message);
+       if (typeof err === 'object' && err !== null && 'message' in err) {
+            setError((err as {message: string}).message);
        } else {
             setError(c.unexpectedError);
        }
