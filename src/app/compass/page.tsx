@@ -1,4 +1,3 @@
-
 "use client"
 
 import { useEffect, useState, useCallback, useMemo } from 'react';
@@ -11,7 +10,24 @@ import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
 import { cn } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
 
-const content = {
+interface Content {
+    pageTitle: string;
+    pageDescription: string;
+    backToFeatures: string;
+    requestingPermissions: string;
+    calculating: string;
+    permissionError: string;
+    permissionErrorDesc: string;
+    unsupportedError: string;
+    unsupportedErrorDesc: string;
+    qiblaDirection: string;
+    distance: string;
+    perfectlyAligned: string;
+    alignDevice: string;
+    arQibla: string;
+}
+
+const content: Record<string, Content> = {
     de: {
         pageTitle: "Qibla Kompass",
         pageDescription: "Richte dein Gerät aus, um die Richtung nach Mekka zu finden.",
@@ -64,7 +80,7 @@ interface CustomDeviceOrientationEvent extends DeviceOrientationEvent {
 
 export default function CompassPage() {
     const { language } = useLanguage();
-    const c = content[language];
+    const c: Content = content[language as keyof typeof content];
     
     const [qiblaDirection, setQiblaDirection] = useState<number | null>(null);
     const [distance, setDistance] = useState<number | null>(null);
@@ -91,7 +107,7 @@ export default function CompassPage() {
           Math.sin(dLon/2) * Math.sin(dLon/2); 
         const centralAngle = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
         setDistance(R * centralAngle);
-    }, []);
+    }, [calculateQibla]); // Added calculateQibla to dependency array
 
     const handleOrientation = (event: DeviceOrientationEvent) => {
         const orientationEvent = event as CustomDeviceOrientationEvent;
@@ -116,7 +132,7 @@ export default function CompassPage() {
                     setStatus(c.permissionError);
                     return;
                 }
-            } catch (e: unknown) {
+            } catch (e: Error) { // Changed from any
                 const err = e as Error;
                 setError(err.message || c.permissionErrorDesc);
                 setStatus(c.permissionError);
@@ -132,7 +148,8 @@ export default function CompassPage() {
                 calculateQibla(position.coords.latitude, position.coords.longitude);
                 setStatus(c.alignDevice);
             },
-            () => {
+            (error) => { // Explicitly type error as GeolocationPositionError
+                console.error("Geolocation error:", error);
                 setError(c.permissionErrorDesc);
                 setStatus(c.permissionError);
             }

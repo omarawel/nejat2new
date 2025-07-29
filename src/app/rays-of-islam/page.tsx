@@ -1,4 +1,3 @@
-
 "use client"
 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
@@ -8,7 +7,28 @@ import { useLanguage } from '@/components/language-provider';
 import Link from 'next/link';
 import Image from 'next/image';
 
-const content = {
+interface Book {
+    title: string;
+    author: string;
+    description: string;
+    topicsTitle: string;
+    topics: string[];
+    buttonText: string;
+    link: string;
+    googlePlayButtonText: string;
+    googlePlayLink: string;
+    image: string;
+}
+
+interface Content {
+    pageTitle: string;
+    pageDescription: string;
+    backToFeatures: string;
+    germanBook: Book;
+    englishBook: Book;
+}
+
+const content: Record<string, Content> = {
     de: {
         pageTitle: "Die Strahlen Des Islam",
         pageDescription: "Entdecke die umfassenden Leitfäden zum Islam von Omar Awel.",
@@ -40,7 +60,7 @@ const content = {
                 "The Five Pillars of Islam",
                 "The Articles of Faith (Iman)",
                 "The importance of the Quran and Sunnah",
-                "Spiritual concepts like Tawakkul and Sabr",
+                "Spirituall Concepts like Tawakkul and Sabr",
                 "The character of the Prophet Muhammad (ﷺ)"
             ],
             buttonText: "Auf Kindle lesen (Englisch)",
@@ -63,7 +83,7 @@ const content = {
                 "The Five Pillars of Islam",
                 "The Articles of Faith (Iman)",
                 "The importance of the Quran and Sunnah",
-                "Spiritual concepts like Tawakkul and Sabr",
+                "Spiritual Concepts like Tawakkul and Sabr",
                 "The character of the Prophet Muhammad (ﷺ)"
             ],
             buttonText: "Read on Kindle (German)",
@@ -81,7 +101,7 @@ const content = {
                 "The Five Pillars of Islam",
                 "The Articles of Faith (Iman)",
                 "The importance of the Quran and Sunnah",
-                "Spiritual concepts like Tawakkul and Sabr",
+                "Spiritual Concepts like Tawakkul and Sabr",
                 "The character of the Prophet Muhammad (ﷺ)"
             ],
             buttonText: "Read on Kindle (English)",
@@ -91,19 +111,6 @@ const content = {
             image: "https://dl.dropboxusercontent.com/scl/fi/l7itt143gcy7dtusvrelq/IMG_20250717_094013_874.jpg?rlkey=dpp2528r5jyo7n83d1abga1gg&dl=1"
         }
     }
-}
-
-interface Book {
-    title: string;
-    author: string;
-    description: string;
-    topicsTitle: string;
-    topics: string[];
-    buttonText: string;
-    link: string;
-    googlePlayButtonText: string;
-    googlePlayLink: string;
-    image: string;
 }
 
 const BookCard = ({ book }: { book: Book }) => (
@@ -154,7 +161,7 @@ const BookCard = ({ book }: { book: Book }) => (
 
 export default function RaysOfIslamPage() {
   const { language } = useLanguage();
-  const c = content[language] || content.de;
+  const c: Content = content[language as keyof typeof content] || content.de;
 
   return (
     <div className="container mx-auto px-4 py-8">

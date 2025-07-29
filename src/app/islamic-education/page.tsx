@@ -1,4 +1,3 @@
-
 "use client"
 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
@@ -48,7 +47,7 @@ const content = {
                 title: "Kritisches Denken fördern (Tafakkur)",
                 content: "Ermutige Kinder, Fragen zu stellen und über die Schöpfung Allahs nachzudenken. Eine Erziehung, die auf Verständnis statt auf blindem Befolgen basiert, schafft einen stärkeren und beständigeren Glauben.",
                 points: [
-                    "Gehe gemeinsam in die Natur und bestaunt die Schöpfung Allahs (Sterne, Tiere, Pflanzen).",
+                    "Gehe gemeinsam in die Natur und bestaunt die Schöpfung Allah&apos;s (Sterne, Tiere, Pflanzen).",
                     "Beantworte ihre Fragen über den Glauben geduldig und ehrlich, auch wenn du die Antwort nicht sofort weißt.",
                     "Ermutige sie, ihre eigenen Überzeugungen zu entwickeln und zu festigen."
                 ]
@@ -65,7 +64,7 @@ const content = {
             },
             {
                 icon: Smile,
-                title: "Geduld & Barmherzigkeit in der Erziehung",
+                title: "Geduld &amp; Barmherzigkeit in der Erziehung",
                 content: "Erziehung ist ein Marathon, kein Sprint. Es wird schwierige Phasen geben. In diesen Momenten sind Geduld (Sabr) und Barmherzigkeit (Rahmah) die wichtigsten Werkzeuge. Denke daran, dass der Prophet (ﷺ) der barmherzigste Mensch zu Kindern war. Schreien oder harte Strafen führen selten zum Ziel und können das Herz des Kindes verschließen.",
                 points: []
             },
@@ -108,7 +107,7 @@ const content = {
             },
             {
                 icon: Brain,
-                title: "Knowledge and Worship (Ilm & Ibadah)",
+                title: "Knowledge and Worship (Ilm &amp; Ibadah)",
                 content: "Gradually teach children prayer (Salah), fasting, and other acts of worship. Make it a positive and joyful experience. Foster their love for the Quran by reading it together and discussing its meanings.",
                  points: [
                     "Start early, but without compulsion. Make prayer a joint family ritual.",
@@ -119,10 +118,10 @@ const content = {
             {
                 icon: Lightbulb,
                 title: "Fostering Critical Thinking (Tafakkur)",
-                content: "Encourage children to ask questions and to reflect on Allah's creation. An education based on understanding rather than blind obedience creates a stronger and more lasting faith.",
+                content: "Encourage children to ask questions and to reflect on Allah&apos;s creation. An education based on understanding rather than blind obedience creates a stronger and more lasting faith.",
                 points: [
-                    "Go into nature together and marvel at Allah's creation (stars, animals, plants).",
-                    "Patiently and honestly answer their questions about faith, even if you don't know the answer immediately.",
+                    "Go into nature together and marvel at Allah&apos;s creation (stars, animals, plants).",
+                    "Patiently and honestly answer their questions about faith, even if you don&apos;t know the answer immediately.",
                     "Encourage them to develop and solidify their own convictions."
                 ]
             },
@@ -138,14 +137,14 @@ const content = {
             },
             {
                 icon: Smile,
-                title: "Patience & Mercy in Upbringing",
-                content: "Upbringing is a marathon, not a sprint. There will be difficult phases. In these moments, patience (Sabr) and mercy (Rahmah) are the most important tools. Remember that the Prophet (ﷺ) was the most merciful person to children. Shouting or harsh punishments rarely achieve their goal and can close a child's heart.",
+                title: "Patience &amp; Mercy in Upbringing",
+                content: "Upbringing is a marathon, not a sprint. There will be difficult phases. In these moments, patience (Sabr) and mercy (Rahmah) are the most important tools. Remember that the Prophet (ﷺ) was the most merciful person to children. Shouting or harsh punishments rarely achieve their goal and can close a child&apos;s heart.",
                 points: []
             },
             {
                 icon: MessageCircle,
                 title: "The Dua of Parents",
-                content: "The supplication of parents for their children is answered by Allah. Make it a habit to regularly pray for the guidance, protection, and success of your children in this world and the hereafter. One of the most beautiful prayers in the Quran is: 'My Lord, make me an establisher of prayer, and [many] from my descendants. Our Lord, and accept my supplication.' (Surah Ibrahim, 14:40)",
+                content: "The supplication of parents for their children is answered by Allah. Make it a habit to regularly pray for the guidance, protection, and success of your children in this world and the hereafter. One of the most beautiful prayers in the Quran is: &quot;My Lord, make me an establisher of prayer, and [many] from my descendants. Our Lord, and accept my supplication.&quot; (Surah Ibrahim, 14:40)",
                 points: []
             }
         ],

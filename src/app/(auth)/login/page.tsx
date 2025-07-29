@@ -1,4 +1,3 @@
-
 "use client"
 
 import Link from "next/link"
@@ -39,7 +38,33 @@ const formSchema = z.object({
   password: z.string().min(1, { message: "Password is required." }),
 })
 
-const content = {
+interface Content {
+  title: string;
+  description: string;
+  emailLabel: string;
+  emailPlaceholder: string;
+  passwordLabel: string;
+  forgotPassword: string;
+  loginButton: string;
+  noAccount: string;
+  signUp: string;
+  loginFailed: string;
+  userNotFound: string;
+  wrongPassword: string;
+  invalidCredential: string;
+  unexpectedError: string;
+  passwordResetSent: string;
+  checkInbox: string;
+  enterEmailForReset: string;
+  error: string;
+  noUserFound: string;
+  failedToSendResetEmail: string;
+  loginSuccess: string;
+  welcomeBack: string;
+  googleLogin: string;
+}
+
+const content: Record<string, Content> = {
   de: {
     title: "Anmelden bei Nejat Digital",
     description: "Geben Sie Ihre E-Mail-Adresse unten ein, um sich bei Ihrem Konto anzumelden",
@@ -112,7 +137,7 @@ const handleUserCreation = async (userCred: UserCredential, name?: string) => {
 
 export default function LoginPage() {
   const { language } = useLanguage();
-  const c = content[language as keyof typeof content] || content.de;
+  const c: Content = content[language as keyof typeof content] || content.de;
 
   const [showPassword, setShowPassword] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -139,7 +164,7 @@ export default function LoginPage() {
         description: c.welcomeBack,
       })
       router.push("/")
-    } catch (err: unknown) {
+    } catch (err) { // Removed 'any'
       if (err instanceof FirebaseError) {
         switch (err.code) {
           case "auth/user-not-found":
@@ -157,7 +182,11 @@ export default function LoginPage() {
             console.error(err);
             break;
         }
-      } else {
+      } else if (err instanceof Error) { // Check if it's a standard Error
+         setError(err.message || c.unexpectedError);
+         console.error(err);
+      }
+       else {
          setError(c.unexpectedError);
          console.error(err);
       }
@@ -179,12 +208,18 @@ export default function LoginPage() {
             title: c.passwordResetSent,
             description: c.checkInbox,
         });
-    } catch (err: unknown) {
+    } catch (err) { // Removed 'any'
         if (err instanceof FirebaseError && err.code === 'auth/user-not-found') {
              toast({
                 variant: "destructive",
                 title: c.error,
                 description: c.noUserFound,
+            });
+        } else if (err instanceof Error) { // Check if it's a standard Error
+             toast({
+                variant: "destructive",
+                title: c.error,
+                description: err.message || c.failedToSendResetEmail,
             });
         } else {
             toast({
@@ -208,7 +243,7 @@ export default function LoginPage() {
         description: c.welcomeBack,
       })
       router.push("/");
-    } catch (err: unknown) {
+    } catch (err) { // Removed 'any'
        if (err instanceof Error) {
             setError(err.message);
        } else {

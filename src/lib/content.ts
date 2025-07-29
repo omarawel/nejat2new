@@ -3,7 +3,27 @@
 
 // In a real application, this data would be fetched from a CMS or Firestore.
 // This structure is prepared for that.
-const pageContent: Record<string, any> = {
+
+interface Section {
+    key: string;
+    title: string;
+    content: string;
+    image?: string;
+    hint?: string;
+}
+
+interface LanguageContent {
+    title: string;
+    description: string;
+    sections: Section[];
+}
+
+interface PageContent {
+    de: LanguageContent;
+    en: LanguageContent;
+}
+
+const pageContent: Record<string, PageContent> = {
     'islamic-art': {
         de: {
             title: "Islamische Kunst",
@@ -63,7 +83,7 @@ const pageContent: Record<string, any> = {
 }
 
 
-export const getPageContent = async (pageKey: string, language: 'de' | 'en') => {
+export const getPageContent = async (pageKey: string, language: 'de' | 'en'): Promise<LanguageContent | null> => {
     // Simulate async fetch
     await new Promise(resolve => setTimeout(resolve, 500)); 
     

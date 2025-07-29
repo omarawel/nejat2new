@@ -1,4 +1,3 @@
-
 "use client"
 
 import {
@@ -142,7 +141,11 @@ const SurahDetailContent = ({ surahNumber, languageEdition, c }: { surahNumber: 
     if (!user || !detail) return;
 
     setIsSaving(detail.arabic.ayahs[index].number);
-    const textToSave = `Surah ${detail.arabic.name} (${detail.arabic.englishName}), Ayah ${detail.arabic.ayahs[index].numberInSurah}\n\n${detail.arabic.ayahs[index].text}\n\n${detail.translation.ayahs[index].text}`;
+    const textToSave = `Surah ${detail.arabic.name} (${detail.arabic.englishName}), Ayah ${detail.arabic.ayahs[index].numberInSurah}
+
+${detail.arabic.ayahs[index].text}
+
+${detail.translation.ayahs[index].text}`;
 
     try {
         await addFavorite(user.uid, textToSave);

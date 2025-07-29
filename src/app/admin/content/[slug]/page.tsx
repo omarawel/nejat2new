@@ -1,4 +1,3 @@
-
 "use client"
 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
@@ -7,7 +6,7 @@ import { ArrowLeft, Construction } from 'lucide-react';
 import Link from 'next/link';
 
 function toTitleCase(str: string) {
-    return str.replace(/-/g, ' ').replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
+    return str.replace(/-/g, ' ').replace(/wS*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
 }
 
 export default function AdminContentPage({ params }: { params: { slug: string } }) {

@@ -1,4 +1,3 @@
-
 "use client"
 
 import { useEffect, useState } from 'react';
@@ -45,7 +44,7 @@ const content = {
     },
     en: {
         title: "Manage Footer",
-        description: "Edit the content and links in your website's footer.",
+        description: "Edit the content and links in your website&apos;s footer.",
         backToDashboard: "Back to Admin Dashboard",
         accessDenied: "Access Denied",
         noAccess: "You do not have permission to access this page.",
