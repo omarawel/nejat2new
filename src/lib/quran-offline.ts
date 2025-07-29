@@ -1,4 +1,4 @@
-yes
+
 import { get, set, del, keys, UseStore } from 'idb-keyval';
 
 const SURAH_LIST_KEY = 'quran_surah_list';
@@ -46,7 +46,7 @@ export const getSurahWithEditions = async (surahNumber: number, editions: string
         }
 
         return results;
-    } catch (error: Error) { // Changed from any
+    } catch (error) { // Changed from any
         console.error("Error fetching surah with editions from IndexedDB:", error);
         return null;
     }
@@ -65,7 +65,7 @@ export const isQuranDownloaded = async () => {
         const lastSurah = await getSurahWithEditions(114, ['quran-uthmani', 'en.sahih', 'de.aburida', 'en.transliteration']);
 
         return !!firstSurah && !!lastSurah;
-    } catch (error: Error) { // Changed from any
+    } catch (error) { // Changed from any
         console.error("Error checking download status:", error);
         return false;
     }
@@ -77,7 +77,7 @@ export const clearOfflineQuranData = async () => {
         const allKeys: IDBValidKey[] = await keys();
         const quranKeys = allKeys.filter(key => typeof key === 'string' && key.startsWith('quran_'));
         await Promise.all(quranKeys.map(key => del(key)));
-    } catch (error: Error) { // Changed from any
+    } catch (error) { // Changed from any
         console.error("Error clearing offline Quran data:", error);
     }
 }
