@@ -1,3 +1,4 @@
+
 "use client"
 
 import {
@@ -19,9 +20,9 @@ const content = {
     backToFeatures: "Zurück zu den Funktionen",
     dhikrList: [
       {
-        title: "Subhan&apos;Allah",
+        title: "SubhanAllah",
         arabic: "سُبْحَانَ ٱللَّٰهِ",
-        transliteration: "Subhan&apos;Allah",
+        transliteration: "SubhanAllah",
         meaning: "Gepriesen sei Allah.",
         benefit: "Wer dies 100 Mal am Tag sagt, dem werden 1000 gute Taten aufgeschrieben oder 1000 Sünden vergeben. (Muslim)"
       },
@@ -37,7 +38,7 @@ const content = {
         arabic: "ٱللَّٰهُ أَكْبَرُ",
         transliteration: "Allahu Akbar",
         meaning: "Allah ist der Größte.",
-        benefit: "Das Sagen von &apos;Subhan&apos;Allah&apos;, &apos;Alhamdulillah&apos; und &apos;Allahu Akbar&apos; ist dem Propheten (ﷺ) lieber als alles, worüber die Sonne aufgeht. (Muslim)"
+        benefit: "Das Sagen von 'SubhanAllah', 'Alhamdulillah' und 'Allahu Akbar' ist dem Propheten (ﷺ) lieber als alles, worüber die Sonne aufgeht. (Muslim)"
       },
       {
         title: "La ilaha illallah",
@@ -65,7 +66,7 @@ const content = {
         arabic: "اللَّهُمَّ صَلِّ عَلَى مُحَمَّدٍ وَعَلَى آلِ مُحَمَّدٍ",
         transliteration: "Allahumma salli 'ala Muhammadin wa 'ala aali Muhammad",
         meaning: "O Allah, sende Deine Gnade, Ehre und Barmherzigkeit auf Muhammad und die Familie von Muhammad.",
-        benefit: "Der Prophet (ﷺ) sagte: &apos;Wer einmal Segenswünsche über mich ausspricht, über den wird Allah zehnmal Segenswünsche aussprechen, ihm zehn Sünden vergeben und ihn um zehn Stufen erhöhen.&apos; (an-Nasa&apos;i)"
+        benefit: "Der Prophet (ﷺ) sagte: 'Wer einmal Segenswünsche über mich ausspricht, über den wird Allah zehnmal Segenswünsche aussprechen, ihm zehn Sünden vergeben und ihn um zehn Stufen erhöhen.' (an-Nasa'i)"
       },
       {
         title: "Hawqala (Kanz aus dem Paradies)",
