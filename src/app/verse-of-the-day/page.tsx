@@ -199,29 +199,31 @@ export default function VerseOfTheDayPage() {
                 </Button>
                 <Card 
                     ref={postcardRef}
-                    className="w-full shadow-2xl bg-card border-border overflow-hidden"
+                    className="w-full shadow-2xl bg-card border-amber-200/50 dark:border-amber-800/50 bg-[url('https://www.transparenttextures.com/patterns/old-paper.png')] dark:bg-[url('https://www.transparenttextures.com/patterns/old-paper-dark.png')]"
                 >
                     <CardContent className="p-2">
-                        <div className="border-2 border-primary/20 p-1">
-                            <div className="border border-primary/30 p-6 min-h-[300px] flex flex-col items-center justify-center text-center bg-background">
-                                {loading ? (
-                                    <Loader2 className="h-12 w-12 animate-spin text-primary" />
-                                ) : verse ? (
-                                    <div className="space-y-6">
-                                        <p className="text-3xl font-quranic text-center tracking-wide leading-relaxed">{verse.verse_ar}</p>
-                                        <p className="text-lg leading-relaxed text-foreground/90">"{language === 'de' ? verse.verse_de : verse.verse_en}"</p>
-                                        <p className="text-sm text-muted-foreground">{c.surah} {language === 'de' ? verse.surah_de : verse.surah_en}, {verse.reference}</p>
-                                    </div>
-                                ) : null}
-                                <div className="flex-grow" />
-                                <div className="relative pt-4 mt-auto">
-                                     <span className="text-xs font-bold text-muted-foreground/80">Nejat</span>
-                                     <Badge variant="default" className="absolute top-2 -right-7 h-auto px-1.5 py-0.5 text-[8px] font-bold">Pro</Badge>
+                        <div className="border-4 border-amber-300 dark:border-amber-800 rounded-md p-6 min-h-[300px] flex flex-col items-center justify-center text-center bg-transparent">
+                            {loading ? (
+                                <Loader2 className="h-12 w-12 animate-spin text-primary" />
+                            ) : verse ? (
+                                <div className="space-y-6">
+                                    <p className="text-3xl font-quranic text-center tracking-wide leading-relaxed">{verse.verse_ar}</p>
+                                    <p className="text-lg leading-relaxed text-foreground/90">"{language === 'de' ? verse.verse_de : verse.verse_en}"</p>
+                                    <p className="text-sm text-muted-foreground">{c.surah} {language === 'de' ? verse.surah_de : verse.surah_en}, {verse.reference}</p>
+                                </div>
+                            ) : null}
+                             <div className="flex-grow" />
+                            <div className="relative pt-4 mt-auto">
+                                <div className="relative inline-block">
+                                    <Link href="/" className="text-sm font-bold text-muted-foreground/80">Nejat</Link>
+                                    <Badge variant="default" className="absolute -top-3.5 -right-7 h-auto px-1.5 py-0.5 text-[10px] font-bold">Pro</Badge>
                                 </div>
                             </div>
                         </div>
                     </CardContent>
                 </Card>
+                
+                {user && (
                  <div className="w-full mt-4 grid grid-cols-2 gap-2">
                     <Button variant="outline" aria-label="Share" onClick={handleShare} disabled={authLoading}>
                         <Share2 className="h-5 w-5" />
@@ -230,7 +232,9 @@ export default function VerseOfTheDayPage() {
                        {isSaving ? <Loader2 className="h-5 w-5 animate-spin"/> : <Heart className="h-5 w-5" />}
                     </Button>
                 </div>
+                )}
             </div>
         </div>
     );
 }
+

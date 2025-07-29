@@ -82,7 +82,7 @@ export function Footer() {
                 <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8">
                     <div className="md:col-span-2">
                         <div className="relative inline-block mb-2">
-                            <Link href="/" className="text-xl font-bold">Nejat</Link>
+                             <Link href="/" className="text-xl font-bold">Nejat</Link>
                             <Badge variant="default" className="absolute -top-3.5 -right-7 h-auto px-1.5 py-0.5 text-[10px] font-bold">Pro</Badge>
                         </div>
                         <p className="text-muted-foreground max-w-md">{c.description}</p>
