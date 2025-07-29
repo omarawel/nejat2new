@@ -79,8 +79,7 @@ export default function CompassPage() {
         
         const y = Math.sin(deltaLng) * Math.cos(kaabaLatRad);
         const x = Math.cos(userLatRad) * Math.sin(kaabaLatRad) - Math.sin(userLatRad) * Math.cos(kaabaLatRad) * Math.cos(deltaLng);
-        let bearing = toDegrees(Math.atan2(y, x));
-        bearing = (bearing + 360) % 360;
+        const bearing = (toDegrees(Math.atan2(y, x)) + 360) % 360;
         setQiblaDirection(bearing);
         
         const R = 6371; // Radius of Earth in kilometers
@@ -96,11 +95,11 @@ export default function CompassPage() {
 
     const handleOrientation = (event: DeviceOrientationEvent) => {
         const orientationEvent = event as CustomDeviceOrientationEvent;
-        let alpha = orientationEvent.alpha;
+        const alpha = orientationEvent.alpha;
         if (typeof orientationEvent.webkitCompassHeading !== 'undefined') {
-            alpha = orientationEvent.webkitCompassHeading;
-        }
-        if (alpha !== null) {
+            const heading = orientationEvent.webkitCompassHeading;
+            setHeading(heading);
+        } else if (alpha !== null) {
             setHeading(alpha);
         }
     };

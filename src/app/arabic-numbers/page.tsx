@@ -96,7 +96,7 @@ function numberToWords(num: number, lang: 'de' | 'en'): string {
         11: 'Ahada Ashar', 12: 'Ithna Ashar', 13: 'Thalathata Ashar', 14: 'Arba\'ata Ashar', 15: 'Khamsata Ashar', 16: 'Sittata Ashar', 17: 'Sab\'ata Ashar', 18: 'Thamaniyata Ashar', 19: 'Tis\'ata Ashar'
     };
 
-    const words = [];
+    const words: string[] = [];
 
     if (num >= 1000) {
         const thousands = Math.floor(num / 1000);
