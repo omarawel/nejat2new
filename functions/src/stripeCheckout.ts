@@ -1,14 +1,13 @@
 
 import * as functions from 'firebase-functions';
 import Stripe from 'stripe';
-import { initializeApp, App } from 'firebase-admin/app';
+import { initializeApp } from 'firebase-admin/app';
 import * as dotenv from 'dotenv';
 
 dotenv.config();
 
-let app: App;
 try {
-  app = initializeApp();
+  initializeApp();
 } catch (e) {
   console.error("Firebase initialization error", e);
   // If app is already initialized, it will throw, so we catch and ignore.

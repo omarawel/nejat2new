@@ -43,9 +43,8 @@ const firestore_1 = require("firebase-admin/firestore");
 const app_1 = require("firebase-admin/app");
 const dotenv = __importStar(require("dotenv"));
 dotenv.config();
-let app;
 try {
-    app = (0, app_1.initializeApp)();
+    (0, app_1.initializeApp)();
 }
 catch (e) {
     console.error("Firebase initialization error", e);

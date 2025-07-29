@@ -176,10 +176,10 @@ export default function ProphetPostOfTheDayPage() {
                 </Button>
                 <Card 
                     ref={postcardRef}
-                    className="w-full shadow-lg bg-card text-card-foreground border-border"
+                    className="w-full shadow-2xl bg-card border-amber-200/50 dark:border-amber-800/50 bg-[url('https://www.transparenttextures.com/patterns/old-paper.png')] dark:bg-[url('https://www.transparenttextures.com/patterns/old-paper-dark.png')]"
                 >
-                    <CardContent className="p-2 bg-accent/20">
-                        <div className="border-2 border-accent/30 p-8 min-h-[400px] flex flex-col items-center justify-center text-center bg-card">
+                    <CardContent className="p-2">
+                        <div className="border-4 border-amber-300 dark:border-amber-800 rounded-md p-8 min-h-[400px] flex flex-col items-center justify-center text-center bg-transparent">
                             <h2 className="font-serif text-2xl font-bold mb-2 text-primary">{c.title}</h2>
                             {loading ? (
                                 <Loader2 className="h-12 w-12 animate-spin text-primary" />
@@ -192,8 +192,10 @@ export default function ProphetPostOfTheDayPage() {
                             ) : null}
                             <div className="flex-grow" />
                             <div className="relative pt-4 mt-auto">
-                                 <span className="text-xs font-bold text-muted-foreground/80">Nejat</span>
-                                 <Badge variant="default" className="absolute top-2 -right-7 h-auto px-1.5 py-0.5 text-[8px] font-bold">Pro</Badge>
+                                 <div className="relative inline-block mb-2">
+                                    <Link href="/" className="text-sm font-bold text-muted-foreground/80">Nejat</Link>
+                                    <Badge variant="default" className="absolute -top-3 -right-6 h-auto px-1.5 py-0.5 text-[8px] font-bold">Pro</Badge>
+                                </div>
                             </div>
                         </div>
                     </CardContent>

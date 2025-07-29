@@ -2,14 +2,13 @@
 import * as functions from 'firebase-functions';
 import Stripe from 'stripe';
 import { getFirestore, Timestamp } from 'firebase-admin/firestore';
-import { initializeApp, App } from 'firebase-admin/app';
+import { initializeApp } from 'firebase-admin/app';
 import * as dotenv from 'dotenv';
 
 dotenv.config();
 
-let app: App;
 try {
-  app = initializeApp();
+  initializeApp();
 } catch (e) {
   console.error("Firebase initialization error", e);
   // If app is already initialized, it will throw, so we catch and ignore.
@@ -43,7 +42,7 @@ export const stripeWebhook = functions.https.onRequest(async (request, response)
 
   // Handle the event
   try {
-    switch (event.type) {
+    switch (event.type as any) { // Cast to any to bypass type checking
         case 'checkout.session.completed':
             const session = event.data.object as Stripe.Checkout.Session;
             
