@@ -1,3 +1,4 @@
+
 "use client"
 
 import { useEffect, useState, useCallback, useRef } from 'react';
@@ -11,6 +12,7 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '@/lib/firebase';
 import { addFavorite } from '@/lib/favorites';
 import { toBlob } from 'html-to-image';
+import { Badge } from '@/components/ui/badge';
 
 interface Quote {
   text_de: string;
@@ -176,7 +178,10 @@ export default function IslamicQuotesPage() {
                         </div>
                     </CardContent>
                     <CardFooter className="justify-end p-2 pr-4">
-                        <p className="text-xs text-muted-foreground">Nejat Pro</p>
+                        <div className="relative">
+                            <span className="text-xs font-bold text-muted-foreground/80">Nejat</span>
+                            <Badge variant="default" className="absolute top-[-8px] -right-7 h-auto px-1.5 py-0.5 text-[8px] font-bold">Pro</Badge>
+                        </div>
                     </CardFooter>
                 </Card>
                  <div className="w-full mt-4 grid grid-cols-2 gap-2">

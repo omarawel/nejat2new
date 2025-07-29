@@ -1,3 +1,4 @@
+
 "use client"
 
 import { useEffect, useState, useCallback, useRef } from 'react';
@@ -11,6 +12,7 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '@/lib/firebase';
 import { addFavorite } from '@/lib/favorites';
 import { toBlob } from 'html-to-image';
+import { Badge } from '@/components/ui/badge';
 
 
 interface Quote {
@@ -192,7 +194,10 @@ export default function HadithOfTheDayPage() {
                                 </div>
                             ) : null}
                              <div className="flex-grow" />
-                             <p className="text-xs text-muted-foreground/80 pt-4 mt-auto">Nejat Pro</p>
+                            <div className="relative pt-4 mt-auto">
+                                 <span className="text-xs font-bold text-muted-foreground/80">Nejat</span>
+                                 <Badge variant="default" className="absolute top-2 -right-7 h-auto px-1.5 py-0.5 text-[8px] font-bold">Pro</Badge>
+                            </div>
                         </div>
                     </CardContent>
                 </Card>
