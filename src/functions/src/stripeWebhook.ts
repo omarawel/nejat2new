@@ -2,21 +2,18 @@
 import * as functions from 'firebase-functions';
 import Stripe from 'stripe';
 import { getFirestore, Timestamp } from 'firebase-admin/firestore';
-import { initializeApp, App } from 'firebase-admin/app';
+import { initializeApp } from 'firebase-admin/app';
 
-let app: App;
+// Initialize Firebase Admin SDK
 try {
-  app = initializeApp();
+  initializeApp();
 } catch (e) {
   console.error("Firebase initialization error", e);
-  // If app is already initialized, it will throw, so we catch and ignore.
 }
 
 const db = getFirestore();
 
-// Make sure to set your Stripe secret key and webhook secret in your Firebase environment configuration
-// firebase functions:config:set stripe.secret_key="your_sk_key"
-// firebase functions:config:set stripe.webhook_secret="your_whsec_key"
+// Initialize Stripe with secret key from Firebase config
 const stripe = new Stripe(functions.config().stripe.secret_key, {
   apiVersion: '2024-06-20',
 });
@@ -42,50 +39,37 @@ export const stripeWebhook = functions.https.onRequest(async (request, response)
 
   // Handle the event
   try {
+    let userId: string | null = null;
+    let subscription: Stripe.Subscription | null = null;
+
     switch (event.type) {
         case 'checkout.session.completed':
             const session = event.data.object as Stripe.Checkout.Session;
-            
-            if (session.mode === 'subscription' && session.customer && session.subscription) {
-                const subscription = await stripe.subscriptions.retrieve(session.subscription as string);
-                const userId = subscription.metadata.userId;
+            userId = session.client_reference_id; // Get user ID from the session
 
+            if (session.mode === 'subscription' && session.subscription) {
                 if (!userId) {
-                    console.error('User ID not found in subscription metadata for session:', session.id);
+                    console.error('User ID not found in checkout session:', session.id);
                     break;
                 }
-
-                const subscriptionData = {
-                    planId: subscription.items.data[0].price.metadata.planId || 'unknown',
-                    status: subscription.status,
-                    current_period_end: Timestamp.fromMillis(subscription.current_period_end * 1000),
-                };
-
-                // Store subscription info in a subcollection for the user
-                await db.collection('users').doc(userId).collection('subscriptions').doc('current').set(subscriptionData);
+                subscription = await stripe.subscriptions.retrieve(session.subscription as string);
             }
             break;
             
         case 'customer.subscription.updated':
         case 'customer.subscription.deleted':
-        case 'customer.subscription.canceled':
-             const subscription = event.data.object as Stripe.Subscription;
-             const userId = subscription.metadata.userId;
-
-             if (!userId) {
-                console.error('User ID not found in subscription metadata for subscription:', subscription.id);
-                break;
-             }
-            
-             const updatedSubData = {
-                 planId: subscription.items.data[0].price.metadata.planId || 'unknown',
-                 status: subscription.status,
-                 current_period_end: Timestamp.fromMillis(subscription.current_period_end * 1000),
-             };
-             await db.collection('users').doc(userId).collection('subscriptions').doc('current').set(updatedSubData, { merge: true });
+             subscription = event.data.object as Stripe.Subscription;
+             userId = subscription.metadata.userId;
             break;
-      default:
-        console.log(`Unhandled event type ${event.type}`);
+    }
+
+    if (subscription && userId) {
+        const subscriptionData = {
+            planId: subscription.items.data[0]?.price.metadata.planId || subscription.items.data[0]?.price.lookup_key || 'unknown',
+            status: subscription.status,
+            current_period_end: Timestamp.fromMillis(subscription.current_period_end * 1000),
+        };
+        await db.collection('users').doc(userId).collection('subscriptions').doc('current').set(subscriptionData, { merge: true });
     }
     
     // Return a 200 response to acknowledge receipt of the event
