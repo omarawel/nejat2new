@@ -1,7 +1,11 @@
+
 import * as functions from 'firebase-functions';
 import Stripe from 'stripe';
 import { getFirestore, Timestamp } from 'firebase-admin/firestore';
 import { initializeApp, App } from 'firebase-admin/app';
+import * as dotenv from 'dotenv';
+
+dotenv.config();
 
 let app: App;
 try {
@@ -14,13 +18,11 @@ try {
 const db = getFirestore();
 
 // Make sure to set your Stripe secret key and webhook secret in your Firebase environment configuration
-// firebase functions:config:set stripe.secret_key="your_sk_key"
-// firebase functions:config:set stripe.webhook_secret="your_whsec_key"
-const stripe = new Stripe(functions.config().stripe.secret_key, {
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', {
   apiVersion: '2024-06-20',
 });
 
-const endpointSecret = functions.config().stripe.webhook_secret;
+const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET || '';
 
 export const stripeWebhook = functions.https.onRequest(async (request, response) => {
   const sig = request.headers['stripe-signature'];
@@ -32,9 +34,10 @@ export const stripeWebhook = functions.https.onRequest(async (request, response)
       throw new Error('No Stripe signature found!');
     }
     event = stripe.webhooks.constructEvent(request.rawBody, sig, endpointSecret);
-  } catch (err: any) {
-    console.error('Webhook signature verification failed.', err.message);
-    response.status(400).send(`Webhook Error: ${err.message}`);
+  } catch (err: unknown) {
+    const message = err instanceof Error ? err.message : 'An unknown error occurred';
+    console.error('Webhook signature verification failed.', message);
+    response.status(400).send(`Webhook Error: ${message}`);
     return;
   }
 

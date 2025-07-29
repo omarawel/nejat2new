@@ -1,9 +1,22 @@
+
 import * as functions from 'firebase-functions';
 import Stripe from 'stripe';
+import { initializeApp, App } from 'firebase-admin/app';
+import * as dotenv from 'dotenv';
+
+dotenv.config();
+
+let app: App;
+try {
+  app = initializeApp();
+} catch (e) {
+  console.error("Firebase initialization error", e);
+  // If app is already initialized, it will throw, so we catch and ignore.
+}
 
 // Initialisiere Stripe mit deinem Secret Key
 // Stelle sicher, dass du deine Stripe Secret Key sicher in den Umgebungsvariablen von Firebase Functions speicherst
-const stripe = new Stripe(functions.config().stripe.secret_key, {
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', {
   apiVersion: '2024-06-20', 
 });
 
@@ -41,17 +54,18 @@ export const createStripeCheckoutSession = functions.https.onCall(async (data, c
           userId: userId // Pass the Firebase UID to the subscription
         }
       },
-      success_url: `${functions.config().app.url}/profile?success=true`,
-      cancel_url: `${functions.config().app.url}/subscribe?canceled=true`,
+      success_url: `${process.env.APP_URL}/profile?success=true`,
+      cancel_url: `${process.env.APP_URL}/subscribe?canceled=true`,
     });
 
     return { id: session.id };
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';
     console.error('Fehler beim Erstellen der Stripe Checkout Session:', error);
     throw new functions.https.HttpsError(
       'internal',
       'Fehler beim Erstellen der Checkout Session.',
-      error.message
+      errorMessage
     );
   }
 });
