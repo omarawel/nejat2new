@@ -35,6 +35,7 @@ import { auth, db } from "@/lib/firebase"
 import { createUserWithEmailAndPassword, updateProfile, GoogleAuthProvider, signInWithPopup, UserCredential } from "firebase/auth"
 import { doc, setDoc, getDoc } from "firebase/firestore";
 import { useLanguage } from "@/components/language-provider"
+import { FirebaseError } from "firebase/app"
 
 
 const formSchema = z.object({
@@ -159,10 +160,9 @@ export default function SignupPage() {
       
       router.push("/");
 
-    } catch (err) {
-      if (typeof err === 'object' && err !== null && 'code' in err) {
-       const firebaseError = err as { code: string };
-       switch (firebaseError.code) {
+    } catch (err: unknown) {
+      if (err instanceof FirebaseError) {
+       switch (err.code) {
         case "auth/email-already-in-use":
           setError(c.emailInUse);
           break;
@@ -201,9 +201,9 @@ export default function SignupPage() {
         description: c.signedUpSuccess,
       })
       router.push("/");
-    } catch (err) {
-       if (typeof err === 'object' && err !== null && 'message' in err) {
-            setError((err as {message: string}).message);
+    } catch (err: unknown) {
+       if (err instanceof Error) {
+            setError(err.message);
        } else {
             setError(c.unexpectedError);
        }

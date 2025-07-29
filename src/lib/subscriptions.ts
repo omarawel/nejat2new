@@ -1,6 +1,6 @@
 
 import { db } from './firebase';
-import { collection, addDoc, onSnapshot, query, doc, deleteDoc, updateDoc, Timestamp, orderBy } from 'firebase/firestore';
+import { collection, addDoc, onSnapshot, query, doc, deleteDoc, updateDoc, Timestamp, orderBy, setDoc } from 'firebase/firestore';
 
 export interface SubscriptionPlan {
   id: string;
@@ -19,74 +19,31 @@ export const getSubscriptionPlans = (callback: (plans: SubscriptionPlan[]) => vo
   const plansCol = collection(db, 'subscriptionPlans');
   const q = query(plansCol, orderBy('createdAt', 'asc'));
 
-  // For this example, we return a hardcoded list. In a real app, you'd use the onSnapshot listener.
-  const hardcodedPlans: SubscriptionPlan[] = [
-      {
-        id: 'supporter',
-        name: 'Supporter',
-        price: '2,99€/Monat',
-        features: [
-            '15 KI-Anfragen pro Monat',
-            'Entwicklung unterstützen',
-            'Vollständiger Koran & Hadith-Zugriff',
-            'Qibla-Kompass & Gebetszeiten',
-            'Islamische Wissensbibliothek',
-            'Grundlegende Tools (Tasbih, Tracker)',
-        ],
-        priceId: 'price_1RltQWGXWEMb96gVAEDYSZay',
-        stripeLink: 'https://buy.stripe.com/9B600j51Na1x5yY0BZabK06',
-        aiRequestLimit: 15,
-        active: true,
-        createdAt: Timestamp.now(), 
-      },
-      {
-        id: 'pro',
-        name: 'Pro',
-        price: '4,99€/Monat',
-        features: [
-            '30 KI-Anfragen pro Monat',
-            'Alle kostenlosen Features',
-            'Werbefreie Erfahrung',
-            'Auswendiglernen-Tool',
-            'Koran Offline-Zugriff'
-        ],
-        priceId: 'price_1RmJ3rGXWEMb96gVBYrwf9DD',
-        stripeLink: 'https://buy.stripe.com/9B600j51Na1x5yY0BZabK06',
-        aiRequestLimit: 30,
-        active: true,
-        createdAt: Timestamp.now(), 
-      },
-      {
-        id: 'patron',
-        name: 'Patron',
-        price: '9,99€/Monat',
-        features: [
-            '75 KI-Anfragen pro Monat',
-            'Alle Pro-Vorteile',
-            'Unbegrenztes Auswendiglernen',
-            'Früher Zugriff auf neue Features'
-        ],
-        priceId: 'price_1RltR4GXWEMb96gVOcjACqRR', 
-        stripeLink: 'https://buy.stripe.com/7sY28rbqbehN5yY4SfabK08',
-        aiRequestLimit: 75,
-        active: true,
-        createdAt: Timestamp.now(),
-      },
-    ];
-  callback(hardcodedPlans);
-  
-  // The onSnapshot listener can be re-enabled when you connect to a real database.
-  const unsubscribe = () => {};
+  const unsubscribe = onSnapshot(q, (querySnapshot) => {
+    const plans: SubscriptionPlan[] = [];
+    querySnapshot.forEach((doc) => {
+        plans.push({ id: doc.id, ...doc.data() } as SubscriptionPlan);
+    });
+     // Manually sort by a predefined order
+    const order = ['supporter', 'pro', 'patron'];
+    plans.sort((a, b) => order.indexOf(a.id) - order.indexOf(b.id));
+
+    callback(plans);
+  }, (error) => {
+      console.error("Error fetching subscription plans:", error)
+      callback([])
+  });
+
   return unsubscribe;
 };
 
 // Add a new subscription plan
-export const addSubscriptionPlan = (plan: Omit<SubscriptionPlan, 'id' | 'createdAt'>) => {
-  if (!plan.name || !plan.price || !plan.priceId) {
+export const addSubscriptionPlan = (id: string, plan: Omit<SubscriptionPlan, 'id' | 'createdAt'>) => {
+  if (!id || !plan.name || !plan.price || !plan.priceId) {
     throw new Error('Plan data is incomplete');
   }
   const plansCol = collection(db, 'subscriptionPlans');
-  return addDoc(plansCol, {
+  return setDoc(doc(plansCol, id), {
     ...plan,
     createdAt: Timestamp.now(),
   });

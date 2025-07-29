@@ -23,6 +23,8 @@ const content = {
         pricePlaceholder: "z.B. 4,99€/Monat",
         priceIdLabel: "Stripe Preis-ID",
         priceIdPlaceholder: "price_123abc...",
+        stripeLinkLabel: "Stripe Zahlungslink",
+        stripeLinkPlaceholder: "https://buy.stripe.com/...",
         featuresLabel: "Features (eins pro Zeile)",
         featuresPlaceholder: "Exklusive KI-Funktionen\nWerbefrei\n...",
         aiRequestLimitLabel: "KI-Anfragen-Limit (monatlich)",
@@ -41,6 +43,8 @@ const content = {
         pricePlaceholder: "e.g., €4.99/month",
         priceIdLabel: "Stripe Price ID",
         priceIdPlaceholder: "price_123abc...",
+        stripeLinkLabel: "Stripe Payment Link",
+        stripeLinkPlaceholder: "https://buy.stripe.com/...",
         featuresLabel: "Features (one per line)",
         featuresPlaceholder: "Exclusive AI features\nAd-free experience\n...",
         aiRequestLimitLabel: "AI Request Limit (monthly)",
@@ -55,9 +59,11 @@ const content = {
 }
 
 const formSchema = z.object({
+  id: z.string().min(1, "ID is required. Use lowercase, e.g., 'pro' or 'supporter'."),
   name: z.string().min(3, "Name must be at least 3 characters."),
   price: z.string().min(1, "Price is required."),
   priceId: z.string().min(1, "Stripe Price ID is required.").startsWith('price_', "Must be a valid Stripe Price ID"),
+  stripeLink: z.string().url("Must be a valid Stripe payment link."),
   features: z.string().min(1, "At least one feature is required."),
   aiRequestLimit: z.coerce.number().int().min(0, "AI request limit must be a positive number."),
   active: z.boolean().default(true),
@@ -77,9 +83,11 @@ export function SubscriptionPlanForm({ plan, onFinished }: SubscriptionPlanFormP
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
+            id: plan?.id || "",
             name: plan?.name || "",
             price: plan?.price || "",
             priceId: plan?.priceId || "",
+            stripeLink: plan?.stripeLink || "",
             features: plan?.features.join('\n') || "",
             aiRequestLimit: plan?.aiRequestLimit ?? 0,
             active: plan?.active ?? true,
@@ -100,7 +108,7 @@ export function SubscriptionPlanForm({ plan, onFinished }: SubscriptionPlanFormP
                 toast({ title: c.successUpdate });
             } else {
                 // Create new plan
-                await addSubscriptionPlan(planData);
+                await addSubscriptionPlan(planData.id, planData);
                 toast({ title: c.successCreate });
             }
             form.reset();
@@ -120,6 +128,17 @@ export function SubscriptionPlanForm({ plan, onFinished }: SubscriptionPlanFormP
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                 <FormField
+                    control={form.control}
+                    name="id"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>Plan ID</FormLabel>
+                            <FormControl><Input placeholder="e.g. pro, supporter" {...field} disabled={!!plan} /></FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
                  <FormField
                     control={form.control}
                     name="name"
@@ -162,6 +181,17 @@ export function SubscriptionPlanForm({ plan, onFinished }: SubscriptionPlanFormP
                         <FormItem>
                             <FormLabel>{c.priceIdLabel}</FormLabel>
                             <FormControl><Input placeholder={c.priceIdPlaceholder} {...field} /></FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+                 <FormField
+                    control={form.control}
+                    name="stripeLink"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>{c.stripeLinkLabel}</FormLabel>
+                            <FormControl><Input placeholder={c.stripeLinkPlaceholder} {...field} /></FormControl>
                             <FormMessage />
                         </FormItem>
                     )}

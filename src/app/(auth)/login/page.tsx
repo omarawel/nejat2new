@@ -32,6 +32,7 @@ import { auth, db } from "@/lib/firebase"
 import { signInWithEmailAndPassword, sendPasswordResetEmail, GoogleAuthProvider, signInWithPopup, UserCredential, updateProfile } from "firebase/auth"
 import { useLanguage } from "@/components/language-provider"
 import { doc, setDoc, getDoc } from "firebase/firestore";
+import { FirebaseError } from "firebase/app"
 
 const formSchema = z.object({
   email: z.string().email({ message: "Invalid email address." }),
@@ -138,11 +139,11 @@ export default function LoginPage() {
         description: c.welcomeBack,
       })
       router.push("/")
-    } catch (err) {
-      if (typeof err === 'object' && err !== null && 'code' in err) {
-        const firebaseError = err as { code: string };
-        switch (firebaseError.code) {
+    } catch (err: unknown) {
+      if (err instanceof FirebaseError) {
+        switch (err.code) {
           case "auth/user-not-found":
+          case "auth/invalid-email":
             setError(c.userNotFound);
             break;
           case "auth/wrong-password":
@@ -178,8 +179,8 @@ export default function LoginPage() {
             title: c.passwordResetSent,
             description: c.checkInbox,
         });
-    } catch (err) {
-        if (typeof err === 'object' && err !== null && 'code' in err && (err as {code: string}).code === 'auth/user-not-found') {
+    } catch (err: unknown) {
+        if (err instanceof FirebaseError && err.code === 'auth/user-not-found') {
              toast({
                 variant: "destructive",
                 title: c.error,
@@ -207,9 +208,9 @@ export default function LoginPage() {
         description: c.welcomeBack,
       })
       router.push("/");
-    } catch (err) {
-       if (typeof err === 'object' && err !== null && 'message' in err) {
-            setError((err as {message: string}).message);
+    } catch (err: unknown) {
+       if (err instanceof Error) {
+            setError(err.message);
        } else {
             setError(c.unexpectedError);
        }

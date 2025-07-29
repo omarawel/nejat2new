@@ -94,7 +94,7 @@ export default function CompassPage() {
         setDistance(R * centralAngle);
     }, []);
 
-    const handleOrientation = (event: Event) => {
+    const handleOrientation = (event: DeviceOrientationEvent) => {
         const orientationEvent = event as CustomDeviceOrientationEvent;
         let alpha = orientationEvent.alpha;
         if (typeof orientationEvent.webkitCompassHeading !== 'undefined') {

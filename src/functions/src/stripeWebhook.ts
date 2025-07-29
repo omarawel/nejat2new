@@ -8,17 +8,27 @@ import { initializeApp } from 'firebase-admin/app';
 try {
   initializeApp();
 } catch (e) {
-  console.error("Firebase initialization error", e);
+  console.info("Firebase already initialized.");
 }
 
 const db = getFirestore();
 
-// Initialize Stripe with secret key from Firebase config
-const stripe = new Stripe(functions.config().stripe.secret_key, {
+// Initialize Stripe with secret key from environment configuration
+const stripeSecretKey = functions.config().stripe?.secret_key;
+if (!stripeSecretKey) {
+  console.error("Stripe secret key is not set in Firebase functions config.");
+  throw new Error("Stripe secret key is not configured.");
+}
+const stripe = new Stripe(stripeSecretKey, {
   apiVersion: '2024-06-20',
 });
 
-const endpointSecret = functions.config().stripe.webhook_secret;
+// Get webhook secret from environment configuration
+const endpointSecret = functions.config().stripe?.webhook_secret;
+if (!endpointSecret) {
+    console.error("Stripe webhook secret is not set in Firebase functions config.");
+    throw new Error("Stripe webhook secret is not configured.");
+}
 
 export const stripeWebhook = functions.https.onRequest(async (request, response) => {
   const sig = request.headers['stripe-signature'];
@@ -64,8 +74,9 @@ export const stripeWebhook = functions.https.onRequest(async (request, response)
     }
 
     if (subscription && userId) {
+        const plan = subscription.items.data[0]?.price;
         const subscriptionData = {
-            planId: subscription.items.data[0]?.price.metadata.planId || subscription.items.data[0]?.price.lookup_key || 'unknown',
+            planId: plan?.metadata.planId || plan?.lookup_key || 'unknown',
             status: subscription.status,
             current_period_end: Timestamp.fromMillis(subscription.current_period_end * 1000),
         };

@@ -7,11 +7,19 @@ import { initializeApp } from 'firebase-admin/app';
 try {
   initializeApp();
 } catch (e) {
-  console.error("Firebase initialization error", e);
+  // Errors if already initialized, which is fine.
+  console.info("Firebase already initialized.");
 }
 
-// Initialize Stripe with secret key from Firebase config
-const stripe = new Stripe(functions.config().stripe.secret_key, {
+// Get Stripe secret key from environment configuration
+const stripeSecretKey = functions.config().stripe?.secret_key;
+if (!stripeSecretKey) {
+  console.error("Stripe secret key is not set in Firebase functions config.");
+  throw new Error("Stripe secret key is not configured.");
+}
+
+// Initialize Stripe with secret key
+const stripe = new Stripe(stripeSecretKey, {
   apiVersion: '2024-06-20', 
 });
 
@@ -19,7 +27,7 @@ export const createStripeCheckoutSession = functions.https.onCall(async (data, c
   if (!context.auth) {
     throw new functions.https.HttpsError(
       'unauthenticated',
-      'Nur authentifizierte Benutzer können Abonnements erstellen.'
+      'User must be authenticated to create a subscription.'
     );
   }
   
@@ -29,8 +37,14 @@ export const createStripeCheckoutSession = functions.https.onCall(async (data, c
   if (!priceId) {
     throw new functions.https.HttpsError(
       'invalid-argument',
-      'Die Stripe Preis-ID ist erforderlich.'
+      'The Stripe Price ID is required.'
     );
+  }
+  
+  const appUrl = functions.config().app?.url;
+  if (!appUrl) {
+    console.error("App URL is not set in Firebase functions config.");
+    throw new functions.https.HttpsError('internal', 'Application URL is not configured.');
   }
 
   try {
@@ -49,17 +63,17 @@ export const createStripeCheckoutSession = functions.https.onCall(async (data, c
         }
       },
       client_reference_id: userId,
-      success_url: `${functions.config().app.url}/profile?success=true`,
-      cancel_url: `${functions.config().app.url}/subscribe?canceled=true`,
+      success_url: `${appUrl}/profile?success=true`,
+      cancel_url: `${appUrl}/subscribe?canceled=true`,
     });
 
     return { id: session.id };
   } catch (error: unknown) {
     const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';
-    console.error('Fehler beim Erstellen der Stripe Checkout Session:', error);
+    console.error('Error creating Stripe Checkout Session:', error);
     throw new functions.https.HttpsError(
       'internal',
-      'Fehler beim Erstellen der Checkout Session.',
+      'Failed to create Checkout Session.',
       errorMessage
     );
   }
