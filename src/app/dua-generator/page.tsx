@@ -1,4 +1,3 @@
-
 "use client"
 
 import { useState, useEffect } from "react";
@@ -26,7 +25,7 @@ import { UpgradeInlineAlert } from '@/components/upgrade-inline-alert';
 
 const content = {
     de: {
-        title: "Du'a-Generator",
+        title: "Du&apos;a-Generator",
         description: "Erstelle persönliche Bittgebete mit Hilfe von KI.",
         backToFeatures: "Zurück zu den Funktionen",
         formTitle: "Erstelle dein Bittgebet",
@@ -45,23 +44,23 @@ const content = {
         error: "Fehler beim Erstellen des Bittgebets. Bitte versuche es erneut."
     },
     en: {
-        title: "Du'a Generator",
+        title: "Du&apos;a Generator",
         description: "Create personalized supplications with the help of AI.",
         backToFeatures: "Back to Features",
-        formTitle: "Create Your Du'a",
+        formTitle: "Create Your Du&apos;a",
         topicLabel: "Topic",
         topicPlaceholder: "e.g. for success in an exam...",
         lengthLabel: "Length",
         lengthShort: "Short",
         lengthMedium: "Medium",
         lengthLong: "Long",
-        languageLabel: "Language of the Du'a",
-        generateButton: "Generate Du'a",
+        languageLabel: "Language of the Du&apos;a",
+        generateButton: "Generate Du&apos;a",
         generatingButton: "Generating...",
-        resultTitle: "Your Personalized Du'a",
+        resultTitle: "Your Personalized Du&apos;a",
         copy: "Copy",
         copied: "Copied!",
-        error: "Failed to generate du'a. Please try again."
+        error: "Failed to generate du&apos;a. Please try again."
     }
 };
 

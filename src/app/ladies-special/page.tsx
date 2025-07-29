@@ -25,7 +25,7 @@ const content = {
       },
       {
         icon: Droplets,
-        title: "Fiqh der Menstruation (Hayd & Nifas)",
+        title: "Fiqh der Menstruation (Hayd &amp; Nifas)",
         content: "Das Verständnis der Regeln bezüglich Menstruation (Hayd) und Wochenbettblutung (Nifas) ist für eine muslimische Frau von großer Bedeutung. Während dieser Zeit ist sie vom rituellen Gebet (Salah) und dem Fasten befreit. Diese müssen nicht nachgeholt werden. Sie kann jedoch weiterhin Dhikr (Gedenken an Allah), Dua (Bittgebete) machen und den Koran lesen, ohne den Mushaf direkt zu berühren. Nach Beendigung der Periode ist eine Ganzkörperwaschung (Ghusl) erforderlich, um den Zustand der rituellen Reinheit wiederzuerlangen."
       },
       {
@@ -47,18 +47,18 @@ const content = {
               },
                {
                 name: 'Fatima bint Muhammad (ra)',
-                story: "Fatima war die jüngste Tochter des Propheten (ﷺ) und eine der vier 'besten Frauen des Paradieses'. Sie war bekannt für ihre Geduld, ihre Bescheidenheit und ihre tiefe Liebe zu ihrem Vater. Als Ehefrau von Ali ibn Abi Talib und Mutter von Hasan und Husain ist sie die Stammmutter der Ahl al-Bayt (Familie des Propheten). Ihr Leben ist ein Vorbild für Frömmigkeit und familiäre Hingabe."
+                story: "Fatima war die jüngste Tochter des Propheten (ﷺ) und eine der vier &apos;besten Frauen des Paradieses.&apos; Sie war bekannt für ihre Geduld, ihre Bescheidenheit und ihre tiefe Liebe zu ihrem Vater. Als Ehefrau von Ali ibn Abi Talib und Mutter von Hasan und Husain ist sie die Stammmutter der Ahl al-Bayt (Familie des Propheten). Ihr Leben ist ein Vorbild für Frömmigkeit und familiäre Hingabe."
               },
         ]
       },
        {
         icon: Heart,
         title: "Die Rolle als Mutter",
-        content: "Die Mutterschaft hat im Islam einen extrem hohen Stellenwert. Ein berühmter Hadith besagt, dass das Paradies 'zu den Füßen der Mütter' liegt. Die Mutter ist die erste und wichtigste Schule (Madrasa) für ein Kind. Ihre Liebe, Geduld und Erziehung prägen den Charakter und den Glauben der nächsten Generation. Eine rechtschaffene Erziehung der Kinder gilt als eine der größten fortlaufenden Spenden (Sadaqa Jariyah)."
+        content: "Die Mutterschaft hat im Islam einen extrem hohen Stellenwert. Ein berühmter Hadith besagt, dass das Paradies &apos;zu den Füßen der Mütter&apos; liegt. Die Mutter ist die erste und wichtigste Schule (Madrasa) für ein Kind. Ihre Liebe, Geduld und Erziehung prägen den Charakter und den Glauben der nächsten Generation. Eine rechtschaffene Erziehung der Kinder gilt als eine der größten fortlaufenden Spenden (Sadaqa Jariyah)."
       },
        {
         icon: User,
-        title: "Gesundheit & Wohlbefinden",
+        title: "Gesundheit &amp; Wohlbefinden",
         content: "Der Islam ermutigt Frauen, auf ihre körperliche und seelische Gesundheit zu achten. Eine gesunde Ernährung, ausreichend Bewegung und die Pflege des eigenen Körpers sind nicht nur erlaubt, sondern erwünscht. Das Wohlbefinden ist eine Gabe Allahs (Amanah), für die wir dankbar sein und die wir schützen sollen. Sich Zeit für sich selbst zu nehmen, ist wichtig, um die vielfältigen Rollen als Muslima, Ehefrau, Mutter oder Berufstätige erfüllen zu können."
       },
        {
@@ -78,11 +78,11 @@ const content = {
       {
         icon: Heart,
         title: "The Status of Women in Islam",
-        content: "Islam has honored women, granting them important rights and a high status in society. As a daughter, she is a source of mercy; as a wife, she completes half of her husband's faith; and as a mother, Paradise lies at her feet. The Quran and Sunnah repeatedly emphasize the equality of men and women before Allah in terms of their deeds and their reward."
+        content: "Islam has honored women, granting them important rights and a high status in society. As a daughter, she is a source of mercy; as a wife, she completes half of her husband&apos;s faith; and as a mother, Paradise lies at her feet. The Quran and Sunnah repeatedly emphasize the equality of men and women before Allah in terms of their deeds and their reward."
       },
       {
         icon: Droplets,
-        title: "Fiqh of Menstruation (Hayd & Nifas)",
+        title: "Fiqh of Menstruation (Hayd &amp; Nifas)",
         content: "Understanding the rules concerning menstruation (Hayd) and post-natal bleeding (Nifas) is of great importance for a Muslim woman. During this time, she is exempt from ritual prayer (Salah) and fasting, which do not need to be made up. However, she can continue to perform Dhikr (remembrance of Allah), make Dua (supplications), and read the Quran without directly touching the Mushaf. After the period ends, a full-body ritual bath (Ghusl) is required to regain a state of ritual purity."
       },
       {
@@ -96,27 +96,27 @@ const content = {
         subsections: [
              {
                 name: 'Khadijah bint Khuwaylid (ra)',
-                story: "Khadijah was the first wife of the Prophet Muhammad (ﷺ) and the first person to convert to Islam. She was a successful, independent businesswoman known for her wisdom and noble character. She was the Prophet's greatest supporter in the early years of revelation, providing him comfort, encouragement, and using all her wealth for the cause of Islam."
+                story: "Khadijah was the first wife of the Prophet Muhammad (ﷺ) and the first person to convert to Islam. She was a successful, independent businesswoman known for her wisdom and noble character. She was the Prophet&apos;s greatest supporter in the early years of revelation, providing him comfort, encouragement, and using all her wealth for the cause of Islam."
               },
               {
                 name: 'Aisha bint Abi Bakr (ra)',
-                story: "Aisha, the daughter of Abu Bakr, was one of the Prophet's youngest and most knowledgeable wives. With her sharp intellect and exceptional memory, she became one of the most important sources of Hadith. After the Prophet's death, she was a central authority on Fiqh (Islamic jurisprudence) and a teacher to countless men and women."
+                story: "Aisha, the daughter of Abu Bakr, was one of the Prophet&apos;s youngest and most knowledgeable wives. With her sharp intellect and exceptional memory, she became one of the most important sources of Hadith. After the Prophet&apos;s death, she was a central authority on Fiqh (Islamic jurisprudence) and a teacher to countless men and women."
               },
                {
                 name: 'Fatima bint Muhammad (ra)',
-                story: "Fatima was the youngest daughter of the Prophet (ﷺ) and one of the four 'best women of Paradise.' She was known for her patience, modesty, and deep love for her father. As the wife of Ali ibn Abi Talib and mother of Hasan and Husain, she is the matriarch of the Ahl al-Bayt (the Prophet's family). Her life is a model of piety and family devotion."
+                story: "Fatima was the youngest daughter of the Prophet (ﷺ) and one of the four &apos;best women of Paradise.&apos; She was known for her patience, modesty, and deep love for her father. As the wife of Ali ibn Abi Talib and mother of Hasan and Husain, she is the matriarch of the Ahl al-Bayt (the Prophet&apos;s family). Her life is a model of piety and family devotion."
               },
         ]
       },
        {
         icon: Heart,
         title: "The Role of a Mother",
-        content: "Motherhood holds an extremely high status in Islam. A famous Hadith states that Paradise 'lies at the feet of mothers.' The mother is the first and most important school (Madrasa) for a child. Her love, patience, and upbringing shape the character and faith of the next generation. A righteous upbringing of children is considered one of the greatest ongoing charities (Sadaqa Jariyah)."
+        content: "Motherhood holds an extremely high status in Islam. A famous Hadith states that Paradise &apos;lies at the feet of mothers.&apos; The mother is the first and most important school (Madrasa) for a child. Her love, patience, and upbringing shape the character and faith of the next generation. A righteous upbringing of children is considered one of the greatest ongoing charities (Sadaqa Jariyah)."
       },
        {
         icon: User,
-        title: "Health & Well-being",
-        content: "Islam encourages women to take care of their physical and mental health. A healthy diet, sufficient exercise, and caring for one's body are not only permissible but encouraged. Well-being is a trust from Allah (Amanah) for which we should be grateful and which we should protect. Taking time for oneself is important to be able to fulfill the diverse roles of a Muslimah, wife, mother, or professional."
+        title: "Health &amp; Well-being",
+        content: "Islam encourages women to take care of their physical and mental health. A healthy diet, sufficient exercise, and caring for one&apos;s body are not only permissible but encouraged. Well-being is a trust from Allah (Amanah) for which we should be grateful and which we should protect. Taking time for oneself is important to be able to fulfill the diverse roles of a Muslimah, wife, mother, or professional."
       },
       {
         icon: BookHeart,

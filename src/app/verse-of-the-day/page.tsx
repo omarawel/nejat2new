@@ -26,7 +26,7 @@ interface Verse {
 
 const verses: Verse[] = [
   {
-    verse_en: "And We have certainly made the Qur'an easy for remembrance, so is there any who will remember?",
+    verse_en: "And We have certainly made the Qur&apos;an easy for remembrance, so is there any who will remember?",
     verse_de: "Und Wir haben den Koran ja leicht zum Bedenken gemacht. Aber gibt es jemanden, der bedenkt?",
     verse_ar: "وَلَقَدْ يَسَّرْنَا الْقُرْآنَ لِلذِّكْرِ فَهَلْ مِن مُّدَّكِرٍ",
     surah_en: "Al-Qamar",
@@ -45,8 +45,8 @@ const verses: Verse[] = [
     verse_en: "Indeed, in the remembrance of Allah do hearts find rest.",
     verse_de: "Wahrlich, im Gedenken an Allah finden die Herzen Ruhe.",
     verse_ar: "أَلَا بِذِكْرِ اللَّهِ تَطْمَئِنُّ الْقُلُوبُ",
-    surah_en: "Ar-Ra'd",
-    surah_de: "Ar-Ra'd",
+    surah_en: "Ar-Ra&apos;d",
+    surah_de: "Ar-Ra&apos;d",
     reference: "13:28"
   },
    {
@@ -89,7 +89,7 @@ const content = {
         backToFeatures: "Back to Features",
         newVerse: "New Verse",
         surah: "Surah",
-        intro: "The Quran is a source of guidance, mercy, and wisdom. a single verse can touch the heart, enlighten the mind, and guide one's way for the day. This feature offers you a new, inspiring verse daily to deepen your connection with the Book of Allah.",
+        intro: "The Quran is a source of guidance, mercy, and wisdom. a single verse can touch the heart, enlighten the mind, and guide one&apos;s way for the day. This feature offers you a new, inspiring verse daily to deepen your connection with the Book of Allah.",
         shareError: "Sharing is not supported by your browser.",
         verseCopied: "Verse image copied to clipboard.",
         favoriteSaved: "Saved to favorites!",
@@ -185,7 +185,9 @@ export default function VerseOfTheDayPage() {
         }
         if (!verse) return;
         setIsSaving(true);
-        const textToSave = `Quran, ${c.surah} ${language === 'de' ? verse.surah_de : verse.surah_en}, ${verse.reference}\n\n"${language === 'de' ? verse.verse_de : verse.verse_en}"`;
+        const textToSave = `Quran, ${c.surah} ${language === 'de' ? verse.surah_de : verse.surah_en}, ${verse.reference}
+
+"${language === 'de' ? verse.verse_de : verse.verse_en}"`;
         try {
             await addFavorite(user.uid, textToSave);
             toast({ title: c.favoriteSaved });

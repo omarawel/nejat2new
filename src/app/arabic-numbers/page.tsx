@@ -5,7 +5,7 @@ import { useState, useRef, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Play, Pause, Loader, Eye, EyeOff, ArrowLeft } from 'lucide-react';
+import { Play, Pause, Loader2, Eye, EyeOff, ArrowLeft } from 'lucide-react';
 import { useLanguage } from '@/components/language-provider';
 import { textToSpeech } from "@/ai/flows/text-to-speech";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
@@ -55,7 +55,7 @@ const content = {
         transliteration: "Transliteration",
         conversionError: "Could not convert the number. Please try a valid number.",
         inputRequired: "Please enter a number.",
-        tooLarge: "Number is too large. Please enter a number less than 1,000,000.",
+        tooLarge: "Number is too large. Please enter a number less than 1,000.000.",
         play: "Play"
     }
 }
@@ -87,13 +87,13 @@ function numberToWords(num: number, lang: 'de' | 'en'): string {
     
     // Using a simplified transliteration for this example. A full library would be needed for perfect grammar.
     const units: Record<number, string> = {
-        1: 'Wahid', 2: 'Ithnan', 3: 'Thalatha', 4: 'Arba\'a', 5: 'Khamsa', 6: 'Sittah', 7: 'Sab\'a', 8: 'Thamaniyah', 9: 'Tis\'a'
+        1: 'Wahid', 2: 'Ithnan', 3: 'Thalatha', 4: 'Arba'a', 5: 'Khamsa', 6: 'Sittah', 7: 'Sab'a', 8: 'Thamaniyah', 9: 'Tis'a'
     };
     const tens: Record<number, string> = {
-        10: 'Asharah', 20: 'Ishrun', 30: 'Thalathun', 40: 'Arba\'un', 50: 'Khamsun', 60: 'Sittun', 70: 'Sab\'un', 80: 'Thamanun', 90: 'Tis\'un'
+        10: 'Asharah', 20: 'Ishrun', 30: 'Thalathun', 40: 'Arba'un', 50: 'Khamsun', 60: 'Sittun', 70: 'Sab'un', 80: 'Thamanun', 90: 'Tis'un'
     };
     const teens: Record<number, string> = {
-        11: 'Ahada Ashar', 12: 'Ithna Ashar', 13: 'Thalathata Ashar', 14: 'Arba\'ata Ashar', 15: 'Khamsata Ashar', 16: 'Sittata Ashar', 17: 'Sab\'ata Ashar', 18: 'Thamaniyata Ashar', 19: 'Tis\'ata Ashar'
+        11: 'Ahada Ashar', 12: 'Ithna Ashar', 13: 'Thalathata Ashar', 14: 'Arba'ata Ashar', 15: 'Khamsata Ashar', 16: 'Sittata Ashar', 17: 'Sab'ata Ashar', 18: 'Thamaniyata Ashar', 19: 'Tis'ata Ashar'
     };
 
     const words: string[] = [];
@@ -111,9 +111,9 @@ function numberToWords(num: number, lang: 'de' | 'en'): string {
 
     if (num >= 100) {
         const hundreds = Math.floor(num / 100);
-        if (hundreds === 1) words.push('Mi\'ah');
-        else if (hundreds === 2) words.push('Mi\'atayn');
-        else words.push(units[hundreds] + ' Mi\'ah');
+        if (hundreds === 1) words.push('Mi'ah');
+        else if (hundreds === 2) words.push('Mi'atayn');
+        else words.push(units[hundreds] + ' Mi'ah');
         num %= 100;
     }
 
@@ -138,7 +138,7 @@ function numberToWords(num: number, lang: 'de' | 'en'): string {
 
 
 const FormSchema = z.object({
-  number: z.number().min(0, "Number must be positive.").max(999999, "Number must be less than 1,000,000."),
+  number: z.coerce.number().min(0, "Number must be positive.").max(999999, "Number must be less than 1,000,000."),
 })
 
 
@@ -251,7 +251,7 @@ export default function ArabicNumbersPage() {
                                 </div>
                                 <div className="flex items-center mt-3">
                                     <Button variant="ghost" size="icon" onClick={() => handlePlayAudio(name, id)} disabled={isLoading}>
-                                        {isLoading ? <Loader className="h-4 w-4 animate-spin" /> : (isPlaying ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />)}
+                                        {isLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : (isPlaying ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />)}
                                     </Button>
                                     <Button variant="ghost" size="icon" onClick={() => toggleRowVisibility(id)}>
                                         {isHidden ? <EyeOff className="h-4 w-4"/> : <Eye className="h-4 w-4"/>}
@@ -309,7 +309,7 @@ export default function ArabicNumbersPage() {
                                 onClick={() => handlePlayAudio(result.transliteration, `result-${result.original}`)} 
                                 disabled={loadingAudio === `result-${result.original}`}
                             >
-                                {loadingAudio === `result-${result.original}` ? <Loader className="h-5 w-5 animate-spin" /> : (playingAudio === `result-${result.original}` ? <Pause className="h-5 w-5" /> : <Play className="h-5 w-5" />)}
+                                {loadingAudio === `result-${result.original}` ? <Loader2 className="h-5 w-5 animate-spin" /> : (playingAudio === `result-${result.original}` ? <Pause className="h-5 w-5" /> : <Play className="h-5 w-5" />)}
                             </Button>
                         </CardTitle>
                     </CardHeader>

@@ -15,10 +15,10 @@ const content = {
             {
                 icon: BookHeart,
                 title: "Grundlagen des Glaubens vermitteln (Aqidah)",
-                content: "Die wichtigste Aufgabe ist es, Kindern von klein auf die Liebe zu Allah und Seinem Gesandten (ﷺ) zu vermitteln. Lehre sie die Grundlagen des Tauhid (Einzigartigkeit Allahs), die Bedeutung von 'La ilaha illallah' und die Namen und Eigenschaften Allahs auf eine einfache und liebevolle Weise.",
+                content: "Die wichtigste Aufgabe ist es, Kindern von klein auf die Liebe zu Allah und Seinem Gesandten (ﷺ) zu vermitteln. Lehre sie die Grundlagen des Tauhid (Einzigartigkeit Allahs), die Bedeutung von &apos;La ilaha illallah&apos; und die Namen und Eigenschaften Allahs auf eine einfache und liebevolle Weise.",
                 points: [
                     "Erzähle Geschichten über die Allmacht und Barmherzigkeit Allahs.",
-                    "Beziehe Allah in den Alltag ein, z.B. durch Dankbarkeit ('Alhamdulillah') für das Essen.",
+                    "Beziehe Allah in den Alltag ein, z.B. durch Dankbarkeit (&apos;Alhamdulillah&apos;) für das Essen.",
                     "Nutze kindgerechte Bücher und Medien, um den Glauben verständlich zu machen."
                 ]
             },
@@ -34,7 +34,7 @@ const content = {
             },
             {
                 icon: Brain,
-                title: "Wissen und Anbetung (Ilm & Ibadah)",
+                title: "Wissen und Anbetung (Ilm &amp; Ibadah)",
                 content: "Bringe Kindern schrittweise das Gebet (Salah), das Fasten und andere gottesdienstliche Handlungen bei. Mache es zu einer positiven und freudigen Erfahrung. Fördere ihre Liebe zum Koran, indem ihr ihn gemeinsam lest und über seine Bedeutungen sprecht.",
                  points: [
                     "Beginne früh, aber ohne Zwang. Mache das Gebet zu einem gemeinsamen Familienritual.",
@@ -88,10 +88,10 @@ const content = {
             {
                 icon: BookHeart,
                 title: "Teaching the Foundations of Faith (Aqidah)",
-                content: "The most important task is to instill in children from an early age the love for Allah and His Messenger (ﷺ). Teach them the basics of Tawhid (the Oneness of Allah), the meaning of 'La ilaha illallah', and the names and attributes of Allah in a simple and loving way.",
+                content: "The most important task is to instill in children from an early age the love for Allah and His Messenger (ﷺ). Teach them the basics of Tawhid (the Oneness of Allah), the meaning of &apos;La ilaha illallah&apos;, and the names and attributes of Allah in a simple and loving way.",
                 points: [
                     "Tell stories about the omnipotence and mercy of Allah.",
-                    "Incorporate Allah into daily life, e.g., through gratitude ('Alhamdulillah') for food.",
+                    "Incorporate Allah into daily life, e.g., through gratitude (&apos;Alhamdulillah&apos;) for food.",
                     "Use child-friendly books and media to make faith understandable."
                 ]
             },
@@ -100,7 +100,7 @@ const content = {
                 title: "Character Building (Akhlaq)",
                 content: "Education aims to form a righteous character. Live the Islamic virtues such as honesty, mercy, patience, gratitude, and respect. Children learn best from the example of their parents.",
                  points: [
-                    "Be the best role model yourself. Children imitate their parents' behavior.",
+                    "Be the best role model yourself. Children imitate their parents&apos; behavior.",
                     "Praise good behavior and lovingly explain why bad behavior is undesirable.",
                     "Read stories together about the exemplary character of the Prophet Muhammad (ﷺ)."
                 ]

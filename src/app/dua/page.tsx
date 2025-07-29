@@ -1,4 +1,3 @@
-
 "use client"
 
 import {
@@ -25,7 +24,7 @@ const duaData = {
           {
             title: "Beim Aufwachen",
             arabic: "الْحَمْدُ لِلَّهِ الَّذِي أَحْيَانَا بَعْدَ مَا أَمَاتَنَا وَإِلَيْهِ النُّشُورُ",
-            transliteration: "Alhamdu lillahil-ladhi ahyana ba'da ma amatana wa ilayhin-nushur.",
+            transliteration: "Alhamdu lillahil-ladhi ahyana ba&apos;da ma amatana wa ilayhin-nushur.",
             translation: "Alles Lob gebührt Allah, der uns wiederbelebt hat, nachdem Er uns hat sterben lassen, und zu Ihm ist die Auferstehung."
           },
           {
@@ -48,7 +47,7 @@ const duaData = {
           {
             title: "Nach dem Essen",
             arabic: "الْحَمْدُ لِلَّهِ الَّذِي أَطْعَمَنِي هَذَا وَرَزَقَنِيهِ مِنْ غَيْرِ حَوْلٍ مِنِّي وَلَا قُوَّةٍ",
-            transliteration: "Alhamdu lillahil-ladhi at'amani hadha wa razaqanihi min ghayri hawlin minni wa la quwwatin.",
+            transliteration: "Alhamdu lillahil-ladhi at&apos;amani hadha wa razaqanihi min ghayri hawlin minni wa la quwwatin.",
             translation: "Alles Lob gebührt Allah, der mich dies hat essen lassen und mich damit versorgt hat, ohne Macht und Kraft meinerseits."
           }
         ]
@@ -59,19 +58,19 @@ const duaData = {
           {
             title: "Beim Betreten des Hauses",
             arabic: "بِسْمِ اللهِ وَلَجْنَا، وَبِسْمِ اللهِ خَرَجْنَا، وَعَلَى اللهِ رَبَّنَا تَوَكَّلْنَا",
-            transliteration: "Bismillahi walajna, wa bismillahi kharajna, wa 'ala-Lahi rabbina tawakkalna.",
+            transliteration: "Bismillahi walajna, wa bismillahi kharajna, wa &apos;ala-Lahi rabbina tawakkalna.",
             translation: "Im Namen Allahs treten wir ein, und im Namen Allahs treten wir aus, und auf Allah, unseren Herrn, vertrauen wir."
           },
           {
             title: "Beim Verlassen des Hauses",
             arabic: "بِسْمِ اللهِ، تَوَكَّلْتُ عَلَى اللهِ، وَلَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللهِ",
-            transliteration: "Bismillahi, tawakkaltu 'ala-Llah, wa la hawla wa la quwwata illa billah.",
+            transliteration: "Bismillahi, tawakkaltu &apos;ala-Llah, wa la hawla wa la quwwata illa billah.",
             translation: "Im Namen Allahs, ich vertraue auf Allah, und es gibt keine Macht noch Kraft außer bei Allah."
           },
           {
             title: "Vor dem Betreten der Toilette",
             arabic: "اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْخُبُثِ وَالْخَبَائِثِ",
-            transliteration: "Allahumma inni a'udhu bika minal-khubuthi wal-khaba'ith.",
+            transliteration: "Allahumma inni a&apos;udhu bika minal-khubuthi wal-khaba&apos;ith.",
             translation: "O Allah, ich suche Zuflucht bei Dir vor den männlichen und weiblichen Übeln (Dämonen)."
           },
           {
@@ -86,16 +85,16 @@ const duaData = {
         category: "Schutz & Sorgen",
         items: [
             {
-                title: "Bei Sorgen und Kummer",
+                title: "For Worry and Grief",
                 arabic: "اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْهَمِّ وَالْحَзَنِ، وَالْعَجْزِ وَالْكَسَلِ، وَالْبُخْلِ وَالْجُبْنِ، وَضَلَعِ الدَّيْنِ وَغَلَبَةِ الرِّجَالِ",
-                transliteration: "Allahumma inni a'udhu bika minal-hammi wal-hazan, wal-'ajzi wal-kasal, wal-bukhli wal-jubn, wa dala'id-dayni wa ghalabatir-rijal.",
-                translation: "O Allah, ich suche Zuflucht bei Dir vor Sorge und Kummer, vor Unfähigkeit und Faulheit, vor Geiz und Feigheit, vor der Last der Schulden und der Überwältigung durch Menschen."
+                transliteration: "Allahumma inni a&apos;udhu bika minal-hammi wal-hazan, wal-&apos;ajzi wal-kasal, wal-bukhli wal-jubn, wa dala&apos;id-dayni wa ghalabatir-rijal.",
+                translation: "O Allah, I seek refuge in You from worry and grief, from incapacity and laziness, from stinginess and cowardice, from the burden of debt and from being overpowered by men."
             },
             {
-                title: "Für einen Kranken",
+                title: "For a Sick Person",
                 arabic: "أَسْأَلُ اللهَ الْعَظِيمَ رَبَّ الْعَرْشِ الْعَظِيمِ أَنْ يَشْفِيَكَ",
-                transliteration: "As'alullahal-'Adhima Rabbal-'Arshil-'Adhimi an yashfiyak.",
-                translation: "Ich bitte Allah, den Gewaltigen, den Herrn des gewaltigen Throns, dich zu heilen. (7-mal sagen)"
+                transliteration: "As&apos;alullahal-&apos;Adhima Rabbal-&apos;Arshil-&apos;Adhimi an yashfiyak.",
+                translation: "I ask Allah, the Mighty, the Lord of the Mighty Throne, to heal you. (Say 7 times)"
             }
         ]
       }
@@ -103,7 +102,7 @@ const duaData = {
   },
   en: {
     title: "Collection of Supplications (Dua)",
-    description: "Important supplications for various occasions in a Muslim's life.",
+    description: "Important supplications for various occasions in a Muslim&apos;s life.",
     backToFeatures: "Back to Features",
     duas: [
        {
@@ -112,7 +111,7 @@ const duaData = {
           {
             title: "When Waking Up",
             arabic: "الْحَمْدُ لِلَّهِ الَّذِي أَحْيَانَا بَعْدَ مَا أَمَاتَنَا وَإِلَيْهِ النُّشُورُ",
-            transliteration: "Alhamdu lillahil-ladhi ahyana ba'da ma amatana wa ilayhin-nushur.",
+            transliteration: "Alhamdu lillahil-ladhi ahyana ba&apos;da ma amatana wa ilayhin-nushur.",
             translation: "All praise is for Allah who gave us life after having taken it from us and unto Him is the resurrection."
           },
           {
@@ -135,7 +134,7 @@ const duaData = {
           {
             title: "After Eating",
             arabic: "الْحَمْدُ لِلَّهِ الَّذِي أَطْعَمَنِي هَذَا وَرَزَقَنِيهِ مِنْ غَيْرِ حَوْلٍ مِنِّي وَلَا قُوَّةٍ",
-            transliteration: "Alhamdu lillahil-ladhi at'amani hadha wa razaqanihi min ghayri hawlin minni wa la quwwatin.",
+            transliteration: "Alhamdu lillahil-ladhi at&apos;amani hadha wa razaqanihi min ghayri hawlin minni wa la quwwatin.",
             translation: "All praise is for Allah who fed me this and provided it for me without any might nor power from myself."
           }
         ]
@@ -146,19 +145,19 @@ const duaData = {
           {
             title: "When Entering the House",
             arabic: "بِسْمِ اللهِ وَلَجْنَا، وَبِسْمِ اللهِ خَرَجْنَا، وَعَلَى اللهِ رَبَّنَا تَوَكَّلْنَا",
-            transliteration: "Bismillahi walajna, wa bismillahi kharajna, wa 'ala-Lahi rabbina tawakkalna.",
+            transliteration: "Bismillahi walajna, wa bismillahi kharajna, wa &apos;ala-Lahi rabbina tawakkalna.",
             translation: "In the name of Allah we enter, and in the name of Allah we leave, and upon Allah our Lord we rely."
           },
           {
             title: "When Leaving the House",
             arabic: "بِسْمِ اللهِ، تَوَكَّلْتُ عَلَى اللهِ، وَلَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللهِ",
-            transliteration: "Bismillahi, tawakkaltu 'ala-Llah, wa la hawla wa la quwwata illa billah.",
+            transliteration: "Bismillahi, tawakkaltu &apos;ala-Llah, wa la hawla wa la quwwata illa billah.",
             translation: "In the name of Allah, I trust in Allah, and there is no might nor power except with Allah."
           },
           {
             title: "Before Entering the Toilet",
             arabic: "اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْخُبُثِ وَالْخَبَائِثِ",
-            transliteration: "Allahumma inni a'udhu bika minal-khubuthi wal-khaba'ith.",
+            transliteration: "Allahumma inni a&apos;udhu bika minal-khubuthi wal-khaba&apos;ith.",
             translation: "O Allah, I seek refuge in You from the male and female evils (devils)."
           },
           {
@@ -175,13 +174,13 @@ const duaData = {
             {
                 title: "For Worry and Grief",
                 arabic: "اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْهَمِّ وَالْحَзَنِ، وَالْعَجْزِ وَالْكَسَلِ، وَالْبُخْلِ وَالْجُبْنِ، وَضَلَعِ الدَّيْنِ وَغَلَبَةِ الرِّجَالِ",
-                transliteration: "Allahumma inni a'udhu bika minal-hammi wal-hazan, wal-'ajzi wal-kasal, wal-bukhli wal-jubn, wa dala'id-dayni wa ghalabatir-rijal.",
+                transliteration: "Allahumma inni a&apos;udhu bika minal-hammi wal-hazan, wal-&apos;ajzi wal-kasal, wal-bukhli wal-jubn, wa dala&apos;id-dayni wa ghalabatir-rijal.",
                 translation: "O Allah, I seek refuge in You from worry and grief, from incapacity and laziness, from stinginess and cowardice, from the burden of debt and from being overpowered by men."
             },
             {
                 title: "For a Sick Person",
                 arabic: "أَسْأَلُ اللهَ الْعَظِيمَ رَبَّ الْعَرْشِ الْعَظِيمِ أَنْ يَشْفِيَكَ",
-                transliteration: "As'alullahal-'Adhima Rabbal-'Arshil-'Adhimi an yashfiyak.",
+                transliteration: "As&apos;alullahal-&apos;Adhima Rabbal-&apos;Arshil-&apos;Adhimi an yashfiyak.",
                 translation: "I ask Allah, the Mighty, the Lord of the Mighty Throne, to heal you. (Say 7 times)"
             }
         ]
@@ -220,7 +219,7 @@ export default function DuaPage() {
                   <AccordionContent className="px-4 space-y-4">
                     <p className="text-2xl font-quranic text-right tracking-wide leading-relaxed">{dua.arabic}</p>
                     <p className="text-muted-foreground italic">{dua.transliteration}</p>
-                    <p className="text-foreground/90">"{dua.translation}"</p>
+                    <p className="text-foreground/90">&quot;{dua.translation}&quot;</p>
                   </AccordionContent>
                 </AccordionItem>
               ))}
