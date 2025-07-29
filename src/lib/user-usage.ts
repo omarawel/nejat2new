@@ -3,6 +3,7 @@ import { db } from './firebase';
 import { doc, getDoc, setDoc, Timestamp, increment } from 'firebase/firestore';
 import { getSubscriptionPlans, type SubscriptionPlan } from './subscriptions';
 import { isAdmin } from './admin';
+import { allTools } from './tools';
 
 
 export interface UserUsage {
@@ -20,6 +21,8 @@ export interface UserQuota {
     limit: number;
     remaining: number;
 }
+
+export type FeatureKey = (typeof allTools)[number]['key'];
 
 const FREE_TIER_LIMIT = 3;
 
@@ -41,14 +44,7 @@ const getPlans = async (): Promise<SubscriptionPlan[]> => {
 // Get a user's current subscription status from the `subscriptions` subcollection
 export const getUserSubscription = async (userId: string): Promise<UserSubscription | null> => {
     if (!userId) return null;
-    // Note: In a real app, you would likely have a more secure way to check this,
-    // possibly involving a backend or cloud function to verify against Stripe's records.
-    // For this example, we'll read directly from a subcollection that would be populated
-    // by a webhook (like the one in `functions/src/stripeWebhook.ts`).
-    
-    // As the webhook isn't fully implemented, this will likely return null.
-    // We will need to simulate or manually add data to Firestore for this to work.
-    const subDocRef = doc(db, 'users', userId, 'subscriptions', 'current'); // This path assumes a specific structure.
+    const subDocRef = doc(db, 'users', userId, 'subscriptions', 'current');
     
     try {
         const docSnap = await getDoc(subDocRef);
@@ -171,26 +167,36 @@ export const getUserQuota = async (userId: string | null): Promise<UserQuota> =>
     return { limit, remaining: Math.max(0, limit - currentCount) };
 }
 
+// This is a list of features that require a "pro" or "patron" subscription.
+const proFeatures: FeatureKey[] = [
+    'memorization',
+    'quran', // For offline access
+    'dua_generator',
+    'greeting_card',
+    'islamic_names', // AI part
+    'quiz', // AI part
+    'verse_finder',
+    'insights',
+    'learning_path_generator'
+];
+
+
 // Check for specific feature access
-export const canAccessFeature = async (userId: string | null, featureKey: 'memorization_tool' | 'quran_offline'): Promise<boolean> => {
+export const canAccessFeature = async (userId: string | null, featureKey: FeatureKey): Promise<boolean> => {
+    // Free features are always accessible
+    if (!proFeatures.includes(featureKey)) {
+        return true;
+    }
+    
+    // If it's a pro feature, user must be logged in.
     if (!userId) return false;
+    
+    // Admins have access to everything.
     if (await isAdmin(userId)) return true;
 
     const subscription = await getUserSubscription(userId);
     if (!subscription || subscription.status !== 'active') return false;
-    
-    const allPlans = await getPlans();
-    const currentPlan = allPlans.find(p => p.id === subscription.planId);
 
-    if (!currentPlan) return false;
-
-    // This logic needs to align with your `planFeatures` in `subscribe/page.tsx`
-    switch(featureKey) {
-        case 'memorization_tool':
-            return currentPlan.id === 'pro' || currentPlan.id === 'patron';
-        case 'quran_offline':
-             return currentPlan.id === 'pro' || currentPlan.id === 'patron';
-        default:
-            return false;
-    }
+    // Check if the user's plan is 'pro' or 'patron'
+    return subscription.planId === 'pro' || subscription.planId === 'patron';
 };

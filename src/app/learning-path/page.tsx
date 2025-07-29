@@ -3,7 +3,7 @@
 
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, User, Target, ClipboardList, Wand2, Loader2 } from 'lucide-react';
+import { ArrowLeft, User, Target, ClipboardList, Wand2, Loader2, Sparkles } from 'lucide-react';
 import { useLanguage } from '@/components/language-provider';
 import Link from 'next/link';
 import { Input } from '@/components/ui/input';
@@ -11,7 +11,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { useState, useEffect } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '@/lib/firebase';
-import { checkAndDecrementQuota, getUserQuota, UserQuota } from '@/lib/user-usage';
+import { checkAndDecrementQuota, canAccessFeature, getUserQuota, UserQuota } from '@/lib/user-usage';
 import { UpgradeInlineAlert } from '@/components/upgrade-inline-alert';
 
 
@@ -29,7 +29,11 @@ const content = {
         generatingButton: "Wird erstellt...",
         resultTitle: "Dein personalisierter Lernpfad",
         resultDescription: "Die KI hat basierend auf deinen Eingaben den folgenden Lernpfad erstellt:",
-        step: "Schritt"
+        step: "Schritt",
+        proFeature: "Diese Funktion ist für Pro-Abonnenten verfügbar.",
+        upgradeButton: "Jetzt upgraden",
+        loginRequired: "Anmeldung erforderlich",
+        loginToUse: "Bitte melde dich an, um diese Funktion zu nutzen."
     },
     en: {
         pageTitle: "AI Learning Path Generator",
@@ -44,7 +48,11 @@ const content = {
         generatingButton: "Generating...",
         resultTitle: "Your Personalized Learning Path",
         resultDescription: "Based on your input, the AI has created the following learning path:",
-        step: "Step"
+        step: "Step",
+        proFeature: "This feature is available for Pro subscribers.",
+        upgradeButton: "Upgrade Now",
+        loginRequired: "Login Required",
+        loginToUse: "Please log in to use this feature."
     }
 }
 
@@ -54,12 +62,18 @@ export default function LearningPathPage() {
   const c = content[language] || content.de;
 
   const [user, authLoading] = useAuthState(auth);
+  const [hasAccess, setHasAccess] = useState(false);
+  const [loadingAccess, setLoadingAccess] = useState(true);
   const [quota, setQuota] = useState<UserQuota | null>(null);
 
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (!authLoading) {
+        canAccessFeature(user?.uid || null, 'learning_path_generator').then(access => {
+            setHasAccess(access);
+            setLoadingAccess(false);
+        });
         getUserQuota(user?.uid || null).then(setQuota);
     }
   }, [user, authLoading]);
@@ -79,6 +93,94 @@ export default function LearningPathPage() {
       setTimeout(() => setIsLoading(false), 2000); // Simulate AI call
   }
 
+  const renderContent = () => {
+        if (authLoading || loadingAccess) {
+            return (
+                <div className="flex-grow flex items-center justify-center">
+                    <Loader2 className="h-8 w-8 animate-spin" />
+                </div>
+            )
+        }
+
+        if (!user) {
+            return (
+                <Card className="max-w-md text-center mx-auto mt-12">
+                    <CardHeader><CardTitle>{c.loginRequired}</CardTitle></CardHeader>
+                    <CardContent>
+                        <p className="text-muted-foreground mb-4">{c.loginToUse}</p>
+                        <Button asChild><Link href="/login">{c.backToFeatures}</Link></Button>
+                    </CardContent>
+                </Card>
+            )
+        }
+
+        if (!hasAccess) {
+            return (
+                <Card className="max-w-md text-center mx-auto mt-12">
+                    <CardHeader>
+                        <CardTitle className="flex items-center justify-center gap-2"><Sparkles className="text-primary"/>{c.proFeature}</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                         <p className="text-muted-foreground mb-4">{c.proFeature}</p>
+                         <Button asChild><Link href="/subscribe">{c.upgradeButton}</Link></Button>
+                    </CardContent>
+                </Card>
+            )
+        }
+
+        return (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+                <Card>
+                    <CardHeader>
+                        <CardTitle>{c.formTitle}</CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                        <div className="space-y-2">
+                            <label htmlFor="level" className="flex items-center gap-2 font-medium"><User /> {c.levelLabel}</label>
+                            <Input id="level" placeholder={c.levelPlaceholder} />
+                        </div>
+                        <div className="space-y-2">
+                            <label htmlFor="goals" className="flex items-center gap-2 font-medium"><Target /> {c.goalsLabel}</label>
+                            <Textarea id="goals" placeholder={c.goalsPlaceholder} rows={5} />
+                        </div>
+                        <UpgradeInlineAlert quota={quota} isLoggedIn={!!user} />
+                    </CardContent>
+                    <CardFooter>
+                        <Button className="w-full" disabled={isLoading || !canSubmit} onClick={handleGenerate}>
+                            {isLoading ? (
+                            <>
+                                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                {c.generatingButton}
+                            </>
+                            ) : (
+                            <>
+                                <Wand2 className="mr-2 h-4 w-4" />
+                                {c.generateButton}
+                            </>
+                            )}
+                        </Button>
+                    </CardFooter>
+                </Card>
+
+                <Card className="bg-muted/30">
+                    <CardHeader>
+                        <CardTitle className="flex items-center gap-2"><ClipboardList /> {c.resultTitle}</CardTitle>
+                        <CardDescription>{c.resultDescription}</CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                        {isLoading ? (
+                            <div className="flex justify-center items-center h-full">
+                                <Loader2 className="h-8 w-8 animate-spin text-primary"/>
+                            </div>
+                        ) : (
+                            <p className="text-sm text-center text-muted-foreground">Die Ergebnisse der KI werden hier angezeigt.</p>
+                        )}
+                    </CardContent>
+                </Card>
+            </div>
+        );
+  };
+
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -94,56 +196,7 @@ export default function LearningPathPage() {
             </h1>
             <p className="text-muted-foreground mt-2 text-lg max-w-2xl mx-auto">{c.pageDescription}</p>
         </header>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-            <Card>
-                <CardHeader>
-                    <CardTitle>{c.formTitle}</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                     <div className="space-y-2">
-                        <label htmlFor="level" className="flex items-center gap-2 font-medium"><User /> {c.levelLabel}</label>
-                        <Input id="level" placeholder={c.levelPlaceholder} />
-                    </div>
-                     <div className="space-y-2">
-                        <label htmlFor="goals" className="flex items-center gap-2 font-medium"><Target /> {c.goalsLabel}</label>
-                        <Textarea id="goals" placeholder={c.goalsPlaceholder} rows={5} />
-                    </div>
-                    <UpgradeInlineAlert quota={quota} isLoggedIn={!!user} />
-                </CardContent>
-                <CardFooter>
-                     <Button className="w-full" disabled={isLoading || !canSubmit} onClick={handleGenerate}>
-                        {isLoading ? (
-                           <>
-                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                            {c.generatingButton}
-                           </>
-                        ) : (
-                           <>
-                             <Wand2 className="mr-2 h-4 w-4" />
-                             {c.generateButton}
-                           </>
-                        )}
-                    </Button>
-                </CardFooter>
-            </Card>
-
-            <Card className="bg-muted/30">
-                 <CardHeader>
-                    <CardTitle className="flex items-center gap-2"><ClipboardList /> {c.resultTitle}</CardTitle>
-                    <CardDescription>{c.resultDescription}</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                     {isLoading ? (
-                        <div className="flex justify-center items-center h-full">
-                            <Loader2 className="h-8 w-8 animate-spin text-primary"/>
-                        </div>
-                    ) : (
-                        <p className="text-sm text-center text-muted-foreground">Die Ergebnisse der KI werden hier angezeigt.</p>
-                    )}
-                </CardContent>
-            </Card>
-        </div>
+        {renderContent()}
     </div>
   );
 }
