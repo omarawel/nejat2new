@@ -177,10 +177,10 @@ export default function IslamicQuotesPage() {
                             ) : null}
                         </div>
                     </CardContent>
-                    <CardFooter className="justify-end p-2 pr-4">
-                        <div className="relative">
+                    <CardFooter className="justify-center p-2">
+                       <div className="relative">
                             <span className="text-xs font-bold text-muted-foreground/80">Nejat</span>
-                            <Badge variant="default" className="absolute top-[-8px] -right-7 h-auto px-1.5 py-0.5 text-[8px] font-bold">Pro</Badge>
+                            <Badge variant="default" className="absolute -top-3.5 -right-7 h-auto px-1.5 py-0.5 text-[10px] font-bold">Pro</Badge>
                         </div>
                     </CardFooter>
                 </Card>
