@@ -77,6 +77,12 @@ const content = {
     }
 }
 
+const getDailyIndex = (arrayLength: number) => {
+    const today = new Date();
+    const dayOfYear = Math.floor((today.getTime() - new Date(today.getFullYear(), 0, 0).getTime()) / (1000 * 60 * 60 * 24));
+    return dayOfYear % arrayLength;
+};
+
 export default function ProphetPostOfTheDayPage() {
     const { language } = useLanguage();
     const c = content[language];
@@ -96,12 +102,16 @@ export default function ProphetPostOfTheDayPage() {
         });
     }
 
-    useEffect(() => {
-        // This effect runs only once on the client, after hydration
-        const randomIndex = Math.floor(Math.random() * posts.length);
-        setPost(posts[randomIndex]);
+    const selectDailyPost = useCallback(() => {
+        setLoading(true);
+        const dailyIndex = getDailyIndex(posts.length);
+        setPost(posts[dailyIndex]);
         setLoading(false);
     }, []);
+
+    useEffect(() => {
+        selectDailyPost();
+    }, [selectDailyPost]);
 
      const handleShare = async () => {
         if (!postcardRef.current || !post) return;

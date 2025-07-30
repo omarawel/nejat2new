@@ -126,6 +126,7 @@ export default function VerseOfTheDayPage() {
     }
 
     const selectDailyVerse = useCallback(() => {
+        setLoading(true);
         const dailyIndex = getDailyIndex(verses.length);
         setVerse(verses[dailyIndex]);
         setLoading(false);

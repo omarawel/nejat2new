@@ -200,7 +200,8 @@ const SurahDetailContent = ({ surahNumber, languageEdition, c }: { surahNumber: 
     setPlayingAudio(null);
 
     try {
-      const result = await textToSpeech(ayahText);
+      // Call the server action instead of the direct function
+      const result = await textToSpeech({text: ayahText}); // Pass object as input
       setAudioUrl(result.audio);
       setPlayingAudio(`ayah-${ayahNumber}`);
     } catch (err) {
@@ -638,7 +639,8 @@ export default function QuranPage() {
 
                 {loading ? (
                     <div className="space-y-4">
-                        {[...Array(5)].map((_, i) => <Skeleton key={i} className="h-12 w-full" />)}
+                        {[...Array(5)].map((_, i) => <Skeleton key={i} className="h-12 w-full" />)
+}
                     </div>
                 ) : error ? (
                     <Alert variant="destructive">

@@ -6,8 +6,8 @@
  */
 
 import {ai} from '@/ai/genkit';
-import type { TextToSpeechInput, TextToSpeechOutput } from '@/ai/flows/text-to-speech-types';
-import { TextToSpeechInputSchema, TextToSpeechOutputSchema } from '@/ai/flows/text-to-speech-types';
+import type { TextToSpeechInput, TextToSpeechOutput } from './text-to-speech-types'; // Updated import path
+import { TextToSpeechInputSchema, TextToSpeechOutputSchema } from './text-to-speech-types'; // Updated import path
 import wav from 'wav';
 
 async function toWav(
