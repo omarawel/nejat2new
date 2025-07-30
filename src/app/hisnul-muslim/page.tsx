@@ -18,6 +18,7 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '@/lib/firebase';
 import { useToast } from '@/hooks/use-toast';
 import { addFavorite } from '@/lib/favorites';
+import { setLastRead } from '@/lib/progress';
 
 const hisnulMuslimData = {
   de: {
@@ -128,7 +129,7 @@ const hisnulMuslimData = {
         { id: 96, 'title': 'Gebet bei der Rückzahlung einer Schuld', 'duas': [{'arabic': 'بَارَكَ اللَّهُ لَكَ فِي أَهْلِكَ وَمَالِكَ، إِنَّمَا جَزَاءُ السَّلَفِ الْحَمْدُ وَالْأَدَاءُ', 'transliteration': 'Barakallahu laka fi ahlika wa malik, innama jaza`us-salafil-hamdu wal-ada\'.', 'translation': 'Möge Allah dich in deiner Familie und deinem Vermögen segnen. Wahrlich, die Belohnung für ein Darlehen ist Lob und die Rückzahlung.'}]},
         { id: 97, 'title': 'Gebet gegen Aberglauben', 'duas': [{'arabic': 'اللَّهُمَّ لَا طَيْرَ إِلَّا طَيْرُكَ، وَلَا خَيْرَ إِلَّا خَيْرُكَ، وَلَا إِلَهَ غَيْرُكَ', 'transliteration': 'Allahumma la tayra illa tayruk, wa la khayra illa khayruk, wa la ilaha ghayruk.', 'translation': 'O Allah, es gibt kein Omen außer Deinem Omen, und kein Gutes außer Deinem Guten, und es gibt keine Gottheit außer Dir.'}]},
         { id: 98, 'title': 'Gebet beim Besteigen eines Reittiers/Fahrzeugs', 'duas': [{'arabic': 'بِسْمِ اللَّهِ، الْحَمْدُ لِلَّهِ. {sُبْحَانَ الَّذِي sَخَّرَ لَنَا هَذَا وَمَا كُنَّا لَهُ مُقْرِنِينَ * وَإِنَّا إِلَى رَبِّنَا لَمُنْقَلِبُونَ}', 'transliteration': 'Bismillah, alhamdulillah. Subhanal-ladhi sakh-khara lana hadha wa ma kunna lahu muqrinin. Wa inna ila Rabbina lamunqalibun.', 'translation': 'Im Namen Allahs, alles Lob gebührt Allah. Gepriesen sei Der, Der uns dies dienstbar gemacht hat, und wir wären dazu nicht in der Lage gewesen. Und wahrlich, zu unserem Herrn werden wir zurückkehren.'}]},
-        { id: 99, 'title': 'Gebet für einen frisch Vermählten', 'duas': [{'arabic': 'بَارَكَ اللَّهُ لَكَ وَبَارَكَ عَلَيْكَ وَجَمَعَ بَيْنَكُمَا فِي خَيْرٍ', 'transliteration': 'Barakallahu laka, wa baraka `alayka, wa jama`a baynakuma fi khayr.', 'translation': 'Möge Allah dich segnen, und möge Er Seinen Segen über dich ausgießen, und möge Er euch beide im Guten vereinen.'}]},
+        { id: 99, 'title': 'Gebet für ein frisch Vermählten', 'duas': [{'arabic': 'بَارَكَ اللَّهُ لَكَ وَبَارَكَ عَلَيْكَ وَجَمَعَ بَيْنَكُمَا فِي خَيْرٍ', 'transliteration': 'Barakallahu laka, wa baraka `alayka, wa jama`a baynakuma fi khayr.', 'translation': 'Möge Allah dich segnen, und möge Er Seinen Segen über dich ausgießen, und möge Er euch beide im Guten vereinen.'}]},
         { id: 100, 'title': 'Gebet des frisch Vermählten für sich selbst', 'duas': [{'arabic': 'اللَّهُمَّ إِنِّي أَسْأَلُكَ خَيْرَهَا وَخَيْرَ مَا جَبَلْتَهَا عَلَيْهِ، وَأَعُوذُ بِكَ مِنْ شَرِّهَا وَشَرِّ مَا جَبَلْتَهَا عَلَيْهِ', 'transliteration': 'Allahumma inni as`aluka khayraha wa khayra ma jabaltaha `alayh, wa a`udhu bika min sharriha wa sharri ma jabaltaha `alayh.', 'translation': 'O Allah, ich bitte Dich um ihr Gutes und das Gute, zu dem Du sie veranlagt hast, und ich suche Zuflucht bei Dir vor ihrem Schlechten und dem Schlechten, zu dem Du sie veranlagt hast.'}]},
         { id: 101, 'title': 'Gebet vor dem ehelichen Verkehr', 'duas': [{'arabic': 'بِسْمِ اللَّهِ، اللَّهُمَّ جَنِّبْنَا الشَّيْطَانَ، وَجَنِّبِ الشَّيْطَانَ مَا رَزَقْتَنَا', 'transliteration': 'Bismillah, Allahumma jannibnash-shaytan, wa jannibish-shaytana ma razaqtana.', 'translation': 'Im Namen Allahs. O Allah, halte den Satan von uns fern und halte den Satan fern von dem, was Du uns schenkst.'}]},
         { id: 102, 'title': 'Beim Zornigwerden', 'duas': [{'arabic': 'أَعُوذُ بِاللَّهِ مِنَ الشَّيْطَانِ الرَّجِيمِ', 'transliteration': 'A`udhu billahi minash-shaytanir-rajim.', 'translation': 'Ich suche Zuflucht bei Allah vor dem verfluchten Satan.'}]},
@@ -364,6 +365,16 @@ export default function HisnulMuslimPage() {
         }
     }
 
+    const handleAccordionChange = (value: string) => {
+        if (value) {
+            const chapterId = parseInt(value.replace('item-', ''), 10);
+            const chapter = c.chapters.find(ch => ch.id === chapterId);
+            if(chapter) {
+                setLastRead('hisnul_muslim', { chapterId, chapterTitle: chapter.title });
+            }
+        }
+    };
+
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -389,7 +400,7 @@ export default function HisnulMuslimPage() {
             />
         </div>
       <div className="max-w-3xl mx-auto">
-         <Accordion type="single" collapsible className="w-full">
+         <Accordion type="single" collapsible className="w-full" onValueChange={handleAccordionChange}>
               {filteredChapters.map((chapter) => (
                 <AccordionItem key={chapter.id} value={`item-${chapter.id}`}>
                   <AccordionTrigger className="text-lg text-left hover:no-underline">

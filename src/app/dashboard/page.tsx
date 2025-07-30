@@ -27,17 +27,6 @@ const content = {
         login: "Anmelden",
         noSelection: "Dein Dashboard ist noch leer.",
         customize: "Passe dein Dashboard an",
-        yourActivity: "Deine Aktivitäten & Fortschritte",
-        latestFavorites: "Neueste Favoriten",
-        noFavorites: "Keine Favoriten gespeichert.",
-        viewAll: "Alle ansehen",
-        yourHatimGroups: "Deine Hatim-Gruppen",
-        noHatim: "Du nimmst an keinem Hatim teil.",
-        completed: "abgeschlossen",
-        lastReadQuran: "Zuletzt gelesen im Koran",
-        lastReadHadith: "Zuletzt gelesener Hadith",
-        lastReadHisnul: "Zuletzt gelesen in Hisnul Muslim",
-        continueReading: "Weiterlesen",
     },
     en: {
         title: "My Dashboard",
@@ -47,25 +36,14 @@ const content = {
         login: "Login",
         noSelection: "Your dashboard is empty.",
         customize: "Customize Your Dashboard",
-        yourActivity: "Your Activity & Progress",
-        latestFavorites: "Latest Favorites",
-        noFavorites: "No favorites saved.",
-        viewAll: "View All",
-        yourHatimGroups: "Your Hatim Groups",
-        noHatim: "You are not participating in any Hatim.",
-        completed: "completed",
-        lastReadQuran: "Last Read in Quran",
-        lastReadHadith: "Last Read Hadith",
-        lastReadHisnul: "Last Read in Hisnul Muslim",
-        continueReading: "Continue Reading",
     }
 };
 
-const FeatureCard = ({ icon, name }: { icon: string, name: string }) => {
+const FeatureCard = ({ icon, name, toolKey }: { icon: string, name: string, toolKey: string }) => {
   return (
     <div className="flex flex-col justify-center items-center p-2 border border-border rounded-lg bg-card text-card-foreground hover:bg-accent/90 cursor-pointer transition-colors h-24">
       <span className="text-3xl">{icon}</span>
-      <span className="mt-2 text-sm text-center font-medium leading-tight">{name}</span>
+      <span className="mt-2 text-sm text-center font-medium leading-tight break-words">{name}</span>
     </div>
   );
 };
@@ -77,10 +55,12 @@ export default function DashboardPage() {
     const [user, loadingAuth] = useAuthState(auth);
     const router = useRouter();
     const [dashboardConfig, setDashboardConfig] = useState<DashboardConfig | null>(null);
+    const [loadingData, setLoadingData] = useState(true);
+
+    // Data for progress cards
+    const [lastReadProgress, setLastReadProgress] = useState<LastReadProgress>({});
     const [favorites, setFavorites] = useState<Favorite[]>([]);
     const [hatimGroups, setHatimGroups] = useState<HatimGroup[]>([]);
-    const [progress, setProgress] = useState<LastReadProgress>({});
-    const [loadingData, setLoadingData] = useState(true);
 
     useEffect(() => {
         if (loadingAuth) return;
@@ -90,14 +70,16 @@ export default function DashboardPage() {
         }
 
         const unsubDashboard = getUserDashboard(user.uid, setDashboardConfig);
-        const unsubFavorites = getFavorites(user.uid, (favs) => setFavorites(favs.slice(0, 3))); // Get latest 3
+        
+        // Fetch data for progress cards
+        const lastReadData = getLastRead();
+        setLastReadProgress(lastReadData);
+
+        const unsubFavorites = getFavorites(user.uid, (favs) => setFavorites(favs.slice(0, 3)));
         const unsubHatim = getHatimGroups((groups) => {
             const userGroups = groups.filter(g => g.juzs.some(j => j.assignedTo === user.displayName));
             setHatimGroups(userGroups);
         });
-        
-        const lastReadData = getLastRead();
-        setProgress(lastReadData);
 
         setLoadingData(false);
 
@@ -108,10 +90,10 @@ export default function DashboardPage() {
         };
     }, [user, loadingAuth]);
 
-    const displayedTools = allTools.filter(tool => dashboardConfig?.selectedTools.includes(tool.key))
-        .map(tool => ({ ...tool, name: tool[language] || tool.en }))
+    const displayedTools = allTools
+        .filter(tool => dashboardConfig?.selectedTools.includes(tool.key))
+        .map(tool => ({ ...tool, name: tool[language as keyof typeof tool] || tool.en }))
         .sort((a, b) => a.name.localeCompare(b.name));
-
 
     if (loadingAuth || loadingData) {
         return (
@@ -138,6 +120,33 @@ export default function DashboardPage() {
             </div>
         )
     }
+    
+    const renderCard = (tool: (typeof displayedTools)[0]) => {
+        if (tool.type === 'progress') {
+            switch(tool.key) {
+                case 'progress_quran':
+                    return <ProgressCard title={tool.name} progress={lastReadProgress.quran} href={tool.href || '#'} icon={BookOpen} />;
+                case 'progress_hadith':
+                    return <ProgressCard title={tool.name} progress={lastReadProgress.hadith} href={tool.href || '#'} icon={BookCopy} />;
+                case 'progress_hisnul_muslim':
+                    return <ProgressCard title={tool.name} progress={lastReadProgress.hisnul_muslim} href={tool.href || '#'} icon={History} />;
+                case 'progress_favorites':
+                    return <ProgressCard title={tool.name} favorites={favorites} href={tool.href || '#'} icon={Star} />;
+                 case 'progress_hatim':
+                    return <ProgressCard title={tool.name} hatimGroups={hatimGroups} href={tool.href || '#'} icon={BookOpen} />;
+                default:
+                    return null;
+            }
+        }
+        
+        // Default quick-link card
+        const card = <FeatureCard icon={tool.icon} name={tool.name} toolKey={tool.key} />;
+        if (tool.href) {
+            return <Link key={tool.key} href={tool.href} className="col-span-1">{card}</Link>
+        }
+        return <div key={tool.key} className="opacity-50 cursor-not-allowed col-span-1">{card}</div>;
+    }
+
 
     return (
         <div className="container mx-auto px-4 py-8">
@@ -156,96 +165,33 @@ export default function DashboardPage() {
                 </Button>
             </header>
 
-            {displayedTools.length > 0 && (
-                 <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 mb-12">
-                     {displayedTools.map((tool) => {
-                        const card = <FeatureCard icon={tool.icon} name={tool.name} />;
-                        if (tool.href) {
-                            return <Link key={tool.key} href={tool.href}>{card}</Link>
-                        }
-                        return <div key={tool.key} className="opacity-50 cursor-not-allowed">{card}</div>;
-                    })}
-                </div>
-            )}
-            
-            <h2 className="text-3xl font-bold mb-6">{c.yourActivity}</h2>
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <div className="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <ProgressCard
-                        title={c.lastReadQuran}
-                        progress={progress.quran}
-                        href="/quran"
-                        icon={BookOpen}
-                    />
-                    <ProgressCard
-                        title={c.lastReadHadith}
-                        progress={progress.hadith}
-                        href="/hadith"
-                        icon={BookCopy}
-                    />
-                    <ProgressCard
-                        title={c.lastReadHisnul}
-                        progress={progress.hisnul_muslim}
-                        href="/hisnul-muslim"
-                        icon={History}
-                    />
-                     <Card>
+            {displayedTools.length === 0 ? (
+                <div className="text-center">
+                    <Card className="max-w-md mx-auto">
                         <CardHeader>
-                            <CardTitle className="flex items-center gap-2">
-                                <Star /> {c.latestFavorites}
-                            </CardTitle>
+                            <CardTitle>{c.noSelection}</CardTitle>
                         </CardHeader>
                         <CardContent>
-                            {favorites.length > 0 ? (
-                                <ul className="space-y-3">
-                                    {favorites.map(fav => (
-                                        <li key={fav.id} className="p-3 border rounded-md bg-muted/50 text-sm text-muted-foreground truncate">
-                                            {fav.text}
-                                        </li>
-                                    ))}
-                                </ul>
-                            ) : <p className="text-muted-foreground">{c.noFavorites}</p>}
+                            <Button asChild>
+                                <Link href="/dashboard/customize">
+                                    <Settings className="mr-2 h-4 w-4" />
+                                    {c.customize}
+                                </Link>
+                            </Button>
                         </CardContent>
-                        <CardFooter>
-                            <Button variant="ghost" asChild>
-                            <Link href="/favorites">{c.viewAll} <ChevronRight className="ml-1 h-4 w-4" /></Link>
-                        </Button>
-                        </CardFooter>
                     </Card>
                 </div>
-                
-                 <Card className="lg:col-span-1">
-                    <CardHeader>
-                        <CardTitle className="flex items-center gap-2">
-                            <BookOpen /> {c.yourHatimGroups}
-                        </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                         {hatimGroups.length > 0 ? (
-                            <ul className="space-y-4">
-                                {hatimGroups.map(group => {
-                                    const completed = group.juzs.filter(j => j.assignedTo).length;
-                                    const progressValue = (completed / 30) * 100;
-                                    return (
-                                        <li key={group.id}>
-                                            <p className="font-semibold truncate">{group.title}</p>
-                                            <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                                                <Progress value={progressValue} className="w-full" />
-                                                <span>{completed}/30</span>
-                                            </div>
-                                        </li>
-                                    )
-                                })}
-                            </ul>
-                         ) : <p className="text-muted-foreground">{c.noHatim}</p>}
-                    </CardContent>
-                    <CardFooter>
-                       <Button variant="ghost" asChild>
-                           <Link href="/hatim">{c.viewAll} <ChevronRight className="ml-1 h-4 w-4" /></Link>
-                       </Button>
-                    </CardFooter>
-                </Card>
-            </div>
+            ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                     {displayedTools.map((tool) => {
+                         const cardContent = renderCard(tool);
+                         if (tool.type === 'progress') {
+                             return <div key={tool.key} className="col-span-1 md:col-span-2 lg:col-span-2">{cardContent}</div>
+                         }
+                         return cardContent;
+                     })}
+                </div>
+            )}
         </div>
     )
 }

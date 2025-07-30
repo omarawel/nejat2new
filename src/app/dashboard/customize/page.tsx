@@ -19,7 +19,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 const content = {
     de: {
         title: "Dashboard anpassen",
-        description: "Wähle die Funktionen aus, die du auf deinem persönlichen Dashboard sehen möchtest.",
+        description: "Wähle die Funktionen und Fortschrittsanzeigen aus, die du auf deinem persönlichen Dashboard sehen möchtest.",
         loading: "Einstellungen werden geladen...",
         save: "Änderungen speichern",
         saving: "Speichern...",
@@ -29,10 +29,12 @@ const content = {
         loginRequired: "Du musst angemeldet sein, um dein Dashboard anzupassen.",
         login: "Anmelden",
         backToDashboard: "Zurück zum Dashboard",
+        quickAccess: "Schnellzugriff",
+        progressTrackers: "Fortschrittsanzeigen"
     },
     en: {
         title: "Customize Dashboard",
-        description: "Select the features you want to see on your personal dashboard.",
+        description: "Select the features and progress trackers you want to see on your personal dashboard.",
         loading: "Loading settings...",
         save: "Save Changes",
         saving: "Saving...",
@@ -42,6 +44,8 @@ const content = {
         loginRequired: "You need to be logged in to customize your dashboard.",
         login: "Login",
         backToDashboard: "Back to Dashboard",
+        quickAccess: "Quick Access Features",
+        progressTrackers: "Progress Trackers"
     }
 };
 
@@ -101,9 +105,16 @@ export default function CustomizeDashboardPage() {
         }
     };
 
-    const localizedTools = allTools
+    const quickAccessTools = allTools
+        .filter(tool => tool.type !== 'progress')
         .map(tool => ({ ...tool, name: tool[language as keyof typeof tool] || tool.en }))
         .sort((a, b) => a.name.localeCompare(b.name));
+
+    const progressTools = allTools
+        .filter(tool => tool.type === 'progress')
+        .map(tool => ({ ...tool, name: tool[language as keyof typeof tool] || tool.en }))
+        .sort((a, b) => a.name.localeCompare(b.name));
+
 
     if (loadingAuth || loadingSettings) {
         return (
@@ -149,20 +160,44 @@ export default function CustomizeDashboardPage() {
                 </div>
             </header>
 
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 max-w-6xl mx-auto">
-                {localizedTools.map(tool => (
-                    <div key={tool.key} className="flex items-center space-x-2 p-2 rounded-md hover:bg-accent border">
-                        <Switch
-                            id={tool.key}
-                            checked={selectedTools.includes(tool.key)}
-                            onCheckedChange={() => handleToggleTool(tool.key)}
-                        />
-                        <Label htmlFor={tool.key} className="cursor-pointer flex flex-col items-start gap-1 text-sm">
-                           <span className="text-xl">{tool.icon}</span> 
-                           <span>{tool.name}</span>
-                        </Label>
+            <div className="space-y-12 max-w-6xl mx-auto">
+                <div>
+                    <h2 className="text-2xl font-bold mb-4">{c.progressTrackers}</h2>
+                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                        {progressTools.map(tool => (
+                            <div key={tool.key} className="flex items-start space-x-3 p-4 rounded-md border hover:bg-accent">
+                                <Switch
+                                    id={tool.key}
+                                    checked={selectedTools.includes(tool.key)}
+                                    onCheckedChange={() => handleToggleTool(tool.key)}
+                                    className="mt-1"
+                                />
+                                <Label htmlFor={tool.key} className="cursor-pointer flex flex-col">
+                                    <span className="font-semibold">{tool.name}</span>
+                                    <span className="text-sm text-muted-foreground">({tool.en})</span>
+                                </Label>
+                            </div>
+                        ))}
                     </div>
-                ))}
+                </div>
+                <div>
+                    <h2 className="text-2xl font-bold mb-4">{c.quickAccess}</h2>
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+                        {quickAccessTools.map(tool => (
+                            <div key={tool.key} className="flex items-center space-x-2 p-2 rounded-md hover:bg-accent border">
+                                <Switch
+                                    id={tool.key}
+                                    checked={selectedTools.includes(tool.key)}
+                                    onCheckedChange={() => handleToggleTool(tool.key)}
+                                />
+                                <Label htmlFor={tool.key} className="cursor-pointer flex flex-col items-start gap-1 text-sm">
+                                   <span className="text-xl">{tool.icon}</span> 
+                                   <span>{tool.name}</span>
+                                </Label>
+                            </div>
+                        ))}
+                    </div>
+                </div>
             </div>
 
             <div className="mt-12 flex justify-center">

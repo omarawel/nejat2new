@@ -65,4 +65,10 @@ export const allTools = [
     { key: "zakat_calculator", icon: "💸", de: "Zakat-Rechner", en: "Zakat Calculator", href: "/zakat-calculator" },
     { key: "civilization", icon: "🏛️", de: "Zivilisation", en: "Civilization", href: "/civilization" },
     { key: "diary", icon: "📔", de: "Tagebuch", en: "Diary", href: "/diary"},
+    // Progress Tools
+    { key: "progress_quran", icon: "📖", de: "Fortschritt: Koran", en: "Progress: Quran", type: 'progress', href: "/quran" },
+    { key: "progress_hadith", icon: "📚", de: "Fortschritt: Hadith", en: "Progress: Hadith", type: 'progress', href: "/hadith" },
+    { key: "progress_hisnul_muslim", icon: "ﷻ", de: "Fortschritt: Hisnul Muslim", en: "Progress: Hisnul Muslim", type: 'progress', href: "/hisnul-muslim" },
+    { key: "progress_favorites", icon: "⭐", de: "Fortschritt: Favoriten", en: "Progress: Favorites", type: 'progress', href: "/favorites" },
+    { key: "progress_hatim", icon: "3️⃣0️⃣✅️", de: "Fortschritt: Hatim", en: "Progress: Hatim", type: 'progress', href: "/hatim" },
 ];
