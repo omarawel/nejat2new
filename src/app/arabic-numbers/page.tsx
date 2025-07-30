@@ -1,4 +1,3 @@
-
 "use client"
 
 import { useState, useRef, useEffect } from 'react';
@@ -87,13 +86,13 @@ function numberToWords(num: number, lang: 'de' | 'en'): string {
     
     // Using a simplified transliteration for this example. A full library would be needed for perfect grammar.
     const units: Record<number, string> = {
-        1: 'Wahid', 2: 'Ithnan', 3: 'Thalatha', 4: 'Arba'a', 5: 'Khamsa', 6: 'Sittah', 7: 'Sab'a', 8: 'Thamaniyah', 9: 'Tis'a'
+        1: "Wahid", 2: "Ithnan", 3: "Thalatha", 4: "Arba'a", 5: "Khamsa", 6: "Sittah", 7: "Sab'a", 8: "Thamaniyah", 9: "Tis'a"
     };
     const tens: Record<number, string> = {
-        10: 'Asharah', 20: 'Ishrun', 30: 'Thalathun', 40: 'Arba'un', 50: 'Khamsun', 60: 'Sittun', 70: 'Sab'un', 80: 'Thamanun', 90: 'Tis'un'
+        10: "Asharah", 20: "Ishrun", 30: "Thalathun", 40: "Arba'un", 50: "Khamsun", 60: "Sittun", 70: "Sab'un", 80: "Thamanun", 90: "Tis'un"
     };
     const teens: Record<number, string> = {
-        11: 'Ahada Ashar', 12: 'Ithna Ashar', 13: 'Thalathata Ashar', 14: 'Arba'ata Ashar', 15: 'Khamsata Ashar', 16: 'Sittata Ashar', 17: 'Sab'ata Ashar', 18: 'Thamaniyata Ashar', 19: 'Tis'ata Ashar'
+        11: "Ahada Ashar", 12: "Ithna Ashar", 13: "Thalathata Ashar", 14: "Arba'ata Ashar", 15: "Khamsata Ashar", 16: "Sittata Ashar", 17: "Sab'ata Ashar", 18: "Thamaniyata Ashar", 19: "Tis'ata Ashar"
     };
 
     const words: string[] = [];
@@ -111,9 +110,9 @@ function numberToWords(num: number, lang: 'de' | 'en'): string {
 
     if (num >= 100) {
         const hundreds = Math.floor(num / 100);
-        if (hundreds === 1) words.push('Mi'ah');
-        else if (hundreds === 2) words.push('Mi'atayn');
-        else words.push(units[hundreds] + ' Mi'ah');
+        if (hundreds === 1) words.push("Mi'ah");
+        else if (hundreds === 2) words.push("Mi'atayn");
+        else words.push(units[hundreds] + " Mi'ah");
         num %= 100;
     }
 
