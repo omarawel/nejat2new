@@ -59,18 +59,41 @@ export function Footer() {
                 setDynamicContent(data);
             }
             setLoading(false);
+        }).catch(err => {
+            console.error("Failed to load footer content", err);
+            setLoading(false);
         });
     }, []);
     
     const c = dynamicContent?.[language] || staticContent[language];
     const socialLinks = dynamicContent?.socialLinks || [];
-    const copyrightText = `© ${new Date().getFullYear()} Nejat Pro. All rights reserved.`;
+    const copyrightText = `© ${new Date().getFullYear()} Nejat Pro. Alle rights reserved.`;
 
     if (loading) {
         return (
             <footer className="bg-card text-card-foreground border-t">
                  <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
-                     <Skeleton className="h-8 w-1/2" />
+                     <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8">
+                        <div className="md:col-span-2 space-y-2">
+                           <Skeleton className="h-8 w-24" />
+                           <Skeleton className="h-5 w-full max-w-md" />
+                           <Skeleton className="h-5 w-3/4 max-w-sm" />
+                        </div>
+                         <div className="grid grid-cols-2 gap-8 md:col-span-1 lg:col-span-2">
+                            <div className="space-y-2">
+                                <Skeleton className="h-6 w-20" />
+                                <Skeleton className="h-4 w-16" />
+                                <Skeleton className="h-4 w-16" />
+                                <Skeleton className="h-4 w-16" />
+                            </div>
+                            <div className="space-y-2">
+                                <Skeleton className="h-6 w-20" />
+                                <Skeleton className="h-4 w-16" />
+                                <Skeleton className="h-4 w-16" />
+                                <Skeleton className="h-4 w-16" />
+                            </div>
+                         </div>
+                     </div>
                  </div>
             </footer>
         )
