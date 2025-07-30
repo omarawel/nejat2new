@@ -41,6 +41,7 @@ import { addFavorite } from "@/lib/favorites"
 import { canAccessFeature } from "@/lib/user-usage"
 import { AdBanner } from "@/components/ad-banner"
 import { setLastRead } from "@/lib/progress";
+import { Badge } from "@/components/ui/badge"; // Added Badge import
 
 
 interface Surah {
@@ -639,8 +640,7 @@ export default function QuranPage() {
 
                 {loading ? (
                     <div className="space-y-4">
-                        {[...Array(5)].map((_, i) => <Skeleton key={i} className="h-12 w-full" />)
-}
+                        {[...Array(5)].map((_, i) => <Skeleton key={i} className="h-12 w-full" />)}
                     </div>
                 ) : error ? (
                     <Alert variant="destructive">

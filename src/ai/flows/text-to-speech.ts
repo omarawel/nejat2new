@@ -6,8 +6,8 @@
  */
 
 import {ai} from '@/ai/genkit';
-import type { TextToSpeechInput, TextToSpeechOutput } from './text-to-speech-types'; // Updated import path
-import { TextToSpeechInputSchema, TextToSpeechOutputSchema } from './text-to-speech-types'; // Updated import path
+import type { TextToSpeechInput, TextToSpeechOutput } from '@/ai/flows/text-to-speech-types';
+import { TextToSpeechInputSchema, TextToSpeechOutputSchema } from '@/ai/flows/text-to-speech-types';
 import wav from 'wav';
 
 async function toWav(
@@ -76,5 +76,6 @@ const textToSpeechFlow = ai.defineFlow(
 export async function textToSpeech(
   input: TextToSpeechInput
 ): Promise<TextToSpeechOutput> {
+  // This function can now be directly used as a Server Action
   return textToSpeechFlow(input);
 }
