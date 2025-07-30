@@ -1,5 +1,4 @@
-
-import type { QuizQuestion } from '@/ai/flows/generate-quiz-types';
+import type { QuizQuestion } from '@/ai/flows/generate-quiz';
 
 type StaticQuizData = {
     de: {
