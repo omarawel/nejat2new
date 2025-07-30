@@ -40,7 +40,7 @@ export default function MissedFastsPage() {
 
   useEffect(() => {
     const savedFasts = localStorage.getItem('missedFasts');
-    if (savedFasts && savedFasts !== 'undefined') {
+    if (savedFasts && savedFasts !== 'undefined' && savedFasts !== 'null') {
       setMissedFasts(JSON.parse(savedFasts));
     }
   }, []);

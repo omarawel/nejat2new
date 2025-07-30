@@ -16,20 +16,6 @@ export const metadata: Metadata = {
   manifest: '/manifest.json',
 };
 
-const themeScript = `
-  (function() {
-    try {
-      const theme = localStorage.getItem('nejat-digital-theme') || 'teal';
-      const root = document.documentElement;
-      root.classList.remove('light', 'dark', 'rose', 'blue', 'black', 'teal');
-      root.classList.add(theme);
-    } catch (e) {
-      console.error("Failed to set theme from localStorage", e);
-    }
-  })();
-`;
-
-
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -37,9 +23,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="de" suppressHydrationWarning>
-      <head>
-        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
-      </head>
+      <head />
       <body className={`${inter.variable} font-sans antialiased`}>
         <ThemeProvider>
           <LanguageProvider>
