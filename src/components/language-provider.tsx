@@ -1,4 +1,3 @@
-
 "use client"
 
 import React, { createContext, useContext, useState, useEffect } from "react"
@@ -29,12 +28,14 @@ export function LanguageProvider({
   storageKey = "nejat-digital-language",
   ...props
 }: LanguageProviderProps) {
-    const [language, setLanguage] = useState<Language>(() => {
-        if (typeof window === 'undefined') {
-          return defaultLanguage;
-        }
-        return (localStorage.getItem(storageKey) as Language | null) || defaultLanguage;
-    });
+  const [language, setLanguage] = useState<Language>(defaultLanguage);
+
+  useEffect(() => {
+    const storedLanguage = localStorage.getItem(storageKey) as Language | null;
+    if (storedLanguage) {
+      setLanguage(storedLanguage);
+    }
+  }, [storageKey]);
 
   useEffect(() => {
     const root = window.document.documentElement

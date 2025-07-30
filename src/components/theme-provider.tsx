@@ -1,4 +1,3 @@
-
 "use client"
 
 import React, { createContext, useContext, useEffect, useState } from "react"
@@ -29,12 +28,15 @@ export function ThemeProvider({
   storageKey = "nejat-digital-theme",
   ...props
 }: ThemeProviderProps) {
-  const [theme, setTheme] = useState<Theme>(() => {
-    if (typeof window === 'undefined') {
-      return defaultTheme;
+  const [theme, setTheme] = useState<Theme>(defaultTheme);
+
+  useEffect(() => {
+    const storedTheme = localStorage.getItem(storageKey) as Theme | null;
+    if (storedTheme) {
+      setTheme(storedTheme);
     }
-    return (localStorage.getItem(storageKey) as Theme | null) || defaultTheme;
-  });
+  }, [storageKey]);
+
 
   useEffect(() => {
     const root = window.document.documentElement

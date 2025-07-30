@@ -1,4 +1,3 @@
-
 "use client"
 
 import { useState, useEffect } from "react"
@@ -25,6 +24,7 @@ import { useLanguage } from "../language-provider"
 import { isAdmin } from "@/lib/admin"
 import { QuotaDisplay } from "../quota-display"
 import { Badge } from "../ui/badge"
+import { Skeleton } from "../ui/skeleton"
 
 const content = {
   de: {
@@ -116,8 +116,8 @@ export function AppHeader() {
       <div className="flex items-center gap-2">
         {loading ? (
           <>
-            <div className="h-9 w-24 animate-pulse rounded-md bg-muted" />
-            <div className="h-9 w-36 animate-pulse rounded-md bg-muted" />
+            <Skeleton className="h-9 w-24 rounded-md" />
+            <Skeleton className="h-9 w-36 rounded-md" />
           </>
         ) : user ? (
             <>
@@ -163,13 +163,13 @@ export function AppHeader() {
           <>
             <Button variant="ghost" asChild className="hidden sm:inline-flex">
                 <Link href="/login">
-                    <LogIn />
+                    <LogIn className="mr-2 h-4 w-4"/>
                     {c.login}
                 </Link>
             </Button>
              <Button asChild className="hidden sm:inline-flex">
                 <Link href="/signup">
-                    <UserPlus />
+                    <UserPlus className="mr-2 h-4 w-4"/>
                     {c.signup}
                 </Link>
             </Button>

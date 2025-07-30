@@ -38,8 +38,9 @@ import { AdBanner } from "@/components/ad-banner"
 import { setLastRead } from "@/lib/progress"
 
 
+
 type Language = "eng" | "urd" | "ara";
-type Hadith = Awaited<ReturnType<typeof getHadiths>> extends { hadiths: { data: (infer T)[] } } ? T : never;
+
 
 
 const content = {
@@ -106,7 +107,9 @@ const HadithContent = ({ hadith }: { hadith: Hadith }) => {
     const handleSaveFavorite = async () => {
         if (!user) return;
         setIsSaving(true);
-        const textToSave = `Hadith ${hadith.hadithNumber} (${hadith.book.bookName})\n\n${hadith.hadithEnglish}`;
+        const textToSave = `Hadith ${hadith.hadithNumber} (${hadith.book.bookName})
+
+${hadith.hadithEnglish}`;
         try {
             await addFavorite(user.uid, textToSave);
             toast({ title: content[language].toastFavoriteSaved });
