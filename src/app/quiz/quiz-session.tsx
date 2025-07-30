@@ -1,4 +1,3 @@
-
 "use client"
 
 import { useState } from 'react';
@@ -7,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { CheckCircle, XCircle, Award, ArrowLeft } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import type { QuizQuestion } from '@/ai/flows/generate-quiz-types';
+import type { QuizQuestion } from '@/ai/flows/generate-quiz';
 
 interface QuizSessionProps {
     quizTitle: string;
