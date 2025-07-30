@@ -133,7 +133,7 @@ const hisnulMuslimData = {
         { id: 100, 'title': 'Gebet des frisch Vermählten für sich selbst', 'duas': [{'arabic': 'اللَّهُمَّ إِنِّي أَسْأَلُكَ خَيْرَهَا وَخَيْرَ مَا جَبَلْتَهَا عَلَيْهِ، وَأَعُوذُ بِكَ مِنْ شَرِّهَا وَشَرِّ مَا جَبَلْتَهَا عَلَيْهِ', 'transliteration': 'Allahumma inni as`aluka khayraha wa khayra ma jabaltaha `alayh, wa a`udhu bika min sharriha wa sharri ma jabaltaha `alayh.', 'translation': 'O Allah, ich bitte Dich um ihr Gutes und das Gute, zu dem Du sie veranlagt hast, und ich suche Zuflucht bei Dir vor ihrem Schlechten und dem Schlechten, zu dem Du sie veranlagt hast.'}]},
         { id: 101, 'title': 'Gebet vor dem ehelichen Verkehr', 'duas': [{'arabic': 'بِسْمِ اللَّهِ، اللَّهُمَّ جَنِّبْنَا الشَّيْطَانَ، وَجَنِّبِ الشَّيْطَانَ مَا رَзَقْتَنَا', 'transliteration': 'Bismillah, Allahumma jannibnash-shaytan, wa jannibish-shaytana ma razaqtana.', 'translation': 'Im Namen Allahs. O Allah, halte den Satan von uns fern und halte den Satan fern von dem, was Du uns schenkst.'}]},
         { id: 102, 'title': 'Beim Zornigwerden', 'duas': [{'arabic': 'أَعُوذُ بِاللَّهِ مِنَ الشَّيْطَانِ الرَّجِيمِ', 'transliteration': 'A`udhu billahi minash-shaytanir-rajim.', 'translation': 'Ich suche Zuflucht bei Allah vor dem verfluchten Satan.'}]},
-        { id: 103, 'title': 'Sühne für eine Sitzung (Kaffaratul-Majlis)', 'duas': [{'arabic': 'sُبْحَانَكَ اللَّهُمَّ وَبِحَمْدِكَ، أَشْهَدُ أَنْ لَا إِلَهَ إِلَّا أَنْتَ، أَسْتَغْفِرُكَ وَأَتُوبُ إِلَيْكَ', 'transliteration': 'Subhanakallahumma wa bihamdik, ashhadu an la ilaha illa ant, astaghfiruka wa atubu ilayk.', 'translation': 'Gepriesen seist Du, o Allah, und mit Deinem Lob. Ich bezeuge, dass es keine Gottheit gibt außer Dir. Ich bitte Dich um Vergebung und bereue vor Dir.'}]},
+        { id: 103, 'title': 'Sühne für eine Sitzung (Kaffaratul-Majlis)', 'duas': [{'arabic': 'sُبْحَانَكَ اللَّهُمَّ وَبِحَمْدِكَ، أَشْهَدُ أَنْ لَا إِلَهَ إِلَّا أَنْتَ، أَsْتَغْفِرُكَ وَأَتُوبُ إِلَيْكَ', 'transliteration': 'Subhanakallahumma wa bihamdik, ashhadu an la ilaha illa ant, astaghfiruka wa atubu ilayk.', 'translation': 'Gepriesen seist Du, o Allah, und mit Deinem Lob. Ich bezeuge, dass es keine Gottheit gibt außer Dir. Ich bitte Dich um Vergebung und bereue vor Dir.'}]},
         { id: 104, 'title': 'Gebet für jemanden, der sagt &quot;Ghafarallahu lak&quot;', 'duas': [{'arabic': 'وَلَكَ', 'transliteration': 'Wa lak.', 'translation': 'Und dir auch.'}]},
         { id: 105, 'title': 'Was man sagt, wenn es regnet', 'duas': [{'arabic': 'اللَّهُمَّ صَيِّبًا نَافِعًا', 'transliteration': 'Allahumma sayyiban nafi`a.', 'translation': 'O Allah, (mache es zu) einem nützlichen Regen.'}]},
         { id: 106, 'title': 'Nach dem Regen', 'duas': [{'arabic': 'مُطِرْنَا بِفَضْلِ اللَّهِ وَرَحْمَتِهِ', 'transliteration': 'Mutirna bi-fadlillahi wa rahmatih.', 'translation': 'Wir wurden durch Allahs Gnade und Barmherzigkeit mit Regen beschenkt.'}]},
@@ -303,11 +303,11 @@ const hisnulMuslimData = {
         { id: 270, 'title': 'Gebet für den, der sagt: Möge Allah dir vergeben', 'duas': [{'arabic': 'وَلَكَ', 'transliteration': 'Wa lak.', 'translation': 'Und dir auch.' }] },
     ]
   }
-}
+};
 
 export default function HisnulMuslimPage() {
     const { language } = useLanguage();
-    const c = hisnulMuslimData[language] || hisnulMuslimData.de;
+    const c = hisnulMuslimData[language as keyof typeof hisnulMuslimData] || hisnulMuslimData.de;
     const { toast } = useToast();
 
     const [user] = useAuthState(auth);
