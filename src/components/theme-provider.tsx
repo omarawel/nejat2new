@@ -29,17 +29,15 @@ export function ThemeProvider({
   storageKey = "nejat-digital-theme",
   ...props
 }: ThemeProviderProps) {
-  const [theme, setTheme] = useState<Theme>(defaultTheme);
+  const [theme, setTheme] = useState<Theme>(() => {
+      if (typeof window !== 'undefined') {
+          return (localStorage.getItem(storageKey) as Theme) || defaultTheme
+      }
+      return defaultTheme
+  });
 
   useEffect(() => {
-    const storedTheme = localStorage.getItem(storageKey) as Theme | null;
-    if (storedTheme) {
-      setTheme(storedTheme);
-    }
-  }, [storageKey]);
-
-  useEffect(() => {
-    const root = window.document.documentElement;
+    const root = window.document.documentElement
     root.classList.remove("light", "dark", "rose", "blue", "black", "teal");
     root.classList.add(theme);
     localStorage.setItem(storageKey, theme);

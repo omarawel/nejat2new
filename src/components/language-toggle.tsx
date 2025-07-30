@@ -13,9 +13,7 @@ export function LanguageToggle() {
   const { language, setLanguage } = useLanguage()
 
   const toggleLanguage = () => {
-    const currentIndex = languages.indexOf(language);
-    const nextIndex = (currentIndex + 1) % languages.length;
-    setLanguage(languages[nextIndex]);
+    setLanguage(language === 'de' ? 'en' : 'de');
   };
 
   return (
