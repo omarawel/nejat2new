@@ -58,46 +58,17 @@ export function Footer() {
             if (data) {
                 setDynamicContent(data);
             }
-            setLoading(false);
         }).catch(err => {
             console.error("Failed to load footer content", err);
+        }).finally(() => {
             setLoading(false);
         });
     }, []);
     
     const c = dynamicContent?.[language] || staticContent[language];
     const socialLinks = dynamicContent?.socialLinks || [];
-    const copyrightText = `© ${new Date().getFullYear()} Nejat Pro. Alle rights reserved.`;
+    const copyrightText = `© ${new Date().getFullYear()} Nejat Pro. Alle Rechte vorbehalten.`;
 
-    if (loading) {
-        return (
-            <footer className="bg-card text-card-foreground border-t">
-                 <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
-                     <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-8">
-                        <div className="md:col-span-2 space-y-2">
-                           <Skeleton className="h-8 w-24" />
-                           <Skeleton className="h-5 w-full max-w-md" />
-                           <Skeleton className="h-5 w-3/4 max-w-sm" />
-                        </div>
-                         <div className="grid grid-cols-2 gap-8 md:col-span-1 lg:col-span-2">
-                            <div className="space-y-2">
-                                <Skeleton className="h-6 w-20" />
-                                <Skeleton className="h-4 w-16" />
-                                <Skeleton className="h-4 w-16" />
-                                <Skeleton className="h-4 w-16" />
-                            </div>
-                            <div className="space-y-2">
-                                <Skeleton className="h-6 w-20" />
-                                <Skeleton className="h-4 w-16" />
-                                <Skeleton className="h-4 w-16" />
-                                <Skeleton className="h-4 w-16" />
-                            </div>
-                         </div>
-                     </div>
-                 </div>
-            </footer>
-        )
-    }
 
     return (
         <footer className="bg-card text-card-foreground border-t">
@@ -108,7 +79,7 @@ export function Footer() {
                              <Link href="/" className="text-xl font-bold">Nejat</Link>
                             <Badge variant="default" className="absolute -top-3.5 -right-7 h-auto px-1.5 py-0.5 text-[10px] font-bold">Pro</Badge>
                         </div>
-                        <p className="text-muted-foreground max-w-md">{c.description}</p>
+                        {loading ? <Skeleton className="h-20 w-full max-w-md" /> : <p className="text-muted-foreground max-w-md">{c.description}</p>}
                     </div>
 
                     <div className="grid grid-cols-2 gap-8 md:col-span-1 lg:col-span-2">
@@ -136,7 +107,7 @@ export function Footer() {
                     <div className="flex items-center gap-4 order-1 sm:order-2">
                         <p className="text-sm font-semibold">{c.followUs}:</p>
                         <div className="flex items-center gap-3">
-                           {socialLinks.map(social => {
+                           {loading ? <Skeleton className="h-5 w-32" /> : socialLinks.map(social => {
                             const Icon = iconMap[social.icon] || 'div';
                             return (
                              <Link key={social.name} href={social.href} className="text-muted-foreground hover:text-primary" target="_blank" rel="noopener noreferrer">

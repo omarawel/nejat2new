@@ -29,14 +29,12 @@ export function LanguageProvider({
   storageKey = "nejat-digital-language",
   ...props
 }: LanguageProviderProps) {
-    const [language, setLanguage] = useState<Language>(defaultLanguage);
-
-    useEffect(() => {
-        const storedLanguage = localStorage.getItem(storageKey) as Language | null;
-        if (storedLanguage) {
-            setLanguage(storedLanguage);
+    const [language, setLanguage] = useState<Language>(() => {
+        if (typeof window === 'undefined') {
+          return defaultLanguage;
         }
-    }, [storageKey]);
+        return (localStorage.getItem(storageKey) as Language | null) || defaultLanguage;
+    });
 
   useEffect(() => {
     const root = window.document.documentElement
