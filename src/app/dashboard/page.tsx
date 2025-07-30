@@ -10,44 +10,54 @@ import { getFavorites, type Favorite } from '@/lib/favorites';
 import { getHatimGroups, type HatimGroup } from '@/lib/hatim';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Loader2, Settings, LayoutGrid, Star, BookOpen, ChevronRight } from 'lucide-react';
+import { Loader2, Settings, LayoutGrid, Star, BookOpen, ChevronRight, History, BookCopy } from 'lucide-react';
 import { useLanguage } from '@/components/language-provider';
 import Link from 'next/link';
 import { allTools } from '@/lib/tools';
 import { Progress } from '@/components/ui/progress';
+import { getLastRead, type LastReadProgress } from '@/lib/progress';
+import { ProgressCard } from '@/components/dashboard/progress-card';
 
 const content = {
     de: {
         title: "Mein Dashboard",
-        description: "Deine persönliche Zentrale für den schnellen Zugriff auf deine Lieblingsfunktionen.",
+        description: "Deine persönliche Zentrale für den schnellen Zugriff und deine Lernfortschritte.",
         loading: "Dashboard wird geladen...",
         loginRequired: "Du musst angemeldet sein, um dein Dashboard zu sehen.",
         login: "Anmelden",
         noSelection: "Dein Dashboard ist noch leer.",
         customize: "Passe dein Dashboard an",
-        yourActivity: "Deine Aktivitäten",
+        yourActivity: "Deine Aktivitäten & Fortschritte",
         latestFavorites: "Neueste Favoriten",
         noFavorites: "Keine Favoriten gespeichert.",
         viewAll: "Alle ansehen",
         yourHatimGroups: "Deine Hatim-Gruppen",
         noHatim: "Du nimmst an keinem Hatim teil.",
-        completed: "abgeschlossen"
+        completed: "abgeschlossen",
+        lastReadQuran: "Zuletzt gelesen im Koran",
+        lastReadHadith: "Zuletzt gelesener Hadith",
+        lastReadHisnul: "Zuletzt gelesen in Hisnul Muslim",
+        continueReading: "Weiterlesen",
     },
     en: {
         title: "My Dashboard",
-        description: "Your personal hub for quick access to your favorite features.",
+        description: "Your personal hub for quick access and your learning progress.",
         loading: "Loading dashboard...",
         loginRequired: "You need to be logged in to see your dashboard.",
         login: "Login",
         noSelection: "Your dashboard is empty.",
         customize: "Customize Your Dashboard",
-        yourActivity: "Your Activity",
+        yourActivity: "Your Activity & Progress",
         latestFavorites: "Latest Favorites",
         noFavorites: "No favorites saved.",
         viewAll: "View All",
         yourHatimGroups: "Your Hatim Groups",
         noHatim: "You are not participating in any Hatim.",
-        completed: "completed"
+        completed: "completed",
+        lastReadQuran: "Last Read in Quran",
+        lastReadHadith: "Last Read Hadith",
+        lastReadHisnul: "Last Read in Hisnul Muslim",
+        continueReading: "Continue Reading",
     }
 };
 
@@ -69,6 +79,7 @@ export default function DashboardPage() {
     const [dashboardConfig, setDashboardConfig] = useState<DashboardConfig | null>(null);
     const [favorites, setFavorites] = useState<Favorite[]>([]);
     const [hatimGroups, setHatimGroups] = useState<HatimGroup[]>([]);
+    const [progress, setProgress] = useState<LastReadProgress>({});
     const [loadingData, setLoadingData] = useState(true);
 
     useEffect(() => {
@@ -84,6 +95,9 @@ export default function DashboardPage() {
             const userGroups = groups.filter(g => g.juzs.some(j => j.assignedTo === user.displayName));
             setHatimGroups(userGroups);
         });
+        
+        const lastReadData = getLastRead();
+        setProgress(lastReadData);
 
         setLoadingData(false);
 
@@ -155,31 +169,52 @@ export default function DashboardPage() {
             )}
             
             <h2 className="text-3xl font-bold mb-6">{c.yourActivity}</h2>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                <Card>
-                    <CardHeader>
-                        <CardTitle className="flex items-center gap-2">
-                           <Star /> {c.latestFavorites}
-                        </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        {favorites.length > 0 ? (
-                             <ul className="space-y-3">
-                                {favorites.map(fav => (
-                                    <li key={fav.id} className="p-3 border rounded-md bg-muted/50 text-sm text-muted-foreground truncate">
-                                        {fav.text}
-                                    </li>
-                                ))}
-                            </ul>
-                        ) : <p className="text-muted-foreground">{c.noFavorites}</p>}
-                    </CardContent>
-                    <CardFooter>
-                         <Button variant="ghost" asChild>
-                           <Link href="/favorites">{c.viewAll} <ChevronRight className="ml-1 h-4 w-4" /></Link>
-                       </Button>
-                    </CardFooter>
-                </Card>
-                <Card>
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div className="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <ProgressCard
+                        title={c.lastReadQuran}
+                        progress={progress.quran}
+                        href="/quran"
+                        icon={BookOpen}
+                    />
+                    <ProgressCard
+                        title={c.lastReadHadith}
+                        progress={progress.hadith}
+                        href="/hadith"
+                        icon={BookCopy}
+                    />
+                    <ProgressCard
+                        title={c.lastReadHisnul}
+                        progress={progress.hisnul_muslim}
+                        href="/hisnul-muslim"
+                        icon={History}
+                    />
+                     <Card>
+                        <CardHeader>
+                            <CardTitle className="flex items-center gap-2">
+                                <Star /> {c.latestFavorites}
+                            </CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            {favorites.length > 0 ? (
+                                <ul className="space-y-3">
+                                    {favorites.map(fav => (
+                                        <li key={fav.id} className="p-3 border rounded-md bg-muted/50 text-sm text-muted-foreground truncate">
+                                            {fav.text}
+                                        </li>
+                                    ))}
+                                </ul>
+                            ) : <p className="text-muted-foreground">{c.noFavorites}</p>}
+                        </CardContent>
+                        <CardFooter>
+                            <Button variant="ghost" asChild>
+                            <Link href="/favorites">{c.viewAll} <ChevronRight className="ml-1 h-4 w-4" /></Link>
+                        </Button>
+                        </CardFooter>
+                    </Card>
+                </div>
+                
+                 <Card className="lg:col-span-1">
                     <CardHeader>
                         <CardTitle className="flex items-center gap-2">
                             <BookOpen /> {c.yourHatimGroups}
@@ -190,13 +225,13 @@ export default function DashboardPage() {
                             <ul className="space-y-4">
                                 {hatimGroups.map(group => {
                                     const completed = group.juzs.filter(j => j.assignedTo).length;
-                                    const progress = (completed / 30) * 100;
+                                    const progressValue = (completed / 30) * 100;
                                     return (
                                         <li key={group.id}>
-                                            <p className="font-semibold">{group.title}</p>
+                                            <p className="font-semibold truncate">{group.title}</p>
                                             <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                                                <Progress value={progress} className="w-full" />
-                                                <span>{completed}/30 {c.completed}</span>
+                                                <Progress value={progressValue} className="w-full" />
+                                                <span>{completed}/30</span>
                                             </div>
                                         </li>
                                     )
@@ -211,9 +246,6 @@ export default function DashboardPage() {
                     </CardFooter>
                 </Card>
             </div>
-
         </div>
     )
 }
-
-    

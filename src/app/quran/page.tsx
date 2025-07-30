@@ -40,6 +40,7 @@ import { useToast } from "@/hooks/use-toast"
 import { addFavorite } from "@/lib/favorites"
 import { canAccessFeature } from "@/lib/user-usage"
 import { AdBanner } from "@/components/ad-banner"
+import { setLastRead } from "@/lib/progress";
 
 
 interface Surah {
@@ -130,6 +131,7 @@ const content = {
         proFeature: "Pro-Funktion",
         proFeatureDescription: "Erhalte Offline-Zugriff und unterstütze die App mit einem Upgrade.",
         upgradeNow: "Jetzt upgraden",
+        errorAudio: "Failed to generate audio for the verse.",
     },
     en: {
         title: "The Holy Quran",
@@ -169,82 +171,66 @@ const content = {
     }
 }
 
-const HadithContent = ({ hadith, language }: { hadith: Hadith, language: Language }) => {
-  const { language: currentLanguage } = useLanguage();
-  const c = content[currentLanguage] || content.de;
+const SurahDetailContent = ({ surahNumber, languageEdition, c }: { surahNumber: number, languageEdition: LanguageEdition, c: typeof content['de'] | typeof content['en'] }) => {
   const { toast } = useToast();
   const [user] = useAuthState(auth);
+
+  const [detail, setDetail] = useState<{ arabic: SurahDetail, translation: SurahDetail, transliteration: SurahDetail } | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+  const [hiddenAyahs, setHiddenAyahs] = useState<Record<number, boolean>>({});
   
-  const [isHidden, setIsHidden] = useState(false);
   const [playingAudio, setPlayingAudio] = useState<string | null>(null);
   const [loadingAudio, setLoadingAudio] = useState<number | null>(null);
-  const [isSaving, setIsSaving] = useState(false);
+  const [isSaving, setIsSaving] = useState<number | null>(null);
   const [audioUrl, setAudioUrl] = useState<string | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
-  
-  const getText = () => {
-    switch(language) {
-      case "urd":
-        return hadith.hadithUrdu
-      case "ara":
-        return hadith.hadithArabic
-      case "eng":
-      default:
-        return hadith.hadithEnglish
-    }
-  }
-  
-  const getLanguageDirection = () => {
-    switch(language) {
-        case "urd":
-        case "ara":
-            return "rtl";
-        default:
-            return "ltr";
-    }
-  }
 
-  const handlePlayAudio = async (hadithText: string, hadithId: number) => {
-    if (playingAudio === `hadith-${hadithId}`) {
+  const toggleAyahVisibility = (ayahNumber: number) => {
+    setHiddenAyahs(prev => ({ ...prev, [ayahNumber]: !prev[ayahNumber] }));
+  };
+
+  const handlePlayAudio = async (ayahText: string, ayahNumber: number) => {
+    if (playingAudio === `ayah-${ayahNumber}`) {
         audioRef.current?.pause();
         setPlayingAudio(null);
         return;
     }
-    setLoadingAudio(hadithId);
+    setLoadingAudio(ayahNumber);
     setAudioUrl(null);
     setPlayingAudio(null);
 
     try {
-      const result = await textToSpeech(hadithText);
+      const result = await textToSpeech(ayahText);
       setAudioUrl(result.audio);
-      setPlayingAudio(`hadith-${hadithId}`);
+      setPlayingAudio(`ayah-${ayahNumber}`);
     } catch (err) {
       console.error("Failed to get audio", err);
+      setError(c.errorAudio);
     } finally {
       setLoadingAudio(null);
     }
   };
 
-  const handleSaveFavorite = async () => {
-      if (!user) {
-          toast({
-              title: c.loginToSave,
-              variant: 'destructive',
-              description: <Button variant="secondary" size="sm" asChild className="mt-2"><Link href="/login">Login</Link></Button>,
-          });
-          return;
-      }
-      setIsSaving(true);
-      const textToSave = `Hadith ${hadith.hadithNumber} (${hadith.book.bookName})\n\n${getText()}`;
-      try {
-          await addFavorite(user.uid, textToSave);
-          toast({ title: c.toastFavoriteSaved });
-      } catch (error) {
-          toast({ title: c.toastErrorSaving, variant: 'destructive' });
-      } finally {
-          setIsSaving(false);
-      }
-  }
+  const handleSaveFavorite = async (index: number) => {
+    if (!user || !detail) return;
+
+    setIsSaving(detail.arabic.ayahs[index].number);
+    const textToSave = `Surah ${detail.arabic.name} (${detail.arabic.englishName}), Ayah ${detail.arabic.ayahs[index].numberInSurah}
+
+${detail.arabic.ayahs[index].text}
+
+${detail.translation.ayahs[index].text}`;
+
+    try {
+        await addFavorite(user.uid, textToSave);
+        toast({ title: c.toastFavoriteSaved });
+    } catch (error) {
+        toast({ title: c.toastErrorSaving, variant: 'destructive' });
+    } finally {
+        setIsSaving(null);
+    }
+  };
 
   useEffect(() => {
     if (audioUrl && audioRef.current) {
@@ -252,12 +238,88 @@ const HadithContent = ({ hadith, language }: { hadith: Hadith, language: Languag
     }
   }, [audioUrl]);
 
-  const hadithText = getText();
-  const isPlaying = playingAudio === `hadith-${hadith.id}`;
-  const isLoading = loadingAudio === hadith.id;
+
+  useEffect(() => {
+    async function fetchSurahDetail() {
+      if (!surahNumber) return
+      setLoading(true)
+      setError(null)
+      setHiddenAyahs({})
+      
+      const editions = ['quran-uthmani', languageEdition, 'en.transliteration'];
+      const offlineData = await getSurahWithEditions(surahNumber, editions);
+
+      if (offlineData) {
+        setDetail({
+            arabic: offlineData[0] as SurahDetail,
+            translation: offlineData[1] as SurahDetail,
+            transliteration: offlineData[2] as SurahDetail
+        });
+        setLoading(false);
+        return;
+      }
+      
+      try {
+        const response = await fetch(`https://api.alquran.cloud/v1/surah/${surahNumber}/editions/quran-uthmani,${languageEdition},en.transliteration`)
+        if (!response.ok) {
+          throw new Error(c.errorSurahDetails);
+        }
+        const data = await response.json()
+        if (data.code !== 200 || !data.data || data.data.length < 3) {
+            throw new Error(c.errorInvalidData);
+        }
+
+        setDetail({
+            arabic: data.data[0],
+            translation: data.data[1],
+            transliteration: data.data[2]
+        })
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'An unknown error occurred')
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchSurahDetail()
+  }, [surahNumber, languageEdition, c.errorSurahDetails, c.errorInvalidData, c.errorAudio])
+  
+   useEffect(() => {
+    if (detail) {
+      setLastRead('quran', { surah: detail.number, surahName: detail.englishName });
+    }
+  }, [detail]);
+
+
+  if (loading) {
+    return (
+      <div className="divide-y divide-border">
+          {[...Array(3)].map((_, i) => (
+              <div key={i} className="px-6 py-4 space-y-3">
+                  <Skeleton className="h-6 w-full" />
+                  <Skeleton className="h-4 w-3/4" />
+                  <Skeleton className="h-4 w-5/6" />
+              </div>
+          ))}
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+        <div className="px-6 py-4">
+            <Alert variant="destructive">
+                <Terminal className="h-4 w-4" />
+                <AlertTitle>Error</AlertTitle>
+                <AlertDescription>{error}</AlertDescription>
+            </Alert>
+        </div>
+    )
+  }
+  
+  if (!detail) return null
 
   return (
-    <div className="px-6 py-4 space-y-3 relative">
+    <div className="divide-y divide-border">
        {audioUrl && (
         <audio
           ref={audioRef}
@@ -265,319 +327,38 @@ const HadithContent = ({ hadith, language }: { hadith: Hadith, language: Languag
           onEnded={() => setPlayingAudio(null)}
         />
       )}
-        <div className="flex justify-between items-start">
-            <p className={cn("text-foreground/90 flex-1", getLanguageDirection() === 'rtl' ? "text-right" : "", isHidden ? "opacity-0" : "opacity-100")}>{hadithText}</p>
-            <div className="flex items-center ml-4">
-                <Button variant="ghost" size="icon" onClick={() => handlePlayAudio(hadithText, hadith.id)} disabled={isLoading}>
-                    {isLoading ? <Loader className="h-5 w-5 animate-spin" /> : (isPlaying ? <Pause className="h-5 w-5" /> : <Play className="h-5 w-5" />)}
-                </Button>
-                <Button variant="ghost" size="icon" onClick={() => setIsHidden(!isHidden)}>
-                    {isHidden ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
-                </Button>
-                 <Button variant="ghost" size="icon" onClick={handleSaveFavorite} disabled={isSaving}>
-                    {isSaving ? <Loader className="h-5 w-5 animate-spin" /> : <Star className="h-5 w-5" />}
-                </Button>
+      {detail.arabic.ayahs.map((_, index) => {
+        const ayahNumber = detail.arabic.ayahs[index].number;
+        const isHidden = hiddenAyahs[ayahNumber];
+        const arabicText = detail.arabic.ayahs[index].text;
+
+        const isPlaying = playingAudio === `ayah-${ayahNumber}`;
+        const isLoadingAudio = loadingAudio === ayahNumber;
+        const isSavingFavorite = isSaving === ayahNumber;
+
+        return (
+            <div key={ayahNumber} className="px-6 py-4 space-y-3 relative">
+                <div className="flex justify-between items-start">
+                    <p className={cn("text-2xl font-quranic text-right tracking-wide leading-relaxed flex-1", isHidden ? "opacity-0" : "opacity-100")}>{arabicText}</p>
+                    <div className="flex items-center ml-4">
+                        <Button variant="ghost" size="icon" onClick={() => handlePlayAudio(arabicText, ayahNumber)} disabled={isLoadingAudio}>
+                            {isLoadingAudio ? <Loader className="h-5 w-5 animate-spin" /> : (isPlaying ? <Pause className="h-5 w-5" /> : <Play className="h-5 w-5" />)}
+                        </Button>
+                        <Button variant="ghost" size="icon" onClick={() => toggleAyahVisibility(ayahNumber)}>
+                            {isHidden ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                        </Button>
+                         <Button variant="ghost" size="icon" onClick={() => handleSaveFavorite(index)} disabled={isSavingFavorite || !user}>
+                            {isSavingFavorite ? <Loader className="h-5 w-5 animate-spin" /> : <Star className="h-5 w-5" />}
+                        </Button>
+                    </div>
+                </div>
+                <div className={cn("transition-opacity duration-300", isHidden ? "opacity-0 h-0 overflow-hidden" : "opacity-100")}>
+                    <p className="text-muted-foreground italic mt-2">{detail.transliteration.ayahs[index].text}</p>
+                    <p className="text-foreground/90 mt-1">{detail.translation.ayahs[index].text}</p>
+                </div>
             </div>
-        </div>
+        )
+      })}
     </div>
   )
-}
-
-
-export default function QuranPage() {
-  const { language: currentLanguage } = useLanguage();
-  const c = content[currentLanguage] || content.de;
-
-  const [hadiths, setHadiths] = useState<Hadith[]>([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
-  const [paginationInfo, setPaginationInfo] = useState<{currentPage: number, lastPage: number, from: number, to: number, total: number} | null>(null)
-  const [openHadith, setOpenHadith] = useState<string | undefined>(undefined);
-  
-  const [searchTerm, setSearchTerm] = useState("");
-  const [submittedSearchTerm, setSubmittedSearchTerm] = useState("");
-  
-  const [isSearching, setIsSearching] = useState(false);
-  const [searchError, setSearchError] = useState<string | null>(null);
-  const [searchResults, setSearchResults] = useState<Hadith[] | null>(null);
-
-  const [language, setLanguage] = useState<Language>("eng");
-  const [page, setPage] = useState(1);
-  const [pageInput, setPageInput] = useState("1");
-
-  useEffect(() => {
-    setPageInput(page.toString());
-  }, [page]);
-
-  useEffect(() => {
-    async function fetchHadiths() {
-      if (submittedSearchTerm) return; // Don't fetch list if a search is active
-
-      setLoading(true)
-      setError(null)
-      try {
-        const data = await getHadiths(page);
-        if (data.error) {
-            throw new Error(data.error);
-        }
-        if (!data.hadiths) {
-            throw new Error("No hadiths data received.");
-        }
-        
-        const hadithsData = data.hadiths.data;
-        setHadiths(hadithsData)
-        
-        const total = data.hadiths.total;
-        const perPage = hadithsData.length > 0 ? (data.hadiths.to - data.hadiths.from + 1) : 25;
-        const lastPage = Math.ceil(total / perPage);
-        const from = data.hadiths.from;
-        const to = data.hadiths.to;
-
-        setPaginationInfo({
-            currentPage: page,
-            lastPage,
-            from,
-            to,
-            total,
-        })
-
-      } catch (err) {
-        setError(err instanceof Error ? err.message : 'An unknown error occurred')
-      } finally {
-        setLoading(false)
-      }
-    }
-    
-    fetchHadiths()
-  }, [page, submittedSearchTerm])
-
-  const handleSearch = async (e: FormEvent) => {
-    e.preventDefault();
-    if (!searchTerm.trim()) {
-      setSearchResults(null);
-      setSubmittedSearchTerm("");
-      setSearchError(null);
-      return;
-    }
-
-    setPage(1);
-    setSubmittedSearchTerm(searchTerm);
-    setIsSearching(true);
-    setSearchError(null);
-    setSearchResults(null);
-    
-    try {
-        const data = await getHadiths(1, searchTerm);
-        if (data.error) {
-            throw new Error(data.error);
-        }
-        if (!data.hadiths) {
-            throw new Error("No search results received.");
-        }
-        setSearchResults(data.hadiths.data);
-    } catch (err) {
-        setSearchError(err instanceof Error ? err.message : 'An unknown error occurred');
-    } finally {
-        setIsSearching(false);
-    }
-  };
-
-  const handleNextPage = () => {
-    if (paginationInfo && paginationInfo.currentPage < paginationInfo.lastPage) {
-      setPage(p => p + 1);
-    }
-  }
-
-  const handlePrevPage = () => {
-    if (paginationInfo && paginationInfo.currentPage > 1) {
-      setPage(p => p - 1);
-    }
-  }
-
-  const handleGoToPage = (e: FormEvent) => {
-      e.preventDefault();
-      const pageNum = parseInt(pageInput, 10);
-      if (paginationInfo && !isNaN(pageNum) && pageNum >= 1 && pageNum <= paginationInfo.lastPage) {
-          setPage(pageNum);
-      } else {
-         setPageInput(page.toString()); // Reset input to current page if invalid
-      }
-  }
-  
-  const displayHadiths = hadiths;
-  const chapterText = c.chapter;
-
-  return (
-    <div className="space-y-8 flex-grow flex flex-col p-4 sm:p-6 lg:p-8">
-      <Button asChild variant="ghost" className="self-start">
-        <Link href="/">
-          <ArrowLeft className="mr-2 h-4 w-4" />
-          {c.backToFeatures}
-        </Link>
-      </Button>
-      <header>
-        <h1 className="text-3xl font-bold tracking-tight text-primary">{c.title}</h1>
-        <p className="text-muted-foreground mt-2">{c.description}</p>
-      </header>
-
-       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-                <Label htmlFor="language">{c.translationLanguage}</Label>
-                <Select value={language} onValueChange={(value) => setLanguage(value as Language)}>
-                    <SelectTrigger id="language" className="mt-1">
-                        <SelectValue placeholder="Select Language" />
-                    </SelectTrigger>
-                    <SelectContent>
-                        <SelectItem value="eng">English</SelectItem>
-                        <SelectItem value="urd">Urdu</SelectItem>
-                        <SelectItem value="ara">Arabic</SelectItem>
-                        <SelectItem value="de" disabled>{c.german} {c.comingSoon}</SelectItem>
-                    </SelectContent>
-                </Select>
-            </div>
-             <div>
-                <Label htmlFor="search-hadith">{c.searchCollection}</Label>
-                <form onSubmit={handleSearch} className="flex items-center gap-2 mt-1">
-                    <Input
-                        id="search-hadith"
-                        placeholder={c.searchPlaceholder}
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                    />
-                    <Button type="submit" variant="outline" size="icon" disabled={isSearching}><Search className="h-4 w-4"/></Button>
-                </form>
-            </div>
-      </div>
-      
-       <div className="my-8">
-            <AdBanner slotId="hadith-page-bottom" />
-        </div>
-
-      {error && (
-        <Alert variant="destructive">
-            <Terminal className="h-4 w-4" />
-            <AlertTitle>{c.errorLoading}</AlertTitle>
-            <AlertDescription>{error}</AlertDescription>
-        </Alert>
-      )}
-
-      {isSearching && (
-          <div className="flex items-center justify-center py-4">
-              <Skeleton className="h-8 w-1/2" />
-          </div>
-      )}
-      
-      {searchError && (
-          <Alert variant="destructive">
-              <Terminal className="h-4 w-4" />
-              <AlertTitle>{c.searchErrorTitle}</AlertTitle>
-              <AlertDescription>{searchError}</AlertDescription>
-          </Alert>
-      )}
-      
-      {searchResults && (
-        <Card>
-            <CardContent className="p-6">
-                <h2 className="text-xl font-semibold mb-4">{c.searchResults} ({searchResults.length} {searchResults.length === 1 ? c.match : c.matches})</h2>
-                {searchResults.length > 0 ? (
-                    <div className="space-y-4">
-                        {searchResults.map(hadith => (
-                             <Accordion type="single" collapsible className="w-full" key={hadith.id}>
-                                <AccordionItem value={`search-item-${hadith.id}`}>
-                                    <AccordionTrigger className="text-lg hover:no-underline">
-                                        <div className="flex items-center gap-4 text-left">
-                                            <span className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-primary font-bold shrink-0">{hadith.hadithNumber}</span>
-                                            <div>
-                                                <p className="font-semibold">{hadith.book.bookName}</p>
-                                                <p className="text-sm text-muted-foreground">{chapterText}: {hadith.chapter.chapterEnglish}</p>
-                                            </div>
-                                        </div>
-                                    </AccordionTrigger>
-                                    <AccordionContent>
-                                        <HadithContent hadith={hadith} language={language} />
-                                    </AccordionContent>
-                                </AccordionItem>
-                             </Accordion>
-                        ))}
-                    </div>
-                ) : (
-                    <p>{c.noResults} "{submittedSearchTerm}"</p>
-                )}
-            </CardContent>
-        </Card>
-      )}
-
-
-      {!submittedSearchTerm && !searchResults && (
-        loading ? (
-          <div className="space-y-2">
-              {[...Array(10)].map((_, i) => (
-                   <Skeleton key={i} className="h-12 w-full" />
-              ))}
-          </div>
-        ) : displayHadiths.length === 0 ? (
-          <Card>
-              <CardContent className="p-6 text-center">
-                  <p>{c.noHadithsFound}</p>
-              </CardContent>
-          </Card>
-        ) : (
-          <>
-              <Card className="flex-grow overflow-hidden">
-                  <CardContent className="p-0 h-full overflow-y-auto">
-                      <Accordion type="single" collapsible className="w-full" value={openHadith} onValueChange={setOpenHadith}>
-                          {displayHadiths.map((hadith) => (
-                          <AccordionItem value={`item-${hadith.id}`} key={hadith.id}>
-                              <AccordionTrigger className="px-6 py-4 text-lg hover:no-underline">
-                                  <div className="flex items-center gap-4 text-left">
-                                      <span className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-primary font-bold shrink-0">{hadith.hadithNumber}</span>
-                                      <div>
-                                          <p className="font-semibold">{hadith.book.bookName}</p>
-                                          <p className="text-sm text-muted-foreground">{chapterText}: {hadith.chapter.chapterEnglish}</p>
-                                      </div>
-                                  </div>
-                              </AccordionTrigger>
-                              <AccordionContent>
-                                  {openHadith === `item-${hadith.id}` && (
-                                      <HadithContent hadith={hadith} language={language} />
-                                  )}
-                              </AccordionContent>
-                          </AccordionItem>
-                          ))}
-                      </Accordion>
-                  </CardContent>
-              </Card>
-
-              {paginationInfo && paginationInfo.total > 0 && (
-                  <div className="flex items-center justify-between pt-4">
-                      <p className="text-sm text-muted-foreground">
-                          {c.showing} {paginationInfo.from} {c.to} {paginationInfo.to} {c.of} {paginationInfo.total} {c.hadiths}
-                      </p>
-                      <div className="flex items-center gap-2">
-                          <Button variant="outline" size="icon" onClick={handlePrevPage} disabled={paginationInfo.currentPage <= 1 || loading}>
-                              <ChevronLeft />
-                          </Button>
-                          <form onSubmit={handleGoToPage} className="flex items-center gap-1">
-                             <Input 
-                               type="number"
-                               value={pageInput}
-                               onChange={e => setPageInput(e.target.value)}
-                               className="w-16 h-9 text-center"
-                               min="1"
-                               max={paginationInfo.lastPage}
-                             />
-                             <span className="text-muted-foreground text-sm">/ {paginationInfo.lastPage}</span>
-                             <Button type="submit" variant="outline" size="sm" className="h-9">{c.goToPage}</Button>
-                          </form>
-                          <Button variant="outline" size="icon" onClick={handleNextPage} disabled={paginationInfo.currentPage >= paginationInfo.lastPage || loading}>
-                              <ChevronRight />
-                          </Button>
-                      </div>
-                  </div>
-              )}
-          </>
-        )
-      )}
-    </div>
-  );
 }
