@@ -159,7 +159,7 @@ export default function HadithPage() {
 
     useEffect(() => {
         fetchAndSetHadiths(page, query);
-    }, [page]);
+    }, [page, query]);
 
     const handleSearch = (e: FormEvent) => {
         e.preventDefault();
