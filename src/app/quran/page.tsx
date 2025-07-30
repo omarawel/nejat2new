@@ -201,8 +201,7 @@ const SurahDetailContent = ({ surahNumber, languageEdition, c }: { surahNumber: 
     setPlayingAudio(null);
 
     try {
-      // Call the server action instead of the direct function
-      const result = await textToSpeech({text: ayahText}); // Pass object as input
+      const result = await textToSpeech(ayahText);
       setAudioUrl(result.audio);
       setPlayingAudio(`ayah-${ayahNumber}`);
     } catch (err) {
