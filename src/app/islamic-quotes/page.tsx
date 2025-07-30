@@ -61,6 +61,13 @@ const content = {
     }
 }
 
+const getDailyIndex = (arrayLength: number) => {
+    const today = new Date();
+    const dayOfYear = Math.floor((today.getTime() - new Date(today.getFullYear(), 0, 0).getTime()) / (1000 * 60 * 60 * 24));
+    return dayOfYear % arrayLength;
+};
+
+
 export default function IslamicQuotesPage() {
     const { language } = useLanguage();
     const c = content[language];
@@ -80,12 +87,15 @@ export default function IslamicQuotesPage() {
         });
     }
 
-    useEffect(() => {
-        // This effect runs only once on the client, after hydration
-        const randomIndex = Math.floor(Math.random() * quotes.length);
-        setQuote(quotes[randomIndex]);
+    const selectDailyQuote = useCallback(() => {
+        const dailyIndex = getDailyIndex(quotes.length);
+        setQuote(quotes[dailyIndex]);
         setLoading(false);
     }, []);
+
+    useEffect(() => {
+        selectDailyQuote();
+    }, [selectDailyQuote]);
 
     const handleShare = async () => {
         if (!postcardRef.current || !quote) return;
@@ -182,7 +192,10 @@ export default function IslamicQuotesPage() {
                     </CardFooter>
                 </Card>
                 
-                <div className="w-full mt-4 grid grid-cols-3 gap-2">
+                <div className="w-full mt-4 grid grid-cols-4 gap-2">
+                    <Button variant="outline" aria-label="New Quote" onClick={selectDailyQuote}>
+                        <RefreshCw className="h-5 w-5" />
+                    </Button>
                     <Button variant="outline" aria-label="Share" onClick={handleShare}>
                         <Share2 className="h-5 w-5" />
                     </Button>
