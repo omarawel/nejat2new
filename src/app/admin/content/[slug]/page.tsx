@@ -5,17 +5,11 @@ import { Button } from '@/components/ui/button';
 import { ArrowLeft, Construction } from 'lucide-react';
 import Link from 'next/link';
 
-interface PageProps {
-    params: {
-        slug: string;
-    };
-}
-
 function toTitleCase(str: string) {
     return str.replace(/-/g, ' ').replace(/\w\S*/g, (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase());
 }
 
-export default function AdminContentPage({ params }: PageProps) {
+export default function AdminContentPage({ params }: { params: { slug: string } }) {
     const pageTitle = toTitleCase(params.slug);
     
     return (
