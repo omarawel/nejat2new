@@ -27,7 +27,8 @@ const content = {
         noFavorites: "Keine Favoriten gespeichert.",
         viewAll: "Alle ansehen",
         noHatim: "Du nimmst an keinem Hatim teil.",
-        noProgress: "Kein Fortschritt aufgezeichnet."
+        noProgress: "Kein Fortschritt aufgezeichnet.",
+        view: "Ansehen"
     },
     en: {
         continueReading: "Continue Reading",
@@ -35,7 +36,8 @@ const content = {
         noFavorites: "No favorites saved.",
         viewAll: "View All",
         noHatim: "You are not participating in any Hatim.",
-        noProgress: "No progress recorded."
+        noProgress: "No progress recorded.",
+        view: "View"
     }
 }
 
@@ -45,7 +47,7 @@ export function ProgressCard({ title, progress, favorites, hatimGroups, href, ic
 
     const getProgressText = () => {
         if (!progress) return null;
-        if (progress.surahName) return `${progress.surahName} (Nr. ${progress.surah})`;
+        if (progress.surahName) return `${progress.surahName} (${progress.surah})`;
         if (progress.hadithNumber) return `Hadith Nr. ${progress.hadithNumber}`;
         if (progress.chapterTitle) return `${progress.chapterTitle}`;
         return null;
@@ -102,9 +104,9 @@ export function ProgressCard({ title, progress, favorites, hatimGroups, href, ic
                 {renderContent()}
             </CardContent>
             <CardFooter>
-                 <Button variant="ghost" asChild>
+                 <Button variant="ghost" asChild className="ml-auto">
                     <Link href={href}>
-                        {hasContent ? c.continueReading : c.startReading}
+                        {hasContent ? c.viewAll : c.startReading}
                         <ChevronRight className="ml-1 h-4 w-4" />
                     </Link>
                 </Button>

@@ -27,6 +27,8 @@ const content = {
         login: "Anmelden",
         noSelection: "Dein Dashboard ist noch leer.",
         customize: "Passe dein Dashboard an",
+        quickAccess: "Schnellzugriff",
+        progressTrackers: "Dein Fortschritt",
     },
     en: {
         title: "My Dashboard",
@@ -36,8 +38,12 @@ const content = {
         login: "Login",
         noSelection: "Your dashboard is empty.",
         customize: "Customize Your Dashboard",
+        quickAccess: "Quick Access",
+        progressTrackers: "Your Progress",
     }
 };
+
+const defaultProgressKeys = ['quran', 'hadith', 'hisnul_muslim', 'favorites', 'hatim'];
 
 const FeatureCard = ({ icon, name, toolKey }: { icon: string, name: string, toolKey: string }) => {
   return (
@@ -71,7 +77,6 @@ export default function DashboardPage() {
 
         const unsubDashboard = getUserDashboard(user.uid, setDashboardConfig);
         
-        // Fetch data for progress cards
         const lastReadData = getLastRead();
         setLastReadProgress(lastReadData);
 
@@ -90,10 +95,29 @@ export default function DashboardPage() {
         };
     }, [user, loadingAuth]);
 
-    const displayedTools = allTools
-        .filter(tool => dashboardConfig?.selectedTools.includes(tool.key))
-        .map(tool => ({ ...tool, name: tool[language as keyof typeof tool] || tool.en }))
-        .sort((a, b) => a.name.localeCompare(b.name));
+    const getDisplayedTools = () => {
+        const userHasCustomized = dashboardConfig && dashboardConfig.selectedTools.length > 0;
+        
+        const toolKeysToShow = userHasCustomized 
+            ? dashboardConfig.selectedTools 
+            : allTools.filter(tool => tool.type === 'progress').map(t => t.key).concat(['quran', 'hadith', 'hisnul_muslim']); // Default quick links
+        
+        return allTools
+            .filter(tool => toolKeysToShow.includes(tool.key))
+            .map(tool => ({ ...tool, name: tool[language as keyof typeof tool] || tool.en }))
+            .sort((a, b) => {
+                const aIsProgress = a.type === 'progress';
+                const bIsProgress = b.type === 'progress';
+                if (aIsProgress && !bIsProgress) return -1;
+                if (!aIsProgress && bIsProgress) return 1;
+                return a.name.localeCompare(b.name);
+            });
+    };
+
+    const displayedTools = getDisplayedTools();
+    const progressTools = displayedTools.filter(t => t.type === 'progress');
+    const quickAccessTools = displayedTools.filter(t => t.type !== 'progress');
+
 
     if (loadingAuth || loadingData) {
         return (
@@ -122,29 +146,24 @@ export default function DashboardPage() {
     }
     
     const renderCard = (tool: (typeof displayedTools)[0]) => {
-        if (tool.type === 'progress') {
-            switch(tool.key) {
-                case 'progress_quran':
-                    return <ProgressCard title={tool.name} progress={lastReadProgress.quran} href={tool.href || '#'} icon={BookOpen} />;
-                case 'progress_hadith':
-                    return <ProgressCard title={tool.name} progress={lastReadProgress.hadith} href={tool.href || '#'} icon={BookCopy} />;
-                case 'progress_hisnul_muslim':
-                    return <ProgressCard title={tool.name} progress={lastReadProgress.hisnul_muslim} href={tool.href || '#'} icon={History} />;
-                case 'progress_favorites':
-                    return <ProgressCard title={tool.name} favorites={favorites} href={tool.href || '#'} icon={Star} />;
-                 case 'progress_hatim':
-                    return <ProgressCard title={tool.name} hatimGroups={hatimGroups} href={tool.href || '#'} icon={BookOpen} />;
-                default:
-                    return null;
-            }
+        switch(tool.key) {
+            case 'quran':
+                return <ProgressCard title={tool.name} progress={lastReadProgress.quran} href={tool.href || '#'} icon={BookOpen} />;
+            case 'hadith':
+                return <ProgressCard title={tool.name} progress={lastReadProgress.hadith} href={tool.href || '#'} icon={BookCopy} />;
+            case 'hisnul_muslim':
+                return <ProgressCard title={tool.name} progress={lastReadProgress.hisnul_muslim} href={tool.href || '#'} icon={History} />;
+            case 'favorites':
+                return <ProgressCard title={tool.name} favorites={favorites} href={tool.href || '#'} icon={Star} />;
+             case 'hatim':
+                return <ProgressCard title={tool.name} hatimGroups={hatimGroups} href={tool.href || '#'} icon={BookOpen} />;
+            default:
+                const card = <FeatureCard icon={tool.icon} name={tool.name} toolKey={tool.key} />;
+                if (tool.href) {
+                    return <Link key={tool.key} href={tool.href} className="col-span-1">{card}</Link>
+                }
+                return <div key={tool.key} className="opacity-50 cursor-not-allowed col-span-1">{card}</div>;
         }
-        
-        // Default quick-link card
-        const card = <FeatureCard icon={tool.icon} name={tool.name} toolKey={tool.key} />;
-        if (tool.href) {
-            return <Link key={tool.key} href={tool.href} className="col-span-1">{card}</Link>
-        }
-        return <div key={tool.key} className="opacity-50 cursor-not-allowed col-span-1">{card}</div>;
     }
 
 
@@ -182,14 +201,26 @@ export default function DashboardPage() {
                     </Card>
                 </div>
             ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-                     {displayedTools.map((tool) => {
-                         const cardContent = renderCard(tool);
-                         if (tool.type === 'progress') {
-                             return <div key={tool.key} className="col-span-1 md:col-span-2 lg:col-span-2">{cardContent}</div>
-                         }
-                         return cardContent;
-                     })}
+                <div className="space-y-12">
+                    {progressTools.length > 0 && (
+                        <div>
+                             <h2 className="text-2xl font-bold mb-4">{c.progressTrackers}</h2>
+                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                                {progressTools.map(tool => (
+                                    <div key={tool.key} className="col-span-1">{renderCard(tool)}</div>
+                                ))}
+                             </div>
+                        </div>
+                    )}
+
+                     {quickAccessTools.length > 0 && (
+                        <div>
+                             <h2 className="text-2xl font-bold mb-4">{c.quickAccess}</h2>
+                             <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-7 xl:grid-cols-8 gap-4">
+                                {quickAccessTools.map(tool => renderCard(tool))}
+                             </div>
+                        </div>
+                    )}
                 </div>
             )}
         </div>

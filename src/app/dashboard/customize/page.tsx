@@ -174,7 +174,6 @@ export default function CustomizeDashboardPage() {
                                 />
                                 <Label htmlFor={tool.key} className="cursor-pointer flex flex-col">
                                     <span className="font-semibold">{tool.name}</span>
-                                    <span className="text-sm text-muted-foreground">({tool.en})</span>
                                 </Label>
                             </div>
                         ))}
