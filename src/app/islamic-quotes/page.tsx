@@ -165,7 +165,7 @@ export default function IslamicQuotesPage() {
                 </Button>
                 <Card 
                     ref={postcardRef}
-                    className="w-full text-center shadow-2xl bg-card border-amber-200/50 dark:border-amber-800/50 bg-[url('https://www.transparenttextures.com/patterns/old-paper.png')] dark:bg-[url('https://www.transparenttextures.com/patterns/old-paper-dark.png')]"
+                    className="w-full text-center shadow-2xl bg-card border-amber-200/50 dark:border-amber-800/50 bg-paper-texture"
                 >
                      <CardContent className="p-2">
                         <div className="border-4 border-amber-300 dark:border-amber-800 rounded-md p-8 min-h-[300px] flex flex-col items-center justify-center">

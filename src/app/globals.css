@@ -173,10 +173,16 @@ body {
 }
 
 @layer components {
-    .dark .card-animated, .rose .card-animated, .blue .card-animated, .black .card-animated, .teal .card-animated {
+    .card-animated {
         background-color: hsla(var(--card), 0.85);
         backdrop-filter: blur(4px);
         animation: fadeIn 0.5s ease-in-out;
+    }
+     .bg-paper-texture {
+        background-image: url('https://www.transparenttextures.com/patterns/old-paper.png');
+    }
+    .dark .bg-paper-texture {
+        background-image: url('https://www.transparenttextures.com/patterns/old-paper-dark.png');
     }
 }
 
