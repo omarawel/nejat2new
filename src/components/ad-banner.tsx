@@ -130,6 +130,6 @@ export function AdBanner({ slotId, className }: AdBannerProps) {
                 </div>
             </CardContent>
         </Card>
-    </div>
+    </div> // This is the line before the error
   );
 }

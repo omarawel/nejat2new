@@ -33,7 +33,6 @@ export const allTools = [
     { key: "hisnul_muslim", icon: "ﷻ", de: "Hisnul Muslim", en: "Hisnul Muslim", href: "/hisnul-muslim", type: 'progress' },
     { key: "islamic_education", icon: "🎓", de: "Islamische Erziehung", en: "Islamic Education", href: "/islamic-education" },
     { key: "islamic_stories", icon: "📜", de: "Islamische Geschichten", en: "Islamic Stories", href: "/islamic-stories" },
-    { key: "islamic_art", icon: "🎨", de: "Islamische Kunst", en: "Islamic Art", href: "/islamic-art" },
     { key: "islamic_fashion", icon: "👚", de: "Islamische Mode", en: "Islamic Fashion", href: "/islamic-fashion" },
     { key: "islamic_months", icon: "🌙", de: "Islamische Monate", en: "Islamic Months", href: "/islamic-months" },
     { key: "islamic_names", icon: "👶", de: "Islamische Namen", en: "Islamic Names", href: "/islamic-names", type: 'pro' },

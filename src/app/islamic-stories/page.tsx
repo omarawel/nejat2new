@@ -84,7 +84,7 @@ const storiesData = {
     stories: [
       {
         title: 'The Companions of the Cave (Ashab al-Kahf)',
-        story: 'A group of young men fled from a tyrannical king who wanted to force them into idolatry and sought refuge in a cave. Allah put them into a deep sleep that lasted for over 300 years. When they woke up, society had converted to monotheism. Their story, told in Surah Al-Kahf, is a sign of Allah\'s power to protect the believers and a proof of the resurrection.'
+        story: 'A group of young men fled from a tyrannical king who wanted to force them into idolatry and sought refuge in a cave. Allah put them into a deep sleep that lasted for over 300 years. When they woke up, society had converted to monotheism. Their story, told in Surah Al-Kahf, is a sign of Allah's power to protect the believers and a proof of the resurrection.'
       },
       {
         title: 'The Story of Qarun',
@@ -96,7 +96,7 @@ const storiesData = {
       },
       {
         title: 'The Owner of the Two Gardens',
-        story: 'The Quran tells the story of a man to whom Allah gave two magnificent gardens full of fruits and streams. He became proud of his wealth and believed it would never perish. He even denied the Hereafter. His believing friend admonished him to be grateful. But the man did not listen. Then Allah completely destroyed his gardens. Regretfully, the man recognized his mistake, but it was too late. The story teaches about the transience of worldly possessions and the importance of humility.'
+        story: 'The Quran tells the story of a man to whom Allah gave two magnificent gardens full of fruits and streams. He became proud of his wealth and believed it would never perish. He even denied the Hereafter. His believing friend admonished him to be grateful. But the man did not listen. Then Allah completely destroyed his gardens. Regretfully, the man recognized his mistake, but it was too late. The story teaches about the transient nature of worldly possessions and the importance of humility.'
       },
       {
         title: 'The People of the Ditch (Ashab al-Ukhdud)',
@@ -108,11 +108,11 @@ const storiesData = {
       },
       {
         title: 'The Story of Habil and Qabil (Abel and Cain)',
-        story: 'The sons of Adam, Habil and Qabil, both offered a sacrifice. Allah accepted the sacrifice of the pious Habil, but not that of Qabil. Out of envy and jealousy, Qabil killed his brother Habil. This was the first murder in human history. Qabil was plagued by remorse and did not know what to do with his brother\'s body until Allah sent a raven to show him how to bury it. The story warns against the consequences of envy and sin.'
+        story: 'The sons of Adam, Habil and Qabil, both offered a sacrifice. Allah accepted the sacrifice of the pious Habil, but not that of Qabil. Out of envy and jealousy, Qabil killed his brother Habil. This was the first murder in human history. Qabil was plagued by remorse and did not know what to do with his brother's body until Allah sent a raven to show him how to bury it. The story warns against the consequences of envy and sin.'
       },
       {
         title: 'Musa and al-Khidr',
-        story: 'In the Quran (Surah Al-Kahf), the journey of Prophet Musa with a wise servant of Allah, known as al-Khidr, is recounted. Al-Khidr performed three seemingly strange acts: he made a hole in a boat, killed a boy, and rebuilt a wall in a city that refused them hospitality. Each act had a hidden wisdom based on Allah\'s comprehensive plan, demonstrating the limits of human knowledge. It teaches patience and trust in divine wisdom.'
+        story: 'In the Quran (Surah Al-Kahf), the journey of Prophet Musa with a wise servant of Allah, known as al-Khidr, is recounted. Al-Khidr performed three seemingly strange acts: he made a hole in a boat, killed a boy, and rebuilt a wall in a city that refused them hospitality. Each act had a hidden wisdom based on Allah's comprehensive plan, demonstrating the limits of human knowledge. It teaches patience and trust in divine wisdom.'
       },
       {
         title: 'Dhul-Qarnayn and the Wall of Gog and Magog',
@@ -124,7 +124,7 @@ const storiesData = {
       },
       {
         title: 'The Three Men in the Cave',
-        story: 'Three men on a journey sought shelter in a cave when a boulder blocked the entrance. They realized that only their most sincere deeds could save them. Each of them made a supplication, mentioning a righteous deed he had done solely for Allah\'s sake: one his exceptional kindness to his parents, the second his absolute fairness to a worker, and the third his fear of Allah that kept him from a sin. After each prayer, the boulder moved a little, until the exit was finally clear. This teaches the power of sincere deeds.'
+        story: 'Three men on a journey sought shelter in a cave when a boulder blocked the entrance. They realized that only their most sincere deeds could save them. Each of them made a supplication, mentioning a righteous deed he had done solely for Allah's sake: one his exceptional kindness to his parents, the second his absolute fairness to a worker, and the third his fear of Allah that kept him from a sin. After each prayer, the boulder moved a little, until the exit was finally clear. This teaches the power of sincere deeds.'
       },
       {
         title: 'Uways al-Qarani and the Love for a Mother',
@@ -136,7 +136,7 @@ const storiesData = {
       },
        {
         title: 'Barira and her Husband Mughith',
-        story: 'Barira was a female slave who was freed by Aisha (ra). As a free woman, she had the right to divorce her husband, Mughith, who was still a slave, and she did. Mughith was heartbroken and followed her through the streets of Medina, weeping, his tears wetting his beard. The Prophet (ﷺ) was moved by his deep love and tried to mediate with Barira. He asked her if she would return to him. She asked, "O Messenger of Allah, are you commanding me?" He replied, "No, I am only interceding." She said, "Then I have no need of him." This story shows the woman\'s right to choose and the mercy of the Prophet, while also highlighting the depth of human emotions.'
+        story: 'Barira was a female slave who was freed by Aisha (ra). As a free woman, she had the right to divorce her husband, Mughith, who was still a slave, and she did. Mughith was heartbroken and followed her through the streets of Medina, weeping, his tears wetting his beard. The Prophet (ﷺ) was moved by his deep love and tried to mediate with Barira. He asked her if she would return to him. She asked, "O Messenger of Allah, are you commanding me?" He replied, "No, I am only interceding." She said, "Then I have no need of him." This story shows the woman's right to choose and the mercy of the Prophet, while also highlighting the depth of human emotions.'
       },
     ]
   }
@@ -167,7 +167,7 @@ export default function IslamicStoriesPage() {
       <Accordion type="single" collapsible className="w-full max-w-3xl mx-auto">
         {c.stories.map((item, index) => (
           <AccordionItem key={index} value={`item-${index}`}>
-            <AccordionTrigger className="text-xl text-left hover:no-underline">{item.title || item.name}</AccordionTrigger>
+            <AccordionTrigger className="text-xl text-left hover:no-underline">{item.title}</AccordionTrigger>
             <AccordionContent className="text-base text-foreground/80 px-4">
               {item.story}
             </AccordionContent>
