@@ -33,6 +33,11 @@ const content = {
                 content: "Die Sunnah bezieht sich auf die Lehren, Handlungen und Aussprüche des Propheten Muhammad (ﷺ). Sie ist die zweite primäre Quelle im Islam und dient als praktische Erklärung und Anwendung der Prinzipien des Korans im täglichen Leben."
             },
             {
+                icon: Key,
+                title: "Was unterscheidet den Islam?",
+                content: "Obwohl der Islam die gleiche monotheistische Wurzel wie Judentum und Christentum teilt, gibt es einige Kernunterschiede: \n\n1. **Reiner Monotheismus (Tauhid):** Der Islam betont die absolute Einheit Gottes (Allah) ohne jegliche Partner, Nachkommen oder Vermittler. Die Vorstellung einer Trinität oder dass ein Mensch göttlich sein könnte, wird abgelehnt. \n2. **Direkte Beziehung zu Gott:** Im Islam gibt es keinen Klerus oder Priestertum als Mittler zwischen dem Menschen und Gott. Jeder Einzelne kann und soll direkt zu Allah beten. \n3. **Bewahrte Offenbarung:** Muslime glauben, dass der Koran das letzte, vollständige und unverfälschte Wort Gottes ist, das seit seiner Offenbarung geschützt geblieben ist. \n4. **Umfassende Lebensweise (Deen):** Der Islam ist nicht nur eine Religion der Rituale, sondern ein komplettes Lebenssystem (Deen), das detaillierte Anleitungen für alle Aspekte des Lebens bietet – von Ethik und Moral bis hin zu Recht, Wirtschaft und Politik."
+            },
+            {
                 icon: User,
                 title: "Eine vollständige Lebensweise",
                 content: "Der Islam ist keine Religion, die nur an Feiertagen oder in der Moschee praktiziert wird. Er ist ein umfassendes System, das alle Aspekte des Lebens leitet – von persönlichen Moralvorstellungen und familiären Beziehungen bis hin zu sozialen, wirtschaftlichen und politischen Angelegenheiten. Er bietet eine Anleitung für ein ausgeglichenes und sinnvolles Leben."
@@ -73,6 +78,11 @@ const content = {
                 icon: User,
                 title: "The Sunnah: The Lived Example",
                 content: "The Sunnah refers to the teachings, actions, and sayings of the Prophet Muhammad (ﷺ). It is the second primary source in Islam and serves as a practical explanation and application of the principles of the Quran in daily life."
+            },
+            {
+                icon: Key,
+                title: "What Distinguishes Islam?",
+                content: "Although Islam shares the same monotheistic root as Judaism and Christianity, there are some key differences:\n\n1. **Pure Monotheism (Tawhid):** Islam emphasizes the absolute oneness of God (Allah) without any partners, offspring, or intermediaries. The concept of a trinity or that a human could be divine is rejected.\n2. **Direct Relationship with God:** In Islam, there is no clergy or priesthood to mediate the relationship between an individual and God. Every person can and should pray directly to Allah.\n3. **Preserved Revelation:** Muslims believe that the Quran is the final, complete, and uncorrupted word of God, which has remained protected since its revelation.\n4. **Comprehensive Way of Life (Deen):** Islam is not just a religion of rituals, but a complete system of life (Deen) that provides detailed guidance for all aspects of life – from ethics and morality to law, economics, and politics."
             },
             {
                 icon: User,
@@ -123,7 +133,7 @@ export default function IslamMeaningPage() {
                             </CardTitle>
                         </CardHeader>
                         <CardContent>
-                            <p className="text-muted-foreground">{section.content}</p>
+                            <p className="text-muted-foreground whitespace-pre-wrap">{section.content}</p>
                         </CardContent>
                     </Card>
                 ))}
