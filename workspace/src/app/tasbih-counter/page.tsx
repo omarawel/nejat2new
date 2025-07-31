@@ -40,8 +40,8 @@ export default function TasbihCounterPage() {
     const newCount = count + 1;
     if (newCount >= target) {
         setCount(0);
-        setAnimate(true); // Trigger animation
-        setTimeout(() => setAnimate(false), 500); // Reset animation state
+        setAnimate(true);
+        setTimeout(() => setAnimate(false), 300);
     } else {
         setCount(newCount);
     }
@@ -50,6 +50,8 @@ export default function TasbihCounterPage() {
   const handleReset = () => {
       setCount(0);
   }
+
+  const isMilestone = count + 1 === target;
 
   return (
     <div className="container mx-auto px-4 py-8 flex-grow flex flex-col items-center justify-center">
@@ -78,10 +80,11 @@ export default function TasbihCounterPage() {
                      <button
                         onClick={handleCount}
                         className={cn(
-                            "w-full h-full rounded-full flex items-center justify-center select-none transition-all duration-300 transform active:scale-95",
+                            "w-full h-full rounded-full flex items-center justify-center select-none transition-all duration-200",
                             "bg-muted text-foreground shadow-inner",
                             "hover:bg-accent",
-                             animate && "bg-primary text-primary-foreground scale-110"
+                            "active:bg-primary/20",
+                             animate && "bg-primary text-primary-foreground"
                         )}
                         style={{
                             boxShadow: 'inset 0 6px 12px rgba(0,0,0,0.1)'

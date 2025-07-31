@@ -72,7 +72,7 @@ export default function IslamicQuotesPage() {
     const { language } = useLanguage();
     const c = content[language];
     const { toast } = useToast();
-    const [user] = useAuthState(auth);
+    const [user, loadingAuth] = useAuthState(auth);
 
     const [quote, setQuote] = useState<Quote | null>(null);
     const [loading, setLoading] = useState(true);
@@ -202,7 +202,7 @@ export default function IslamicQuotesPage() {
                      <Button variant="outline" aria-label="Copy Image" onClick={handleCopyImage}>
                         <Copy className="h-5 w-5" />
                     </Button>
-                    <Button variant="outline" aria-label="Favorite" onClick={handleSaveFavorite} disabled={isSaving || loading}>
+                    <Button variant="outline" aria-label="Favorite" onClick={handleSaveFavorite} disabled={isSaving || loadingAuth}>
                        {isSaving ? <Loader2 className="h-5 w-5 animate-spin"/> : <Heart className="h-5 w-5" />}
                     </Button>
                 </div>
