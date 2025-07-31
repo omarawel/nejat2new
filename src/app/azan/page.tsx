@@ -60,8 +60,6 @@ const content = {
             transliteration: "Allahumma Rabba hadhihi-d-da'wat-it-tammah, was-salat-il-qa'imah, ati Muhammadan-il-wasilata wal-fadilah, wab'ath-hu maqaman mahmudan-il-ladhi wa'adtah.",
             meaning: "O Allah, Herr dieses vollkommenen Rufes und des bevorstehenden Gebets, gewähre Muhammad die Wasilah (eine hohe Stufe im Paradies) und die Fadhilah (eine besondere Ehre) und erhebe ihn zu dem gepriesenen Rang, den Du ihm versprochen hast."
         },
-        stylesTitle: "Verschiedene Azan-Stile",
-        stylesDescription: "Höre dir die wunderschönen Rezitationen des Azan aus verschiedenen Teilen der Welt an."
     },
     en: {
         pageTitle: "The Call to Prayer (Adhan & Iqamah)",
@@ -108,8 +106,6 @@ const content = {
             transliteration: "Allahumma Rabba hadhihi-d-da'wat-it-tammah, was-salat-il-qa'imah, ati Muhammadan-il-wasilata wal-fadilah, wab'ath-hu maqaman mahmudan-il-ladhi wa'adtah.",
             meaning: "O Allah, Lord of this perfect call and the prayer to be offered, grant Muhammad the Wasilah (a high station in Paradise) and Fadhilah (a special honor) and raise him to the praiseworthy station that You have promised him."
         },
-        stylesTitle: "Different Adhan Styles",
-        stylesDescription: "Listen to the beautiful recitations of the Adhan from different parts of the world."
     }
 }
 
@@ -136,13 +132,13 @@ export default function AzanPage() {
         <div className="max-w-4xl mx-auto space-y-8">
              <Accordion type="single" collapsible className="w-full" defaultValue="item-0">
                 <AccordionItem value="item-0">
-                    <AccordionTrigger className="text-2xl">{c.historyTitle}</AccordionTrigger>
+                    <AccordionTrigger className="text-2xl hover:no-underline">{c.historyTitle}</AccordionTrigger>
                     <AccordionContent className="text-lg text-muted-foreground">
                         {c.historyContent}
                     </AccordionContent>
                 </AccordionItem>
                  <AccordionItem value="item-1">
-                    <AccordionTrigger className="text-2xl">{c.etiquetteTitle}</AccordionTrigger>
+                    <AccordionTrigger className="text-2xl hover:no-underline">{c.etiquetteTitle}</AccordionTrigger>
                     <AccordionContent className="space-y-4">
                          <p className="text-lg text-muted-foreground">{c.etiquetteContent}</p>
                          <Card className="bg-primary/5">
@@ -156,7 +152,7 @@ export default function AzanPage() {
                     </AccordionContent>
                 </AccordionItem>
                  <AccordionItem value="item-2">
-                    <AccordionTrigger className="text-2xl">{c.wordsTitle}</AccordionTrigger>
+                    <AccordionTrigger className="text-2xl hover:no-underline">{c.wordsTitle}</AccordionTrigger>
                     <AccordionContent>
                         <div className="space-y-4">
                             {c.words.map((word, index) => (
@@ -178,7 +174,7 @@ export default function AzanPage() {
                     </AccordionContent>
                 </AccordionItem>
                  <AccordionItem value="item-3">
-                    <AccordionTrigger className="text-2xl">{c.iqamahTitle}</AccordionTrigger>
+                    <AccordionTrigger className="text-2xl hover:no-underline">{c.iqamahTitle}</AccordionTrigger>
                     <AccordionContent className="space-y-4">
                          <p className="text-lg text-muted-foreground">{c.iqamahContent}</p>
                           <div className="space-y-4">
@@ -201,7 +197,7 @@ export default function AzanPage() {
                     </AccordionContent>
                 </AccordionItem>
                 <AccordionItem value="item-4">
-                    <AccordionTrigger className="text-2xl">{c.duaTitle}</AccordionTrigger>
+                    <AccordionTrigger className="text-2xl hover:no-underline">{c.duaTitle}</AccordionTrigger>
                     <AccordionContent className="space-y-4">
                         <p className="text-lg text-muted-foreground">{c.duaContent}</p>
                          <Card className="bg-primary/5">
@@ -228,3 +224,4 @@ export default function AzanPage() {
 }
 
     
+
