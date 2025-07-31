@@ -113,19 +113,6 @@ const content = {
     }
 }
 
-const AudioPlayer = ({ title }: { title: string }) => {
-    return (
-        <Card className="flex items-center p-4 bg-muted/50">
-            <div className="flex-grow">
-                <p className="font-semibold">{title}</p>
-                <p className="text-sm text-muted-foreground">Audio Sample</p>
-            </div>
-            <Button variant="ghost" size="icon" disabled>
-                <PlayCircle className="h-6 w-6" />
-            </Button>
-        </Card>
-    );
-}
 
 export default function AzanPage() {
   const { language } = useLanguage();
@@ -235,24 +222,9 @@ export default function AzanPage() {
                     </AccordionContent>
                 </AccordionItem>
              </Accordion>
-
-             <Card>
-                <CardHeader>
-                    <CardTitle>{c.stylesTitle}</CardTitle>
-                    <CardDescription>{c.stylesDescription}</CardDescription>
-                </CardHeader>
-                <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                   <AudioPlayer title="Azan Makkah" />
-                   <AudioPlayer title="Azan Madinah" />
-                   <AudioPlayer title="Azan Turkey" />
-                   <AudioPlayer title="Azan Egypt" />
-                   <AudioPlayer title="Azan Syria" />
-                   <AudioPlayer title="Azan Bosnia" />
-                   <AudioPlayer title="Azan Yemen" />
-                   <AudioPlayer title="Azan Fatih Seferagic" />
-                </CardContent>
-            </Card>
         </div>
     </div>
   );
 }
+
+    
