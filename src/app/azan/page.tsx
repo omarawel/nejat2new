@@ -21,7 +21,15 @@ const content = {
         backToFeatures: "Zurück zu den Funktionen",
         memorize: "Lernen",
         historyTitle: "Geschichte & Bedeutung",
-        historyContent: "Der Azan wurde im ersten Jahr nach der Hidschra (Auswanderung nach Medina) durch einen wahren Traum des Gefährten Abdullah ibn Zayd (ra) eingeführt. Er ist eine öffentliche Verkündung, die die Muslime fünfmal täglich zum gemeinschaftlichen Gebet ruft. Er symbolisiert die Einheit der Gemeinschaft und ist eine ständige Erinnerung an Allah.",
+        historyContent: "Der Azan wurde im ersten Jahr nach der Hidschra (Auswanderung nach Medina) durch einen wahren Traum des Gefährten Abdullah ibn Zayd (ra) eingeführt. Der erste Muezzin des Islam war Bilal ibn Rabah (ra), der vom Propheten (ﷺ) für seine klangvolle und schöne Stimme ausgewählt wurde. Der Azan ist eine öffentliche Verkündung, die die Muslime fünfmal täglich zum gemeinschaftlichen Gebet ruft. Er symbolisiert die Einheit der Gemeinschaft und ist eine ständige Erinnerung an Allah.",
+        etiquetteTitle: "Was sagt man während des Azan?",
+        etiquetteContent: "Es ist Sunnah, dem Muezzin aufmerksam zuzuhören und seine Worte zu wiederholen. Eine Ausnahme gibt es:",
+        etiquettePhrase: {
+          when: "Wenn der Muezzin 'Hayya 'ala s-Salah' oder 'Hayya 'ala l-Falah' sagt, antwortet man:",
+          arabic: "لَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِٱللَّٰهِ",
+          transliteration: "La hawla wa la quwwata illa billah",
+          meaning: "Es gibt keine Macht noch Kraft außer bei Allah."
+        },
         wordsTitle: "Die Worte des Azan",
         words: [
             { arabic: "ٱللَّٰهُ أَكْبَرُ", transliteration: "Allahu Akbar (4x)", meaning: "Allah ist der Größte" },
@@ -56,7 +64,15 @@ const content = {
         backToFeatures: "Back to Features",
         memorize: "Memorize",
         historyTitle: "History & Significance",
-        historyContent: "The Adhan was instituted in the first year after the Hijra (migration to Medina) through a true dream of the companion Abdullah ibn Zayd (ra). It is a public proclamation that calls Muslims to congregational prayer five times a day. It symbolizes the unity of the community and is a constant reminder of Allah.",
+        historyContent: "The Adhan was instituted in the first year after the Hijra (migration to Medina) through a true dream of the companion Abdullah ibn Zayd (ra). The first Muezzin of Islam was Bilal ibn Rabah (ra), chosen by the Prophet (ﷺ) for his resonant and beautiful voice. The Adhan is a public proclamation that calls Muslims to congregational prayer five times a day. It symbolizes the unity of the community and is a constant reminder of Allah.",
+        etiquetteTitle: "What to Say During the Adhan",
+        etiquetteContent: "It is Sunnah to listen attentively to the Muezzin and repeat his words. There is one exception:",
+        etiquettePhrase: {
+          when: "When the Muezzin says 'Hayya 'ala s-Salah' or 'Hayya 'ala l-Falah', one should respond:",
+          arabic: "لَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِٱللَّٰهِ",
+          transliteration: "La hawla wa la quwwata illa billah",
+          meaning: "There is no power and no strength except with Allah."
+        },
         wordsTitle: "The Words of the Adhan",
         words: [
             { arabic: "ٱللَّٰهُ أَكْبَرُ", transliteration: "Allahu Akbar (4x)", meaning: "Allah is the Greatest" },
@@ -129,6 +145,20 @@ export default function AzanPage() {
                     </AccordionContent>
                 </AccordionItem>
                  <AccordionItem value="item-1">
+                    <AccordionTrigger className="text-2xl">{c.etiquetteTitle}</AccordionTrigger>
+                    <AccordionContent className="space-y-4">
+                         <p className="text-lg text-muted-foreground">{c.etiquetteContent}</p>
+                         <Card className="bg-primary/5">
+                            <CardContent className="p-4 space-y-2">
+                                <p className="text-sm text-muted-foreground">{c.etiquettePhrase.when}</p>
+                                <p className="text-2xl font-quranic text-right">{c.etiquettePhrase.arabic}</p>
+                                <p className="text-muted-foreground italic text-right">{c.etiquettePhrase.transliteration}</p>
+                                <p className="text-foreground/80 text-right mt-1">&quot;{c.etiquettePhrase.meaning}&quot;</p>
+                            </CardContent>
+                        </Card>
+                    </AccordionContent>
+                </AccordionItem>
+                 <AccordionItem value="item-2">
                     <AccordionTrigger className="text-2xl">{c.wordsTitle}</AccordionTrigger>
                     <AccordionContent>
                         <div className="space-y-4">
@@ -150,7 +180,7 @@ export default function AzanPage() {
                         </div>
                     </AccordionContent>
                 </AccordionItem>
-                 <AccordionItem value="item-2">
+                 <AccordionItem value="item-3">
                     <AccordionTrigger className="text-2xl">{c.iqamahTitle}</AccordionTrigger>
                     <AccordionContent className="space-y-4">
                          <p className="text-lg text-muted-foreground">{c.iqamahContent}</p>
@@ -171,7 +201,7 @@ export default function AzanPage() {
                         </Card>
                     </AccordionContent>
                 </AccordionItem>
-                <AccordionItem value="item-3">
+                <AccordionItem value="item-4">
                     <AccordionTrigger className="text-2xl">{c.duaTitle}</AccordionTrigger>
                     <AccordionContent className="space-y-4">
                         <p className="text-lg text-muted-foreground">{c.duaContent}</p>
