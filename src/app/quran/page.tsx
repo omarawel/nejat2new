@@ -32,7 +32,7 @@ import { textToSpeech } from "@/ai/flows/text-to-speech"
 import type { TextToSpeechInput, TextToSpeechOutput } from "@/ai/flows/text-to-speech-types";
 import Link from "next/link"
 import { useLanguage } from "@/components/language-provider"
-import { getSurahList, storeSurahList, getSurahWithEditions, storeSurahEdition, isQuranDownloaded, clearOfflineQuranData } from "@/lib/quran-offline"
+import { getSurahList, storeSurahList, getSurahEdition, storeSurahEdition, isQuranDownloaded, clearOfflineQuranData } from "@/lib/quran-offline"
 import { Progress } from "@/components/ui/progress"
 import { useAuthState } from "react-firebase-hooks/auth"
 import { auth } from "@/lib/firebase"
@@ -246,61 +246,64 @@ ${detail.translation.ayahs[index].text}`;
       setHiddenAyahs({})
       
       const editions = ['quran-uthmani', languageEdition, 'en.transliteration'];
-      const offlineData = await getSurahWithEditions(surah.number, editions);
+      
+      const offlineDataPromises = editions.map(edition => getSurahEdition(surah.number, edition));
+      const offlineData = await Promise.all(offlineDataPromises);
 
-      if (offlineData && offlineData[0] && offlineData[1] && offlineData[2]) {
-        // Reconstruct SurahDetail from offlineData and the full surah object
+
+      if (offlineData.every(d => d)) {
+        const [arabicData, translationData, transliterationData] = offlineData;
         const reconstructedDetail = {
             arabic: {
                 ...surah,
-                ayahs: offlineData[0].text.split('\n').map((text, index) => ({
+                ayahs: arabicData!.text.split('\n').map((text, index) => ({
                     number: parseInt(`${surah.number}${String(index + 1).padStart(3, '0')}`), // Reconstruct ayah number
                     text: text,
-                    audio: '', // Placeholder
-                    audioSecondary: [], // Placeholder
+                    audio: '', 
+                    audioSecondary: [],
                     numberInSurah: index + 1,
-                    juz: 0, // Placeholder
-                    manzil: 0, // Placeholder
-                    page: 0, // Placeholder
-                    ruku: 0, // Placeholder
-                    hizbQuarter: 0, // Placeholder
-                    sajda: false, // Placeholder
+                    juz: 0, 
+                    manzil: 0,
+                    page: 0,
+                    ruku: 0,
+                    hizbQuarter: 0,
+                    sajda: false,
                 })),
-                edition: { identifier: 'quran-uthmani', language: 'ar', name: 'Quran Uthmani', englishName: 'Quran Uthmani', format: 'text', type: 'quran', direction: 'rtl' }, // Reconstruct edition
+                edition: { identifier: 'quran-uthmani', language: 'ar', name: 'Quran Uthmani', englishName: 'Quran Uthmani', format: 'text', type: 'quran', direction: 'rtl' },
             } as SurahDetail,
             translation: {
                 ...surah,
-                 ayahs: offlineData[1].text.split('\n').map((text, index) => ({
-                    number: parseInt(`${surah.number}${String(index + 1).padStart(3, '0')}`), // Reconstruct ayah number
+                 ayahs: translationData!.text.split('\n').map((text, index) => ({
+                    number: parseInt(`${surah.number}${String(index + 1).padStart(3, '0')}`),
                     text: text,
-                    audio: '', // Placeholder
-                    audioSecondary: [], // Placeholder
+                    audio: '', 
+                    audioSecondary: [],
                     numberInSurah: index + 1,
-                    juz: 0, // Placeholder
-                    manzil: 0, // Placeholder
-                    page: 0, // Placeholder
-                    ruku: 0, // Placeholder
-                    hizbQuarter: 0, // Placeholder
-                    sajda: false, // Placeholder
+                    juz: 0, 
+                    manzil: 0,
+                    page: 0,
+                    ruku: 0,
+                    hizbQuarter: 0,
+                    sajda: false,
                 })),
-                edition: { identifier: languageEdition, language: languageEdition.split('.')[0], name: '', englishName: '', format: 'text', type: 'translation', direction: 'ltr' }, // Reconstruct edition
+                edition: { identifier: languageEdition, language: languageEdition.split('.')[0], name: '', englishName: '', format: 'text', type: 'translation', direction: 'ltr' },
             } as SurahDetail,
             transliteration: {
                 ...surah,
-                 ayahs: offlineData[2].text.split('\n').map((text, index) => ({
-                    number: parseInt(`${surah.number}${String(index + 1).padStart(3, '0')}`), // Reconstruct ayah number
+                 ayahs: transliterationData!.text.split('\n').map((text, index) => ({
+                    number: parseInt(`${surah.number}${String(index + 1).padStart(3, '0')}`),
                     text: text,
-                    audio: '', // Placeholder
-                    audioSecondary: [], // Placeholder
+                    audio: '',
+                    audioSecondary: [],
                     numberInSurah: index + 1,
-                    juz: 0, // Placeholder
-                    manzil: 0, // Placeholder
-                    page: 0, // Placeholder
-                    ruku: 0, // Placeholder
-                    hizbQuarter: 0, // Placeholder
-                    sajda: false, // Placeholder
+                    juz: 0,
+                    manzil: 0,
+                    page: 0,
+                    ruku: 0,
+                    hizbQuarter: 0,
+                    sajda: false,
                 })),
-                edition: { identifier: 'en.transliteration', language: 'en', name: '', englishName: '', format: 'text', type: 'transliteration', direction: 'ltr' }, // Reconstruct edition
+                edition: { identifier: 'en.transliteration', language: 'en', name: '', englishName: '', format: 'text', type: 'transliteration', direction: 'ltr' },
             } as SurahDetail,
         };
         setDetail(reconstructedDetail);
@@ -415,7 +418,7 @@ ${detail.translation.ayahs[index].text}`;
 export default function QuranPage() {
     const { language } = useLanguage();
     const c = content[language];
-    const [user] = useAuthState(auth);
+    const [user, loadingAuth] = useAuthState(auth);
     const [hasAccess, setHasAccess] = useState(false);
     const [loadingAccess, setLoadingAccess] = useState(true);
 
@@ -442,10 +445,11 @@ export default function QuranPage() {
 
     useEffect(() => {
         checkDownloadStatus();
-        if (!loadingAccess && user) {
+        if (!loadingAuth && user) {
             canAccessFeature(user.uid, 'quran').then(setHasAccess);
         }
-    }, [checkDownloadStatus, user, loadingAccess]);
+         setLoadingAccess(false);
+    }, [checkDownloadStatus, user, loadingAuth]);
     
     useEffect(() => {
         if(language === 'de') setLanguageEdition('de.aburida');
@@ -499,7 +503,8 @@ export default function QuranPage() {
 
                 if (surahData.code === 200 && surahData.data) {
                     for(let j=0; j < surahData.data.length; j++) {
-                        await storeSurahEdition(i, editions[j], surahData.data[j]);
+                        const editionData = { text: surahData.data[j].ayahs.map((a: Ayah) => a.text).join('\n') };
+                        await storeSurahEdition(i, editions[j], editionData);
                     }
                 }
                 setDownloadProgress((i / totalSurahs) * 100);
@@ -593,7 +598,7 @@ export default function QuranPage() {
                     <CardHeader>
                         <CardTitle className="flex items-center justify-between">
                             {c.offlineAccess}
-                             { hasAccess ? (
+                             { loadingAccess ? <Skeleton className="h-6 w-16" /> : hasAccess ? (
                                 isDownloaded ? <Badge variant="secondary">{c.downloaded}</Badge> : ""
                              ) : (
                                 <Badge variant="destructive">{c.proFeature}</Badge>
@@ -601,7 +606,7 @@ export default function QuranPage() {
                         </CardTitle>
                     </CardHeader>
                     <CardContent className="flex gap-2">
-                        {hasAccess ? (
+                        {loadingAccess ? <Skeleton className="h-10 w-full" /> : hasAccess ? (
                             isDownloaded ? (
                                 <Button variant="outline" onClick={handleClearOfflineData} className="w-full">{c.clearOfflineData}</Button>
                             ) : (

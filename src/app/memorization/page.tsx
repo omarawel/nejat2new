@@ -66,15 +66,14 @@ function MemorizationTool() {
   const c = content[language];
   const { toast } = useToast();
   const searchParams = useSearchParams();
+  const initialRender = useRef(true);
 
   const [user, authLoading] = useAuthState(auth);
   const [hasAccess, setHasAccess] = useState(false);
   const [loadingAccess, setLoadingAccess] = useState(true);
 
-  // Initialize from search params to prevent hydration mismatch
-  const initialText = searchParams.get('text') || '';
-  const [inputText, setInputText] = useState(initialText);
-  const [learningText, setLearningText] = useState(initialText);
+  const [inputText, setInputText] = useState('');
+  const [learningText, setLearningText] = useState('');
   const [isHidden, setIsHidden] = useState(false);
   
   const [playingAudio, setPlayingAudio] = useState(false);
@@ -84,13 +83,21 @@ function MemorizationTool() {
   const [isSaving, setIsSaving] = useState(false);
 
   useEffect(() => {
-      if (!authLoading) {
-        canAccessFeature(user?.uid || null, 'memorization_tool').then(access => {
-            setHasAccess(access);
-            setLoadingAccess(false);
-        });
-      }
-  }, [user, authLoading]);
+    // This effect runs only once on the client after hydration
+    if (initialRender.current) {
+        const textFromParams = searchParams.get('text') || '';
+        setInputText(textFromParams);
+        setLearningText(textFromParams);
+        initialRender.current = false;
+    }
+
+    if (!authLoading) {
+      canAccessFeature(user?.uid || null, 'memorization_tool').then(access => {
+          setHasAccess(access);
+          setLoadingAccess(false);
+      });
+    }
+  }, [searchParams, authLoading, user]);
 
 
   const handleStartLearning = () => {
