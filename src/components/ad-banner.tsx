@@ -7,7 +7,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Skeleton } from './ui/skeleton';
+import { Skeleton } from '@/components/ui/skeleton';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '@/lib/firebase';
 import { getUserSubscription } from '@/lib/user-usage';
@@ -22,8 +22,8 @@ const transformDropboxUrl = (url?: string): string | undefined => {
     if (!url) return undefined;
     try {
         const urlObject = new URL(url);
-        if (urlObject.hostname.includes('dropbox.com') && urlObject.searchParams.has('dl')) {
-            urlObject.searchParams.set('dl', '1');
+        if (urlObject.hostname.includes('dropbox.com')) {
+            urlObject.searchParams.set('raw', '1');
             return urlObject.toString();
         }
         return url;
