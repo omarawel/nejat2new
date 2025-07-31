@@ -3,7 +3,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, PlayCircle, Volume2 } from 'lucide-react';
+import { ArrowLeft, PlayCircle, Volume2, BrainCircuit } from 'lucide-react';
 import { useLanguage } from '@/components/language-provider';
 import Link from 'next/link';
 import { useState, useRef } from 'react';
@@ -19,6 +19,7 @@ const content = {
         pageTitle: "Der Gebetsruf (Azan)",
         pageDescription: "Lerne die Worte, die Bedeutung und die Geschichte des islamischen Rufs zum Gebet.",
         backToFeatures: "Zurück zu den Funktionen",
+        memorize: "Lernen",
         historyTitle: "Geschichte & Bedeutung",
         historyContent: "Der Azan wurde im ersten Jahr nach der Hidschra (Auswanderung nach Medina) durch einen wahren Traum des Gefährten Abdullah ibn Zayd (ra) eingeführt. Er ist eine öffentliche Verkündung, die die Muslime fünfmal täglich zum gemeinschaftlichen Gebet ruft. Er symbolisiert die Einheit der Gemeinschaft und ist eine ständige Erinnerung an Allah.",
         wordsTitle: "Die Worte des Azan",
@@ -46,6 +47,7 @@ const content = {
         pageTitle: "The Call to Prayer (Adhan)",
         pageDescription: "Learn the words, meaning, and history of the Islamic call to prayer.",
         backToFeatures: "Back to Features",
+        memorize: "Memorize",
         historyTitle: "History & Significance",
         historyContent: "The Adhan was instituted in the first year after the Hijra (migration to Medina) through a true dream of the companion Abdullah ibn Zayd (ra). It is a public proclamation that calls Muslims to congregational prayer five times a day. It symbolizes the unity of the community and is a constant reminder of Allah.",
         wordsTitle: "The Words of the Adhan",
@@ -72,11 +74,6 @@ const content = {
 }
 
 const AudioPlayer = ({ title }: { title: string }) => {
-    const audioRef = useRef<HTMLAudioElement>(null);
-    // In a real app, you'd pass the audio URL here.
-    // const [isPlaying, setIsPlaying] = useState(false);
-    // const togglePlay = () => { setIsPlaying(!isPlaying); ... }
-
     return (
         <Card className="flex items-center p-4 bg-muted/50">
             <div className="flex-grow">
@@ -122,11 +119,19 @@ export default function AzanPage() {
                     <AccordionContent>
                         <div className="space-y-4">
                             {c.words.map((word, index) => (
-                                <div key={index} className="p-4 border-b">
+                                <Card key={index} className="p-4 border-b">
                                     <p className="text-3xl font-quranic text-right">{word.arabic}</p>
                                     <p className="text-muted-foreground italic text-right mt-1">{word.transliteration}</p>
                                     <p className="text-foreground/80 text-right mt-2">&quot;{word.meaning}&quot;</p>
-                                </div>
+                                    <div className="flex justify-end mt-2">
+                                         <Button variant="ghost" size="sm" asChild>
+                                            <Link href={{ pathname: '/memorization', query: { text: `${word.arabic}\n\n${word.meaning}` } }}>
+                                                <BrainCircuit className="mr-2 h-4 w-4" />
+                                                {c.memorize}
+                                            </Link>
+                                        </Button>
+                                    </div>
+                                </Card>
                             ))}
                         </div>
                     </AccordionContent>
@@ -140,6 +145,14 @@ export default function AzanPage() {
                                 <p className="text-3xl font-quranic text-right">{c.dua.arabic}</p>
                                 <p className="text-muted-foreground italic text-right">{c.dua.transliteration}</p>
                                 <p className="text-foreground/80 text-right mt-2">&quot;{c.dua.meaning}&quot;</p>
+                                 <div className="flex justify-end mt-2">
+                                     <Button variant="ghost" size="sm" asChild>
+                                        <Link href={{ pathname: '/memorization', query: { text: `${c.dua.arabic}\n\n${c.dua.meaning}` } }}>
+                                            <BrainCircuit className="mr-2 h-4 w-4" />
+                                            {c.memorize}
+                                        </Link>
+                                    </Button>
+                                </div>
                             </CardContent>
                         </Card>
                     </AccordionContent>
@@ -156,6 +169,10 @@ export default function AzanPage() {
                    <AudioPlayer title="Azan Madinah" />
                    <AudioPlayer title="Azan Turkey" />
                    <AudioPlayer title="Azan Egypt" />
+                   <AudioPlayer title="Azan Syria" />
+                   <AudioPlayer title="Azan Bosnia" />
+                   <AudioPlayer title="Azan Yemen" />
+                   <AudioPlayer title="Azan Fatih Seferagic" />
                 </CardContent>
             </Card>
         </div>
