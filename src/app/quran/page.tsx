@@ -41,10 +41,9 @@ import { addFavorite } from "@/lib/favorites"
 import { canAccessFeature } from "@/lib/user-usage"
 import { AdBanner } from "@/components/ad-banner"
 import { setLastRead } from "@/lib/progress";
-import { Badge } from "@/components/ui/badge"; // Added Badge import
+import { Badge } from "@/components/ui/badge";
 
-
-interface Surah {
+export interface Surah {
   number: number
   name: string
   englishName: string

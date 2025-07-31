@@ -1,15 +1,11 @@
 
 import { get, set, del, keys, UseStore } from 'idb-keyval';
+import type { Surah } from '@/app/quran/page';
+
 
 const SURAH_LIST_KEY = 'quran_surah_list';
 const getSurahKey = (surahNumber: number) => `quran_surah_${surahNumber}`;
 const getEditionKey = (surahNumber: number, edition: string) => `quran_surah_${surahNumber}_${edition}`;
-
-interface Surah {
-  number: number;
-  name: string;
-  // Add other properties of a surah here based on your data structure
-}
 
 interface SurahData {
   text: string;
