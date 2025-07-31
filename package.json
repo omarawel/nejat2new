@@ -11,7 +11,7 @@
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
     "deploy:functions": "cd functions && npm install && npm run build && cd .. && firebase deploy --only functions",
-    "postinstall": "rm -rf .next && patch-package"
+    "postinstall": "patch-package"
   },
   "dependencies": {
     "@genkit-ai/ai": "1.15.0",
