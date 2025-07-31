@@ -1,4 +1,3 @@
-
 "use client"
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -25,8 +24,13 @@ const content = {
             },
             {
                 icon: BookOpen,
-                title: "Der Sinn des Lebens",
-                content: "Im Islam ist der Sinn des Lebens klar definiert: Allah zu dienen und anzubeten ('Ibadah'). Dies umfasst nicht nur rituelle Handlungen wie das Gebet, sondern jede gute Tat, die mit der Absicht verrichtet wird, Allah zu gefallen – sei es Ehrlichkeit im Geschäft, Freundlichkeit zu den Eltern oder der Schutz der Umwelt."
+                title: "Der Koran: Das Wort Gottes",
+                content: "Die primäre Quelle der Rechtleitung für Muslime ist der Koran, der als das wörtliche Wort Allahs gilt, das dem Propheten Muhammad (ﷺ) über einen Zeitraum von 23 Jahren offenbart wurde. Er ist eine fehlerfreie und vollständige Anleitung für die gesamte Menschheit."
+            },
+            {
+                icon: User,
+                title: "Die Sunnah: Das gelebte Beispiel",
+                content: "Die Sunnah bezieht sich auf die Lehren, Handlungen und Aussprüche des Propheten Muhammad (ﷺ). Sie ist die zweite primäre Quelle im Islam und dient als praktische Erklärung und Anwendung der Prinzipien des Korans im täglichen Leben."
             },
             {
                 icon: User,
@@ -37,6 +41,11 @@ const content = {
                 icon: Key,
                 title: "Die Fortsetzung der Offenbarung",
                 content: "Muslime glauben, dass der Islam keine neue Religion ist, sondern die endgültige und vervollständigte Form der Botschaft, die Allah der Menschheit seit Anbeginn durch alle Propheten – wie Adam, Nuh, Ibrahim, Musa und Isa (Friede sei mit ihnen allen) – offenbart hat. Der Prophet Muhammad (ﷺ) ist das 'Siegel der Propheten', der die letzte Offenbarung, den Koran, empfing."
+            },
+            {
+                icon: Heart,
+                title: "Das Ziel: Erfolg im Dies- und Jenseits",
+                content: "Das ultimative Ziel eines Muslims ist es, das Wohlgefallen Allahs zu erlangen (Ridwanullah), was zum Erfolg in diesem Leben und zur ewigen Belohnung im Paradies (Jannah) im Jenseits führt. Dieses Leben wird als eine Prüfung betrachtet, deren Ergebnis über das ewige Schicksal entscheidet."
             }
         ]
     },
@@ -57,8 +66,13 @@ const content = {
             },
             {
                 icon: BookOpen,
-                title: "The Purpose of Life",
-                content: "In Islam, the purpose of life is clearly defined: to serve and worship Allah ('Ibadah'). This includes not only ritual acts like prayer but every good deed done with the intention of pleasing Allah – whether it's honesty in business, kindness to parents, or protecting the environment."
+                title: "The Quran: The Word of God",
+                content: "The primary source of guidance for Muslims is the Quran, which is considered the literal word of Allah as revealed to Prophet Muhammad (ﷺ) over a period of 23 years. It is an infallible and complete guide for all of humanity."
+            },
+            {
+                icon: User,
+                title: "The Sunnah: The Lived Example",
+                content: "The Sunnah refers to the teachings, actions, and sayings of the Prophet Muhammad (ﷺ). It is the second primary source in Islam and serves as a practical explanation and application of the principles of the Quran in daily life."
             },
             {
                 icon: User,
@@ -69,6 +83,11 @@ const content = {
                 icon: Key,
                 title: "The Continuation of Revelation",
                 content: "Muslims believe that Islam is not a new religion, but the final and perfected form of the message that Allah has revealed to humanity from the beginning through all the prophets – such as Adam, Nuh, Ibrahim, Musa, and Isa (peace be upon them all). The Prophet Muhammad (ﷺ) is the 'Seal of the Prophets,' who received the final revelation, the Quran."
+            },
+            {
+                icon: Heart,
+                title: "The Goal: Success in This Life and the Hereafter",
+                content: "The ultimate goal of a Muslim is to attain the pleasure of Allah (Ridwanullah), which leads to success in this life and the eternal reward of Paradise (Jannah) in the hereafter. This life is considered a test, the outcome of which determines one's eternal destiny."
             }
         ]
     }
