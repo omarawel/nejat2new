@@ -44,7 +44,7 @@ export const allTools = [
     { key: "reverts_corner", icon: "🤝", de: "Konvertiten-Ecke", en: "Revert's Corner", href: "/reverts-corner" },
     { key: "verse_of_the_day", icon: "📝", de: "Koranvers des Tages", en: "Verse of the Day", href: "/verse-of-the-day" },
     { key: "ladies_special", icon: "🧕🏻", de: "Ladies Special", en: "Ladies Special", href: "/ladies-special" },
-    { key: "learning_path_generator", icon: "🗺️", de: "Lernpfad-Generator", en: "Learning Path Generator", href: "/learning-path", type: 'pro' },
+    { key: "learning_path_generator", icon: "👨‍🎓", de: "Lernpfad-Generator", en: "Learning Path Generator", href: "/learning-path", type: 'pro' },
     { key: "mosque_finder", icon: "🕌", de: "Moscheefinder", en: "Mosque Finder", href: "/mosque-finder" },
     { key: "support", icon: "❤️", de: "Plattform unterstützen", en: "Support Platform", href: "/subscribe" },
     { key: "prophet_post_of_the_day", icon: "𓆩ﷺ𓆪", de: "Post über den Propheten", en: "Post about the Prophet", href: "/prophet-post-of-the-day" },
