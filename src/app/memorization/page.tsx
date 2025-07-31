@@ -71,8 +71,10 @@ function MemorizationTool() {
   const [hasAccess, setHasAccess] = useState(false);
   const [loadingAccess, setLoadingAccess] = useState(true);
 
-  const [inputText, setInputText] = useState('');
-  const [learningText, setLearningText] = useState('');
+  // Initialize from search params to prevent hydration mismatch
+  const initialText = searchParams.get('text') || '';
+  const [inputText, setInputText] = useState(initialText);
+  const [learningText, setLearningText] = useState(initialText);
   const [isHidden, setIsHidden] = useState(false);
   
   const [playingAudio, setPlayingAudio] = useState(false);
@@ -80,14 +82,6 @@ function MemorizationTool() {
   const [audioUrl, setAudioUrl] = useState<string | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [isSaving, setIsSaving] = useState(false);
-
-  useEffect(() => {
-    const textFromQuery = searchParams.get('text');
-    if (textFromQuery) {
-        setInputText(textFromQuery);
-        setLearningText(textFromQuery);
-    }
-  }, [searchParams]);
 
   useEffect(() => {
       if (!authLoading) {
