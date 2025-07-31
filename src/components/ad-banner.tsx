@@ -89,7 +89,7 @@ export function AdBanner({ slotId, className }: AdBannerProps) {
   }
 
   if (!showAd) {
-      return null;
+      return <div style={{ display: 'none' }} />;
   }
   
   if (loadingAd) {
@@ -97,7 +97,7 @@ export function AdBanner({ slotId, className }: AdBannerProps) {
   }
 
   if (!ad) {
-    return null; // Don't render anything if no ad is found for this slot
+    return <div style={{ display: 'none' }} />;
   }
 
   return (
