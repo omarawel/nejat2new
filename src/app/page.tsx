@@ -16,7 +16,7 @@ const FeatureCard = ({ icon, name, toolKey }: { icon: string, name: string, tool
   return (
     <div className="flex flex-col justify-center items-center p-2 border border-border rounded-lg bg-card text-card-foreground hover:bg-accent/90 cursor-pointer transition-colors h-24">
       <div className={cn("text-3xl", toolKey === 'ar_qibla' && 'text-primary', toolKey === 'hatim' && 'text-xl')}>{icon}</div>
-      <div className="mt-2 text-xs text-center font-medium leading-snug break-words">{name}</div>
+      <div className="mt-2 text-[11px] text-center font-medium leading-tight break-words">{name}</div>
     </div>
   );
 };
