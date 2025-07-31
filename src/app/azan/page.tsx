@@ -138,7 +138,7 @@ export default function AzanPage() {
                     </AccordionContent>
                 </AccordionItem>
                  <AccordionItem value="item-1">
-                    <AccordionTrigger className="text-2xl hover:no-underline">{c.etiquetteTitle}</AccordionTrigger>
+                    <AccordionTrigger className="text-2xl text-left hover:no-underline">{c.etiquetteTitle}</AccordionTrigger>
                     <AccordionContent className="space-y-4">
                          <p className="text-lg text-muted-foreground">{c.etiquetteContent}</p>
                          <Card className="bg-primary/5">
@@ -224,4 +224,3 @@ export default function AzanPage() {
 }
 
     
-
