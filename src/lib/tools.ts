@@ -27,7 +27,7 @@ export const allTools = [
     { key: "hadith_of_day", icon: "📜", de: "Hadith des Tages", en: "Hadith of the Day", href: "/hadith-of-the-day" },
     { key: "hadith", icon: "📚", de: "Hadith", en: "Hadith", href: "/hadith", type: 'progress' },
     { key: "halal_haram_checker", icon: "حلال", de: "Halal/Haram Checker", en: "Halal/Haram Checker", href: "/halal-haram-checker", type: 'pro' },
-    { key: "hatim", icon: "3️⃣0️⃣✅️", de: "Hatim", en: "Hatim", href: "/hatim", type: 'progress' },
+    { key: "hatim", icon: "📖", de: "Hatim", en: "Hatim", href: "/hatim", type: 'progress' },
     { key: "quran", icon: "📖", de: "Koran", en: "Quran", href: "/quran", type: 'progress' },
     { key: "hereafter", icon: "🌅", de: "Das Jenseits", en: "The Hereafter", href: "/hereafter" },
     { key: "hisnul_muslim", icon: "ﷻ", de: "Hisnul Muslim", en: "Hisnul Muslim", href: "/hisnul-muslim", type: 'progress' },
@@ -64,4 +64,5 @@ export const allTools = [
     { key: "zakat_calculator", icon: "💸", de: "Zakat-Rechner", en: "Zakat Calculator", href: "/zakat-calculator" },
     { key: "civilization", icon: "🏛️", de: "Zivilisation", en: "Civilization", href: "/civilization" },
     { key: "diary", icon: "📔", de: "Tagebuch", en: "Diary", href: "/diary"},
+    { key: "azan", icon: "📢", de: "Azan", en: "Adhan", href: "/azan" },
 ];
