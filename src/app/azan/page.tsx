@@ -43,11 +43,16 @@ const content = {
         ],
         iqamahTitle: "Die Worte der Iqamah",
         iqamahContent: "Die Iqamah ist der zweite Ruf zum Gebet, der unmittelbar vor dem Beginn des Gemeinschaftsgebets (Salah) gesprochen wird. Sie signalisiert, dass das Gebet nun beginnt.",
-        iqamah: {
-            arabic: "ٱللَّٰهُ أَكْبَرُ، ٱللَّٰهُ أَكْبَرُ\nأَشْهَدُ أَنْ لَا إِلَٰهَ إِلَّا ٱللَّٰهُ\nأَشْهَدُ أَنَّ مُحَمَّدًا رَسُولُ ٱللَّٰهِ\nحَيَّ عَلَى ٱلصَّلَاةِ\nحَيَّ عَلَى ٱلْفَلَاحِ\nقَدْ قَامَتِ ٱلصَّلَاةُ، قَدْ قَامَتِ ٱلصَّلَاةُ\nٱللَّٰهُ أَكْبَرُ، ٱللَّٰهُ أَكْبَرُ\nلَا إِلَٰهَ إِلَّا ٱللَّٰهُ",
-            transliteration: "Allahu Akbar, Allahu Akbar\nAshhadu an la ilaha illallah\nAshhadu anna Muhammadan Rasulullah\nHayya 'ala s-Salah\nHayya 'ala l-Falah\nQad qamatis-Salah, Qad qamatis-Salah\nAllahu Akbar, Allahu Akbar\nLa ilaha illallah",
-            meaning: "Allah ist der Größte, Allah ist der Größte\nIch bezeuge, dass es keine Gottheit außer Allah gibt\nIch bezeuge, dass Muhammad der Gesandte Allahs ist\nEilt zum Gebet\nEilt zum Erfolg\nDas Gebet hat begonnen, das Gebet hat begonnen\nAllah ist der Größte, Allah ist der Größte\nEs gibt keine Gottheit außer Allah"
-        },
+        iqamahWords: [
+            { arabic: "ٱللَّٰهُ أَكْبَرُ، ٱللَّٰهُ أَكْبَرُ", transliteration: "Allahu Akbar, Allahu Akbar", meaning: "Allah ist der Größte, Allah ist der Größte" },
+            { arabic: "أَشْهَدُ أَنْ لَا إِلَٰهَ إِلَّا ٱللَّٰهُ", transliteration: "Ashhadu an la ilaha illallah", meaning: "Ich bezeuge, dass es keine Gottheit außer Allah gibt" },
+            { arabic: "أَشْهَدُ أَنَّ مُحَمَّدًا رَسُولُ ٱللَّٰهِ", transliteration: "Ashhadu anna Muhammadan Rasulullah", meaning: "Ich bezeuge, dass Muhammad der Gesandte Allahs ist" },
+            { arabic: "حَيَّ عَلَى ٱلصَّلَاةِ", transliteration: "Hayya 'ala s-Salah", meaning: "Eilt zum Gebet" },
+            { arabic: "حَيَّ عَلَى ٱلْفَلَاحِ", transliteration: "Hayya 'ala l-Falah", meaning: "Eilt zum Erfolg" },
+            { arabic: "قَدْ قَامَتِ ٱلصَّلَاةُ، قَدْ قَامَتِ ٱلصَّلَاةُ", transliteration: "Qad qamatis-Salah, Qad qamatis-Salah", meaning: "Das Gebet hat begonnen, das Gebet hat begonnen" },
+            { arabic: "ٱللَّٰهُ أَكْبَرُ، ٱللَّٰهُ أَكْبَرُ", transliteration: "Allahu Akbar, Allahu Akbar", meaning: "Allah ist der Größte, Allah ist der Größte" },
+            { arabic: "لَا إِلَٰهَ إِلَّا ٱللَّٰهُ", transliteration: "La ilaha illallah", meaning: "Es gibt keine Gottheit außer Allah" }
+        ],
         duaTitle: "Bittgebet nach dem Azan",
         duaContent: "Nachdem der Gebetsruf beendet ist, ist es Sunnah, Segenswünsche auf den Propheten (ﷺ) zu sprechen und das folgende Dua zu rezitieren:",
         dua: {
@@ -86,11 +91,16 @@ const content = {
         ],
         iqamahTitle: "The Words of the Iqamah",
         iqamahContent: "The Iqamah is the second call to prayer, recited immediately before the congregational prayer (Salah) begins. It signals that the prayer is about to start.",
-        iqamah: {
-            arabic: "ٱللَّٰهُ أَكْبَرُ، ٱللَّٰهُ أَكْبَرُ\nأَشْهَدُ أَنْ لَا إِلَٰهَ إِلَّا ٱللَّٰهُ\nأَشْهَدُ أَنَّ مُحَمَّدًا رَسُولُ ٱللَّٰهِ\nحَيَّ عَلَى ٱلصَّلَاةِ\nحَيَّ عَلَى ٱلْفَلَاحِ\nقَدْ قَامَتِ ٱلصَّلَاةُ، قَدْ قَامَتِ ٱلصَّلَاةُ\nٱللَّٰهُ أَكْبَرُ، ٱللَّٰهُ أَكْبَرُ\nلَا إِلَٰهَ إِلَّا ٱللَّٰهُ",
-            transliteration: "Allahu Akbar, Allahu Akbar\nAshhadu an la ilaha illallah\nAshhadu anna Muhammadan Rasulullah\nHayya 'ala s-Salah\nHayya 'ala l-Falah\nQad qamatis-Salah, Qad qamatis-Salah\nAllahu Akbar, Allahu Akbar\nLa ilaha illallah",
-            meaning: "Allah is the Greatest, Allah is the Greatest\nI bear witness that there is no deity but Allah\nI bear witness that Muhammad is the Messenger of Allah\nHasten to the prayer\nHasten to success\nThe prayer has begun, the prayer has begun\nAllah is the Greatest, Allah is the Greatest\nThere is no deity but Allah"
-        },
+        iqamahWords: [
+            { arabic: "ٱللَّٰهُ أَكْبَرُ، ٱللَّٰهُ أَكْبَرُ", transliteration: "Allahu Akbar, Allahu Akbar", meaning: "Allah is the Greatest, Allah is the Greatest" },
+            { arabic: "أَشْهَدُ أَنْ لَا إِلَٰهَ إِلَّا ٱللَّٰهُ", transliteration: "Ashhadu an la ilaha illallah", meaning: "I bear witness that there is no deity but Allah" },
+            { arabic: "أَشْهَدُ أَنَّ مُحَمَّدًا رَسُولُ ٱللَّٰهِ", transliteration: "Ashhadu anna Muhammadan Rasulullah", meaning: "I bear witness that Muhammad is the Messenger of Allah" },
+            { arabic: "حَيَّ عَلَى ٱلصَّلَاةِ", transliteration: "Hayya 'ala s-Salah", meaning: "Hasten to the prayer" },
+            { arabic: "حَيَّ عَلَى ٱلْفَلَاحِ", transliteration: "Hayya 'ala l-Falah", meaning: "Hasten to success" },
+            { arabic: "قَدْ قَامَتِ ٱلصَّلَاةُ، قَدْ قَامَتِ ٱلصَّلَاةُ", transliteration: "Qad qamatis-Salah, Qad qamatis-Salah", meaning: "The prayer has begun, the prayer has begun" },
+            { arabic: "ٱللَّٰهُ أَكْبَرُ، ٱللَّٰهُ أَكْبَرُ", transliteration: "Allahu Akbar, Allahu Akbar", meaning: "Allah is the Greatest, Allah is the Greatest" },
+            { arabic: "لَا إِلَٰهَ إِلَّا ٱللَّٰهُ", transliteration: "La ilaha illallah", meaning: "There is no deity but Allah" }
+        ],
         duaTitle: "Supplication after the Adhan",
         duaContent: "After the call to prayer is finished, it is Sunnah to send blessings upon the Prophet (ﷺ) and recite the following Dua:",
         dua: {
@@ -184,21 +194,23 @@ export default function AzanPage() {
                     <AccordionTrigger className="text-2xl">{c.iqamahTitle}</AccordionTrigger>
                     <AccordionContent className="space-y-4">
                          <p className="text-lg text-muted-foreground">{c.iqamahContent}</p>
-                         <Card className="bg-primary/5">
-                            <CardContent className="p-6 space-y-3">
-                                <p className="text-2xl font-quranic text-right whitespace-pre-line">{c.iqamah.arabic}</p>
-                                <p className="text-muted-foreground italic text-right whitespace-pre-line">{c.iqamah.transliteration}</p>
-                                <p className="text-foreground/80 text-right mt-2 whitespace-pre-line">&quot;{c.iqamah.meaning}&quot;</p>
-                                 <div className="flex justify-end mt-2">
-                                     <Button variant="ghost" size="sm" asChild>
-                                        <Link href={{ pathname: '/memorization', query: { text: `${c.iqamah.arabic}\n\n${c.iqamah.meaning}` } }}>
-                                            <BrainCircuit className="mr-2 h-4 w-4" />
-                                            {c.memorize}
-                                        </Link>
-                                    </Button>
-                                </div>
-                            </CardContent>
-                        </Card>
+                          <div className="space-y-4">
+                            {c.iqamahWords.map((word, index) => (
+                                <Card key={index} className="p-4 border-b">
+                                    <p className="text-3xl font-quranic text-right">{word.arabic}</p>
+                                    <p className="text-muted-foreground italic text-right mt-1">{word.transliteration}</p>
+                                    <p className="text-foreground/80 text-right mt-2">&quot;{word.meaning}&quot;</p>
+                                    <div className="flex justify-end mt-2">
+                                         <Button variant="ghost" size="sm" asChild>
+                                            <Link href={{ pathname: '/memorization', query: { text: `${word.arabic}\n\n${word.meaning}` } }}>
+                                                <BrainCircuit className="mr-2 h-4 w-4" />
+                                                {c.memorize}
+                                            </Link>
+                                        </Button>
+                                    </div>
+                                </Card>
+                            ))}
+                        </div>
                     </AccordionContent>
                 </AccordionItem>
                 <AccordionItem value="item-4">
