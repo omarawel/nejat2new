@@ -171,7 +171,7 @@ const content = {
     }
 }
 
-const SurahDetailContent = ({ surahNumber, languageEdition, c }: { surahNumber: number, languageEdition: LanguageEdition, c: typeof content['de'] | typeof content['en'] }) => {
+const SurahDetailContent = ({ surah, languageEdition, c }: { surah: Surah, languageEdition: LanguageEdition, c: typeof content['de'] | typeof content['en'] }) => {
   const { toast } = useToast();
   const [user] = useAuthState(auth);
 
@@ -241,26 +241,79 @@ ${detail.translation.ayahs[index].text}`;
 
   useEffect(() => {
     async function fetchSurahDetail() {
-      if (!surahNumber) return
+      if (!surah) return // Use the surah object here
       setLoading(true)
       setError(null)
       setHiddenAyahs({})
       
       const editions = ['quran-uthmani', languageEdition, 'en.transliteration'];
-      const offlineData = await getSurahWithEditions(surahNumber, editions);
+      const offlineData = await getSurahWithEditions(surah.number, editions); // Use surah.number
 
-      if (offlineData) {
-        setDetail({
-            arabic: offlineData[0] as SurahDetail,
-            translation: offlineData[1] as SurahDetail,
-            transliteration: offlineData[2] as SurahDetail
-        });
+      if (offlineData && offlineData[0] && offlineData[1] && offlineData[2]) {
+        // Reconstruct SurahDetail from offlineData and the full surah object
+        const reconstructedDetail = {
+            arabic: {
+                ...surah,
+                ayahs: offlineData[0].text.split('
+').map((text, index) => ({
+                    number: parseInt(`${surah.number}${String(index + 1).padStart(3, '0')}`), // Reconstruct ayah number
+                    text: text,
+                    audio: '', // Placeholder
+                    audioSecondary: [], // Placeholder
+                    numberInSurah: index + 1,
+                    juz: 0, // Placeholder
+                    manzil: 0, // Placeholder
+                    page: 0, // Placeholder
+                    ruku: 0, // Placeholder
+                    hizbQuarter: 0, // Placeholder
+                    sajda: false, // Placeholder
+                })),
+                edition: { identifier: 'quran-uthmani', language: 'ar', name: 'Quran Uthmani', englishName: 'Quran Uthmani', format: 'text', type: 'quran', direction: 'rtl' }, // Reconstruct edition
+            } as SurahDetail,
+            translation: {
+                ...surah,
+                 ayahs: offlineData[1].text.split('
+').map((text, index) => ({
+                    number: parseInt(`${surah.number}${String(index + 1).padStart(3, '0')}`), // Reconstruct ayah number
+                    text: text,
+                    audio: '', // Placeholder
+                    audioSecondary: [], // Placeholder
+                    numberInSurah: index + 1,
+                    juz: 0, // Placeholder
+                    manzil: 0, // Placeholder
+                    page: 0, // Placeholder
+                    ruku: 0, // Placeholder
+                    hizbQuarter: 0, // Placeholder
+                    sajda: false, // Placeholder
+                })),
+                edition: { identifier: languageEdition, language: languageEdition.split('.')[0], name: '', englishName: '', format: 'text', type: 'translation', direction: 'ltr' }, // Reconstruct edition
+            } as SurahDetail,
+            transliteration: {
+                ...surah,
+                 ayahs: offlineData[2].text.split('
+').map((text, index) => ({
+                    number: parseInt(`${surah.number}${String(index + 1).padStart(3, '0')}`), // Reconstruct ayah number
+                    text: text,
+                    audio: '', // Placeholder
+                    audioSecondary: [], // Placeholder
+                    numberInSurah: index + 1,
+                    juz: 0, // Placeholder
+                    manzil: 0, // Placeholder
+                    page: 0, // Placeholder
+                    ruku: 0, // Placeholder
+                    hizbQuarter: 0, // Placeholder
+                    sajda: false, // Placeholder
+                })),
+                edition: { identifier: 'en.transliteration', language: 'en', name: '', englishName: '', format: 'text', type: 'transliteration', direction: 'ltr' }, // Reconstruct edition
+            } as SurahDetail,
+        };
+        setDetail(reconstructedDetail);
         setLoading(false);
         return;
       }
       
       try {
-        const response = await fetch(`https://api.alquran.cloud/v1/surah/${surahNumber}/editions/quran-uthmani,${languageEdition},en.transliteration`)
+        const response = await fetch(`https://api.alquran.cloud/v1/surah/${surah.number}/editions/quran-uthmani,${languageEdition},en.transliteration`) // Use surah.number
         if (!response.ok) {
           throw new Error(c.errorSurahDetails);
         }
@@ -280,8 +333,9 @@ ${detail.translation.ayahs[index].text}`;
         setLoading(false)
       }
     }
+    // Trigger fetch when surah or languageEdition changes
     fetchSurahDetail()
-  }, [surahNumber, languageEdition, c.errorSurahDetails, c.errorInvalidData, c.errorAudio])
+  }, [surah, languageEdition, c.errorSurahDetails, c.errorInvalidData, c.errorAudio])
   
    useEffect(() => {
     if (detail) {
@@ -662,7 +716,7 @@ export default function QuranPage() {
                                     <span className="text-2xl font-quranic ml-4">{surah.name}</span>
                                 </AccordionTrigger>
                                 <AccordionContent>
-                                    <SurahDetailContent surahNumber={surah.number} languageEdition={languageEdition} c={c}/>
+                                    <SurahDetailContent surah={surah} languageEdition={languageEdition} c={c}/>
                                 </AccordionContent>
                             </AccordionItem>
                         ))}
