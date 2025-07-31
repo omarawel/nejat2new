@@ -14,6 +14,10 @@ import {
   AccordionTrigger,
 } from '@/components/ui/accordion';
 import { textToSpeech } from '@/ai/flows/text-to-speech';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { auth } from '@/lib/firebase';
+import { canAccessFeature } from '@/lib/user-usage';
+import { useToast } from '@/hooks/use-toast';
 
 const content = {
     de: {
@@ -63,6 +67,9 @@ const content = {
             transliteration: "Allahumma Rabba hadhihi-d-da'wat-it-tammah, was-salat-il-qa'imah, ati Muhammadan-il-wasilata wal-fadilah, wab'ath-hu maqaman mahmudan-il-ladhi wa'adtah.",
             meaning: "O Allah, Herr dieses vollkommenen Rufes und des bevorstehenden Gebets, gewähre Muhammad die Wasilah (eine hohe Stufe im Paradies) und die Fadhilah (eine besondere Ehre) und erhebe ihn zu dem gepriesenen Rang, den Du ihm versprochen hast."
         },
+        proFeature: "Pro-Funktion",
+        upgradeButton: "Jetzt upgraden",
+        loginRequired: "Anmeldung erforderlich"
     },
     en: {
         pageTitle: "The Call to Prayer (Adhan & Iqamah)",
@@ -111,6 +118,9 @@ const content = {
             transliteration: "Allahumma Rabba hadhihi-d-da'wat-it-tammah, was-salat-il-qa'imah, ati Muhammadan-il-wasilata wal-fadilah, wab'ath-hu maqaman mahmudan-il-ladhi wa'adtah.",
             meaning: "O Allah, Lord of this perfect call and the prayer to be offered, grant Muhammad the Wasilah (a high station in Paradise) and Fadhilah (a special honor) and raise him to the praiseworthy station that You have promised him."
         },
+        proFeature: "Pro Feature",
+        upgradeButton: "Upgrade Now",
+        loginRequired: "Login Required"
     }
 }
 
@@ -118,13 +128,32 @@ const content = {
 export default function AzanPage() {
   const { language } = useLanguage();
   const c = content[language] || content.de;
+  const { toast } = useToast();
+
+  const [user, authLoading] = useAuthState(auth);
+  const [hasAccess, setHasAccess] = useState(false);
 
   const [playingAudio, setPlayingAudio] = useState<string | null>(null);
   const [loadingAudio, setLoadingAudio] = useState<string | null>(null);
   const [audioUrl, setAudioUrl] = useState<string | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
+  useEffect(() => {
+    if (!authLoading) {
+      canAccessFeature(user?.uid || null, 'text_to_speech').then(setHasAccess);
+    }
+  }, [user, authLoading]);
+
   const handlePlayAudio = async (textToPlay: string, id: string) => {
+    if (!user) {
+        toast({ title: c.loginRequired, variant: 'destructive', description: <Button asChild><Link href="/login">Login</Link></Button>});
+        return;
+    }
+    if (!hasAccess) {
+        toast({ title: c.proFeature, variant: 'destructive', description: <Button asChild><Link href="/subscribe">{c.upgradeButton}</Link></Button>});
+        return;
+    }
+
     if (playingAudio === id) {
         audioRef.current?.pause();
         setPlayingAudio(null);
@@ -208,7 +237,7 @@ export default function AzanPage() {
                                     <p className="text-muted-foreground italic text-right mt-1">{word.transliteration}</p>
                                     <p className="text-foreground/80 text-right mt-2">&quot;{word.meaning}&quot;</p>
                                     <div className="flex justify-end items-center mt-2">
-                                         <Button variant="ghost" size="icon" onClick={() => handlePlayAudio(word.arabic, word.id)} disabled={isLoading}>
+                                         <Button variant="ghost" size="icon" onClick={() => handlePlayAudio(word.arabic, word.id)} disabled={isLoading || authLoading}>
                                             {isLoading ? <Loader2 className="h-5 w-5 animate-spin" /> : (isPlaying ? <Pause className="h-5 w-5" /> : <Play className="h-5 w-5" />)}
                                          </Button>
                                          <Button variant="ghost" size="sm" asChild>
@@ -228,7 +257,7 @@ export default function AzanPage() {
                     <AccordionContent className="space-y-4">
                          <p className="text-lg text-muted-foreground">{c.iqamahContent}</p>
                           <div className="space-y-4">
-                            {c.iqamahWords.map((word) => {
+                             {c.iqamahWords.map((word) => {
                                 const isPlaying = playingAudio === word.id;
                                 const isLoading = loadingAudio === word.id;
                                 return (
@@ -237,7 +266,7 @@ export default function AzanPage() {
                                     <p className="text-muted-foreground italic text-right mt-1">{word.transliteration}</p>
                                     <p className="text-foreground/80 text-right mt-2">&quot;{word.meaning}&quot;</p>
                                     <div className="flex justify-end items-center mt-2">
-                                         <Button variant="ghost" size="icon" onClick={() => handlePlayAudio(word.arabic, word.id)} disabled={isLoading}>
+                                         <Button variant="ghost" size="icon" onClick={() => handlePlayAudio(word.arabic, word.id)} disabled={isLoading || authLoading}>
                                             {isLoading ? <Loader2 className="h-5 w-5 animate-spin" /> : (isPlaying ? <Pause className="h-5 w-5" /> : <Play className="h-5 w-5" />)}
                                          </Button>
                                          <Button variant="ghost" size="sm" asChild>
@@ -262,7 +291,7 @@ export default function AzanPage() {
                                 <p className="text-muted-foreground italic text-right">{c.dua.transliteration}</p>
                                 <p className="text-foreground/80 text-right mt-2">&quot;{c.dua.meaning}&quot;</p>
                                  <div className="flex justify-end items-center mt-2">
-                                     <Button variant="ghost" size="icon" onClick={() => handlePlayAudio(c.dua.arabic, c.dua.id)} disabled={loadingAudio === c.dua.id}>
+                                     <Button variant="ghost" size="icon" onClick={() => handlePlayAudio(c.dua.arabic, c.dua.id)} disabled={loadingAudio === c.dua.id || authLoading}>
                                         {loadingAudio === c.dua.id ? <Loader2 className="h-5 w-5 animate-spin" /> : (playingAudio === c.dua.id ? <Pause className="h-5 w-5" /> : <Play className="h-5 w-5" />)}
                                      </Button>
                                      <Button variant="ghost" size="sm" asChild>
@@ -281,6 +310,5 @@ export default function AzanPage() {
     </div>
   );
 }
-
 
     
