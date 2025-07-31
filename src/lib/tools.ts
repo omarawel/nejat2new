@@ -9,7 +9,7 @@ export const allTools = [
     { key: "asma_ul_husna", icon: "الله", de: "Asma-Ul Husna", en: "Asma-Ul Husna", href: "/asma-ul-husna" },
     { key: "memorization", icon: "🧠", de: "Auswendiglernen", en: "Memorization", href: "/memorization", type: 'pro' },
     { key: "azan", icon: "📢", de: "Azan", en: "Adhan", href: "/azan" },
-    { key: "islam_meaning", icon: "🌐", de: "Bedeutung des Islam", en: "Meaning of Islam", href: "/islam-meaning" },
+    { key: "islam_meaning", icon: "☪️", de: "Bedeutung des Islam", en: "Meaning of Islam", href: "/islam-meaning" },
     { key: "community", icon: "🎉", de: "Community & Events", en: "Community & Events", href: "/community" },
     { key: "favorites", icon: "⭐", de: "Deine Favoriten", en: "Your Favorites", href: "/favorites", type: 'progress' },
     { key: "dhikr", icon: "🤲", de: "Dhikr & Bittgebete", en: "Dhikr & Supplications", href: "/dhikr" },
