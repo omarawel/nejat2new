@@ -16,7 +16,7 @@ import {
 
 const content = {
     de: {
-        pageTitle: "Der Gebetsruf (Azan)",
+        pageTitle: "Der Gebetsruf (Azan & Iqamah)",
         pageDescription: "Lerne die Worte, die Bedeutung und die Geschichte des islamischen Rufs zum Gebet.",
         backToFeatures: "Zurück zu den Funktionen",
         memorize: "Lernen",
@@ -33,6 +33,13 @@ const content = {
             { arabic: "ٱللَّٰهُ أَكْبَرُ", transliteration: "Allahu Akbar (2x)", meaning: "Allah ist der Größte" },
             { arabic: "لَا إِلَٰهَ إِلَّا ٱللَّٰهُ", transliteration: "La ilaha illallah (1x)", meaning: "Es gibt keine Gottheit außer Allah" }
         ],
+        iqamahTitle: "Die Worte der Iqamah",
+        iqamahContent: "Die Iqamah ist der zweite Ruf zum Gebet, der unmittelbar vor dem Beginn des Gemeinschaftsgebets (Salah) gesprochen wird. Sie signalisiert, dass das Gebet nun beginnt.",
+        iqamah: {
+            arabic: "ٱللَّٰهُ أَكْبَرُ، ٱللَّٰهُ أَكْبَرُ\nأَشْهَدُ أَنْ لَا إِلَٰهَ إِلَّا ٱللَّٰهُ\nأَشْهَدُ أَنَّ مُحَمَّدًا رَسُولُ ٱللَّٰهِ\nحَيَّ عَلَى ٱلصَّلَاةِ\nحَيَّ عَلَى ٱلْفَلَاحِ\nقَدْ قَامَتِ ٱلصَّلَاةُ، قَدْ قَامَتِ ٱلصَّلَاةُ\nٱللَّٰهُ أَكْبَرُ، ٱللَّٰهُ أَكْبَرُ\nلَا إِلَٰهَ إِلَّا ٱللَّٰهُ",
+            transliteration: "Allahu Akbar, Allahu Akbar\nAshhadu an la ilaha illallah\nAshhadu anna Muhammadan Rasulullah\nHayya 'ala s-Salah\nHayya 'ala l-Falah\nQad qamatis-Salah, Qad qamatis-Salah\nAllahu Akbar, Allahu Akbar\nLa ilaha illallah",
+            meaning: "Allah ist der Größte, Allah ist der Größte\nIch bezeuge, dass es keine Gottheit außer Allah gibt\nIch bezeuge, dass Muhammad der Gesandte Allahs ist\nEilt zum Gebet\nEilt zum Erfolg\nDas Gebet hat begonnen, das Gebet hat begonnen\nAllah ist der Größte, Allah ist der Größte\nEs gibt keine Gottheit außer Allah"
+        },
         duaTitle: "Bittgebet nach dem Azan",
         duaContent: "Nachdem der Gebetsruf beendet ist, ist es Sunnah, Segenswünsche auf den Propheten (ﷺ) zu sprechen und das folgende Dua zu rezitieren:",
         dua: {
@@ -44,7 +51,7 @@ const content = {
         stylesDescription: "Höre dir die wunderschönen Rezitationen des Azan aus verschiedenen Teilen der Welt an."
     },
     en: {
-        pageTitle: "The Call to Prayer (Adhan)",
+        pageTitle: "The Call to Prayer (Adhan & Iqamah)",
         pageDescription: "Learn the words, meaning, and history of the Islamic call to prayer.",
         backToFeatures: "Back to Features",
         memorize: "Memorize",
@@ -61,6 +68,13 @@ const content = {
             { arabic: "ٱللَّٰهُ أَكْبَرُ", transliteration: "Allahu Akbar (2x)", meaning: "Allah is the Greatest" },
             { arabic: "لَا إِلَٰهَ إِلَّا ٱللَّٰهُ", transliteration: "La ilaha illallah (1x)", meaning: "There is no deity but Allah" }
         ],
+        iqamahTitle: "The Words of the Iqamah",
+        iqamahContent: "The Iqamah is the second call to prayer, recited immediately before the congregational prayer (Salah) begins. It signals that the prayer is about to start.",
+        iqamah: {
+            arabic: "ٱللَّٰهُ أَكْبَرُ، ٱللَّٰهُ أَكْبَرُ\nأَشْهَدُ أَنْ لَا إِلَٰهَ إِلَّا ٱللَّٰهُ\nأَشْهَدُ أَنَّ مُحَمَّدًا رَسُولُ ٱللَّٰهِ\nحَيَّ عَلَى ٱلصَّلَاةِ\nحَيَّ عَلَى ٱلْفَلَاحِ\nقَدْ قَامَتِ ٱلصَّلَاةُ، قَدْ قَامَتِ ٱلصَّلَاةُ\nٱللَّٰهُ أَكْبَرُ، ٱللَّٰهُ أَكْبَرُ\nلَا إِلَٰهَ إِلَّا ٱللَّٰهُ",
+            transliteration: "Allahu Akbar, Allahu Akbar\nAshhadu an la ilaha illallah\nAshhadu anna Muhammadan Rasulullah\nHayya 'ala s-Salah\nHayya 'ala l-Falah\nQad qamatis-Salah, Qad qamatis-Salah\nAllahu Akbar, Allahu Akbar\nLa ilaha illallah",
+            meaning: "Allah is the Greatest, Allah is the Greatest\nI bear witness that there is no deity but Allah\nI bear witness that Muhammad is the Messenger of Allah\nHasten to the prayer\nHasten to success\nThe prayer has begun, the prayer has begun\nAllah is the Greatest, Allah is the Greatest\nThere is no deity but Allah"
+        },
         duaTitle: "Supplication after the Adhan",
         duaContent: "After the call to prayer is finished, it is Sunnah to send blessings upon the Prophet (ﷺ) and recite the following Dua:",
         dua: {
@@ -136,7 +150,28 @@ export default function AzanPage() {
                         </div>
                     </AccordionContent>
                 </AccordionItem>
-                <AccordionItem value="item-2">
+                 <AccordionItem value="item-2">
+                    <AccordionTrigger className="text-2xl">{c.iqamahTitle}</AccordionTrigger>
+                    <AccordionContent className="space-y-4">
+                         <p className="text-lg text-muted-foreground">{c.iqamahContent}</p>
+                         <Card className="bg-primary/5">
+                            <CardContent className="p-6 space-y-3">
+                                <p className="text-2xl font-quranic text-right whitespace-pre-line">{c.iqamah.arabic}</p>
+                                <p className="text-muted-foreground italic text-right whitespace-pre-line">{c.iqamah.transliteration}</p>
+                                <p className="text-foreground/80 text-right mt-2 whitespace-pre-line">&quot;{c.iqamah.meaning}&quot;</p>
+                                 <div className="flex justify-end mt-2">
+                                     <Button variant="ghost" size="sm" asChild>
+                                        <Link href={{ pathname: '/memorization', query: { text: `${c.iqamah.arabic}\n\n${c.iqamah.meaning}` } }}>
+                                            <BrainCircuit className="mr-2 h-4 w-4" />
+                                            {c.memorize}
+                                        </Link>
+                                    </Button>
+                                </div>
+                            </CardContent>
+                        </Card>
+                    </AccordionContent>
+                </AccordionItem>
+                <AccordionItem value="item-3">
                     <AccordionTrigger className="text-2xl">{c.duaTitle}</AccordionTrigger>
                     <AccordionContent className="space-y-4">
                         <p className="text-lg text-muted-foreground">{c.duaContent}</p>
