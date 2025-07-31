@@ -59,10 +59,10 @@ export const createStripeCheckoutSession = functions.https.onCall(async (data, c
       mode: 'subscription',
       subscription_data: {
         metadata: {
-          userId: userId 
+          userId: userId // Pass the Firebase UID to the subscription metadata
         }
       },
-      client_reference_id: userId,
+      client_reference_id: userId, // Also pass it as client_reference_id for checkout.session.completed
       success_url: `${appUrl}/profile?success=true`,
       cancel_url: `${appUrl}/subscribe?canceled=true`,
     });

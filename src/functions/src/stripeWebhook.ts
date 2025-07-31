@@ -55,7 +55,8 @@ export const stripeWebhook = functions.https.onRequest(async (request, response)
     switch (event.type) {
         case 'checkout.session.completed':
             const session = event.data.object as Stripe.Checkout.Session;
-            userId = session.client_reference_id; // Get user ID from the session
+            // Get user ID from the session for new subscriptions
+            userId = session.client_reference_id; 
 
             if (session.mode === 'subscription' && session.subscription) {
                 if (!userId) {
@@ -63,12 +64,17 @@ export const stripeWebhook = functions.https.onRequest(async (request, response)
                     break;
                 }
                 subscription = await stripe.subscriptions.retrieve(session.subscription as string);
+                // Important: Ensure the subscription has the userId in metadata for future events
+                if (subscription.metadata.userId !== userId) {
+                    await stripe.subscriptions.update(subscription.id, { metadata: { userId: userId } });
+                }
             }
             break;
             
         case 'customer.subscription.updated':
         case 'customer.subscription.deleted':
              subscription = event.data.object as Stripe.Subscription;
+             // For recurring events, get userId from the subscription metadata
              userId = subscription.metadata.userId;
             break;
     }

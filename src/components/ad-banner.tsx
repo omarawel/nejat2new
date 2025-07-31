@@ -84,6 +84,10 @@ export function AdBanner({ slotId, className }: AdBannerProps) {
 
   }, [slotId, user, loadingAuth]);
 
+  if (loadingAuth) {
+      return <Skeleton className="w-full h-28" />;
+  }
+
   if (!showAd) {
       return null;
   }
@@ -130,6 +134,6 @@ export function AdBanner({ slotId, className }: AdBannerProps) {
                 </div>
             </CardContent>
         </Card>
-    </div> // This is the line before the error
+    </div>
   );
 }
