@@ -15,16 +15,27 @@ var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (
 }) : function(o, v) {
     o["default"] = v;
 });
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
+var __importStar = (this && this.__importStar) || (function () {
+    var ownKeys = function(o) {
+        ownKeys = Object.getOwnPropertyNames || function (o) {
+            var ar = [];
+            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
+            return ar;
+        };
+        return ownKeys(o);
+    };
+    return function (mod) {
+        if (mod && mod.__esModule) return mod;
+        var result = {};
+        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
+        __setModuleDefault(result, mod);
+        return result;
+    };
+})();
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
+var _a, _b;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.stripeWebhook = void 0;
 const functions = __importStar(require("firebase-functions"));
@@ -40,7 +51,7 @@ catch (e) {
 }
 const db = (0, firestore_1.getFirestore)();
 // Initialize Stripe with secret key from environment configuration
-const stripeSecretKey = functions.config().stripe?.secret_key;
+const stripeSecretKey = (_a = functions.config().stripe) === null || _a === void 0 ? void 0 : _a.secret_key;
 if (!stripeSecretKey) {
     console.error("Stripe secret key is not set in Firebase functions config.");
     throw new Error("Stripe secret key is not configured.");
@@ -49,12 +60,13 @@ const stripe = new stripe_1.default(stripeSecretKey, {
     apiVersion: '2024-06-20',
 });
 // Get webhook secret from environment configuration
-const endpointSecret = functions.config().stripe?.webhook_secret;
+const endpointSecret = (_b = functions.config().stripe) === null || _b === void 0 ? void 0 : _b.webhook_secret;
 if (!endpointSecret) {
     console.error("Stripe webhook secret is not set in Firebase functions config.");
     throw new Error("Stripe webhook secret is not configured.");
 }
 exports.stripeWebhook = functions.https.onRequest(async (request, response) => {
+    var _a;
     const sig = request.headers['stripe-signature'];
     let event;
     try {
@@ -98,9 +110,9 @@ exports.stripeWebhook = functions.https.onRequest(async (request, response) => {
                 break;
         }
         if (subscription && userId) {
-            const plan = subscription.items.data[0]?.price;
+            const plan = (_a = subscription.items.data[0]) === null || _a === void 0 ? void 0 : _a.price;
             const subscriptionData = {
-                planId: plan?.metadata.planId || plan?.lookup_key || 'unknown',
+                planId: (plan === null || plan === void 0 ? void 0 : plan.metadata.planId) || (plan === null || plan === void 0 ? void 0 : plan.lookup_key) || 'unknown',
                 status: subscription.status,
                 current_period_end: firestore_1.Timestamp.fromMillis(subscription.current_period_end * 1000),
             };
