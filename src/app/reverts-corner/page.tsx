@@ -1,4 +1,3 @@
-
 "use client"
 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
@@ -11,7 +10,7 @@ import { AdBanner } from '@/components/ad-banner';
 const content = {
     de: {
         pageTitle: "Ecke für Konvertiten",
-        description: "Herzlich willkommen in der Ummah! Hier findest du Ressourcen und Anleitungen, die dir den Einstieg in den Islam erleichtern.",
+        pageDescription: "Herzlich willkommen in der Ummah! Hier findest du Ressourcen und Anleitungen, die dir den Einstieg in den Islam erleichtern.",
         backToFeatures: "Zurück zu den Funktionen",
         cards: [
             {
@@ -126,7 +125,7 @@ export default function RevertsCornerPage() {
             <h1 className="text-4xl font-bold tracking-tight text-primary">
                 {c.pageTitle}
             </h1>
-            <p className="text-muted-foreground mt-2 text-lg max-w-2xl mx-auto">{c.description}</p>
+            <p className="text-muted-foreground mt-2 text-lg max-w-2xl mx-auto">{c.pageDescription}</p>
         </header>
 
          <div className="max-w-4xl mx-auto my-8">
