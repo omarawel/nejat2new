@@ -76,7 +76,6 @@ export default function Home() {
         <div className="mt-8">
           <Button size="lg" asChild>
             <Link href="/signup">
-              <UserPlus className="mr-2 h-5 w-5" />
               {c.button}
             </Link>
           </Button>
