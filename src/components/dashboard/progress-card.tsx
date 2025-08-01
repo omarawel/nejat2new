@@ -1,4 +1,3 @@
-
 "use client";
 
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
@@ -47,9 +46,9 @@ export function ProgressCard({ title, progress, favorites, hatimGroups, href, ic
 
     const getProgressText = () => {
         if (!progress) return null;
-        if (progress.surahName) return `${progress.surahName} (${progress.surah})`;
-        if (progress.hadithNumber) return `Hadith Nr. ${progress.hadithNumber}`;
-        if (progress.chapterTitle) return `${progress.chapterTitle}`;
+        if ('surahName' in progress && progress.surahName) return `${progress.surahName} (${progress.surah})`;
+        if ('hadithNumber' in progress && progress.hadithNumber) return `Hadith Nr. ${progress.hadithNumber}`;
+        if ('chapterTitle' in progress && progress.chapterTitle) return `${progress.chapterTitle}`;
         return null;
     }
 
