@@ -1,4 +1,6 @@
 
+"use client"
+
 import { db } from './firebase';
 import { collection, addDoc, onSnapshot, query, doc, deleteDoc, updateDoc, Timestamp, orderBy, where } from 'firebase/firestore';
 
@@ -8,8 +10,8 @@ export interface Ad {
   title: string;
   description: string;
   type: 'image' | 'video';
-  imageUrl?: string;
-  videoUrl?: string;
+  imageUrl?: string | null;
+  videoUrl?: string | null;
   linkUrl: string;
   actionButtonText: string;
   createdAt: Timestamp;
