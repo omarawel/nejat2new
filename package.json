@@ -55,7 +55,7 @@
     "html-to-image": "^1.11.11",
     "idb-keyval": "^6.2.1",
     "lucide-react": "^0.475.0",
-    "next": "14.2.4",
+    "next": "14.2.5",
     "patch-package": "^8.0.0",
     "react": "^18.3.1",
     "react-date-object": "^2.1.9",
