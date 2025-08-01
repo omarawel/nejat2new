@@ -36,7 +36,7 @@ import { getSurahList, storeSurahList, getSurahEdition, storeSurahEdition, isQur
 import { Progress } from "@/components/ui/progress"
 import { useAuthState } from "react-firebase-hooks/auth"
 import { auth } from "@/lib/firebase"
-import { useToast } from "@/hooks/use-toast"
+import { useToast, toast } from "@/hooks/use-toast"
 import { addFavorite } from "@/lib/favorites"
 import { canAccessFeature } from "@/lib/user-usage"
 import { AdBanner } from "@/components/ad-banner"
