@@ -28,6 +28,7 @@ import {
 } from "@/components/ui/select"
 import { cn } from "@/lib/utils"
 import { textToSpeech } from "@/ai/flows/text-to-speech"
+import type { TextToSpeechInput, TextToSpeechOutput } from "@/ai/flows/text-to-speech-types";
 import { useLanguage } from "@/components/language-provider"
 import Link from "next/link"
 import { useAuthState } from "react-firebase-hooks/auth"

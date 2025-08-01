@@ -11,19 +11,8 @@ try {
   console.info("Firebase already initialized.");
 }
 
-// Get Stripe secret key from environment configuration
-const stripeSecretKey = functions.config().stripe?.secret_key;
-if (!stripeSecretKey) {
-  console.error("Stripe secret key is not set in Firebase functions config.");
-  throw new Error("Stripe secret key is not configured.");
-}
-
-// Initialize Stripe with secret key
-const stripe = new Stripe(stripeSecretKey, {
-  apiVersion: '2024-06-20', 
-});
-
 export const createStripeCheckoutSession = functions.https.onCall(async (data, context) => {
+  // Ensure the user is authenticated.
   if (!context.auth) {
     throw new functions.https.HttpsError(
       'unauthenticated',
@@ -41,11 +30,25 @@ export const createStripeCheckoutSession = functions.https.onCall(async (data, c
     );
   }
   
+  // Get environment configuration
+  const stripeSecretKey = functions.config().stripe?.secret_key;
   const appUrl = functions.config().app?.url;
+
+  if (!stripeSecretKey) {
+    console.error("Stripe secret key is not set in Firebase functions config.");
+    throw new functions.https.HttpsError('internal', 'Stripe secret key is not configured.');
+  }
+  
   if (!appUrl) {
     console.error("App URL is not set in Firebase functions config.");
     throw new functions.https.HttpsError('internal', 'Application URL is not configured.');
   }
+
+  // Initialize Stripe within the function call
+  const stripe = new Stripe(stripeSecretKey, {
+    apiVersion: '2024-06-20', 
+  });
+
 
   try {
     const session = await stripe.checkout.sessions.create({
