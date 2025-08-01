@@ -110,14 +110,11 @@ export default function IslamicQuotesPage() {
                     title: c.title,
                 });
             } else {
-                 await navigator.clipboard.write([
-                    new ClipboardItem({ 'image/png': blob })
-                ]);
-                toast({ description: c.quoteCopied });
+                throw new Error("Share API not supported");
             }
         } catch (error) {
-            console.error('Error sharing:', error);
-            toast({ variant: 'destructive', description: c.shareError });
+            console.error('Error sharing, falling back to clipboard:', error);
+            handleCopyImage();
         }
     };
 
